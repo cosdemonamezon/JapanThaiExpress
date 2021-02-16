@@ -1,33 +1,45 @@
-import 'package:JapanThaiExpress/Screens/Register/Numpad.dart';
+import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
+import 'package:JapanThaiExpress/Screens/Login/Numberpad.dart';
+import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 import 'package:flutter/material.dart';
 
-class SetPin extends StatefulWidget {
-  SetPin({Key key}) : super(key: key);
+class LoginPin extends StatefulWidget {
+  LoginPin({Key key}) : super(key: key);
 
   @override
-  _SetPinState createState() => _SetPinState();
+  _LoginPinState createState() => _LoginPinState();
 }
 
-class _SetPinState extends State<SetPin> {
+class _LoginPinState extends State<LoginPin> {
   int length = 6;
   onChange(String number){
     if(number.length == length){
       if (number == "123456") {
-        print("number : "+ number);
-      }  
+        Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen())
+        );
+        //print("number : "+ number);
+      }
+      else if (number == "654321") {
+        Navigator.push(
+          context, MaterialPageRoute(builder: (context) => DashbordScreen())
+        );
+        //print("number : "+ number);
+      }
       //print(number);
     }
     else {
       print(number);
     }    
   }
-  
+
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Set Pin"),
+        title: Text("Login Pin"),
       ),
       body: Container(
         height: height,
@@ -52,7 +64,7 @@ class _SetPinState extends State<SetPin> {
                     ),
                   ),
                 ),
-                Numpad(length: length, onChange: onChange,)
+                Numberpad(length: length, onChange: onChange,)
               ],
             ),
           ),
