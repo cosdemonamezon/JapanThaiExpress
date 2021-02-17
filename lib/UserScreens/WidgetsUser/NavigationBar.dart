@@ -1,3 +1,4 @@
+import 'package:JapanThaiExpress/UserScreens/WidgetsUser/Contact.dart';
 import 'package:flutter/material.dart';
 
 class NavigationBar extends StatefulWidget {
@@ -13,7 +14,7 @@ class _NavigationBarState extends State<NavigationBar> {
     return Container(
       height: 100,
       width: double.infinity,
-      decoration: BoxDecoration(color: Colors.blue,),
+      decoration: BoxDecoration(color: Color(0xffdd4b39),),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
         child: Row(
@@ -48,15 +49,19 @@ class _NavigationBarState extends State<NavigationBar> {
               child: Column(
                 children: [
                   CircleAvatar(
+                    radius: 26,
                     backgroundColor: Color(0xFF343434),
-                    //backgroundImage: AssetImage(pathicon1),
-                    radius: 24,
-                    child: IconButton(
-                      color: Colors.white,
-                      icon: Icon(Icons.chat),
-                      onPressed: () {
-                            
-                    }),
+                    child: CircleAvatar(
+                      backgroundColor: Color(0xFFfafafa),
+                      //backgroundImage: AssetImage(pathicon1),
+                      radius: 24,
+                      child: IconButton(
+                        color: Colors.black,
+                        icon: Icon(Icons.chat),
+                        onPressed: () {
+                              
+                      }),
+                    ),
                   ),
                   Text(
                     "Notification",
@@ -78,11 +83,13 @@ class _NavigationBarState extends State<NavigationBar> {
                       color: Colors.white,
                       icon: Icon(Icons.chat),
                       onPressed: () {
-                            
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => Contact())
+                      );
                     }),
                   ),
                   Text(
-                    "Contct Us",
+                    "Contact Us",
                     style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.white),
                   ),

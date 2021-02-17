@@ -35,32 +35,32 @@ class _DashbordScreenState extends State<DashbordScreen> {
         child: Column(
           children: [
             SizedBox(height: 10,),
-            Container(
-              width: double.infinity,
-              child: CarouselSlider.builder(
-                itemCount: pathimg.length,
-                options: CarouselOptions(
-                  autoPlay: true,
-                  aspectRatio: 2.0,
-                  viewportFraction: 0.75,
-                  enlargeCenterPage: true,
-                  initialPage: 9,
-                ),
-                itemBuilder: (context, index, realIdx){
-                  if (pathimg.length != 0) {
-                    return Container(
-                      child: Center(
-                        child: Image.asset(pathimg[index], fit: BoxFit.cover,),
-                      ),
-                    );
-                  }
-                }
-              ),
-            ),
-            SizedBox(height: 30,),
+            // Container(
+            //   width: double.infinity,
+            //   child: CarouselSlider.builder(
+            //     itemCount: pathimg.length,
+            //     options: CarouselOptions(
+            //       autoPlay: true,
+            //       aspectRatio: 2.0,
+            //       viewportFraction: 0.75,
+            //       enlargeCenterPage: true,
+            //       initialPage: 9,
+            //     ),
+            //     itemBuilder: (context, index, realIdx){
+            //       if (pathimg.length != 0) {
+            //         return Container(
+            //           child: Center(
+            //             child: Image.asset(pathimg[index], fit: BoxFit.cover,),
+            //           ),
+            //         );
+            //       }
+            //     }
+            //   ),
+            // ),
+            // SizedBox(height: 30,),
             Expanded(
               child: GridView.count(
-                crossAxisCount: 3,
+                crossAxisCount: 2,
                 padding: EdgeInsets.all(3.0),
                 children: [
                   dashboardItem("My Oders", Icons.supervised_user_circle, 1, context),
@@ -83,13 +83,21 @@ class _DashbordScreenState extends State<DashbordScreen> {
 Card dashboardItem(String title, IconData icon, int page, context) {
   return Card(
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(15.0),
+      borderRadius: BorderRadius.circular(20.0),
     ),
     elevation: 5.0,
-    margin: EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
+    margin: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
     child: Container(
       decoration: BoxDecoration(
-        color: Color(0xFF343434),
+        border: Border.all(
+          width: 3,
+          color: Color(0xFFfafafa),
+          //color: Color(0xFF343434),
+          //color: Color(0xFFd73925),
+          
+        ),
+        color: Color(0xFFfafafa),
+        //color: Color(0xFFd73925),
         borderRadius: BorderRadius.circular(15),
       ),
       child: new InkWell(
@@ -119,21 +127,21 @@ Card dashboardItem(String title, IconData icon, int page, context) {
           mainAxisSize: MainAxisSize.max,
           verticalDirection: VerticalDirection.down,
           children: [
-            SizedBox(height: 10.0),
+            SizedBox(height: 20.0),
             Center(
               child: Icon(
                 icon,
                 size: 60.0,
-                color: Colors.white,
+                color: Color(0xFFd73925),
               ),
             ),
-            SizedBox(height: 10.0),
+            SizedBox(height: 20.0),
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
                   title,
-                  style: new TextStyle(fontSize: 16.0, color: Colors.white),
+                  style: new TextStyle(fontSize: 20.0, color: Color(0xFFd73925)),
                 ),
               ),
             ),

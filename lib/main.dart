@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(        
         //primarySwatch: Colors.grey,
-        primaryColor: Color(0xffD6D6D6),
+        primaryColor: Color(0xffdd4b39),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute: '/',

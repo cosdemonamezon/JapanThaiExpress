@@ -1,3 +1,7 @@
+import 'package:JapanThaiExpress/UserScreens/Service/Auction.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/Buystuff.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -92,23 +96,17 @@ Card dashboardItem(String title, IconData icon, int page, context) {
       child: new InkWell(
         onTap: () {
           if (page == 1) {
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => PrechaseScreen()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => Deposit()));
           } else if (page == 2) {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => PreoderScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Buystuff()));
           } else if (page == 3) {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => MaintainScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Auction()));
           } else if (page == 4) {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => DepositScreen()));
-          } else if (page == 5) {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => CustomerScreen()));
-          } else if (page == 6) {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => MessageScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => ReceiveMoney()));
           } 
         },
         child: Column(

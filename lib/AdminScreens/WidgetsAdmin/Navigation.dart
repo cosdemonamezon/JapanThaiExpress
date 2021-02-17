@@ -13,7 +13,7 @@ class _NavigationState extends State<Navigation> {
     return Container(
       height: 100,
       width: double.infinity,
-      decoration: BoxDecoration(color: Colors.blue,),
+      decoration: BoxDecoration(color: Color(0xffdd4b39),),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
         child: Row(
