@@ -199,7 +199,7 @@ class _DepositState extends State<Deposit> {
                           gradient: LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
-                            colors: [Color(0xff757575), Color(0xfff424242)]
+                            colors: [Color(0xffdd4b39), Color(0xffdd4b39)]
                           ),
                         ),
                         child: Text("Confirm", style: TextStyle(fontSize: 20, color: Colors.white),),

@@ -65,10 +65,10 @@ height: height,
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(3.0),
                 children: [
-                  dashboardItem("รับฝากส่ง", Icons.supervised_user_circle, 1, context),
-                  dashboardItem("รับฝากซื้อ", Icons.supervised_user_circle, 2, context),
-                  dashboardItem("ประมูลสินค้า", Icons.supervised_user_circle, 3, context),
-                  dashboardItem("รับโอนเงิน", Icons.supervised_user_circle, 4, context),
+                  dashboardItem("รับฝากส่ง", Icons.local_shipping, 1, context),
+                  dashboardItem("รับฝากซื้อ", Icons.shopping_cart, 2, context),
+                  dashboardItem("ประมูลสินค้า", Icons.monetization_on, 3, context),
+                  dashboardItem("รับโอนเงิน", Icons.local_atm, 4, context),
                   
                 ],
               ),
@@ -90,7 +90,15 @@ Card dashboardItem(String title, IconData icon, int page, context) {
     margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 15.0),
     child: Container(
       decoration: BoxDecoration(
-        color: Color(0xFF343434),
+        border: Border.all(
+          width: 3,
+          color: Color(0xFFfafafa),
+          //color: Color(0xFF343434),
+          //color: Color(0xFFd73925),
+          
+        ),
+        color: Color(0xFFfafafa),
+        //color: Color(0xFFd73925),
         borderRadius: BorderRadius.circular(15),
       ),
       child: new InkWell(
@@ -119,7 +127,7 @@ Card dashboardItem(String title, IconData icon, int page, context) {
               child: Icon(
                 icon,
                 size: 60.0,
-                color: Colors.white,
+                color: Color(0xFFd73925),
               ),
             ),
             SizedBox(height: 20.0),
@@ -128,7 +136,7 @@ Card dashboardItem(String title, IconData icon, int page, context) {
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
                   title,
-                  style: new TextStyle(fontSize: 16.0, color: Colors.white),
+                  style: new TextStyle(fontSize: 16.0, color: Color(0xFFd73925)),
                 ),
               ),
             ),

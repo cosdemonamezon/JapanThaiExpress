@@ -63,6 +63,7 @@ flutter:
     - assets/o7.jpg
     - assets/o8.jpg
     - assets/1.png
+    - assets/images/card_bg.png
   fonts:
       - family: Nunito
         fonts:

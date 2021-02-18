@@ -193,7 +193,7 @@ class _AuctionState extends State<Auction> {
                           gradient: LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
-                            colors: [Color(0xffaa2e25), Color(0xffdd4b39)]
+                            colors: [Color(0xffdd4b39), Color(0xffdd4b39)]
                           ),
                         ),
                         child: Text("Confirm", style: TextStyle(fontSize: 20, color: Colors.white),),

@@ -1,3 +1,4 @@
+import 'package:JapanThaiExpress/UserScreens/Products/details/components/Checkout.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/models/Product.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,11 @@ class AddToCart extends StatelessWidget {
                   borderRadius: BorderRadius.circular(18)
                 ),
                 color: product.color,
-                onPressed: () {}, 
+                onPressed: () {
+                  Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Checkout())
+                  );
+                }, 
                 child: Text(
                   "Buy Now".toUpperCase(),
                   style: TextStyle(
