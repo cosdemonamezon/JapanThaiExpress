@@ -1,4 +1,10 @@
+import 'package:JapanThaiExpress/UserScreens/MyOders/OdersScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/News/NewsScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/Products/ProductScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/Profile/ProfileScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/Promotion/PromotionScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
+import 'package:JapanThaiExpress/UserScreens/Wallet/WalletScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +34,16 @@ class _DashbordScreenState extends State<DashbordScreen> {
     return Scaffold(
       appBar: AppBar(        
         title: Text("Dashbord"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.account_circle, size: 40, color: Colors.white,), 
+            onPressed: (){
+              Navigator.push(
+                context, MaterialPageRoute(builder: (context) => ProfileScreen())
+              );
+            }
+          ),
+        ],
       ),
       body: Container(
         height: height,
@@ -67,8 +83,8 @@ class _DashbordScreenState extends State<DashbordScreen> {
                   dashboardItem("Our services", Icons.supervised_user_circle, 2, context),
                   dashboardItem("Products", Icons.supervised_user_circle, 3, context),
                   dashboardItem("Wallet", Icons.supervised_user_circle, 4, context),
-                  dashboardItem("News", Icons.supervised_user_circle, 3, context),
-                  dashboardItem("Promotion", Icons.supervised_user_circle, 4, context),
+                  dashboardItem("News", Icons.supervised_user_circle, 5, context),
+                  dashboardItem("Promotion", Icons.supervised_user_circle, 6, context),
                 ],
               ),
             ),
@@ -103,23 +119,23 @@ Card dashboardItem(String title, IconData icon, int page, context) {
       child: new InkWell(
         onTap: () {
           if (page == 1) {
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => PrechaseScreen()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => OdersScreen()));
           } else if (page == 2) {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Service()));
           } else if (page == 3) {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => MaintainScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => ProductScreen()));
           } else if (page == 4) {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => DepositScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => WalletScreen()));
           } else if (page == 5) {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => CustomerScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => NewsScreen()));
           } else if (page == 6) {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => MessageScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => PromotionScreen()));
           } 
         },
         child: Column(

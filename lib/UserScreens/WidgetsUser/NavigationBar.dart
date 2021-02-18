@@ -30,7 +30,7 @@ class _NavigationBarState extends State<NavigationBar> {
                     radius: 24,
                     child: IconButton(
                       color: Colors.white,
-                      icon: Icon(Icons.chat),
+                      icon: Icon(Icons.home_filled),
                       onPressed: () {
                             
                       }
@@ -49,19 +49,15 @@ class _NavigationBarState extends State<NavigationBar> {
               child: Column(
                 children: [
                   CircleAvatar(
-                    radius: 26,
                     backgroundColor: Color(0xFF343434),
-                    child: CircleAvatar(
-                      backgroundColor: Color(0xFFfafafa),
-                      //backgroundImage: AssetImage(pathicon1),
-                      radius: 24,
-                      child: IconButton(
-                        color: Colors.black,
-                        icon: Icon(Icons.chat),
-                        onPressed: () {
-                              
-                      }),
-                    ),
+                    //backgroundImage: AssetImage(pathicon1),
+                    radius: 24,
+                    child: IconButton(
+                      color: Colors.white,
+                      icon: Icon(Icons.notification_important),
+                      onPressed: () {
+                            
+                    }),
                   ),
                   Text(
                     "Notification",
@@ -81,7 +77,7 @@ class _NavigationBarState extends State<NavigationBar> {
                     radius: 24,
                     child: IconButton(
                       color: Colors.white,
-                      icon: Icon(Icons.chat),
+                      icon: Icon(Icons.contact_phone),
                       onPressed: () {
                       Navigator.push(
                           context, MaterialPageRoute(builder: (context) => Contact())
@@ -106,7 +102,7 @@ class _NavigationBarState extends State<NavigationBar> {
                     radius: 24,
                     child: IconButton(
                       color: Colors.white,
-                      icon: Icon(Icons.chat),
+                      icon: Icon(Icons.settings_applications),
                       onPressed: () {
                             
                     }),
