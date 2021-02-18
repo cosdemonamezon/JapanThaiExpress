@@ -30,15 +30,18 @@ class _ContactState extends State<Contact> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Name", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                    Text(
+                      "Name",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
                     SizedBox(height: 10),
                     TextFormField(
                       decoration: InputDecoration(
-                       //border: InputBorder.none,
-                        border: OutlineInputBorder(),
-                        fillColor: Color(0xfff3f3f4),
-                        filled: true
-                      ),
+                          //border: InputBorder.none,
+                          border: OutlineInputBorder(),
+                          fillColor: Color(0xfff3f3f4),
+                          filled: true),
                     ),
                   ],
                 ),
@@ -48,90 +51,91 @@ class _ContactState extends State<Contact> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Description", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                    Text(
+                      "Description",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
                     SizedBox(height: 10),
                     TextFormField(
                       maxLines: 7,
                       decoration: InputDecoration(
-                       //border: InputBorder.none,
-                        border: OutlineInputBorder(),
-                        fillColor: Color(0xfff3f3f4),
-                        filled: true
-                      ),
+                          //border: InputBorder.none,
+                          border: OutlineInputBorder(),
+                          fillColor: Color(0xfff3f3f4),
+                          filled: true),
                     ),
                   ],
                 ),
               ),
-              
-              
-              
-                    SizedBox(height: 15),                    
-                    SizedBox(height: 15),
-                    GestureDetector(
-                      onTap: (){
-                        // Navigator.push(
-                        //   context, MaterialPageRoute(builder: (context) => SetPin())
-                        // );
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.grey.shade200,
-                                offset: Offset(2, 4),
-                                blurRadius: 5,
-                                spreadRadius: 2)
-                          ],
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [Color(0xffaa2e25), Color(0xffdd4b39)]
-                          ),
-                        ),
-                        child: Text("Submit", style: TextStyle(fontSize: 20, color: Colors.white),),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: (){
-                        // Navigator.push(
-                        //   context, MaterialPageRoute(builder: (context) => SetPin())
-                        // );
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.grey.shade200,
-                                offset: Offset(2, 4),
-                                blurRadius: 5,
-                                spreadRadius: 2)
-                          ],
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [Color(0xffaa2e25), Color(0xffdd4b39)]
-                          ),
-                        ),
-                        child: Text("Call Us", style: TextStyle(fontSize: 20, color: Colors.white),),
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                  ],
+              SizedBox(height: 15),
+              SizedBox(height: 15),
+              GestureDetector(
+                onTap: () {
+                  // Navigator.push(
+                  //   context, MaterialPageRoute(builder: (context) => SetPin())
+                  // );
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Colors.grey.shade200,
+                          offset: Offset(2, 4),
+                          blurRadius: 5,
+                          spreadRadius: 2)
+                    ],
+                    gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [Color(0xffaa2e25), Color(0xffdd4b39)]),
+                  ),
+                  child: Text(
+                    "Submit",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
                 ),
               ),
-            
-          
+              SizedBox(height: 20),
+              GestureDetector(
+                onTap: () {
+                  // Navigator.push(
+                  //   context, MaterialPageRoute(builder: (context) => SetPin())
+                  // );
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Colors.grey.shade200,
+                          offset: Offset(2, 4),
+                          blurRadius: 5,
+                          spreadRadius: 2)
+                    ],
+                    gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [Color(0xffaa2e25), Color(0xffdd4b39)]),
+                  ),
+                  child: Text(
+                    "Call Us",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                ),
+              ),
+              SizedBox(height: 15),
+            ],
+          ),
         ),
-      
+      ),
       bottomNavigationBar: NavigationBar(),
     );
   }

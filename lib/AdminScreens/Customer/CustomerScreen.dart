@@ -11,16 +11,36 @@ class CustomerScreen extends StatefulWidget {
 
 class _CustomerScreenState extends State<CustomerScreen> {
   List<Person> persons = [
-     Person(name: 'Bill Will', profileImg: 'assets/pic-1.png', bio: "Software Developer"),
-     Person(name: 'Andy Smith', profileImg: 'assets/pic-2.png', bio: "UI Designer"),
-     Person(name: 'Creepy Story', profileImg: 'assets/pic-3.png', bio: "Software Tester"),
-     Person(name: 'Sam Sony', profileImg: 'assets/pic-4.png', bio: "System Engineer"),
-     Person(name: 'Bill Will', profileImg: 'assets/pic-1.png', bio: "Software Developer"),
-     Person(name: 'Andy Smith', profileImg: 'assets/pic-2.png', bio: "UI Designer"),
-     Person(name: 'Creepy Story', profileImg: 'assets/pic-3.png', bio: "Software Tester"),
-     Person(name: 'Sam Sony', profileImg: 'assets/pic-4.png', bio: "System Engineer")
+    Person(
+        name: 'Bill Will',
+        profileImg: 'assets/pic-1.png',
+        bio: "Software Developer"),
+    Person(
+        name: 'Andy Smith', profileImg: 'assets/pic-2.png', bio: "UI Designer"),
+    Person(
+        name: 'Creepy Story',
+        profileImg: 'assets/pic-3.png',
+        bio: "Software Tester"),
+    Person(
+        name: 'Sam Sony',
+        profileImg: 'assets/pic-4.png',
+        bio: "System Engineer"),
+    Person(
+        name: 'Bill Will',
+        profileImg: 'assets/pic-1.png',
+        bio: "Software Developer"),
+    Person(
+        name: 'Andy Smith', profileImg: 'assets/pic-2.png', bio: "UI Designer"),
+    Person(
+        name: 'Creepy Story',
+        profileImg: 'assets/pic-3.png',
+        bio: "Software Tester"),
+    Person(
+        name: 'Sam Sony',
+        profileImg: 'assets/pic-4.png',
+        bio: "System Engineer")
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,10 +54,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
           padding: EdgeInsets.only(left: 20.0, right: 20.0),
           children: [
             Column(
-              children: persons.map((p) {
-                return personDetailCard(p);
-              }).toList()
-            )
+                children: persons.map((p) {
+              return personDetailCard(p);
+            }).toList())
           ],
         ),
       ),
@@ -48,40 +67,34 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
 Widget personDetailCard(Person) {
   return Padding(
-    padding: const EdgeInsets.all(10.0),
+    padding: const EdgeInsets.all(5.0),
     child: Card(
-      color: Colors.grey[800],
+      // color: Colors.grey[800],
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: Container(
-                width: 50.0,
-                height: 50.0,
-                decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: new DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage(Person.profileImg)
-                )
-              )),
+                  width: 50.0,
+                  height: 50.0,
+                  decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: new DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage(Person.profileImg)))),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(Person.name,
-                  style: TextStyle (
-                    color: Colors.white,
-                    fontSize: 18
-                  ),
+                Text(
+                  Person.name,
+                  style: TextStyle(color: Color(0xffdd4b39), fontSize: 18),
                 ),
-                Text(Person.bio,
-                    style: TextStyle (
-                    color: Colors.white,
-                    fontSize: 12
-                  ),
+                Text(
+                  Person.bio,
+                  style: TextStyle(color: Color(0xffdd4b39), fontSize: 12),
                 )
               ],
             )

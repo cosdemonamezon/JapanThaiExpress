@@ -15,18 +15,16 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(        
-        //primarySwatch: Colors.grey,
-        primaryColor: Color(0xffdd4b39),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      initialRoute: '/',
-      routes: <String, WidgetBuilder>{
-        '/': (context) => LoginScreen(),        
-      }
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'JapnExpress',
+        theme: ThemeData(
+          //primarySwatch: Colors.grey,
+          primaryColor: Color(0xffdd4b39),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        initialRoute: '/',
+        routes: <String, WidgetBuilder>{
+          '/': (context) => LoginScreen(),
+        });
   }
 }
-

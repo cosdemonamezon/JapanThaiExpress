@@ -26,12 +26,15 @@ class _DepositScreenState extends State<DepositScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Account Transfer"),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     TextFormField(
                       //initialValue: '0.29 / 1 Bath',
                       decoration: InputDecoration(
@@ -39,12 +42,15 @@ class _DepositScreenState extends State<DepositScreen> {
                         //errorText: 'Error message',
                         hintText: "Account",
                         border: OutlineInputBorder(),
-                        
                       ),
                     ),
-                    SizedBox(height: 30,),
+                    SizedBox(
+                      height: 30,
+                    ),
                     Text("Amount"),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     TextFormField(
                       //initialValue: '0.32 / 1 Bath',
                       decoration: InputDecoration(
@@ -52,12 +58,15 @@ class _DepositScreenState extends State<DepositScreen> {
                         //errorText: 'Error message',
                         hintText: "Qty",
                         border: OutlineInputBorder(),
-                        
                       ),
                     ),
-                    SizedBox(height: 30,),
+                    SizedBox(
+                      height: 30,
+                    ),
                     Text("Note"),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     TextFormField(
                       //initialValue: '0.32 / 1 Bath',
                       maxLines: 5,
@@ -66,53 +75,63 @@ class _DepositScreenState extends State<DepositScreen> {
                         //errorText: 'Error message',
                         hintText: "detail",
                         border: OutlineInputBorder(),
-                        
                       ),
                     ),
-                    SizedBox(height: 20,),
-                    for (var i = 0; i < 1; i += 1)
-                    Row(
-                      children: [
-                        Checkbox(
-                          onChanged: i == 4
-                              ? null
-                              : (bool value) {
-                            setState(() {
-                              checked[i] = value;
-                            });
-                          },
-                          tristate: i == 1,
-                          value: checked[i],
-                        ),
-                        Text(
-                          'Confirm Order',
-                          style: Theme.of(context).textTheme.subtitle1.copyWith(color: i == 4 ? Colors.black38 : Colors.black),
-                        ),
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    SizedBox(
+                      height: 20,
                     ),
-                    SizedBox(height: 40,),
-                    RaisedButton(
-                      onPressed: () {},
-                      textColor: Colors.white,
-                      padding: const EdgeInsets.all(0.0),
-                      child: Container(
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: <Color>[
-                              Color(0xFF0D47A1),
-                              Color(0xFF1976D2),
-                              Color(0xFF42A5F5),
-                            ],
+                    for (var i = 0; i < 1; i += 1)
+                      Row(
+                        children: [
+                          Checkbox(
+                            activeColor: Color(0xffdd4b39),
+                            checkColor: Colors.white,
+                            onChanged: i == 4
+                                ? null
+                                : (bool value) {
+                                    setState(() {
+                                      checked[i] = value;
+                                    });
+                                  },
+                            tristate: i == 1,
+                            value: checked[i],
                           ),
-                        ),
-                        padding: const EdgeInsets.all(20.0),
-                        child: Center(
-                          child: Text(
-                            "Confirm", style: TextStyle(fontSize: 20),
+                          Text(
+                            'Confirm Order',
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1
+                                .copyWith(
+                                    color:
+                                        i == 4 ? Colors.black38 : Colors.black),
                           ),
-                        ),
+                        ],
+                        mainAxisAlignment: MainAxisAlignment.start,
+                      ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                              color: Colors.grey.shade200,
+                              offset: Offset(2, 4),
+                              blurRadius: 5,
+                              spreadRadius: 2)
+                        ],
+                        gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
+                      ),
+                      child: Text(
+                        "Confirm",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                     ),
                   ],

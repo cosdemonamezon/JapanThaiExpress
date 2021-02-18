@@ -12,27 +12,22 @@ class LoginPin extends StatefulWidget {
 
 class _LoginPinState extends State<LoginPin> {
   int length = 6;
-  onChange(String number){
-    if(number.length == length){
+  onChange(String number) {
+    if (number.length == length) {
       if (number == "123456") {
         Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen())
-        );
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
         //print("number : "+ number);
-      }
-      else if (number == "654321") {
+      } else if (number == "654321") {
         Navigator.push(
-          context, MaterialPageRoute(builder: (context) => DashbordScreen())
-        );
+            context, MaterialPageRoute(builder: (context) => DashbordScreen()));
         //print("number : "+ number);
       }
       //print(number);
-    }
-    else {
+    } else {
       print(number);
-    }    
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -54,17 +49,21 @@ class _LoginPinState extends State<LoginPin> {
                 Hero(
                   tag: "hero",
                   child: Container(
-                    height: 150,
-                    //width: 100,
-                    width: double.infinity,
+                    width: MediaQuery.of(context).size.width,
+                    height: 100,
                     decoration: BoxDecoration(
                       image: DecorationImage(
+                        fit: BoxFit.fitHeight,
                         image: AssetImage("assets/logo.png"),
                       ),
                     ),
                   ),
                 ),
-                Numberpad(length: length, onChange: onChange,)
+                SizedBox(height: 50),
+                Numberpad(
+                  length: length,
+                  onChange: onChange,
+                )
               ],
             ),
           ),

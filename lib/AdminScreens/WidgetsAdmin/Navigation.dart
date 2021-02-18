@@ -1,3 +1,6 @@
+import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/Message/MessageScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/Notification/NotificationScreen.dart';
 import 'package:flutter/material.dart';
 
 class Navigation extends StatefulWidget {
@@ -13,7 +16,9 @@ class _NavigationState extends State<Navigation> {
     return Container(
       height: 100,
       width: double.infinity,
-      decoration: BoxDecoration(color: Color(0xffdd4b39),),
+      decoration: BoxDecoration(
+        color: Color(0xffdd4b39),
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
         child: Row(
@@ -28,17 +33,19 @@ class _NavigationState extends State<Navigation> {
                     //backgroundImage: AssetImage(pathicon1),
                     radius: 24,
                     child: IconButton(
-                      color: Colors.white,
-                      icon: Icon(Icons.chat),
-                      onPressed: () {
-                            
-                      }
-                    ),
+                        color: Colors.white,
+                        icon: Icon(Icons.chat),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()));
+                        }),
                   ),
                   Text(
                     "Home",
                     style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white),
+                        fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ],
               ),
@@ -52,16 +59,19 @@ class _NavigationState extends State<Navigation> {
                     //backgroundImage: AssetImage(pathicon1),
                     radius: 24,
                     child: IconButton(
-                      color: Colors.white,
-                      icon: Icon(Icons.chat),
-                      onPressed: () {
-                            
-                    }),
+                        color: Colors.white,
+                        icon: Icon(Icons.chat),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MessageScreen()));
+                        }),
                   ),
                   Text(
                     "Message",
                     style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white),
+                        fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ],
               ),
@@ -75,16 +85,19 @@ class _NavigationState extends State<Navigation> {
                     //backgroundImage: AssetImage(pathicon1),
                     radius: 24,
                     child: IconButton(
-                      color: Colors.white,
-                      icon: Icon(Icons.chat),
-                      onPressed: () {
-                            
-                    }),
+                        color: Colors.white,
+                        icon: Icon(Icons.notification_important),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NotificationScreen()));
+                        }),
                   ),
                   Text(
                     "Notification",
                     style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white),
+                        fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ],
               ),

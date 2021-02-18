@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("App for Admin"),
+        title: Text("Admin Dashboard"),
       ),
       body: Container(
         height: height,
@@ -33,12 +33,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(3.0),
                 children: [
-                  dashboardItem("Purchase Orders", Icons.supervised_user_circle, 1, context),
-                  dashboardItem("Pre Orders", Icons.supervised_user_circle, 2, context),
-                  dashboardItem("Maintain Rate", Icons.supervised_user_circle, 3, context),
-                  dashboardItem("Deposit Withdraw", Icons.supervised_user_circle, 4, context),
-                  dashboardItem("Customer Manage", Icons.supervised_user_circle, 5, context),
-                  dashboardItem("Notification Message", Icons.supervised_user_circle, 6, context),
+                  dashboardItem(
+                      "Purchase Orders", Icons.list_alt_outlined, 1, context),
+                  dashboardItem("Pre Orders", Icons.list_alt, 2, context),
+                  dashboardItem("Maintain Rate", Icons.money, 3, context),
+                  dashboardItem(
+                      "Deposit Withdraw", Icons.transform, 4, context),
+                  dashboardItem("Customer Manage", Icons.supervised_user_circle,
+                      5, context),
+                  dashboardItem("Message", Icons.message, 6, context),
                 ],
               ),
             ),
@@ -59,7 +62,14 @@ Card dashboardItem(String title, IconData icon, int page, context) {
     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
     child: Container(
       decoration: BoxDecoration(
-        color: Color(0xFF343434),
+        border: Border.all(
+          width: 3,
+          color: Color(0xFFfafafa),
+          //color: Color(0xFF343434),
+          //color: Color(0xFFd73925),
+        ),
+        color: Color(0xFFfafafa),
+        //color: Color(0xFFd73925),
         borderRadius: BorderRadius.circular(15),
       ),
       child: new InkWell(
@@ -68,21 +78,21 @@ Card dashboardItem(String title, IconData icon, int page, context) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => PrechaseScreen()));
           } else if (page == 2) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => PreoderScreen()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PreoderScreen()));
           } else if (page == 3) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MaintainScreen()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MaintainScreen()));
           } else if (page == 4) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => DepositScreen()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => DepositScreen()));
           } else if (page == 5) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CustomerScreen()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CustomerScreen()));
           } else if (page == 6) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MessageScreen()));
-          } 
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MessageScreen()));
+          }
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -94,7 +104,7 @@ Card dashboardItem(String title, IconData icon, int page, context) {
               child: Icon(
                 icon,
                 size: 60.0,
-                color: Colors.white,
+                color: Color(0xFFd73925),
               ),
             ),
             SizedBox(height: 20.0),
@@ -103,7 +113,8 @@ Card dashboardItem(String title, IconData icon, int page, context) {
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
                   title,
-                  style: new TextStyle(fontSize: 16.0, color: Colors.white),
+                  style:
+                      new TextStyle(fontSize: 15.0, color: Color(0xFFd73925)),
                 ),
               ),
             ),

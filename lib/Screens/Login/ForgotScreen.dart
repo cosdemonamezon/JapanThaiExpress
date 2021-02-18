@@ -1,20 +1,22 @@
 import 'package:JapanThaiExpress/Screens/Login/LoginPin.dart';
 import 'package:JapanThaiExpress/Screens/Register/RegisterScreen.dart';
-import 'package:JapanThaiExpress/Screens/Login/ForgotScreen.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  LoginScreen({Key key}) : super(key: key);
+class ForgotScreen extends StatefulWidget {
+  ForgotScreen({Key key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _ForgotScreenState createState() => _ForgotScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ForgotScreenState extends State<ForgotScreen> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Login page"),
+      ),
       body: Container(
         height: height,
         child: Container(
@@ -45,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Phone number",
+                        "Email",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15),
                       ),
@@ -60,30 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 4),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Password",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      SizedBox(height: 10),
-                      TextFormField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            //border: InputBorder.none,
-                            border: OutlineInputBorder(),
-                            fillColor: Color(0xfff3f3f4),
-                            filled: true),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context,
@@ -108,24 +86,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
                     ),
                     child: Text(
-                      "Sign In",
+                      "Confirm email",
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ForgotScreen()));
-                      },
-                      child: Text('Forgot Password ?',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500))),
                 ),
                 _divider(),
                 //_facebookButton(),
@@ -234,14 +198,14 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Don\'t have an account ?',
+              'Already account ?',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
             SizedBox(
               width: 10,
             ),
             Text(
-              'Register',
+              'Go to Sign In',
               style: TextStyle(
                   color: Color(0xfff79c4f),
                   fontSize: 15,
