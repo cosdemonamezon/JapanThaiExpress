@@ -5,21 +5,20 @@ import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/models/Product.dart';
 import 'package:flutter/material.dart';
 
-
 class Body extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[        
+      children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
           child: Text(
-            "Women",
+            "Ours Product",
             style: Theme.of(context)
-            .textTheme.headline5
-            .copyWith(fontWeight: FontWeight.bold),
+                .textTheme
+                .headline5
+                .copyWith(fontWeight: FontWeight.bold),
           ),
         ),
         SizedBox(height: 10),
@@ -39,7 +38,7 @@ class Body extends StatelessWidget {
               itemBuilder: (context, index) => ItemCard(
                 product: products[index],
                 press: () => Navigator.push(
-                  context, 
+                  context,
                   MaterialPageRoute(
                     builder: (context) => DetailsScreen(
                       product: products[index],
@@ -54,6 +53,3 @@ class Body extends StatelessWidget {
     );
   }
 }
-
-
-

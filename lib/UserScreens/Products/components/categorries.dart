@@ -1,7 +1,6 @@
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:flutter/material.dart';
 
-
 // Use statefull for our categories
 
 class Categories extends StatefulWidget {
@@ -10,7 +9,12 @@ class Categories extends StatefulWidget {
 }
 
 class _CategoriesState extends State<Categories> {
-  List<String> categories = ["Hand bag", "Jewellery", "Footwear", "Dresses"];
+  List<String> categories = [
+    "Category 1",
+    "Category 2",
+    "Category 3",
+    "Category 4"
+  ];
   // default first item selected
   int selectedIndex = 0;
   @override
@@ -23,15 +27,14 @@ class _CategoriesState extends State<Categories> {
           scrollDirection: Axis.horizontal,
           itemCount: categories.length,
           itemBuilder: (context, index) => buildCategory(index),
-
         ),
       ),
     );
   }
 
-  Widget buildCategory(int index) { 
+  Widget buildCategory(int index) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         setState(() {
           selectedIndex = index;
         });
@@ -54,12 +57,9 @@ class _CategoriesState extends State<Categories> {
               width: 30,
               color: selectedIndex == index ? Colors.black : Colors.transparent,
             )
-            
           ],
-          
         ),
       ),
     );
-    
   }
 }

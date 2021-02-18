@@ -1,7 +1,6 @@
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:flutter/material.dart';
 
-
 class CartCounter extends StatefulWidget {
   @override
   _CartCounterState createState() => _CartCounterState();
@@ -16,7 +15,7 @@ class _CartCounterState extends State<CartCounter> {
         buildOutlineButton(
           icon: Icons.remove,
           press: () {
-            if (numOfItems > 1){
+            if (numOfItems > 1) {
               setState(() {
                 numOfItems--;
               });
@@ -26,17 +25,17 @@ class _CartCounterState extends State<CartCounter> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin / 2),
           child: Text(
-            numOfItems.toString().padLeft(2, "0"), 
+            numOfItems.toString().padLeft(2, "0"),
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
         buildOutlineButton(
-          icon: Icons.add, 
-          press: (){
+          icon: Icons.add,
+          press: () {
             setState(() {
               numOfItems++;
             });
-          }, 
+          },
         ),
       ],
     );
@@ -44,16 +43,16 @@ class _CartCounterState extends State<CartCounter> {
 
   SizedBox buildOutlineButton({IconData icon, Function press}) {
     return SizedBox(
-        width: 38,
-        height: 30,
-        child: OutlineButton(
-          padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(13),
-          ),
-          onPressed: press,
-          child: Icon(icon),
+      width: 38,
+      height: 30,
+      child: OutlineButton(
+        padding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(13),
         ),
-      );
+        onPressed: press,
+        child: Icon(icon),
+      ),
+    );
   }
 }

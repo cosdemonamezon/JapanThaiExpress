@@ -22,10 +22,14 @@ class _LoginPinState extends State<LoginPin> {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => DashbordScreen()));
         //print("number : "+ number);
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => super.widget));
       }
       //print(number);
     } else {
-      print(number);
+      // Navigator.pushReplacement(context,
+      //     MaterialPageRoute(builder: (BuildContext context) => super.widget));
     }
   }
 
