@@ -1,4 +1,6 @@
+import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/Contact.dart';
+import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NotificationScreen.dart';
 import 'package:flutter/material.dart';
 
 class NavigationBar extends StatefulWidget {
@@ -32,7 +34,9 @@ class _NavigationBarState extends State<NavigationBar> {
                       color: Colors.white,
                       icon: Icon(Icons.home_filled),
                       onPressed: () {
-                            
+                        Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => DashbordScreen())
+                        );
                       }
                     ),
                   ),
@@ -56,7 +60,9 @@ class _NavigationBarState extends State<NavigationBar> {
                       color: Colors.white,
                       icon: Icon(Icons.notification_important),
                       onPressed: () {
-                            
+                        Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => NotificationScreen())
+                        );
                     }),
                   ),
                   Text(

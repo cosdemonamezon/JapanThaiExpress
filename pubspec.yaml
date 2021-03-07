@@ -30,6 +30,9 @@ dependencies:
   cupertino_icons: ^1.0.0
   carousel_slider: ^3.0.0
   flutter_svg: ^0.18.1
+  onesignal_flutter: ^2.6.3
+  device_info: ^1.0.0
+  pin_code_fields: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +51,8 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/icons/Live Recording.svg
+    - assets/icons/Megaphone.svg
     - assets/logo.png
     - assets/pic-1.png
     - assets/pic-2.png
@@ -62,6 +67,12 @@ flutter:
     - assets/o6.jpg
     - assets/o7.jpg
     - assets/o8.jpg
+    - assets/mask2103.jpg
+    - assets/amicle2103.jpg
+    - assets/bhcle2103.jpg
+    - assets/amiclep10.jpg
+    - assets/plgp5.jpg
+    - assets/mlkp5.jpg
     - assets/1.png
     - assets/images/card_bg.png
   fonts:

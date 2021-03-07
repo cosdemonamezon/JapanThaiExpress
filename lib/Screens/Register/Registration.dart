@@ -1,3 +1,4 @@
+import 'package:JapanThaiExpress/Screens/Register/OtpScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:flutter/material.dart';
 
@@ -83,67 +84,70 @@ class _RegistrationState extends State<Registration> {
                   ),
                 ),
                 SizedBox(height: 5),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("User", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                      SizedBox(height: 10),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          //border: InputBorder.none,
-                          border: OutlineInputBorder(),
-                          fillColor: Color(0xfff3f3f4),
-                          filled: true
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 5),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Password", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                      SizedBox(height: 10),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          //border: InputBorder.none,
-                          border: OutlineInputBorder(),
-                          fillColor: Color(0xfff3f3f4),
-                          filled: true
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 5),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Confirm Password", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                      SizedBox(height: 10),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          //border: InputBorder.none,
-                          border: OutlineInputBorder(),
-                          fillColor: Color(0xfff3f3f4),
-                          filled: true
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   margin: EdgeInsets.symmetric(vertical: 5),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Text("User", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                //       SizedBox(height: 10),
+                //       TextFormField(
+                //         decoration: InputDecoration(
+                //           //border: InputBorder.none,
+                //           border: OutlineInputBorder(),
+                //           fillColor: Color(0xfff3f3f4),
+                //           filled: true
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // SizedBox(height: 5),
+                // Container(
+                //   margin: EdgeInsets.symmetric(vertical: 5),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Text("Password", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                //       SizedBox(height: 10),
+                //       TextFormField(
+                //         decoration: InputDecoration(
+                //           //border: InputBorder.none,
+                //           border: OutlineInputBorder(),
+                //           fillColor: Color(0xfff3f3f4),
+                //           filled: true
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // SizedBox(height: 5),
+                // Container(
+                //   margin: EdgeInsets.symmetric(vertical: 5),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Text("Confirm Password", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                //       SizedBox(height: 10),
+                //       TextFormField(
+                //         decoration: InputDecoration(
+                //           //border: InputBorder.none,
+                //           border: OutlineInputBorder(),
+                //           fillColor: Color(0xfff3f3f4),
+                //           filled: true
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 SizedBox(height: 10),
                 GestureDetector(
                   onTap: (){
+                    // Navigator.push(
+                    //   context, MaterialPageRoute(builder: (context) => SetPin())
+                    // );
                     Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => SetPin())
+                      context, MaterialPageRoute(builder: (context) => OtpScreen())
                     );
                   },
                   child: Container(

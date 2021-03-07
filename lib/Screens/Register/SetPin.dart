@@ -1,4 +1,5 @@
 import 'package:JapanThaiExpress/Screens/Register/Numpad.dart';
+import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 import 'package:flutter/material.dart';
 
 class SetPin extends StatefulWidget {
@@ -14,6 +15,9 @@ class _SetPinState extends State<SetPin> {
     if(number.length == length){
       if (number == "123456") {
         print("number : "+ number);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DashbordScreen())
+        );
       }  
       //print(number);
     }
