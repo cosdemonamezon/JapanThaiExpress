@@ -33,6 +33,7 @@ dependencies:
   onesignal_flutter: ^2.6.3
   device_info: ^1.0.0
   pin_code_fields: ^6.1.0
+  http: ^0.12.2
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +54,7 @@ flutter:
     - assets/icons/
     - assets/icons/Live Recording.svg
     - assets/icons/Megaphone.svg
+    - assets/icons/coins.svg
     - assets/logo.png
     - assets/pic-1.png
     - assets/pic-2.png
@@ -73,6 +75,7 @@ flutter:
     - assets/amiclep10.jpg
     - assets/plgp5.jpg
     - assets/mlkp5.jpg
+    - assets/kbank.jpg
     - assets/1.png
     - assets/images/card_bg.png
   fonts:
