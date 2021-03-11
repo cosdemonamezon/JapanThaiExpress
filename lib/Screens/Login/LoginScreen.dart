@@ -15,7 +15,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -33,12 +32,12 @@ class _LoginScreenState extends State<LoginScreen> {
         var build = await deviceInfoPlugin.androidInfo;
         deviceName = build.model;
         deviceVersion = build.version.toString();
-        identifier = build.androidId;  //UUID for Android
+        identifier = build.androidId; //UUID for Android
       } else if (Platform.isIOS) {
         var data = await deviceInfoPlugin.iosInfo;
         deviceName = data.name;
         deviceVersion = data.systemVersion;
-        identifier = data.identifierForVendor;  //UUID for iOS
+        identifier = data.identifierForVendor; //UUID for iOS
       }
     } on PlatformException {
       print('Failed to get platform version');
@@ -47,8 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
     //if (!mounted) return;
     return [deviceName, deviceVersion, identifier];
   }
-
-
 
   @override
   Widget build(BuildContext context) {
