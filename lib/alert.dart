@@ -6,6 +6,7 @@ String touchID = "Touch ID for C.A.BRIVE CORREZE";
 String subTouchID = "Use your Touch ID for faster, eaier";
 String secoundTouchID = "Access to your account";
 String faceID = "Use your Face ID for faster, eaier";
+String picSuccess = "assets/success.png";
 
 
 class Constants {
@@ -81,6 +82,7 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
                 ),
                 child: FlatButton(
                   onPressed: (){
+                    Navigator.pop(context);
                     // Navigator.push(
                     //   context, MaterialPageRoute(builder: (context) => HomeScreen()));
                   },
