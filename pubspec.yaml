@@ -36,6 +36,7 @@ dependencies:
   http: ^0.12.2
   flutter_native_splash: ^1.0.3
   flutter_form_builder: ^4.2.0
+  image_picker: ^0.6.7+22
 
 dependency_overrides:
   intl: 0.17.0-nullsafety.2
@@ -95,6 +96,7 @@ flutter:
     - assets/kbank.jpg
     - assets/1.png
     - assets/images/card_bg.png
+    - assets/images/nopic.png
   fonts:
       - family: Nunito
         fonts:
