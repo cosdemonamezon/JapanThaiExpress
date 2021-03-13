@@ -8,14 +8,14 @@ String secoundTouchID = "Access to your account";
 String faceID = "Use your Face ID for faster, eaier";
 String picSuccess = "assets/success.png";
 
-
 class Constants {
   Constants._();
   static const double padding = 20;
   static const double avatarRadius = 45;
 }
 
-alertdialog(String title, String subtitle, String secoundtitle, String img, context){
+alertdialog(
+    String title, String subtitle, String secoundtitle, String img, context) {
   return Dialog(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(Constants.padding),
@@ -26,22 +26,19 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
       children: [
         Container(
           padding: EdgeInsets.only(
-            left: Constants.padding,
-            top: Constants.avatarRadius + Constants.padding,
-            right: Constants.padding,
-            bottom: Constants.padding
-          ),
+              left: Constants.padding,
+              top: Constants.avatarRadius + Constants.padding,
+              right: Constants.padding,
+              bottom: Constants.padding),
           margin: EdgeInsets.only(top: Constants.avatarRadius),
           decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: kBackgroundColor,
-            borderRadius: BorderRadius.circular(Constants.padding),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black, offset: Offset(0, 10), blurRadius: 10
-              ),
-            ]
-          ),
+              shape: BoxShape.rectangle,
+              color: kBackgroundColor,
+              borderRadius: BorderRadius.circular(Constants.padding),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+              ]),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -58,22 +55,29 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.bold, color: kFontPrimaryColor
-                ),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: kFontPrimaryColor),
               ),
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               Text(
                 subtitle,
                 style: TextStyle(fontSize: 15, color: kFontTextColor),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               Text(
                 secoundtitle,
                 style: TextStyle(fontSize: 15, color: kFontTextColor),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 33,),
+              SizedBox(
+                height: 33,
+              ),
               Container(
                 width: 200,
                 decoration: BoxDecoration(
@@ -81,7 +85,7 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
                   color: kButtonColor,
                 ),
                 child: FlatButton(
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.pop(context);
                     // Navigator.push(
                     //   context, MaterialPageRoute(builder: (context) => HomeScreen()));
@@ -89,12 +93,15 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
                   child: Text(
                     "USE TOUCH ID",
                     style: TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold, color: kTextButtonColor
-                    ),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: kTextButtonColor),
                   ),
                 ),
               ),
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               Container(
                 //height: size.height * 0.08,
                 width: 200,
@@ -107,13 +114,15 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
                     Navigator.pop(context);
                   },
                   child: Text("CANCEL",
-                    style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold, color: kButtonColor
-                    )
-                  ),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: kButtonColor)),
                 ),
               ),
-              SizedBox(height: 25,),
+              SizedBox(
+                height: 25,
+              ),
             ],
           ),
         ),
@@ -121,5 +130,3 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
     ),
   );
 }
-
-

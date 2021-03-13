@@ -8,10 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/japanexpress.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
-import 'package:JapanThaiExpress/constants.dart';
-
-import '../../constants.dart';
-import '../../constants.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
@@ -54,17 +50,17 @@ class _SplashScreenState extends State<SplashScreen> {
     var response = await http.post(url,
         headers: {'Content-Type': 'application/json'},
         body: convert.jsonEncode({
-          'device_id': identifier
+          'device': identifier
           //'token': token['token']
         }));
     if (response.statusCode == 200) {
       final Map<String, dynamic> mac = convert.jsonDecode(response.body);
       if (mac['code'] == 999) {
-        var arg = {
-          "deviceid": identifier,
-        };
+        // var arg = {
+        //   "deviceid": identifier,
+        // };
 
-        MyNavigator.goToLoginByPin(context, arg);
+        MyNavigator.goToLoginByPin(context);
       } else {
         MyNavigator.goToIntro(context);
       }
