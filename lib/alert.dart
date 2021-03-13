@@ -34,7 +34,7 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
           margin: EdgeInsets.only(top: Constants.avatarRadius),
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            color: kBackgroundColor,
+            color: kFontPrimaryColor,
             borderRadius: BorderRadius.circular(Constants.padding),
             boxShadow: [
               BoxShadow(
@@ -46,31 +46,31 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
             mainAxisSize: MainAxisSize.min,
             children: [
               Center(
-                child: SvgPicture.asset(
+                child: Image.asset(
                   img,
                   fit: BoxFit.cover,
                   height: 60,
                   width: 60,
-                  color: kButtonColor,
+                  //color: kButtonColor,
                 ),
               ),
               SizedBox(height: 20),
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.bold, color: kFontPrimaryColor
+                  fontSize: 16, fontWeight: FontWeight.bold, color: kInputSearchColor
                 ),
               ),
               SizedBox(height: 15,),
               Text(
                 subtitle,
-                style: TextStyle(fontSize: 15, color: kFontTextColor),
+                style: TextStyle(fontSize: 15, color: kInputSearchColor),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 15,),
               Text(
                 secoundtitle,
-                style: TextStyle(fontSize: 15, color: kFontTextColor),
+                style: TextStyle(fontSize: 15, color: kInputSearchColor),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 33,),
@@ -78,7 +78,7 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
                 width: 200,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  color: kButtonColor,
+                  color: kPrimaryColor,
                 ),
                 child: FlatButton(
                   onPressed: (){
@@ -87,32 +87,32 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
                     //   context, MaterialPageRoute(builder: (context) => HomeScreen()));
                   },
                   child: Text(
-                    "USE TOUCH ID",
+                    "ตกลง",
                     style: TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold, color: kTextButtonColor
+                      fontSize: 16, fontWeight: FontWeight.bold, color: kInputSearchColor
                     ),
                   ),
                 ),
               ),
               SizedBox(height: 15,),
-              Container(
-                //height: size.height * 0.08,
-                width: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: kPrimaryColor,
-                ),
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("CANCEL",
-                    style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold, color: kButtonColor
-                    )
-                  ),
-                ),
-              ),
+              // Container(
+              //   //height: size.height * 0.08,
+              //   width: 200,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(16),
+              //     color: kPrimaryColor,
+              //   ),
+              //   child: FlatButton(
+              //     onPressed: () {
+              //       Navigator.pop(context);
+              //     },
+              //     child: Text("CANCEL",
+              //       style: TextStyle(
+              //             fontSize: 16, fontWeight: FontWeight.bold, color: kButtonColor
+              //       )
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: 25,),
             ],
           ),
@@ -122,4 +122,7 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
   );
 }
 
+errordialog(String title, String subtitle, String secoundtitle, String img, context){
+  
+}
 

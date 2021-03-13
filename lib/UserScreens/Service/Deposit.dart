@@ -45,16 +45,15 @@ class _DepositState extends State<Deposit> {
               Tab(
                 child: Align(
                   alignment: Alignment.center,
-                  child: Text("New Orders"),
+                  child: Text("ฝากส่ง"),
                 ),
               ),
               Tab(
                 child: Align(
                   alignment: Alignment.center,
-                  child: Text("History"),
+                  child: Text("ประวัติ"),
                 ),
-              ),
-              
+              ),  
             ]
           )
         ),
@@ -69,30 +68,13 @@ class _DepositState extends State<Deposit> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(height: height * .04),
+                    
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 5),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Product Name", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                          SizedBox(height: 10),
-                          TextFormField(
-                            decoration: InputDecoration(
-                            //border: InputBorder.none,
-                              border: OutlineInputBorder(),
-                              fillColor: Color(0xfff3f3f4),
-                              filled: true
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Description", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                          Text("ที่อยู่", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
                           SizedBox(height: 10),
                           TextFormField(
                             maxLines: 4,
@@ -111,7 +93,7 @@ class _DepositState extends State<Deposit> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Qty", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                          Text("รายละเเอียด", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
                           SizedBox(height: 10),
                           TextFormField(
                             decoration: InputDecoration(
@@ -129,7 +111,7 @@ class _DepositState extends State<Deposit> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Add atachment", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                          Text("อัปโหลดรูป", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
                           SizedBox(height: 10),
                           TextFormField(
                             decoration: InputDecoration(
@@ -151,64 +133,7 @@ class _DepositState extends State<Deposit> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text("Shipping type", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                          SizedBox(height: 10),
-                          Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey, width: 1.5),
-                              borderRadius: BorderRadius.circular(3),
-                            ),
-                            child: DropdownButton(
-                              //hint: Text("Select Item"),
-                              icon: Icon(Icons.arrow_drop_down),
-                              iconSize: 40,
-                              isExpanded: true,
-                              underline: SizedBox(),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20
-                              ),
-                              dropdownColor: Colors.grey,
-                              value: valueChoose,
-                              onChanged: (newValue){
-                                setState(() {
-                                  valueChoose = newValue;
-                                });
-                              },
-                              items: dropdownValue.map((valueItem){
-                                return DropdownMenuItem(
-                                  value: valueItem,
-                                  child: Text(valueItem),
-                                );
-                              }).toList(), 
-                              
-                            ),
-                          ),
-                          SizedBox(height: 15),
-                          for (var i = 0; i < 1; i += 1)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Checkbox(
-                                onChanged: i == 4
-                                    ? null
-                                    : (bool value) {
-                                  setState(() {
-                                    checked[i] = value;
-                                  });
-                                },
-                                tristate: i == 1,
-                                value: checked[i],
-                              ),
-                              Text(
-                                'Confirm Order',
-                                style: Theme.of(context).textTheme.subtitle1.copyWith(color: i == 4 ? Colors.black38 : Colors.black),
-                              ),
-                            ],                      
-                          ),
-                          SizedBox(height: 15),
+                        children: [                          
                           GestureDetector(
                             onTap: (){
                               Navigator.push(
