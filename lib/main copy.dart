@@ -1,9 +1,6 @@
 import 'dart:io';
-import 'package:JapanThaiExpress/Screens/Login/SplashScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginPin.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginScreen.dart';
-import 'package:JapanThaiExpress/Screens/Login/intro_screen.dart';
-import 'package:JapanThaiExpress/Screens/Login/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:device_info/device_info.dart';
@@ -11,8 +8,6 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:JapanThaiExpress/constants.dart';
-
-import 'AdminScreens/Home/HomeScreen.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 String routePath = '/';
@@ -62,16 +57,49 @@ void main() async {
 
   //   ]
   // ));
+  await getDeviceDetails();
   runApp(MyApp());
 }
 
-var routes = <String, WidgetBuilder>{
-  "/": (BuildContext context) => SplashScreen(),
-  "/homescreen": (BuildContext context) => HomeScreenDemo(),
-  "/intro": (BuildContext context) => IntroScreen(),
-  "/login": (BuildContext context) => LoginScreen(),
-  "/pinverify": (BuildContext context) => LoginPin(),
-};
+Future<void> getDeviceDetails() async {
+  String deviceName;
+  String deviceVersion;
+  String identifier;
+  final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
+  try {
+    if (Platform.isAndroid) {
+      var build = await deviceInfoPlugin.androidInfo;
+      deviceName = build.model;
+      deviceVersion = build.version.toString();
+      identifier = build.androidId; //UUID for Android
+    } else if (Platform.isIOS) {
+      var data = await deviceInfoPlugin.iosInfo;
+      deviceName = data.name;
+      deviceVersion = data.systemVersion;
+      identifier = data.identifierForVendor; //UUID for iOS
+    }
+  } on PlatformException {
+    print('Failed to get platform version');
+  }
+  print(identifier);
+
+  var url = pathAPI + 'api/check_mac_mobile';
+  var response = await http.post(url,
+      headers: {'Content-Type': 'application/json'},
+      body: convert.jsonEncode({
+        'mac': identifier
+        //'token': token['token']
+      }));
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> mac = convert.jsonDecode(response.body);
+    if (mac['code'] == 999) {
+      routePath = '/pinverify';
+    }
+  }
+
+  //if (!mounted) return;
+  return [deviceName, deviceVersion, identifier];
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -90,7 +118,10 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xffdd4b39),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: "/",
-        routes: routes);
+        initialRoute: routePath,
+        routes: <String, WidgetBuilder>{
+          '/': (context) => LoginScreen(),
+          '/pinverify': (context) => LoginPin(),
+        });
   }
 }

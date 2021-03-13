@@ -35,15 +35,17 @@ class _LoginPinState extends State<LoginPin> {
 
   @override
   Widget build(BuildContext context) {
+    Map data = ModalRoute.of(context).settings.arguments;
+
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Login Pin"),
-      ),
+      // appBar: AppBar(
+      //   title: Text("Login Pin"),
+      // ),
       body: Container(
         height: height,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,7 +56,7 @@ class _LoginPinState extends State<LoginPin> {
                   tag: "hero",
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 100,
+                    height: 85,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         fit: BoxFit.fitHeight,
