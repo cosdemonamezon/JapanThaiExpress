@@ -4,6 +4,12 @@ import 'package:JapanThaiExpress/Screens/Login/LoginPin.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/intro_screen.dart';
 import 'package:JapanThaiExpress/Screens/Login/home_screen.dart';
+import 'package:JapanThaiExpress/Screens/Register/RegisterScreen.dart';
+import 'package:JapanThaiExpress/Screens/Login/ForgotScreen.dart';
+
+import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:device_info/device_info.dart';
@@ -13,6 +19,9 @@ import 'package:http/http.dart' as http;
 import 'package:JapanThaiExpress/constants.dart';
 
 import 'AdminScreens/Home/HomeScreen.dart';
+import 'AdminScreens/Home/HomeScreen.dart';
+import 'Screens/Login/ForgotScreen.dart';
+import 'Screens/Register/RegisterScreen.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 String routePath = '/';
@@ -67,10 +76,13 @@ void main() async {
 
 var routes = <String, WidgetBuilder>{
   "/": (BuildContext context) => SplashScreen(),
-  "/homescreen": (BuildContext context) => HomeScreenDemo(),
+  "/adminhome": (BuildContext context) => HomeScreen(),
+  "/memberhome": (BuildContext context) => DashbordScreen(),
   "/intro": (BuildContext context) => IntroScreen(),
   "/login": (BuildContext context) => LoginScreen(),
   "/pinverify": (BuildContext context) => LoginPin(),
+  "/forgot": (BuildContext context) => ForgotScreen(),
+  "/register": (BuildContext context) => RegisterScreen(),
 };
 
 class MyApp extends StatelessWidget {
@@ -90,7 +102,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xffdd4b39),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: "/intro",
+        initialRoute: "/",
         routes: routes);
   }
 }
