@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xffdd4b39),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: "/",
+        initialRoute: "/intro",
         routes: routes);
   }
 }
