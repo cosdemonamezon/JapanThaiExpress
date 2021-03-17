@@ -9,6 +9,7 @@ import 'package:JapanThaiExpress/Screens/Login/ForgotScreen.dart';
 
 import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -83,6 +84,7 @@ var routes = <String, WidgetBuilder>{
   "/pinverify": (BuildContext context) => LoginPin(),
   "/forgot": (BuildContext context) => ForgotScreen(),
   "/register": (BuildContext context) => RegisterScreen(),
+  "/deposit": (BuildContext context) => Deposit(),
 };
 
 class MyApp extends StatelessWidget {

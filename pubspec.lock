@@ -230,7 +230,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-<<<<<<< HEAD
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -238,7 +237,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.11"
-=======
   flutter_sequence_animation:
     dependency: transitive
     description:
@@ -246,7 +244,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
->>>>>>> 4fa6cc5a9ed6e44f027ff899f5a3b4f5dda212a0
   flutter_svg:
     dependency: "direct main"
     description:

@@ -39,11 +39,8 @@ dependencies:
   http: ^0.12.2
   flutter_native_splash: ^1.0.3
   flutter_form_builder: ^4.2.0
-<<<<<<< HEAD
   image_picker: ^0.6.7+22
-=======
   flushbar: ^1.10.4
->>>>>>> 4fa6cc5a9ed6e44f027ff899f5a3b4f5dda212a0
 
 dependency_overrides:
   intl: 0.17.0-nullsafety.2

@@ -15,7 +15,7 @@ class NewsScreen extends StatefulWidget {
 class _NewsScreenState extends State<NewsScreen> {
   bool isLoading = false;
   List<dynamic> news = [];
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjMsImlhdCI6MTYxNTEyNTQyOSwiZXhwIjoxNjE1MjExODI5fQ.vz4uB7ISPcWFwIa1Dncl8iy3yya2e4ftzGz3jOKGv3U";
+  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
 
   @override
   void initState() {
@@ -76,37 +76,6 @@ class _NewsScreenState extends State<NewsScreen> {
           );
         },
         // children: [
-                    
-        //   SizedBox(height: 5,),
-        //   newsCard(
-        //     "assets/mask2103.jpg",
-        //     "送料無料",
-        //     "品 プラセンタ 白金 日本製 マスク 35枚入【2020楽天ベストコスメ】化粧, 品 プラセンタ 白金 日本製 マスク 35枚入【クーポンで半額695円】【送料無料】パック シートマスク"
-        //   ),
-        //   SizedBox(height: 5,),
-        //   newsCard(
-        //     "assets/amicle2103.jpg",
-        //     "楽天ベストコスメ入賞",
-        //     "肌への優しさにこだわった、アミノ酸 美容液クレンジングジェル！蒟蒻ボールが毛穴の奥まですっきりキレイにメイク落とし【ポイント10倍】クレンジング ジェル"
-        //   ),
-        //   SizedBox(height: 5,),
-        //   newsCard(
-        //     "assets/bhcle2103.jpg",
-        //     "＋3度の温感スチーム効果！",
-        //     "温めて浮かせるこすらないメイク落とし【クーポンで10％OFF】クレンジング ホットジェル セラミド ホット ジェル 温感 温め W洗顔不要 毛穴 メイク落とし 化粧落"
-        //   ),
-        //   SizedBox(height: 5,),
-        //   newsCard(
-        //     "assets/amiclep10.jpg",
-        //     "商品番号 	PCAG21-000150A",
-        //     "持ち運びにも便利♪お客様の声から生まれた美容液クレンジングジェルのチューブタイプ(100g）！クレンジング メイク落とし メイクオフ お試し"
-        //   ),
-        //   SizedBox(height: 5,),
-        //   newsCard(
-        //     "assets/plgp5.jpg",
-        //     "東京都への最安送料",
-        //     "贅沢使いで古い角質・黒ずみオールオフ！顔も体も全身まるごと素肌磨き♪お肌に優しいまろやかピーリングジェル 黒ずみ 毛穴 顔 全身 ボディ 痛くない 除去 角"
-        //   ),
         //   SizedBox(height: 5,),
         //   newsCard(
         //     "assets/mlkp5.jpg",
@@ -134,8 +103,13 @@ class _NewsScreenState extends State<NewsScreen> {
       ),
       child: GestureDetector(
         onTap: (){
-          Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DetailNews()));
+          // Navigator.push(
+          //   context, MaterialPageRoute(builder: (context) => DetailNews()));
+          // Navigator.pushNamed(context, "/newdetail", arguments: {
+          //   'title': title,
+          //   'detail': subtitle,
+          //   'photo': img,
+          // });
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),

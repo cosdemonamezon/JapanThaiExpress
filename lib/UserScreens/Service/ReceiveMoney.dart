@@ -1,3 +1,4 @@
+import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
   Map<String, dynamic> datasetting = {};
   String rate = "";
   String fee = "";
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjMsImlhdCI6MTYxNTYzODM3MCwiZXhwIjoxNjE1NzI0NzcwfQ.kM6WAKiXoEP-BXzTzhT7J9i-6TLlVhZ3qkDBrOXaOIE";
+  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcyNTk5NSwiZXhwIjoxNjE1ODEyMzk1fQ.-x9FnNRM-KmnA8pd2cWJhk_ebIwYFtCwwUX31MeJ3TI";
   //final _formKey = GlobalKey<FormState>();
   final _formKey = GlobalKey<FormBuilderState>();
   TextEditingController _rate;
@@ -133,6 +134,13 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
     return Scaffold(
       appBar: AppBar(
         title: Text("รับโอนเงิน"),
+        leading: IconButton(
+                onPressed: (){
+                  Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Service()));
+                },
+                icon: Icon(Icons.arrow_back_ios_rounded,)
+              ),
       ),
       body: Container(
         height: height,
@@ -146,8 +154,8 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
               'bank': '',
               'amount': '',
               'description': '',
-              'rate': '',
-              'fee': '',
+              'rate': rate,
+              'fee': fee,
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,

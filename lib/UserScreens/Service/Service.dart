@@ -1,3 +1,4 @@
+import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Auction.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Buystuff.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
@@ -31,6 +32,13 @@ class _ServiceState extends State<Service> {
       appBar: AppBar(
         //centerTitle: true,
         title: Text("Service"),
+        leading: IconButton(
+                onPressed: (){
+                  Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => DashbordScreen()));
+                },
+                icon: Icon(Icons.arrow_back_ios_rounded,)
+              ),
       ),
       body: Container(
 height: height,
