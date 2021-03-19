@@ -32,7 +32,6 @@ alertdialog(
               bottom: Constants.padding),
           margin: EdgeInsets.only(top: Constants.avatarRadius),
           decoration: BoxDecoration(
-<<<<<<< HEAD
               shape: BoxShape.rectangle,
               color: kBackgroundColor,
               borderRadius: BorderRadius.circular(Constants.padding),
@@ -40,17 +39,6 @@ alertdialog(
                 BoxShadow(
                     color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
               ]),
-=======
-            shape: BoxShape.rectangle,
-            color: kFontPrimaryColor,
-            borderRadius: BorderRadius.circular(Constants.padding),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black, offset: Offset(0, 10), blurRadius: 10
-              ),
-            ]
-          ),
->>>>>>> 4d6070674bd60264e9d73d91c11922fbb5594106
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -67,17 +55,12 @@ alertdialog(
               Text(
                 title,
                 style: TextStyle(
-<<<<<<< HEAD
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: kFontPrimaryColor),
               ),
               SizedBox(
                 height: 15,
-=======
-                  fontSize: 16, fontWeight: FontWeight.bold, color: kInputSearchColor
-                ),
->>>>>>> 4d6070674bd60264e9d73d91c11922fbb5594106
               ),
               Text(
                 subtitle,
@@ -110,7 +93,6 @@ alertdialog(
                   child: Text(
                     "ตกลง",
                     style: TextStyle(
-<<<<<<< HEAD
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: kTextButtonColor),
@@ -141,33 +123,6 @@ alertdialog(
               SizedBox(
                 height: 25,
               ),
-=======
-                      fontSize: 16, fontWeight: FontWeight.bold, color: kInputSearchColor
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 15,),
-              // Container(
-              //   //height: size.height * 0.08,
-              //   width: 200,
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(16),
-              //     color: kPrimaryColor,
-              //   ),
-              //   child: FlatButton(
-              //     onPressed: () {
-              //       Navigator.pop(context);
-              //     },
-              //     child: Text("CANCEL",
-              //       style: TextStyle(
-              //             fontSize: 16, fontWeight: FontWeight.bold, color: kButtonColor
-              //       )
-              //     ),
-              //   ),
-              // ),
-              SizedBox(height: 25,),
->>>>>>> 4d6070674bd60264e9d73d91c11922fbb5594106
             ],
           ),
         ),
@@ -175,11 +130,3 @@ alertdialog(
     ),
   );
 }
-<<<<<<< HEAD
-=======
-
-errordialog(String title, String subtitle, String secoundtitle, String img, context){
-  
-}
-
->>>>>>> 4d6070674bd60264e9d73d91c11922fbb5594106

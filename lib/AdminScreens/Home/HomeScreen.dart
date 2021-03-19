@@ -1,11 +1,14 @@
 import 'package:JapanThaiExpress/AdminScreens/Customer/CustomerScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Maintain/MaintainScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/PreoderScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/PurchaseOrders/PrechaseScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
+import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRView.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -35,13 +38,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   dashboardItem(
                       "Purchase Orders", Icons.list_alt_outlined, 1, context),
-                  dashboardItem("Pre Orders", Icons.list_alt, 2, context),
+                  dashboardItem("Service Orders", Icons.list_alt, 2, context),
                   dashboardItem("Maintain Rate", Icons.money, 3, context),
                   dashboardItem(
-                      "Deposit Withdraw", Icons.transform, 4, context),
+                      "Refill notification", Icons.transform, 4, context),
                   dashboardItem("Customer Manage", Icons.supervised_user_circle,
                       5, context),
-                  dashboardItem("Message", Icons.message, 6, context),
+                  dashboardItem("QR Scan", Icons.qr_code, 6, context),
                 ],
               ),
             ),
@@ -91,7 +94,7 @@ Card dashboardItem(String title, IconData icon, int page, context) {
                 MaterialPageRoute(builder: (context) => CustomerScreen()));
           } else if (page == 6) {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MessageScreen()));
+                MaterialPageRoute(builder: (context) => QRViewExample()));
           }
         },
         child: Column(

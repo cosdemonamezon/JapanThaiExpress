@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MyNavigator {
+  static void goToMain(BuildContext context) {
+    Navigator.pushNamed(context, "/");
+  }
+
   static void goToIntro(BuildContext context) {
     Navigator.pushNamed(context, "/intro");
   }
@@ -17,6 +21,17 @@ class MyNavigator {
     Navigator.pushNamed(context, '/pinverify');
   }
 
+  static void goToDepositDetail(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/depositdetail', arguments: arg);
+  }
+
+  static void goToQRCodePreview(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/qrcodepreview', arguments: arg);
+  }
+
+  static void goToTimelineOrders(BuildContext context) {
+    Navigator.pushNamed(context, '/timelineorders');
+  }
   // static void goToLoginByPin(BuildContext context, arg) {
   //   Navigator.pushNamed(context, '/pinverify', arguments: arg);
   // }

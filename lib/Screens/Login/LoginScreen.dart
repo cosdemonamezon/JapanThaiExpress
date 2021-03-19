@@ -69,7 +69,10 @@ class _LoginScreenState extends State<LoginScreen> {
         final Map<String, dynamic> body = convert.jsonDecode(response.body);
         if (body['code'] == 200) {
           await prefs.setString('token', response.body);
-          MyNavigator.goToLoginByPin(context);
+          if (body['data']['type'] == "admin")
+            MyNavigator.goToAdmin(context);
+          else
+            MyNavigator.goToMember(context);
           return false;
         } else {
           var feedback = convert.jsonDecode(response.body);

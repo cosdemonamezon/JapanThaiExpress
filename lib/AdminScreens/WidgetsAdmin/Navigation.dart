@@ -34,7 +34,7 @@ class _NavigationState extends State<Navigation> {
                     radius: 24,
                     child: IconButton(
                         color: Colors.white,
-                        icon: Icon(Icons.chat),
+                        icon: Icon(Icons.home),
                         onPressed: () {
                           Navigator.pushReplacement(
                               context,

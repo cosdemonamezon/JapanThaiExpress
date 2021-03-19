@@ -8,6 +8,9 @@ import 'package:JapanThaiExpress/Screens/Register/RegisterScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/ForgotScreen.dart';
 
 import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRCodePreview.dart';
+import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 
 import 'package:flutter/material.dart';
@@ -17,16 +20,22 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:JapanThaiExpress/constants.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'AdminScreens/Home/HomeScreen.dart';
 import 'AdminScreens/Home/HomeScreen.dart';
 import 'Screens/Login/ForgotScreen.dart';
 import 'Screens/Register/RegisterScreen.dart';
 
+String token;
+var tokenObj;
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 String routePath = '/';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  // token = prefs.getString('token');
+  // tokenObj = convert.jsonDecode(token);
+
   SystemChrome.setEnabledSystemUIOverlays(
       [SystemUiOverlay.bottom, SystemUiOverlay.top]);
 
@@ -75,7 +84,11 @@ void main() async {
 }
 
 var routes = <String, WidgetBuilder>{
-  "/": (BuildContext context) => SplashScreen(),
+  '/': (context) => token == null
+      ? SplashScreen()
+      : tokenObj['data']['type'] == 'admin'
+          ? HomeScreen()
+          : DashbordScreen(),
   "/adminhome": (BuildContext context) => HomeScreen(),
   "/memberhome": (BuildContext context) => DashbordScreen(),
   "/intro": (BuildContext context) => IntroScreen(),
@@ -83,6 +96,9 @@ var routes = <String, WidgetBuilder>{
   "/pinverify": (BuildContext context) => LoginPin(),
   "/forgot": (BuildContext context) => ForgotScreen(),
   "/register": (BuildContext context) => RegisterScreen(),
+  "/depositdetail": (BuildContext context) => DepositDetailScreen(),
+  "/qrcodepreview": (BuildContext context) => QRCodePreview(),
+  "/timelineorders": (BuildContext context) => TimeLineScreen(),
 };
 
 class MyApp extends StatelessWidget {
