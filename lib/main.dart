@@ -12,6 +12,7 @@ import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRCodePreview.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -96,9 +97,13 @@ var routes = <String, WidgetBuilder>{
   "/pinverify": (BuildContext context) => LoginPin(),
   "/forgot": (BuildContext context) => ForgotScreen(),
   "/register": (BuildContext context) => RegisterScreen(),
+<<<<<<< HEAD
   "/depositdetail": (BuildContext context) => DepositDetailScreen(),
   "/qrcodepreview": (BuildContext context) => QRCodePreview(),
   "/timelineorders": (BuildContext context) => TimeLineScreen(),
+=======
+  "/deposit": (BuildContext context) => Deposit(),
+>>>>>>> 10dc378d2133490d6902d1dbf5b449a767b239f0
 };
 
 class MyApp extends StatelessWidget {

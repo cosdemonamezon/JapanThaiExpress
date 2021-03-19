@@ -1,3 +1,4 @@
+import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,8 +15,7 @@ class Constants {
   static const double avatarRadius = 45;
 }
 
-alertdialog(
-    String title, String subtitle, String secoundtitle, String img, context) {
+alertdialog(String title, String subtitle, String secoundtitle, String img, context) {
   return Dialog(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(Constants.padding),
@@ -33,7 +33,7 @@ alertdialog(
           margin: EdgeInsets.only(top: Constants.avatarRadius),
           decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              color: kBackgroundColor,
+              color: kFontPrimaryColor,
               borderRadius: BorderRadius.circular(Constants.padding),
               boxShadow: [
                 BoxShadow(
@@ -57,7 +57,7 @@ alertdialog(
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: kFontPrimaryColor),
+                    color: kInputSearchColor),
               ),
               SizedBox(
                 height: 15,
@@ -86,9 +86,8 @@ alertdialog(
                 ),
                 child: FlatButton(
                   onPressed: () {
-                    Navigator.pop(context);
-                    // Navigator.push(
-                    //   context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                    Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Service()));
                   },
                   child: Text(
                     "ตกลง",
@@ -102,6 +101,7 @@ alertdialog(
               SizedBox(
                 height: 15,
               ),
+<<<<<<< HEAD
               Container(
                 //height: size.height * 0.08,
                 width: 200,
@@ -120,6 +120,26 @@ alertdialog(
                           color: kButtonColor)),
                 ),
               ),
+=======
+              // Container(
+              //   //height: size.height * 0.08,
+              //   width: 200,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(16),
+              //     color: kPrimaryColor,
+              //   ),
+              //   child: FlatButton(
+              //     onPressed: () {
+              //       Navigator.pop(context);
+              //     },
+              //     child: Text("ยกเลิก",
+              //         style: TextStyle(
+              //             fontSize: 16,
+              //             fontWeight: FontWeight.bold,
+              //             color: kTextButtonColor)),
+              //   ),
+              // ),
+>>>>>>> 10dc378d2133490d6902d1dbf5b449a767b239f0
               SizedBox(
                 height: 25,
               ),
