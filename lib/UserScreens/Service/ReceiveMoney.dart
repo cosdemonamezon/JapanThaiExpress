@@ -6,6 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:JapanThaiExpress/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReceiveMoney extends StatefulWidget {
   ReceiveMoney({Key key}) : super(key: key);
@@ -20,11 +21,16 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
   Map<String, dynamic> datasetting = {};
   String rate = "";
   String fee = "";
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcyNTk5NSwiZXhwIjoxNjE1ODEyMzk1fQ.-x9FnNRM-KmnA8pd2cWJhk_ebIwYFtCwwUX31MeJ3TI";
+  String com = "";
+  String sum = "";
+  //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcyNTk5NSwiZXhwIjoxNjE1ODEyMzk1fQ.-x9FnNRM-KmnA8pd2cWJhk_ebIwYFtCwwUX31MeJ3TI";
   //final _formKey = GlobalKey<FormState>();
   final _formKey = GlobalKey<FormBuilderState>();
   TextEditingController _rate;
   TextEditingController _fee;
+  TextEditingController _com;
+  TextEditingController _sum;
+  SharedPreferences prefs;
   
 
   @override
@@ -35,6 +41,9 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
   }
 
   _settingApp() async{
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
     setState(() {
       isLoading = true;
     });
@@ -44,7 +53,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
       url,
       headers: {
         //'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': token['data']['token']
       }
     );
     if (response.statusCode == 200){
@@ -57,11 +66,13 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           // fee = datasetting['fee'].toString();
           _rate = TextEditingController(text: datasetting['exchange_rate'].toString());
           _fee = TextEditingController(text: datasetting['fee'].toString());
+          _com = TextEditingController(text: datasetting['exhange_com'].toString());
           rate = _rate.text;
           fee = _fee.text;
+          com = _com.text;
         });
-        print(_rate);
-        print(_fee);
+        // print(_rate);
+        // print(_fee);
       } else {
         print("error");
       }
@@ -72,9 +83,13 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
   }
 
   _createExchange(Map<String, dynamic> values) async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
     print(values);
     print(rate);
     print(fee);
+    print(com);
     setState(() {
       isLoading = true;
     });
@@ -83,7 +98,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
       url,
       headers: {
         //'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': token['data']['token']
       },
       body: ({
         'amount': values['amount'],
@@ -92,7 +107,8 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         'bank': values['bank'],
         'description': values['description'],
         'rate': rate,
-        'fee': fee,
+        'exhange_fee': fee,
+        'exhange_com': com,
         // 'rate': values['rate'],
         // 'fee': values['fee'],
       })
@@ -161,7 +177,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: height * .03),
+                SizedBox(height: height * .002),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: Column(
@@ -189,7 +205,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                       Text("ชื่อบัญชี", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
                       SizedBox(height: 10),
                       FormBuilderTextField(
-                        name: 'account_name',
+                        name: 'account_name',                        
                         decoration: InputDecoration(
                          //border: InputBorder.none,
                           border: OutlineInputBorder(),
@@ -239,30 +255,27 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                           fillColor: Color(0xfff3f3f4),
                           filled: true
                         ),
-                      ),
-                    ],
-                  ),
-                ),  
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("รายละเอียด", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                      SizedBox(height: 10),
-                      FormBuilderTextField(
-                        name: 'description',
-                        maxLines: 4,
-                        decoration: InputDecoration(
-                         //border: InputBorder.none,
-                          border: OutlineInputBorder(),
-                          fillColor: Color(0xfff3f3f4),
-                          filled: true
-                        ),
+                        onChanged: (text){
+                          //print("First text field: $text");
+                          var x = double.parse('$text');
+                          var a = double.parse('$rate');
+                          var b = double.parse('$fee');
+                          var c = double.parse('$com');
+                          var y = x+a+b+c;
+                          print(y);
+                          // print(a);
+                          // print(b);
+                          // print(c);
+                          setState(() {
+                            _sum = TextEditingController(text: y.toString());
+                          });
+                          // print(sum);
+                        },
                       ),
                     ],
                   ),
                 ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -317,6 +330,83 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                     ),  
                   ],
                 ),  
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      width: width * 0.43,
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("คอมมิทชั่น", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                          SizedBox(height: 10),
+                          FormBuilderTextField(
+                            enabled: false,
+                            name: 'com',
+                            controller: _com,
+                            //initialValue: datasetting['rate'].toString(),
+                            decoration: InputDecoration(
+                              enabled: false,
+                              suffixIcon: Icon(Icons.monetization_on_outlined, size: 30,),
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: width * 0.43,
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("ยอดที่โอน", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                          SizedBox(height: 10),
+                          FormBuilderTextField(
+                            enabled: false,
+                            name: 'sum', 
+                            controller: _sum,                          
+                            decoration: InputDecoration(
+                              enabled: false,
+                              suffixIcon: Icon(Icons.monetization_on_outlined, size: 30,),
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),  
+                  ],
+                ),  
+
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("รายละเอียด", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                      SizedBox(height: 10),
+                      FormBuilderTextField(
+                        name: 'description',
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                         //border: InputBorder.none,
+                          border: OutlineInputBorder(),
+                          fillColor: Color(0xfff3f3f4),
+                          filled: true
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
                 
                 SizedBox(height: 15),
                 // for (var i = 0; i < 1; i += 1)

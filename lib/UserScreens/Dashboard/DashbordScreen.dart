@@ -6,6 +6,7 @@ import 'package:JapanThaiExpress/UserScreens/Promotion/PromotionScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 import 'package:JapanThaiExpress/UserScreens/Wallet/WalletScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -34,16 +35,17 @@ class _DashbordScreenState extends State<DashbordScreen> {
     return Scaffold(
       appBar: AppBar(        
         title: Text("Dashbord"),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.account_circle, size: 40, color: Colors.white,), 
-            onPressed: (){
-              Navigator.push(
-                context, MaterialPageRoute(builder: (context) => ProfileScreen())
-              );
-            }
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.account_circle, size: 40, color: Colors.white,), 
+        //     onPressed: (){
+        //       // Navigator.push(
+        //       //   context, MaterialPageRoute(builder: (context) => ProfileScreen())
+        //       // );
+        //       MyNavigator.goToProfileScreen(context);
+        //     }
+        //   ),
+        // ],
       ),
       body: Container(
         height: height,
@@ -131,8 +133,9 @@ Card dashboardItem(String title, IconData icon, int page, context) {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => WalletScreen()));
           } else if (page == 5) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => NewsScreen()));
+            MyNavigator.goToNews(context);
+            // Navigator.push(
+            //     context, MaterialPageRoute(builder: (context) => NewsScreen()));
           } else if (page == 6) {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => PromotionScreen()));

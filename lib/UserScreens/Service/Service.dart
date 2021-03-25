@@ -4,6 +4,7 @@ import 'package:JapanThaiExpress/UserScreens/Service/Buystuff.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -33,12 +34,13 @@ class _ServiceState extends State<Service> {
         //centerTitle: true,
         title: Text("Service"),
         leading: IconButton(
-                onPressed: (){
-                  Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => DashbordScreen()));
-                },
-                icon: Icon(Icons.arrow_back_ios_rounded,)
-              ),
+          onPressed: (){
+            MyNavigator.goBackUserHome(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.white,)
+        ),
       ),
       body: Container(
 height: height,

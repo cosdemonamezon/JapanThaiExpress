@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Deposit extends StatefulWidget {
   Deposit({Key key}) : super(key: key);
@@ -25,38 +26,127 @@ class _DepositState extends State<Deposit> {
   bool isLoading = false;
   Io.File _image;
   String img64;
+  String _transport;
+  String costth;
   final picker = ImagePicker();
+  String dataName;
   List dropdownValue = [];
+  List dropdownShip = [];
+  List dataValue = [];
   List address = [];
   int id;
   String name;
   String add;
   String tel;
+  int _value = 1;
   final _formKey = GlobalKey<FormBuilderState>();
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
+  SharedPreferences prefs;
+  String tokendata = "";
+  //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
 
   @override
   void initState() { 
     super.initState();
     _addressMem();
+    _depositoryType();
+    _shippingOption();
   }
 
-  _addressMem() async {
+  _depositoryType() async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
     setState(() {
       isLoading = true;
     });
+
+    var url = pathAPI + 'api/depository_type';
+    var response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token['data']['token']
+      },
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> datadeposit = convert.jsonDecode(response.body);
+      if (datadeposit['code'] == 200){
+        //print(datadeposit['message']);
+        setState(() {
+          dropdownValue = datadeposit['data'];
+          
+        });
+        // for (var i = 0; i < dataValue.length; i++) {
+        //   dropdownValue += dataValue[i]['name'];
+        //   //print(dataValue[i]['name']);
+        // }
+        //print(dataValue[0]['name']);
+      }
+      else {
+
+      }
+    } else {
+    }
+  }
+  
+  _shippingOption() async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    setState(() {
+      isLoading = true;
+
+    });
+
+    var url = pathAPI + 'api/shipping_option';
+    var response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token['data']['token']
+      },
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> dataship = convert.jsonDecode(response.body);
+      if (dataship['code'] == 200){
+        print(dataship['message']);
+        setState(() {
+          dropdownShip = dataship['data'];
+          _transport = dropdownShip[0]['name'];
+          costth = dropdownShip[0]['price'];        
+        });
+        print(dropdownShip);
+      }
+      else {
+
+      }
+    } else {
+    }
+  }
+
+  _addressMem() async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    
+    //print(token);
+    setState(() {
+      isLoading = true;
+      tokendata = token['data']['token'];
+    });
+    //print(tokendata);
 
     var url = pathAPI + 'api/address_mem';
     var response = await http.get(
       url,
       headers: {
         //'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': tokendata
       }
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> addressdata = convert.jsonDecode(response.body);
-      print(addressdata);
+      //print(addressdata);
       setState(() {
         address = addressdata['data'];
         id = address[0]['id'];
@@ -72,7 +162,12 @@ class _DepositState extends State<Deposit> {
   }
 
   _createDepository(Map<String, dynamic> values) async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
     print(values);
+    print(_transport);
+    print(costth);
     print(id);
     print(img64);
     setState(() {
@@ -83,23 +178,33 @@ class _DepositState extends State<Deposit> {
       url,
       headers: {
         //'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': token['data']['token']
       },
       body: ({
         'add_id': id.toString(),
         'image': "data:image/png;base64,"+img64,
-        'description': values['description'],       
-        
+        'description': values['option'],
+        'cost_th': costth,     
       })
     );
     if (response.statusCode == 201) {
       final Map<String, dynamic> depositdata = convert.jsonDecode(response.body);
       print(depositdata);
       if (depositdata['code'] == 201) {
-        print(depositdata['data']['description']);
+        print(depositdata['message']);
         //MyNavigator.goToDeposit(context);
-        Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Deposit()));
+        // Navigator.push(
+        //   context, MaterialPageRoute(builder: (context) => Deposit()));
+        String picSuccess = "assets/success.png";
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => alertDeposit(
+            depositdata['message'],            
+            picSuccess,
+            context,
+          ),
+        );
         
       } else {
       }
@@ -108,6 +213,7 @@ class _DepositState extends State<Deposit> {
     }
   }
 
+  
 
 
   Future getImage() async {
@@ -129,6 +235,7 @@ class _DepositState extends State<Deposit> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
+    
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -138,8 +245,9 @@ class _DepositState extends State<Deposit> {
               title: Text("รับฝากส่ง"),
               leading: IconButton(
                 onPressed: (){
-                  Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Service()));
+                  MyNavigator.goToService(context);
+                  // Navigator.push(
+                  //   context, MaterialPageRoute(builder: (context) => Service()));
                 },
                 icon: Icon(Icons.arrow_back_ios_rounded,)
               ),
@@ -221,24 +329,70 @@ class _DepositState extends State<Deposit> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "รายละเอียด",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 15),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "รายละเอียด",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold, fontSize: 15),
+                                  ),
+                                ],
                               ),
                               SizedBox(height: 10),
-                              FormBuilderTextField(
-                                name: 'description',
-                                maxLines: 4,
-                                decoration: InputDecoration(
-                                    //border: InputBorder.none,
-                                    border: OutlineInputBorder(),
-                                    fillColor: Color(0xfff3f3f4),
-                                    filled: true),
-                              ),
+                              // FormBuilderTextField(
+                              //   name: 'description',
+                              //   maxLines: 4,
+                              //   decoration: InputDecoration(
+                              //       //border: InputBorder.none,
+                              //       border: OutlineInputBorder(),
+                              //       fillColor: Color(0xfff3f3f4),
+                              //       filled: true),
+                              // ),
                             ],
                           ),
                         ),
+                        SizedBox(height: 1),
+                        FormBuilderDropdown(
+                          name: 'option',
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: '',
+                          ),
+                          // initialValue: 'Male',
+                          allowClear: true,
+                          hint: Text('หมวดหมู่สินค้า'),
+                          validator: FormBuilderValidators.compose(
+                              [FormBuilderValidators.required(context)]),
+                          items: dropdownValue
+                              .map((option) => DropdownMenuItem(
+                                    value: option['name'],
+                                    child: Text(option['name']),
+                              ))
+                              .toList(),
+                        ),
+                        SizedBox(height: 5),
+                        for (int i = 1; i <= dropdownShip.length; i++)
+                        ListTile(
+                          title: Text(dropdownShip[i-1]['name']),
+                          leading: Radio(
+                            value: i,
+                            groupValue: _value, 
+                            activeColor: Color(0xFF6200EE),
+                            onChanged: i > dropdownShip.length ? null : (int value) {
+                              setState(() {
+                                _value = value;
+                                _transport = dropdownShip[i-1]['name'];
+                                costth = dropdownShip[i-1]['price'];
+                                //print(costth);
+                              });
+                            }
+                          ),
+                        ),
+                        // FormBuilderRadioGroup(
+                        //   name: name, 
+                        //   //options: options
+                        // ),
                         SizedBox(
                           height: 5,
                         ),
@@ -482,27 +636,39 @@ class _DepositState extends State<Deposit> {
                     color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
               ]),
         child: Container(
-          height: 300,
+          height: 350,
           child: Column(
             children: [
               Text(
-                "เลือกที่อยู่",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 18,)
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: address.length,
-                itemBuilder: (BuildContext context, int index){
-                  return selectCard(              
-                    address[index]['name'],
-                    address[index]['address'],
-                    address[index]['tel'],
-                    index,
-                  );
-                }
+                        "เลือกที่อยู่",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 18,)
+                      ),
+              Container(
+                height: 300,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      
+                      ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        physics: const ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: address.length,
+                        itemBuilder: (BuildContext context, int index){
+                          return selectCard(              
+                            address[index]['name'],
+                            address[index]['address'],
+                            address[index]['tel'],
+                            index,
+                          );
+                        }
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

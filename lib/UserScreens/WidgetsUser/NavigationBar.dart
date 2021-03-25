@@ -1,6 +1,7 @@
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/Contact.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NotificationScreen.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
 
 class NavigationBar extends StatefulWidget {
@@ -108,13 +109,13 @@ class _NavigationBarState extends State<NavigationBar> {
                     radius: 24,
                     child: IconButton(
                       color: Colors.white,
-                      icon: Icon(Icons.settings_applications),
+                      icon: Icon(Icons.account_circle),
                       onPressed: () {
-                            
+                        MyNavigator.goToProfileScreen(context);
                     }),
                   ),
                   Text(
-                    "Setting",
+                    "Profile",
                     style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.white),
                   ),

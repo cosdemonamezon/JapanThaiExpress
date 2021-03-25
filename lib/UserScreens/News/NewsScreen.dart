@@ -1,9 +1,11 @@
 import 'package:JapanThaiExpress/UserScreens/News/DetailNews.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewsScreen extends StatefulWidget {
   NewsScreen({Key key}) : super(key: key);
@@ -15,7 +17,9 @@ class NewsScreen extends StatefulWidget {
 class _NewsScreenState extends State<NewsScreen> {
   bool isLoading = false;
   List<dynamic> news = [];
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
+  String tokendata = "";
+  SharedPreferences prefs;
+  // String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
 
   @override
   void initState() {
@@ -24,9 +28,13 @@ class _NewsScreenState extends State<NewsScreen> {
   }
 
   _listnews() async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
     
     setState(() {
       isLoading = true;
+      tokendata = token['data']['token'];
     });
 
     var url = pathAPI + 'api/list_news';
@@ -34,11 +42,11 @@ class _NewsScreenState extends State<NewsScreen> {
       url,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': tokendata
       }
     );
     if (response.statusCode == 200) {
-      print("object");
+      //print("object");
       final Map<String, dynamic> newsdata = convert.jsonDecode(response.body);
       print(newsdata);
       if (newsdata['code'] == 200) {
@@ -61,6 +69,14 @@ class _NewsScreenState extends State<NewsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("News"),
+        leading: IconButton(
+          onPressed: (){
+            MyNavigator.goBackUserHome(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.white,)
+        ),
       ),
       body: ListView.builder(
         shrinkWrap: true,
@@ -103,6 +119,12 @@ class _NewsScreenState extends State<NewsScreen> {
       ),
       child: GestureDetector(
         onTap: (){
+          var arg = {
+            "title": title, 
+            "subtitle": subtitle, 
+            "img": img
+          };
+          MyNavigator.goToNewsDetial(context, arg);
           // Navigator.push(
           //   context, MaterialPageRoute(builder: (context) => DetailNews()));
           // Navigator.pushNamed(context, "/newdetail", arguments: {
