@@ -1,5 +1,6 @@
 import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/ReceiveDetail.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -37,7 +38,27 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
   void initState() {
     super.initState();
     _settingApp();
-    
+    _getRateJPY();
+  }
+
+  _getRateJPY() async{
+    var ocpKey = 'ba0779b6ee0b460f9b3c64d9ae64f851';
+    var url = 'https://bbl-sea-apim-p.azure-api.net/api/ExchangeRateService/FxCal/1/JPY/THB';
+    var response = await http.get(
+      url,
+      headers: {
+        //'Content-Type': 'application/json',
+        'Ocp-Apim-Subscription-Key': ocpKey
+      }
+    );
+    if (response.statusCode == 200) {
+      final String ratedata = convert.jsonDecode(response.body);
+      setState(() {
+        _rate = TextEditingController(text: ratedata.toString());
+        rate = _rate.text;
+      });
+    } else {
+    }
   }
 
   _settingApp() async{
@@ -64,10 +85,10 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           datasetting = settingdata['data'];
           // rate = datasetting['exchange_rate'].toString();
           // fee = datasetting['fee'].toString();
-          _rate = TextEditingController(text: datasetting['exchange_rate'].toString());
+          //_rate = TextEditingController(text: datasetting['exchange_rate'].toString());
           _fee = TextEditingController(text: datasetting['fee'].toString());
           _com = TextEditingController(text: datasetting['exhange_com'].toString());
-          rate = _rate.text;
+          //rate = _rate.text;
           fee = _fee.text;
           com = _com.text;
         });
@@ -261,13 +282,15 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                           var a = double.parse('$rate');
                           var b = double.parse('$fee');
                           var c = double.parse('$com');
-                          var y = x+a+b+c;
-                          print(y);
+                          var y = x*a;
+                          var z = y*c;
+                          var m = z+b;
+                          //print(y);
                           // print(a);
                           // print(b);
                           // print(c);
                           setState(() {
-                            _sum = TextEditingController(text: y.toString());
+                            _sum = TextEditingController(text: m.toString());
                           });
                           // print(sum);
                         },
@@ -435,9 +458,8 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: [                   
-                      
-                      SizedBox(height: 15),                    
+                    children: [   
+                      //SizedBox(height: 15),                    
                       SizedBox(height: 15),
                       GestureDetector(
                         onTap: (){
@@ -474,6 +496,19 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                     ],
                   ),
                 ),
+                SizedBox(height: 15),
+                // GestureDetector(
+                //   onTap: (){
+                //     Navigator.push(
+                //     context, MaterialPageRoute(builder: (context) => ReceiveDetail()));
+                //   },
+                //   child: Container(
+                //     height: 50,
+                //     width: 50,
+                //     color: Colors.red,
+                //   ),
+                // ),
+                // SizedBox(height: 15),
               ],
             ),
           ),
@@ -482,4 +517,6 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
       bottomNavigationBar: NavigationBar(),
     );
   }
+
+  
 }
