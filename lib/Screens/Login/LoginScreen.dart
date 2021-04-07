@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
           headers: {'Content-Type': 'application/json'},
           body: convert.jsonEncode({
             'tel': _formKey.currentState.fields['phone'].value,
-            'pin': _formKey.currentState.fields['password'].value,
+            'password': _formKey.currentState.fields['password'].value,
             'device': identifier,
             'noti': playerId,
           }));
@@ -73,6 +73,9 @@ class _LoginScreenState extends State<LoginScreen> {
             MyNavigator.goToAdmin(context);
           else
             MyNavigator.goToMember(context);
+          return false;
+        } else if (body['code'] == 999) {
+          MyNavigator.goToSetPin(context);
           return false;
         } else {
           var feedback = convert.jsonDecode(response.body);
@@ -192,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         FormBuilderTextField(
                           name: 'password',
                           obscureText: true,
-                          maxLength: 6,
+                          maxLength: 8,
                           decoration: InputDecoration(
                               //border: InputBorder.none,
                               border: OutlineInputBorder(),

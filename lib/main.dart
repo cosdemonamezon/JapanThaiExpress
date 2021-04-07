@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:JapanThaiExpress/Screens/Login/SplashScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginPin.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginScreen.dart';
+import 'package:JapanThaiExpress/Screens/Login/SetPinScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/intro_screen.dart';
 import 'package:JapanThaiExpress/Screens/Login/home_screen.dart';
 import 'package:JapanThaiExpress/Screens/Register/RegisterScreen.dart';
@@ -11,6 +12,7 @@ import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRCodePreview.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
+import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 
@@ -97,13 +99,10 @@ var routes = <String, WidgetBuilder>{
   "/pinverify": (BuildContext context) => LoginPin(),
   "/forgot": (BuildContext context) => ForgotScreen(),
   "/register": (BuildContext context) => RegisterScreen(),
-<<<<<<< HEAD
   "/depositdetail": (BuildContext context) => DepositDetailScreen(),
   "/qrcodepreview": (BuildContext context) => QRCodePreview(),
   "/timelineorders": (BuildContext context) => TimeLineScreen(),
-=======
-  "/deposit": (BuildContext context) => Deposit(),
->>>>>>> 10dc378d2133490d6902d1dbf5b449a767b239f0
+  "/setpin": (BuildContext context) => SetPinScreen(),
 };
 
 class MyApp extends StatelessWidget {
@@ -120,7 +119,7 @@ class MyApp extends StatelessWidget {
         title: 'JapnExpress',
         theme: ThemeData(
           //primarySwatch: Colors.grey,
-          primaryColor: Color(0xffdd4b39),
+          primaryColor: primaryColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         initialRoute: "/",

@@ -33,10 +33,11 @@ class _DepositState extends State<Deposit> {
   String add;
   String tel;
   final _formKey = GlobalKey<FormBuilderState>();
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
+  String token =
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     _addressMem();
   }
@@ -47,24 +48,20 @@ class _DepositState extends State<Deposit> {
     });
 
     var url = pathAPI + 'api/address_mem';
-    var response = await http.get(
-      url,
-      headers: {
-        //'Content-Type': 'application/json',
-        'Authorization': token
-      }
-    );
+    var response = await http.get(url, headers: {
+      //'Content-Type': 'application/json',
+      'Authorization': token
+    });
     if (response.statusCode == 200) {
-      final Map<String, dynamic> addressdata = convert.jsonDecode(response.body);
+      final Map<String, dynamic> addressdata =
+          convert.jsonDecode(response.body);
       print(addressdata);
       setState(() {
         address = addressdata['data'];
         id = address[0]['id'];
         name = address[0]['name'];
         add = address[0]['address'];
-        tel =  address[0]['tel'];               
-                              
-                             
+        tel = address[0]['tel'];
       });
     } else {
       print("error");
@@ -79,36 +76,30 @@ class _DepositState extends State<Deposit> {
       isLoading = true;
     });
     var url = pathAPI + 'api/create_depository';
-    var response = await http.post(
-      url,
-      headers: {
-        //'Content-Type': 'application/json',
-        'Authorization': token
-      },
-      body: ({
-        'add_id': id.toString(),
-        'image': "data:image/png;base64,"+img64,
-        'description': values['description'],       
-        
-      })
-    );
+    var response = await http.post(url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: ({
+          'add_id': id.toString(),
+          'image': "data:image/png;base64," + img64,
+          'description': values['description'],
+        }));
     if (response.statusCode == 201) {
-      final Map<String, dynamic> depositdata = convert.jsonDecode(response.body);
+      final Map<String, dynamic> depositdata =
+          convert.jsonDecode(response.body);
       print(depositdata);
       if (depositdata['code'] == 201) {
         print(depositdata['data']['description']);
         //MyNavigator.goToDeposit(context);
         Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Deposit()));
-        
-      } else {
-      }
+            context, MaterialPageRoute(builder: (context) => Deposit()));
+      } else {}
     } else {
       print("error");
     }
   }
-
-
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -137,12 +128,13 @@ class _DepositState extends State<Deposit> {
               centerTitle: true,
               title: Text("รับฝากส่ง"),
               leading: IconButton(
-                onPressed: (){
-                  Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Service()));
-                },
-                icon: Icon(Icons.arrow_back_ios_rounded,)
-              ),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Service()));
+                  },
+                  icon: Icon(
+                    Icons.arrow_back_ios_rounded,
+                  )),
               bottom: TabBar(
                   labelColor: Colors.redAccent,
                   unselectedLabelColor: Colors.white,
@@ -208,10 +200,10 @@ class _DepositState extends State<Deposit> {
                                     fontWeight: FontWeight.bold, fontSize: 15),
                               ),
                               SizedBox(height: 10),
-                              addressCard(                                                            
-                                name == null ? "":name,
-                                add == null ? "":add,
-                                tel == null ? "": tel,
+                              addressCard(
+                                name == null ? "" : name,
+                                add == null ? "" : add,
+                                tel == null ? "" : tel,
                               ),
                             ],
                           ),
@@ -273,7 +265,8 @@ class _DepositState extends State<Deposit> {
                                 onTap: () {
                                   _formKey.currentState.save();
                                   print(_formKey.currentState.value);
-                                  _createDepository(_formKey.currentState.value);
+                                  _createDepository(
+                                      _formKey.currentState.value);
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -313,8 +306,6 @@ class _DepositState extends State<Deposit> {
                   ),
                 ),
               ),
-
-              
             ],
           ),
           bottomNavigationBar: NavigationBar(),
@@ -324,53 +315,55 @@ class _DepositState extends State<Deposit> {
   Card addressCard(String title, String title1, String subtitle) {
     return Card(
       color: Colors.orange[100],
-      child: ListTile(        
+      child: ListTile(
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            title == null ?
-            Text("...")
-            :Text(
-              title,
-              style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                  color: kTextButtonColor),
-            ),
-            title1 == null ?
-            Text("...")
-            :Text(
-              title1,
-              style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  color: kTextButtonColor),
-            ),
+            title == null
+                ? Text("...")
+                : Text(
+                    title,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: kTextButtonColor),
+                  ),
+            title1 == null
+                ? Text("...")
+                : Text(
+                    title1,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        color: kTextButtonColor),
+                  ),
           ],
         ),
-        subtitle: subtitle == null ?
-        Text("...")
-        :Text(
-          subtitle,
-          style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              color: kTextButtonColor),
-        ),
-        trailing: IconButton(
-          icon: Icon(Icons.edit, size: 25,), 
-          onPressed: (){
-            showDialog(
-              //barrierDismissible: false,
-              context: context,
-              builder: (context) => selectdialog(            
-                context,
+        subtitle: subtitle == null
+            ? Text("...")
+            : Text(
+                subtitle,
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: kTextButtonColor),
               ),
-            );
-            //selectdialog();
-          }
-        ),
+        trailing: IconButton(
+            icon: Icon(
+              Icons.edit,
+              size: 25,
+            ),
+            onPressed: () {
+              showDialog(
+                //barrierDismissible: false,
+                context: context,
+                builder: (context) => selectdialog(
+                  context,
+                ),
+              );
+              //selectdialog();
+            }),
       ),
     );
   }
@@ -378,7 +371,7 @@ class _DepositState extends State<Deposit> {
   Card selectCard(String title, String title1, String subtitle, int index) {
     return Card(
       color: kFontPrimaryColor,
-      child: ListTile(        
+      child: ListTile(
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -407,22 +400,23 @@ class _DepositState extends State<Deposit> {
               color: kTextButtonColor),
         ),
         trailing: IconButton(
-          icon: Icon(Icons.edit, size: 25,), 
-          onPressed: (){
-            setState(() {
-              id = address[index]['id'];
-              name = title;
-              add = title1;
-              tel = subtitle;
-            });
-            Navigator.pop(context);
-            //selectdialog();
-          }
-        ),
+            icon: Icon(
+              Icons.edit,
+              size: 25,
+            ),
+            onPressed: () {
+              setState(() {
+                id = address[index]['id'];
+                name = title;
+                add = title1;
+                tel = subtitle;
+              });
+              Navigator.pop(context);
+              //selectdialog();
+            }),
       ),
     );
   }
-  
 
   Card buildCard(String title, String image) {
     return Card(
@@ -459,7 +453,7 @@ class _DepositState extends State<Deposit> {
     );
   }
 
-  selectdialog(context){
+  selectdialog(context) {
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Constants.padding),
@@ -468,42 +462,40 @@ class _DepositState extends State<Deposit> {
       backgroundColor: Colors.transparent,
       child: Container(
         padding: EdgeInsets.only(
-              left: Constants.padding,
-              top: Constants.avatarRadius + Constants.padding,
-              right: Constants.padding,
-              bottom: Constants.padding),
+            left: Constants.padding,
+            top: Constants.avatarRadius + Constants.padding,
+            right: Constants.padding,
+            bottom: Constants.padding),
         margin: EdgeInsets.only(top: Constants.avatarRadius),
         decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: kFontPrimaryColor,
-              borderRadius: BorderRadius.circular(Constants.padding),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
-              ]),
+            shape: BoxShape.rectangle,
+            color: kFontPrimaryColor,
+            borderRadius: BorderRadius.circular(Constants.padding),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+            ]),
         child: Container(
           height: 300,
           child: Column(
             children: [
-              Text(
-                "เลือกที่อยู่",
-                style: TextStyle(
+              Text("เลือกที่อยู่",
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
-                    fontSize: 18,)
-              ),
+                    fontSize: 18,
+                  )),
               ListView.builder(
-                shrinkWrap: true,
-                itemCount: address.length,
-                itemBuilder: (BuildContext context, int index){
-                  return selectCard(              
-                    address[index]['name'],
-                    address[index]['address'],
-                    address[index]['tel'],
-                    index,
-                  );
-                }
-              ),
+                  shrinkWrap: true,
+                  itemCount: address.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return selectCard(
+                      address[index]['name'],
+                      address[index]['address'],
+                      address[index]['tel'],
+                      index,
+                    );
+                  }),
             ],
           ),
         ),

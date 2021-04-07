@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'dart:async';
 
+const primaryColor = Color(0xffdd4b39);
 const kTextColor = Color(0xFF535353);
 const kTextLightColor = Color(0xff1c1c1c);
 const kButtonColor = Color(0xffe3d6b3);

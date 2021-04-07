@@ -20,6 +20,11 @@ class MyNavigator {
   static void goToLoginByPin(BuildContext context) {
     Navigator.pushNamed(context, '/pinverify');
   }
+
+  static void goToSetPin(BuildContext context) {
+    Navigator.pushNamed(context, '/setpin');
+  }
+
   static void goToDeposit(BuildContext context) {
     Navigator.pushNamed(context, '/deposit');
   }

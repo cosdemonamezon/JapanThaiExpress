@@ -9,13 +9,14 @@ String secoundTouchID = "Access to your account";
 String faceID = "Use your Face ID for faster, eaier";
 String picSuccess = "assets/success.png";
 
-class Constants {
-  Constants._();
-  static const double padding = 20;
-  static const double avatarRadius = 45;
-}
+// class Constants {
+//   Constants._();
+//   static const double padding = 20;
+//   static const double avatarRadius = 45;
+// }
 
-alertdialog(String title, String subtitle, String secoundtitle, String img, context) {
+alertdialog(
+    String title, String subtitle, String secoundtitle, String img, context) {
   return Dialog(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(Constants.padding),
@@ -86,8 +87,8 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
                 ),
                 child: FlatButton(
                   onPressed: () {
-                    Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Service()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Service()));
                   },
                   child: Text(
                     "ตกลง",
@@ -101,7 +102,6 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
               SizedBox(
                 height: 15,
               ),
-<<<<<<< HEAD
               Container(
                 //height: size.height * 0.08,
                 width: 200,
@@ -120,26 +120,6 @@ alertdialog(String title, String subtitle, String secoundtitle, String img, cont
                           color: kButtonColor)),
                 ),
               ),
-=======
-              // Container(
-              //   //height: size.height * 0.08,
-              //   width: 200,
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(16),
-              //     color: kPrimaryColor,
-              //   ),
-              //   child: FlatButton(
-              //     onPressed: () {
-              //       Navigator.pop(context);
-              //     },
-              //     child: Text("ยกเลิก",
-              //         style: TextStyle(
-              //             fontSize: 16,
-              //             fontWeight: FontWeight.bold,
-              //             color: kTextButtonColor)),
-              //   ),
-              // ),
->>>>>>> 10dc378d2133490d6902d1dbf5b449a767b239f0
               SizedBox(
                 height: 25,
               ),
