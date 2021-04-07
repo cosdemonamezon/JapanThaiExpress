@@ -63,4 +63,28 @@ class MyNavigator {
   static void goToRegister(BuildContext context) {
     Navigator.pushNamed(context, "/register");
   }
+
+  static void goToNews(BuildContext context) {
+    Navigator.pushNamed(context, "/news");
+  }
+
+  static void goToNewsDetial(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/newsdetail', arguments: arg);
+  }
+
+  static void goToService(BuildContext context) {
+    Navigator.pushNamed(context, "/service");
+  }  
+
+  static void goToReceiveMoney(BuildContext context) {
+    Navigator.pushNamed(context, "/receivemoney");
+  }
+
+  static void goToProfileScreen(BuildContext context) {
+    Navigator.pushNamed(context, "/profile");
+  }
+
+  static void goBackUserHome(BuildContext context) {
+    Navigator.pushNamedAndRemoveUntil(context, "/goback", (route) => false);
+  }
 }

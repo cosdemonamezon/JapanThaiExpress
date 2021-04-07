@@ -14,7 +14,12 @@ import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRCodePreview.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/News/DetailNews.dart';
+import 'package:JapanThaiExpress/UserScreens/News/NewsScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/Profile/ProfileScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -102,7 +107,17 @@ var routes = <String, WidgetBuilder>{
   "/depositdetail": (BuildContext context) => DepositDetailScreen(),
   "/qrcodepreview": (BuildContext context) => QRCodePreview(),
   "/timelineorders": (BuildContext context) => TimeLineScreen(),
+<<<<<<< HEAD
   "/setpin": (BuildContext context) => SetPinScreen(),
+=======
+  "/deposit": (BuildContext context) => Deposit(),
+  "/news": (BuildContext context) => NewsScreen(),
+  "/newsdetail": (BuildContext context) => DetailNews(),
+  "/service": (BuildContext context) => Service(),
+  "/receivemoney": (BuildContext context) => ReceiveMoney(),
+  "/profile": (BuildContext context) => ProfileScreen(),
+  "/goback": (BuildContext context) => DashbordScreen(),
+>>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
 };
 
 class MyApp extends StatelessWidget {

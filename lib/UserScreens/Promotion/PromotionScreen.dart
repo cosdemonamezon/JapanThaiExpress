@@ -1,4 +1,5 @@
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
 
 class PromotionScreen extends StatefulWidget {
@@ -14,6 +15,14 @@ class _PromotionScreenState extends State<PromotionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Promotion"),
+        leading: IconButton(
+          onPressed: (){
+            MyNavigator.goBackUserHome(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.white,)
+        ),
       ),
       body: ListView(
         shrinkWrap: true,

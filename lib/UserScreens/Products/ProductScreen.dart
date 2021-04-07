@@ -1,6 +1,7 @@
 import 'package:JapanThaiExpress/UserScreens/Products/components/body.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -30,7 +31,7 @@ class _ProductScreenState extends State<ProductScreen> {
         leading: 
           IconButton(icon: SvgPicture.asset("assets/icons/back.svg"), 
           onPressed: (){
-            Navigator.pop(context);
+            MyNavigator.goBackUserHome(context);
           },
         ),
         title: Text("Products"),

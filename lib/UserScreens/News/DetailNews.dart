@@ -24,11 +24,18 @@ class _DetailNewsState extends State<DetailNews> {
           SizedBox(height: 20,),
           Card(
             child: ListTile(
-              title: Image.network(data['photo'], fit: BoxFit.cover,),
+              title: data['img'] != null ?
+              Image.network(data['img'], fit: BoxFit.cover,)
+              :Image.network("https://picsum.photos/200/300", fit: BoxFit.cover),
               subtitle: Column(
                 children: [
-                  Text(data['title']),
-                  Text(data['detail']),
+                  data['title'] !=null ? 
+                  Text(data['title'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),)
+                  :Text("ไม่พบข้อมูล"),
+                  SizedBox(height: 10,),
+                  data['subtitle'] !=null ? 
+                  Text(data['subtitle'], style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),)
+                  :Text("ไม่พบข้อมูล"),
                 ],
               ),
             ),
