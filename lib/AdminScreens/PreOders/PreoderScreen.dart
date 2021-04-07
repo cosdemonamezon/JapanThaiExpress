@@ -23,6 +23,8 @@ class _PreoderScreenState extends State<PreoderScreen> {
   Map<String, dynamic> readnotidata = {};
   Map<String, dynamic> numberNoti = {};
 
+  TextEditingController editingController = TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -96,7 +98,7 @@ class _PreoderScreenState extends State<PreoderScreen> {
         appBar: AppBar(
           elevation: 0,
           centerTitle: true,
-          title: Text("Service Orders"),
+          title: Text("PreOrders"),
           bottom: TabBar(
               labelColor: Colors.redAccent,
               unselectedLabelColor: Colors.white,
@@ -123,128 +125,116 @@ class _PreoderScreenState extends State<PreoderScreen> {
         ),
         body: TabBarView(
           children: [
-            // Container(
-            //   child: ListView(
-            //     shrinkWrap: true,
-            //     padding: EdgeInsets.only(left: 15.0, right: 15.0),
-            //     children: [
-            //       SizedBox(
-            //         height: 15,
-            //       ),
-            //       //messageCard("Learn Git and GitHub without any code!", Icons.account_box, "Software developer"),
-            //       buildCard(
-            //         "100/17.フマキラー スキンベープ 虫よけスプレー ミストタイプ キティ ピーチの香り(200ml) 185.00 บาท",
-            //         "assets/o1.jpg",
-            //       ),
-            //       buildCard(
-            //         "50/13.口内炎パッチ大正A 10枚 220.00 บาท",
-            //         "assets/o2.jpg",
-            //       ),
-            //       buildCard(
-            //         "50/16.資生堂フィーノ プレミアムタッチ 浸透美容液ヘアマスク 230g 270.00 บาท",
-            //         "assets/o3.jpg",
-            //       ),
-            //       buildCard(
-            //         "50/68.Blueクリニカ アドバンテージ ハミガキ クールミン 115.00 บาท",
-            //         "assets/o4.jpg",
-            //       ),
-            //       buildCard(
-            //         "50/12.ニューアンメルツヨコヨコA 80mL 180.00 บาท",
-            //         "assets/o5.jpg",
-            //       ),
-            //       buildCard(
-            //         "50/29.ウーノ ホイップウォッシュ モイスト 125.00 บาท",
-            //         "assets/o6.jpg",
-            //       ),
-            //       buildCard(
-            //         "50/6.DHC コラーゲン 60日分 360粒 345.00 บาท",
-            //         "assets/o7.jpg",
-            //       ),
-            //       buildCard(
-            //         "50/25.ペアA錠 120錠 225.00 บาท",
-            //         "assets/o8.jpg",
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            Container(
-              width: double.infinity,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: notidata.length,
-                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Card(
-                          color: notidata[index]["noti_log_read"] == 0
-                              ? Colors.blue[50]
-                              : Colors.white,
-                          elevation: 8.0,
-                          child: ListTile(
-                            leading: notidata[index]["image"] == null
-                                ? Icon(
-                                    Icons.notifications_active,
-                                    size: 40,
-                                    color: kPrimaryColor,
-                                  )
-                                : Container(
-                                    width: 70.0,
-                                    height: 50.0,
-                                    child: Image.network(
-                                      notidata[index]['image'],
-                                      fit: BoxFit.fill,
-                                    )),
-                            title: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: notidata[index]['name'].length >= 30
-                                  ? Text(
-                                      "${notidata[index]['name'].substring(0, 30)} ...",
+            Expanded(
+              // width: double.infinity,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: TextField(
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                      controller: editingController,
+                      decoration: InputDecoration(
+                          labelText: "Search",
+                          hintText: "Search",
+                          prefixIcon: Icon(Icons.search),
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15.0)))),
+                    ),
+                  ),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: notidata.length,
+                      padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Card(
+                              color: notidata[index]["noti_log_read"] == 0
+                                  ? Colors.blue[50]
+                                  : Colors.white,
+                              elevation: 4.0,
+                              child: Container(
+                                decoration: BoxDecoration(color: Colors.white),
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 10.0),
+                                  leading: Container(
+                                    padding: EdgeInsets.only(right: 14.0),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            right: BorderSide(
+                                                width: 2.0,
+                                                color: primaryColor))),
+                                    child:
+                                        Image.network(notidata[index]['image']),
+                                  ),
+                                  title: Text(
+                                    notidata[index]['name'],
+                                    style: TextStyle(
+                                        color: kTextButtonColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  subtitle: Row(
+                                    children: <Widget>[
+                                      Flexible(
+                                          child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                            RichText(
+                                              text: TextSpan(
+                                                text: "Qty :" +
+                                                    notidata[index]['qty'],
+                                                style: TextStyle(
+                                                    color: kTextButtonColor),
+                                              ),
+                                              maxLines: 3,
+                                              softWrap: true,
+                                            ),
+                                            RichText(
+                                              text: TextSpan(
+                                                text: "Create At :" +
+                                                    notidata[index]
+                                                            ['created_at']
+                                                        .split("T")[0],
+                                                style: TextStyle(
+                                                    color: kTextButtonColor),
+                                              ),
+                                              maxLines: 3,
+                                              softWrap: true,
+                                            ),
+                                          ]))
+                                    ],
+                                  ),
+                                  trailing: MaterialButton(
+                                    onPressed: () {
+                                      MyNavigator.goToTimelineOrders(context);
+                                    },
+                                    color: Color(0xffdd4b39),
+                                    child: Text(
+                                      "Details",
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w400))
-                                  : Text(notidata[index]['name'],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400)),
-                            ),
-                            // subtitle: Padding(
-                            //   padding: const EdgeInsets.all(5.0),
-                            //   child: notidata[index]['note'].length >= 50
-                            //       ? Text(
-                            //           "${notidata[index]['note'].substring(0, 50)} ...",
-                            //           style: TextStyle(
-                            //               fontWeight: FontWeight.w400))
-                            //       : Text(notidata[index]['note'],
-                            //           style: TextStyle(
-                            //               fontWeight: FontWeight.w400)),
-                            // ),
-                            subtitle: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    MaterialButton(
-                                      onPressed: () {
-                                        MyNavigator.goToTimelineOrders(context);
-                                      },
-                                      color: Color(0xffdd4b39),
-                                      child: Text(
-                                        "Details",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                        ),
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 12,
                                       ),
                                     ),
-                                  ],
-                                )),
+                                  ),
+                                  onTap: () {},
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  }),
+                        );
+                      }),
+                ],
+              ),
             ),
             Icon(Icons.movie),
           ],

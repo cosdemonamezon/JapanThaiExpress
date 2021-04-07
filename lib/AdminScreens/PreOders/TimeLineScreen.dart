@@ -198,7 +198,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                 indicatorY: 0.2,
                 padding: EdgeInsets.all(8),
               ),
-              leftChild: Container(
+              rightChild: Container(
                 child: Column(
                   children: [
                     SvgPicture.asset(
@@ -210,7 +210,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                       height: 5,
                     ),
                     Text(
-                      "Order Processed",
+                      "New Order",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -289,7 +289,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                       height: 5,
                     ),
                     Text(
-                      "Order Shipped",
+                      "Start buying",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -316,7 +316,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                 padding: EdgeInsets.all(8),
                 indicatorY: 0.3,
               ),
-              rightChild: Container(
+              leftChild: Container(
                 child: Column(
                   children: [
                     SvgPicture.asset(
@@ -328,7 +328,46 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                       height: 5,
                     ),
                     Text(
-                      "On The Way",
+                      "Add Tracking No.",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Colors.black),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "order in the way",
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            TimelineTile(
+              topLineStyle: LineStyle(color: Colors.red),
+              bottomLineStyle: LineStyle(color: Colors.red),
+              alignment: TimelineAlign.center,
+              indicatorStyle: const IndicatorStyle(
+                width: 20,
+                color: Colors.lightBlueAccent,
+                padding: EdgeInsets.all(8),
+                indicatorY: 0.3,
+              ),
+              leftChild: Container(
+                child: Column(
+                  children: [
+                    SvgPicture.asset(
+                      order_onTheWay,
+                      height: 50,
+                      width: 50,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Add delivery cost ",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -355,43 +394,6 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                 padding: EdgeInsets.all(8),
                 indicatorY: 0.3,
               ),
-              rightChild: Container(
-                child: Column(
-                  children: [
-                    SvgPicture.asset(
-                      order_delivered,
-                      height: 50,
-                      width: 50,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Delivered",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "oh yaa!",
-                      style: TextStyle(fontSize: 12, color: Colors.black),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            TimelineTile(
-              alignment: TimelineAlign.center,
-              indicatorStyle: const IndicatorStyle(
-                width: 20,
-                color: Colors.green,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
               leftChild: Container(
                 child: Column(
                   children: [
@@ -404,7 +406,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                       height: 5,
                     ),
                     Text(
-                      "Delivered",
+                      "Order to Thailand",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -430,7 +432,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                 padding: EdgeInsets.all(8),
                 indicatorY: 0.3,
               ),
-              leftChild: Container(
+              rightChild: Container(
                 child: Column(
                   children: [
                     SvgPicture.asset(
