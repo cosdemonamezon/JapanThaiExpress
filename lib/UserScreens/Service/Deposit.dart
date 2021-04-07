@@ -40,14 +40,10 @@ class _DepositState extends State<Deposit> {
   String tel;
   int _value = 1;
   final _formKey = GlobalKey<FormBuilderState>();
-<<<<<<< HEAD
-  String token =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
-=======
+
   SharedPreferences prefs;
-  String tokendata = "";
-  //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
+  // String token =
+  //     "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
 
   @override
   void initState() {
@@ -74,33 +70,28 @@ class _DepositState extends State<Deposit> {
       },
     );
     if (response.statusCode == 200) {
-      final Map<String, dynamic> datadeposit = convert.jsonDecode(response.body);
-      if (datadeposit['code'] == 200){
+      final Map<String, dynamic> datadeposit =
+          convert.jsonDecode(response.body);
+      if (datadeposit['code'] == 200) {
         //print(datadeposit['message']);
         setState(() {
           dropdownValue = datadeposit['data'];
-          
         });
         // for (var i = 0; i < dataValue.length; i++) {
         //   dropdownValue += dataValue[i]['name'];
         //   //print(dataValue[i]['name']);
         // }
         //print(dataValue[0]['name']);
-      }
-      else {
-
-      }
-    } else {
-    }
+      } else {}
+    } else {}
   }
-  
+
   _shippingOption() async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
     setState(() {
       isLoading = true;
-
     });
 
     var url = pathAPI + 'api/shipping_option';
@@ -113,56 +104,37 @@ class _DepositState extends State<Deposit> {
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> dataship = convert.jsonDecode(response.body);
-      if (dataship['code'] == 200){
+      if (dataship['code'] == 200) {
         print(dataship['message']);
         setState(() {
           dropdownShip = dataship['data'];
           _transport = dropdownShip[0]['name'];
-          costth = dropdownShip[0]['price'];        
+          costth = dropdownShip[0]['price'];
         });
         print(dropdownShip);
-      }
-      else {
-
-      }
-    } else {
-    }
+      } else {}
+    } else {}
   }
 
   _addressMem() async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
-    
+
     //print(token);
     setState(() {
       isLoading = true;
-      tokendata = token['data']['token'];
+      // tokendata = token['data']['token'];
     });
     //print(tokendata);
 
     var url = pathAPI + 'api/address_mem';
-<<<<<<< HEAD
-    var response = await http.get(url, headers: {
-      //'Content-Type': 'application/json',
-      'Authorization': token
-    });
+    var response = await http.get(url,
+        headers: {'Content-Type': 'application/json', 'Authorization': token});
     if (response.statusCode == 200) {
       final Map<String, dynamic> addressdata =
           convert.jsonDecode(response.body);
       print(addressdata);
-=======
-    var response = await http.get(
-      url,
-      headers: {
-        //'Content-Type': 'application/json',
-        'Authorization': tokendata
-      }
-    );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> addressdata = convert.jsonDecode(response.body);
-      //print(addressdata);
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
       setState(() {
         address = addressdata['data'];
         id = address[0]['id'];
@@ -188,7 +160,6 @@ class _DepositState extends State<Deposit> {
       isLoading = true;
     });
     var url = pathAPI + 'api/create_depository';
-<<<<<<< HEAD
     var response = await http.post(url,
         headers: {
           //'Content-Type': 'application/json',
@@ -199,21 +170,6 @@ class _DepositState extends State<Deposit> {
           'image': "data:image/png;base64," + img64,
           'description': values['description'],
         }));
-=======
-    var response = await http.post(
-      url,
-      headers: {
-        //'Content-Type': 'application/json',
-        'Authorization': token['data']['token']
-      },
-      body: ({
-        'add_id': id.toString(),
-        'image': "data:image/png;base64,"+img64,
-        'description': values['option'],
-        'cost_th': costth,     
-      })
-    );
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
     if (response.statusCode == 201) {
       final Map<String, dynamic> depositdata =
           convert.jsonDecode(response.body);
@@ -221,38 +177,14 @@ class _DepositState extends State<Deposit> {
       if (depositdata['code'] == 201) {
         print(depositdata['message']);
         //MyNavigator.goToDeposit(context);
-<<<<<<< HEAD
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Deposit()));
       } else {}
-=======
-        // Navigator.push(
-        //   context, MaterialPageRoute(builder: (context) => Deposit()));
-        String picSuccess = "assets/success.png";
-        showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (context) => alertDeposit(
-            depositdata['message'],            
-            picSuccess,
-            context,
-          ),
-        );
-        
-      } else {
-      }
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
     } else {
       print("error");
     }
   }
 
-<<<<<<< HEAD
-=======
-  
-
-
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -272,7 +204,7 @@ class _DepositState extends State<Deposit> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    
+
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -281,7 +213,6 @@ class _DepositState extends State<Deposit> {
               centerTitle: true,
               title: Text("รับฝากส่ง"),
               leading: IconButton(
-<<<<<<< HEAD
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Service()));
@@ -289,15 +220,6 @@ class _DepositState extends State<Deposit> {
                   icon: Icon(
                     Icons.arrow_back_ios_rounded,
                   )),
-=======
-                onPressed: (){
-                  MyNavigator.goToService(context);
-                  // Navigator.push(
-                  //   context, MaterialPageRoute(builder: (context) => Service()));
-                },
-                icon: Icon(Icons.arrow_back_ios_rounded,)
-              ),
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
               bottom: TabBar(
                   labelColor: Colors.redAccent,
                   unselectedLabelColor: Colors.white,
@@ -382,7 +304,8 @@ class _DepositState extends State<Deposit> {
                                   Text(
                                     "รายละเอียด",
                                     style: TextStyle(
-                                        fontWeight: FontWeight.bold, fontSize: 15),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
                                   ),
                                 ],
                               ),
@@ -415,29 +338,31 @@ class _DepositState extends State<Deposit> {
                               .map((option) => DropdownMenuItem(
                                     value: option['name'],
                                     child: Text(option['name']),
-                              ))
+                                  ))
                               .toList(),
                         ),
                         SizedBox(height: 5),
                         for (int i = 1; i <= dropdownShip.length; i++)
-                        ListTile(
-                          title: Text(dropdownShip[i-1]['name']),
-                          leading: Radio(
-                            value: i,
-                            groupValue: _value, 
-                            activeColor: Color(0xFF6200EE),
-                            onChanged: i > dropdownShip.length ? null : (int value) {
-                              setState(() {
-                                _value = value;
-                                _transport = dropdownShip[i-1]['name'];
-                                costth = dropdownShip[i-1]['price'];
-                                //print(costth);
-                              });
-                            }
+                          ListTile(
+                            title: Text(dropdownShip[i - 1]['name']),
+                            leading: Radio(
+                                value: i,
+                                groupValue: _value,
+                                activeColor: Color(0xFF6200EE),
+                                onChanged: i > dropdownShip.length
+                                    ? null
+                                    : (int value) {
+                                        setState(() {
+                                          _value = value;
+                                          _transport =
+                                              dropdownShip[i - 1]['name'];
+                                          costth = dropdownShip[i - 1]['price'];
+                                          //print(costth);
+                                        });
+                                      }),
                           ),
-                        ),
                         // FormBuilderRadioGroup(
-                        //   name: name, 
+                        //   name: name,
                         //   //options: options
                         // ),
                         SizedBox(
@@ -688,7 +613,6 @@ class _DepositState extends State<Deposit> {
           height: 350,
           child: Column(
             children: [
-<<<<<<< HEAD
               Text("เลือกที่อยู่",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -706,39 +630,6 @@ class _DepositState extends State<Deposit> {
                       index,
                     );
                   }),
-=======
-              Text(
-                        "เลือกที่อยู่",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: 18,)
-                      ),
-              Container(
-                height: 300,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      
-                      ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        physics: const ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: address.length,
-                        itemBuilder: (BuildContext context, int index){
-                          return selectCard(              
-                            address[index]['name'],
-                            address[index]['address'],
-                            address[index]['tel'],
-                            index,
-                          );
-                        }
-                      ),
-                    ],
-                  ),
-                ),
-              ),
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
             ],
           ),
         ),

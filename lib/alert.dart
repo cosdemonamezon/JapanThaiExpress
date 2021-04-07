@@ -122,27 +122,6 @@ alertdialog(
                           color: kButtonColor)),
                 ),
               ),
-<<<<<<< HEAD
-=======
-              // Container(
-              //   //height: size.height * 0.08,
-              //   width: 200,
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(16),
-              //     color: kPrimaryColor,
-              //   ),
-              //   child: FlatButton(
-              //     onPressed: () {
-              //       Navigator.pop(context);
-              //     },
-              //     child: Text("ยกเลิก",
-              //         style: TextStyle(
-              //             fontSize: 16,
-              //             fontWeight: FontWeight.bold,
-              //             color: kTextButtonColor)),
-              //   ),
-              // ),
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
               SizedBox(
                 height: 25,
               ),
@@ -154,7 +133,7 @@ alertdialog(
   );
 }
 
-errordialog(String title, String subtitle, String img, context){
+errordialog(String title, String subtitle, String img, context) {
   return Dialog(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(Constants.padding),
@@ -165,22 +144,19 @@ errordialog(String title, String subtitle, String img, context){
       children: [
         Container(
           padding: EdgeInsets.only(
-            left: Constants.padding,
-            top: Constants.avatarRadius + Constants.padding,
-            right: Constants.padding,
-            bottom: Constants.padding
-          ),
+              left: Constants.padding,
+              top: Constants.avatarRadius + Constants.padding,
+              right: Constants.padding,
+              bottom: Constants.padding),
           margin: EdgeInsets.only(top: Constants.avatarRadius),
           decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: kFontPrimaryColor,
-            borderRadius: BorderRadius.circular(Constants.padding),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black, offset: Offset(0, 10), blurRadius: 10
-              ),
-            ]
-          ),
+              shape: BoxShape.rectangle,
+              color: kFontPrimaryColor,
+              borderRadius: BorderRadius.circular(Constants.padding),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+              ]),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -197,9 +173,9 @@ errordialog(String title, String subtitle, String img, context){
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: kInputSearchColor),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: kInputSearchColor),
               ),
               SizedBox(
                 height: 15,
@@ -220,8 +196,8 @@ errordialog(String title, String subtitle, String img, context){
                 ),
                 child: FlatButton(
                   onPressed: () {
-                    Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Service()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Service()));
                   },
                   child: Text(
                     "ตกลง",
@@ -254,22 +230,19 @@ alertDeposit(String title, String img, context) {
       children: [
         Container(
           padding: EdgeInsets.only(
-            left: Constants.padding,
-            top: Constants.avatarRadius + Constants.padding,
-            right: Constants.padding,
-            bottom: Constants.padding
-          ),
+              left: Constants.padding,
+              top: Constants.avatarRadius + Constants.padding,
+              right: Constants.padding,
+              bottom: Constants.padding),
           margin: EdgeInsets.only(top: Constants.avatarRadius),
           decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: kFontPrimaryColor,
-            borderRadius: BorderRadius.circular(Constants.padding),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black, offset: Offset(0, 10), blurRadius: 10
-              ),
-            ]
-          ),
+              shape: BoxShape.rectangle,
+              color: kFontPrimaryColor,
+              borderRadius: BorderRadius.circular(Constants.padding),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+              ]),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -286,13 +259,13 @@ alertDeposit(String title, String img, context) {
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: kInputSearchColor),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: kInputSearchColor),
               ),
               SizedBox(
                 height: 15,
-              ),              
+              ),
               SizedBox(
                 height: 33,
               ),

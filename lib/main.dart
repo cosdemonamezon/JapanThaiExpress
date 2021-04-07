@@ -107,17 +107,7 @@ var routes = <String, WidgetBuilder>{
   "/depositdetail": (BuildContext context) => DepositDetailScreen(),
   "/qrcodepreview": (BuildContext context) => QRCodePreview(),
   "/timelineorders": (BuildContext context) => TimeLineScreen(),
-<<<<<<< HEAD
   "/setpin": (BuildContext context) => SetPinScreen(),
-=======
-  "/deposit": (BuildContext context) => Deposit(),
-  "/news": (BuildContext context) => NewsScreen(),
-  "/newsdetail": (BuildContext context) => DetailNews(),
-  "/service": (BuildContext context) => Service(),
-  "/receivemoney": (BuildContext context) => ReceiveMoney(),
-  "/profile": (BuildContext context) => ProfileScreen(),
-  "/goback": (BuildContext context) => DashbordScreen(),
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
 };
 
 class MyApp extends StatelessWidget {
