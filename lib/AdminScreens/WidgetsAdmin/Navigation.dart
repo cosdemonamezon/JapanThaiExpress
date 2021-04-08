@@ -102,6 +102,32 @@ class _NavigationState extends State<Navigation> {
                 ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Color(0xFF343434),
+                    //backgroundImage: AssetImage(pathicon1),
+                    radius: 24,
+                    child: IconButton(
+                        color: Colors.white,
+                        icon: Icon(Icons.settings_applications),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NotificationScreen()));
+                        }),
+                  ),
+                  Text(
+                    "Setting",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
