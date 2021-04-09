@@ -70,33 +70,28 @@ class _DepositState extends State<Deposit> {
       },
     );
     if (response.statusCode == 200) {
-      final Map<String, dynamic> datadeposit = convert.jsonDecode(response.body);
-      if (datadeposit['code'] == 200){
+      final Map<String, dynamic> datadeposit =
+          convert.jsonDecode(response.body);
+      if (datadeposit['code'] == 200) {
         //print(datadeposit['message']);
         setState(() {
           dropdownValue = datadeposit['data'];
-          
         });
         // for (var i = 0; i < dataValue.length; i++) {
         //   dropdownValue += dataValue[i]['name'];
         //   //print(dataValue[i]['name']);
         // }
         //print(dataValue[0]['name']);
-      }
-      else {
-
-      }
-    } else {
-    }
+      } else {}
+    } else {}
   }
-  
+
   _shippingOption() async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
     setState(() {
       isLoading = true;
-
     });
 
     var url = pathAPI + 'api/shipping_option';
@@ -109,31 +104,27 @@ class _DepositState extends State<Deposit> {
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> dataship = convert.jsonDecode(response.body);
-      if (dataship['code'] == 200){
+      if (dataship['code'] == 200) {
         print(dataship['message']);
         setState(() {
           dropdownShip = dataship['data'];
           _transport = dropdownShip[0]['name'];
-          costth = dropdownShip[0]['price'];        
+          costth = dropdownShip[0]['price'];
         });
         print(dropdownShip);
-      }
-      else {
-
-      }
-    } else {
-    }
+      } else {}
+    } else {}
   }
 
   _addressMem() async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
-    
+
     //print(token);
     setState(() {
       isLoading = true;
-      tokendata = token['data']['token'];
+      // tokendata = token['data']['token'];
     });
     //print(tokendata);
 
@@ -249,7 +240,7 @@ class _DepositState extends State<Deposit> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    
+
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -349,7 +340,8 @@ class _DepositState extends State<Deposit> {
                                   Text(
                                     "รายละเอียด",
                                     style: TextStyle(
-                                        fontWeight: FontWeight.bold, fontSize: 15),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
                                   ),
                                 ],
                               ),
@@ -382,29 +374,31 @@ class _DepositState extends State<Deposit> {
                               .map((option) => DropdownMenuItem(
                                     value: option['name'],
                                     child: Text(option['name']),
-                              ))
+                                  ))
                               .toList(),
                         ),
                         SizedBox(height: 5),
                         for (int i = 1; i <= dropdownShip.length; i++)
-                        ListTile(
-                          title: Text(dropdownShip[i-1]['name']),
-                          leading: Radio(
-                            value: i,
-                            groupValue: _value, 
-                            activeColor: Color(0xFF6200EE),
-                            onChanged: i > dropdownShip.length ? null : (int value) {
-                              setState(() {
-                                _value = value;
-                                _transport = dropdownShip[i-1]['name'];
-                                costth = dropdownShip[i-1]['price'];
-                                //print(costth);
-                              });
-                            }
+                          ListTile(
+                            title: Text(dropdownShip[i - 1]['name']),
+                            leading: Radio(
+                                value: i,
+                                groupValue: _value,
+                                activeColor: Color(0xFF6200EE),
+                                onChanged: i > dropdownShip.length
+                                    ? null
+                                    : (int value) {
+                                        setState(() {
+                                          _value = value;
+                                          _transport =
+                                              dropdownShip[i - 1]['name'];
+                                          costth = dropdownShip[i - 1]['price'];
+                                          //print(costth);
+                                        });
+                                      }),
                           ),
-                        ),
                         // FormBuilderRadioGroup(
-                        //   name: name, 
+                        //   name: name,
                         //   //options: options
                         // ),
                         SizedBox(
