@@ -6,6 +6,7 @@ import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert' as convert;
@@ -40,14 +41,9 @@ class _DepositState extends State<Deposit> {
   String tel;
   int _value = 1;
   final _formKey = GlobalKey<FormBuilderState>();
-<<<<<<< HEAD
-  String token =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
-=======
   SharedPreferences prefs;
   String tokendata = "";
   //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
 
   @override
   void initState() {
@@ -142,16 +138,6 @@ class _DepositState extends State<Deposit> {
     //print(tokendata);
 
     var url = pathAPI + 'api/address_mem';
-<<<<<<< HEAD
-    var response = await http.get(url, headers: {
-      //'Content-Type': 'application/json',
-      'Authorization': token
-    });
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> addressdata =
-          convert.jsonDecode(response.body);
-      print(addressdata);
-=======
     var response = await http.get(
       url,
       headers: {
@@ -162,7 +148,6 @@ class _DepositState extends State<Deposit> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> addressdata = convert.jsonDecode(response.body);
       //print(addressdata);
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
       setState(() {
         address = addressdata['data'];
         id = address[0]['id'];
@@ -188,18 +173,6 @@ class _DepositState extends State<Deposit> {
       isLoading = true;
     });
     var url = pathAPI + 'api/create_depository';
-<<<<<<< HEAD
-    var response = await http.post(url,
-        headers: {
-          //'Content-Type': 'application/json',
-          'Authorization': token
-        },
-        body: ({
-          'add_id': id.toString(),
-          'image': "data:image/png;base64," + img64,
-          'description': values['description'],
-        }));
-=======
     var response = await http.post(
       url,
       headers: {
@@ -213,7 +186,6 @@ class _DepositState extends State<Deposit> {
         'cost_th': costth,     
       })
     );
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
     if (response.statusCode == 201) {
       final Map<String, dynamic> depositdata =
           convert.jsonDecode(response.body);
@@ -221,11 +193,6 @@ class _DepositState extends State<Deposit> {
       if (depositdata['code'] == 201) {
         print(depositdata['message']);
         //MyNavigator.goToDeposit(context);
-<<<<<<< HEAD
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Deposit()));
-      } else {}
-=======
         // Navigator.push(
         //   context, MaterialPageRoute(builder: (context) => Deposit()));
         String picSuccess = "assets/success.png";
@@ -241,18 +208,28 @@ class _DepositState extends State<Deposit> {
         
       } else {
       }
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
     } else {
       print("error");
+      var feedback = convert.jsonDecode(response.body);
+      print("${feedback['message']}");
+          Flushbar(
+            title: '${feedback['message']}',
+            message: 'เกิดข้อผิดพลาดจากระบบ : ${feedback['code']}',
+            backgroundColor: Colors.redAccent,
+            icon: Icon(
+              Icons.error,
+              size: 28.0,
+              color: Colors.white,
+            ),
+            duration: Duration(seconds: 3),
+            leftBarIndicatorColor: Colors.blue[300],
+          )..show(context);
     }
   }
 
-<<<<<<< HEAD
-=======
   
 
 
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -281,15 +258,6 @@ class _DepositState extends State<Deposit> {
               centerTitle: true,
               title: Text("รับฝากส่ง"),
               leading: IconButton(
-<<<<<<< HEAD
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Service()));
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios_rounded,
-                  )),
-=======
                 onPressed: (){
                   MyNavigator.goToService(context);
                   // Navigator.push(
@@ -297,7 +265,6 @@ class _DepositState extends State<Deposit> {
                 },
                 icon: Icon(Icons.arrow_back_ios_rounded,)
               ),
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
               bottom: TabBar(
                   labelColor: Colors.redAccent,
                   unselectedLabelColor: Colors.white,
@@ -646,7 +613,9 @@ class _DepositState extends State<Deposit> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  MyNavigator.goToTimelineOrders(context);
+                },
                 color: Colors.green,
                 child: Text(
                   "Details",
@@ -688,25 +657,6 @@ class _DepositState extends State<Deposit> {
           height: 350,
           child: Column(
             children: [
-<<<<<<< HEAD
-              Text("เลือกที่อยู่",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 18,
-                  )),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: address.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return selectCard(
-                      address[index]['name'],
-                      address[index]['address'],
-                      address[index]['tel'],
-                      index,
-                    );
-                  }),
-=======
               Text(
                         "เลือกที่อยู่",
                         style: TextStyle(
@@ -738,7 +688,6 @@ class _DepositState extends State<Deposit> {
                   ),
                 ),
               ),
->>>>>>> 3e7fad007335d96df751ea867e8e6b1310826883
             ],
           ),
         ),
