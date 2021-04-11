@@ -122,7 +122,6 @@ alertdialog(
                           color: kButtonColor)),
                 ),
               ),
-<<<<<<< HEAD
               // Container(
               //   //height: size.height * 0.08,
               //   width: 200,
@@ -141,8 +140,6 @@ alertdialog(
               //             color: kTextButtonColor)),
               //   ),
               // ),
-=======
->>>>>>> c146ddebaeea189a0512656ebc13705e3d4dd97a
               SizedBox(
                 height: 25,
               ),

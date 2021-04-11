@@ -107,7 +107,6 @@ var routes = <String, WidgetBuilder>{
   "/depositdetail": (BuildContext context) => DepositDetailScreen(),
   "/qrcodepreview": (BuildContext context) => QRCodePreview(),
   "/timelineorders": (BuildContext context) => TimeLineScreen(),
-<<<<<<< HEAD
   "/deposit": (BuildContext context) => Deposit(),
   "/news": (BuildContext context) => NewsScreen(),
   "/newsdetail": (BuildContext context) => DetailNews(),
@@ -115,8 +114,6 @@ var routes = <String, WidgetBuilder>{
   "/receivemoney": (BuildContext context) => ReceiveMoney(),
   "/profile": (BuildContext context) => ProfileScreen(),
   "/goback": (BuildContext context) => DashbordScreen(),
-=======
->>>>>>> c146ddebaeea189a0512656ebc13705e3d4dd97a
   "/setpin": (BuildContext context) => SetPinScreen(),
 };
 
