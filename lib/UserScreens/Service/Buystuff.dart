@@ -27,7 +27,7 @@ class _BuystuffState extends State<Buystuff> {
   ];
   final _formKey = GlobalKey<FormBuilderState>();
   SharedPreferences prefs;
-  bool isLoading = true;
+  bool isLoading = false;
   Io.File _image;
   final picker = ImagePicker();
   String img64;
@@ -60,16 +60,18 @@ class _BuystuffState extends State<Buystuff> {
   void _onLoading() async{
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
-    //items.add((items.length+1).toString());
-
-    if (page <= (totalResults / pageSize).ceil()) {
-        if(mounted){
-          setState(() {
-            page = ++page;
-          });
-          _preOrders();
-          _refreshController.loadComplete();
+    if (page < (totalResults / pageSize).ceil()) {
+      if(mounted){
+        print("mounted");
+        setState(() {
+          page = ++page;
+        });
+        _preOrders();
+        _refreshController.loadComplete();
+      }
+      else{
+        print("unmounted");
+        _refreshController.loadComplete();
       }
     } else {
       _refreshController.loadNoData();
@@ -86,18 +88,18 @@ class _BuystuffState extends State<Buystuff> {
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
-      var url = pathAPI + 'api/preorders';
-      var response = await http.post(
+      var url = pathAPI + 'api/preorders?status=&page=$page&page_size=$pageSize';
+      var response = await http.get(
         url,
         headers: {
           //'Content-Type': 'application/json',
           'Authorization': token['data']['token']
         },
-        body: ({
-          'status': '',
-          'page': page.toString(),
-          'page_size': pageSize.toString(),            
-        })
+        // body: ({
+        //   'status': '',
+        //   'page': page.toString(),
+        //   'page_size': pageSize.toString(),            
+        // })
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> order = convert.jsonDecode(response.body);
@@ -112,11 +114,16 @@ class _BuystuffState extends State<Buystuff> {
           // print(listdata[0]['name']);
         });
       } else {
+        setState(() {
+          isLoading = false;
+        });
         final Map<String, dynamic> order = convert.jsonDecode(response.body);
         print(order['message']);
       }
     } catch (e) {
-      isLoading = false;
+      setState(() {
+          isLoading = false;
+        });
       print('error from backend');
     }
   }
@@ -180,7 +187,7 @@ class _BuystuffState extends State<Buystuff> {
         );
       }
       else {
-String picSuccess = "assets/success.png";
+        String picSuccess = "assets/success.png";
         showDialog(
           barrierDismissible: false,
           context: context,
@@ -246,8 +253,9 @@ String picSuccess = "assets/success.png";
                   child: Text("ฝากซื้อสินค้า"),
                 ),
               ),
-            ])
-          ),
+            ]
+          )
+        ),
         body: TabBarView(
           children: [
             isLoading == true ?
@@ -266,7 +274,7 @@ String picSuccess = "assets/success.png";
                 builder: (BuildContext context,LoadStatus mode){
                   Widget body ;
                   if(mode==LoadStatus.idle){
-                    body =  Text("ไม่พบรายการ");
+                    //body =  Text("ไม่พบรายการ");
                   }
                   else if(mode==LoadStatus.loading){
                     body =  CircularProgressIndicator();
@@ -295,7 +303,7 @@ String picSuccess = "assets/success.png";
                 itemBuilder: (BuildContext context, int index){                  
                   return buildCard(
                     listdata[index]['name'],
-                    listdata[index]['note'],
+                    listdata[index]['note']==null?'ไม่มีข้อมูล' :listdata[index]['note'],
                     listdata[index]['price']==null?'ไม่มีข้อมูล' :listdata[index]['price'],
                     listdata[index]['track_jp']==null?'ไม่มีข้อมูล' :listdata[index]['track_jp'],
                     listdata[index]['image'],
@@ -775,7 +783,8 @@ String picSuccess = "assets/success.png";
                 ),
               ),
             ],
-          )),
+          )
+      ),
     );
   }
 }
