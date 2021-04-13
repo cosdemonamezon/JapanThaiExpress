@@ -20,13 +20,15 @@ class _BankState extends State<Bank> {
         title: Text("จัดการบัญชี"),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            height: height-280,
+            height: height*0.6,
             //color: Colors.red,
             child: ListView(
               children: [
-                Column(
+                Column(                  
                   children: [
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -84,12 +86,22 @@ class _BankState extends State<Bank> {
                         "3214560987"
                       ),
                     ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: bankCard(
+                        "assets/kbank.jpg",
+                        "ธนาคารกสิกรไทย",
+                        "3214560987"
+                      ),
+                    ),
+                    
                   ],
                 ),
               ],
             ),
           ),
           Container(
+            color: Colors.amber,
             height: 50,
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 20),

@@ -4,9 +4,13 @@ import 'package:JapanThaiExpress/UserScreens/Service/Buystuff.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
+import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class Service extends StatefulWidget {
   Service({Key key}) : super(key: key);
@@ -16,6 +20,11 @@ class Service extends StatefulWidget {
 }
 
 class _ServiceState extends State<Service> {
+  bool isLoading = false;
+  List<dynamic> banner = [];
+  String tokendata = "";
+  SharedPreferences prefs;
+  List<String> imgPath = [];
   List<String> pathimg = [
     "assets/o1.jpg",
     "assets/o2.jpg",
@@ -27,8 +36,48 @@ class _ServiceState extends State<Service> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _getBanners();
+  }
+
+  _getBanners() async{
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    setState(() {
+      isLoading = true;
+      tokendata = token['data']['token'];
+    });
+
+    var url = pathAPI + 'api/banners';
+    var response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token['data']['token']
+      }
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> imgdata = convert.jsonDecode(response.body);
+      if (imgdata['code']==200) {
+        setState(() {
+          banner = imgdata['data'];
+          // for (var i = 0; i < banner.length; i++) {
+          //   imgPath = banner[i]['path'];
+          // }
+        });
+        print(banner);
+      } else {
+      }
+    } else {
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         //centerTitle: true,
@@ -43,14 +92,14 @@ class _ServiceState extends State<Service> {
         ),
       ),
       body: Container(
-height: height,
+        height: height,
         width: double.infinity,
         child: Column(
           children: [
             Container(
               width: double.infinity,
               child: CarouselSlider.builder(
-                itemCount: pathimg.length,
+                itemCount: banner.length,
                 options: CarouselOptions(
                   autoPlay: true,
                   aspectRatio: 2.0,
@@ -59,10 +108,10 @@ height: height,
                   initialPage: 9,
                 ),
                 itemBuilder: (context, index, realIdx){
-                  if (pathimg.length != 0) {
+                  if (banner.length != 0) {
                     return Container(
                       child: Center(
-                        child: Image.asset(pathimg[index], fit: BoxFit.cover,),
+                        child: Image.network(banner[index]['path'], fit: BoxFit.cover,),
                       ),
                     );
                   }

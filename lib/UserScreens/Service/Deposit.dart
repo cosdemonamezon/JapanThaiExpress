@@ -390,7 +390,7 @@ class _DepositState extends State<Deposit> {
                   builder: (BuildContext context,LoadStatus mode){
                     Widget body ;
                     if(mode==LoadStatus.idle){
-                      body =  Text("ไม่พบรายการ");
+                      //body =  Text("ไม่พบรายการ");
                     }
                     else if(mode==LoadStatus.loading){
                       body =  CircularProgressIndicator();
