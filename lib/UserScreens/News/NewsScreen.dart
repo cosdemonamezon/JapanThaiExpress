@@ -15,7 +15,7 @@ class NewsScreen extends StatefulWidget {
 }
 
 class _NewsScreenState extends State<NewsScreen> {
-  bool isLoading = false;
+  bool isLoading = true;
   List<dynamic> news = [];
   String tokendata = "";
   SharedPreferences prefs;
@@ -33,7 +33,7 @@ class _NewsScreenState extends State<NewsScreen> {
     var token = convert.jsonDecode(tokenString);
     
     setState(() {
-      isLoading = true;
+      //isLoading = true;
       tokendata = token['data']['token'];
     });
 
@@ -52,6 +52,7 @@ class _NewsScreenState extends State<NewsScreen> {
       if (newsdata['code'] == 200) {
         print(newsdata['message']);
         setState(() {
+          isLoading = false;
           news = newsdata['data'];
         });
       } else {
@@ -84,7 +85,11 @@ class _NewsScreenState extends State<NewsScreen> {
         height: height,
         padding: EdgeInsets.symmetric(horizontal: 5),
         color: Colors.grey[200],
-        child: Column(
+        child: isLoading == true ?
+        Center(
+          child: CircularProgressIndicator(),
+        ) 
+        :Column(
           children: [
             SizedBox(height: 20,),
             Container(
@@ -101,15 +106,7 @@ class _NewsScreenState extends State<NewsScreen> {
                     ),
                   );
                 },
-                // children: [
-                //   SizedBox(height: 5,),
-                //   newsCard(
-                //     "assets/mlkp5.jpg",
-                //     "偽サイト・偽アカウントにご注意",
-                //     "ミルクで養う「やわらか美肌」！美容成分たっぷりの万能型うるおいミルク☆ 【ポイント5倍】乳液 大容量 保湿 敏感肌 先行導入 EGF プラセンタ ボディミルク"
-                //   ),
-                //   SizedBox(height: 5,),
-                // ],
+                
               ),
             ),
           ],
