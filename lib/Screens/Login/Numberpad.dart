@@ -36,7 +36,7 @@ class _NumberpadState extends State<Numberpad> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 50.0),
+      padding: EdgeInsets.symmetric(horizontal: 22.0),
       child: Column(
         children: [
           Preview(text: number, length: widget.length),
@@ -95,7 +95,7 @@ class _NumberpadState extends State<Numberpad> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               NumpadButton(
-                haveBorder: true,
+                haveBorder: false,
                 icon: Icons.fingerprint,
                 onPressed: () => authenfigerscan(),
               ),
@@ -104,7 +104,7 @@ class _NumberpadState extends State<Numberpad> {
                 onPressed: () => setValue('0'),
               ),
               NumpadButton(
-                haveBorder: true,
+                haveBorder: false,
                 icon: Icons.backspace,
                 onPressed: () => backspace(number),
               ),

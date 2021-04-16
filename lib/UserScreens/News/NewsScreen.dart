@@ -42,7 +42,7 @@ class _NewsScreenState extends State<NewsScreen> {
       url,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': tokendata
+        'Authorization': token['data']['token']
       }
     );
     if (response.statusCode == 200) {
@@ -66,6 +66,8 @@ class _NewsScreenState extends State<NewsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text("News"),
@@ -78,28 +80,40 @@ class _NewsScreenState extends State<NewsScreen> {
             color: Colors.white,)
         ),
       ),
-      body: ListView.builder(
-        shrinkWrap: true,
-        itemCount: news.length,
-        itemBuilder: (BuildContext context, int index){
-          return Padding(
-            padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-            child: newsCard(
-              news[index]['photo'],
-              news[index]['title'],
-              news[index]['detail']
+      body: Container(
+        height: height,
+        padding: EdgeInsets.symmetric(horizontal: 5),
+        color: Colors.grey[200],
+        child: Column(
+          children: [
+            SizedBox(height: 20,),
+            Container(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: news.length,
+                itemBuilder: (BuildContext context, int index){
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                    child: newsCard(
+                      news[index]['photo']==null?'https://picsum.photos/200/300' :news[index]['photo'],
+                      news[index]['title'],
+                      news[index]['detail']
+                    ),
+                  );
+                },
+                // children: [
+                //   SizedBox(height: 5,),
+                //   newsCard(
+                //     "assets/mlkp5.jpg",
+                //     "偽サイト・偽アカウントにご注意",
+                //     "ミルクで養う「やわらか美肌」！美容成分たっぷりの万能型うるおいミルク☆ 【ポイント5倍】乳液 大容量 保湿 敏感肌 先行導入 EGF プラセンタ ボディミルク"
+                //   ),
+                //   SizedBox(height: 5,),
+                // ],
+              ),
             ),
-          );
-        },
-        // children: [
-        //   SizedBox(height: 5,),
-        //   newsCard(
-        //     "assets/mlkp5.jpg",
-        //     "偽サイト・偽アカウントにご注意",
-        //     "ミルクで養う「やわらか美肌」！美容成分たっぷりの万能型うるおいミルク☆ 【ポイント5倍】乳液 大容量 保湿 敏感肌 先行導入 EGF プラセンタ ボディミルク"
-        //   ),
-        //   SizedBox(height: 5,),
-        // ],
+          ],
+        ),
       ),
       bottomNavigationBar: NavigationBar(),
     );
@@ -107,9 +121,9 @@ class _NewsScreenState extends State<NewsScreen> {
 
   Container newsCard(String img, String title, String subtitle) {
     return Container(
-      height: 150,
+      height: 160,
       decoration: BoxDecoration(
-        color: kInputSearchColor,
+        color: kFontPrimaryColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(18),
           topRight: Radius.circular(18),
@@ -138,7 +152,7 @@ class _NewsScreenState extends State<NewsScreen> {
           child: Row(
             children: [
               Container(
-                height: 100,
+                height: 120,
                 width: 100,
                 decoration: BoxDecoration(
                   //color: Colors.red,
@@ -149,7 +163,7 @@ class _NewsScreenState extends State<NewsScreen> {
                     bottomRight: Radius.circular(18),
                   ),
                   image: DecorationImage(
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                     image: NetworkImage(img),
                   ),
                 ),
@@ -163,7 +177,7 @@ class _NewsScreenState extends State<NewsScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 10,),
                       child: Text(
                         title,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: kFontPrimaryColor),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: kTextButtonColor),
                       ),
                     ),
                     Padding(

@@ -428,7 +428,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         FormBuilderTextField(
                           name: 'password',
                           obscureText: true,
-                          maxLength: 8,
                           decoration: InputDecoration(
                               //border: InputBorder.none,
                               border: OutlineInputBorder(),

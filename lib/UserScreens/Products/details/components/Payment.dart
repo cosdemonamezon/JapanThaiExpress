@@ -1,3 +1,4 @@
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
 
 class Payment extends StatefulWidget {
@@ -172,7 +173,9 @@ class _PaymentState extends State<Payment> {
                       ),
                       FlatButton(
                         color: Color(0xffdd4b39),
-                        onPressed: () {},
+                        onPressed: () {
+                          MyNavigator.goToMember(context);
+                        },
                         shape: StadiumBorder(),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
