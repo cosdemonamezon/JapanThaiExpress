@@ -69,6 +69,7 @@ class _WalletScreenState extends State<WalletScreen> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text("Wallet"),
@@ -87,11 +88,13 @@ class _WalletScreenState extends State<WalletScreen> {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    stops: [0.2, 0.3, 0.5, 0.8],
-                    colors: _backgroundColor)),
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                stops: [0.2, 0.3, 0.5, 0.8],
+                colors: _backgroundColor
+              )
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,9 +118,10 @@ class _WalletScreenState extends State<WalletScreen> {
                     Text(
                       'James Cashman',
                       style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                        fontSize: 24,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold
+                      ),
                     )
                   ],
                 ),
@@ -125,22 +129,27 @@ class _WalletScreenState extends State<WalletScreen> {
                   height: 400.0,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      color: _borderContainer,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15))),
+                    color: _borderContainer,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15)
+                    )
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15),
-                              topRight: Radius.circular(15)),
-                          gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              stops: [0.2, 0.4, 0.6, 0.8],
-                              colors: _actionContainerColor)),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15)
+                        ),
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          stops: [0.2, 0.4, 0.6, 0.8],
+                          colors: _actionContainerColor
+                        )
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -188,7 +197,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     );
                                   },
                                   child: _actionList(
-                                      'assets/images/ic_send.png', 'Send Money'),
+                                    'assets/images/ic_send.png', 'Send Money'),
                                 ),
                                 GestureDetector(
                                   onTap: (){

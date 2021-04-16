@@ -1,3 +1,4 @@
+import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:flutter/material.dart';
 
 class WalletDetail extends StatefulWidget {
@@ -30,214 +31,87 @@ class _WalletDetailState extends State<WalletDetail> {
               Tab(
                 child: Align(
                   alignment: Alignment.center,
-                  child: Text("หน้าบันทึกข้อมูล"),
+                  child: Text("รายการประวัติ"),
                 ),
               ),
               Tab(
                 child: Align(
                   alignment: Alignment.center,
-                  child: Text("รายการประวัติ"),
+                  child: Text("หน้าบันทึกข้อมูล"),
                 ),
               ),
               
             ]
           ),
         ),
-        body: TabBarView(
-                  
-            children: [
+        body: TabBarView(                  
+          children: [
+            Container(
+              child: ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                children: [
+                  Card(
+                    child: ListTile(
+                      leading: Icon(Icons.person, color: Color(0xffdd4b39),size: 40.0,),
+                      title: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("โอนเงิน :"),
+                              Text("300 Yen")
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text("18:30 น."),                                
+                            ],
+                          ),
+                          Divider(
+                            height: 2,
+                            thickness: 3,
+                          ),
+                        ],
+                      ),
+                      subtitle: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("ชื่อบัญชี"),
+                              Text("JP 123456789")
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text("วันที่ 18/02/2021"),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+
+                    
+                ],
+              ),
+            ),
+            Container(
+              child: ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                children: [
+                  Icon(Icons.ac_unit)
+                ],
+              ),
+            ),
               
-              Container(
-                child: ListView(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                  children: [
-                    Icon(Icons.ac_unit)
-                  ],
-                ),
-              ),
-              Container(
-                child: ListView(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                  children: [
-                    Card(
-                      child: ListTile(
-                        leading: Icon(Icons.person, color: Color(0xffdd4b39),size: 40.0,),
-                        title: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("โอนเงิน :"),
-                                Text("300 Yen")
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text("18:30 น."),                                
-                              ],
-                            ),
-                            Divider(
-                                  height: 2,
-                                  thickness: 3,
-                                ),
-                          ],
-                        ),
-                        subtitle: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("ชื่อบัญชี"),
-                                Text("JP 123456789")
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text("วันที่ 18/02/2021"),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    Card(
-                      child: ListTile(
-                        leading: Icon(Icons.person, color: Color(0xffdd4b39),size: 40.0,),
-                        title: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("โอนเงิน :"),
-                                Text("1300 Yen")
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text("18:30 น."),                                
-                              ],
-                            ),
-                            Divider(
-                                  height: 2,
-                                  thickness: 3,
-                                ),
-                          ],
-                        ),
-                        subtitle: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("ชื่อบัญชี"),
-                                Text("JP 123456789")
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text("วันที่ 17/02/2021"),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    Card(
-                      child: ListTile(
-                        leading: Icon(Icons.person, color: Color(0xffdd4b39),size: 40.0,),
-                        title: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("โอนเงิน :"),
-                                Text("400 Yen")
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text("18:30 น."),                                
-                              ],
-                            ),
-                            Divider(
-                                  height: 2,
-                                  thickness: 3,
-                                ),
-                          ],
-                        ),
-                        subtitle: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("ชื่อบัญชี"),
-                                Text("JP 123456789")
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text("วันที่ 16/02/2021"),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    Card(
-                      child: ListTile(
-                        leading: Icon(Icons.person, color: Color(0xffdd4b39),size: 40.0,),
-                        title: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("โอนเงิน :"),
-                                Text("800 Yen")
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text("18:30 น."),                                
-                              ],
-                            ),
-                            Divider(
-                                  height: 2,
-                                  thickness: 3,
-                                ),
-                          ],
-                        ),
-                        subtitle: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("ชื่อบัญชี"),
-                                Text("JP 123456789")
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text("วันที่ 15/02/2021"),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          ],
         ),
+        bottomNavigationBar: NavigationBar(),
+      ),
       
     );
   }
