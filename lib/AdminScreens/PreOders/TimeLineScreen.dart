@@ -75,7 +75,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                     child: Row(
                       children: [
                         Text(
-                          "My Wallet",
+                          "Pre Orders",
                           style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
@@ -95,7 +95,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Text(
-                              "3,190.00",
+                              "ตุ๊กตา",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 35,
@@ -114,7 +114,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Text(
-                              "USD",
+                              "2 Item",
                               style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18,

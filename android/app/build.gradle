@@ -21,7 +21,9 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+// apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 apply plugin: 'com.android.application'
+// apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
@@ -37,17 +39,21 @@ android {
     }
 
     defaultConfig {
+        multiDexEnabled true
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.JapanThaiExpress"
-        minSdkVersion 20
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
     }
 
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
+            minifyEnabled true
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }
@@ -59,5 +65,10 @@ flutter {
 }
 
 dependencies {
+    implementation platform('com.google.firebase:firebase-bom:27.0.0')
+    implementation 'com.google.firebase:firebase-analytics'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compile 'com.android.support:multidex:1.0.3'
+    implementation 'com.google.android.gms:play-services-tagmanager:17.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
 }

@@ -40,6 +40,10 @@ class MyNavigator {
   static void goToTimelineOrders(BuildContext context) {
     Navigator.pushNamed(context, '/timelineorders');
   }
+
+  static void goToTimelinepurchaseOrders(BuildContext context) {
+    Navigator.pushNamed(context, '/timelineorderspurchase');
+  }
   // static void goToLoginByPin(BuildContext context, arg) {
   //   Navigator.pushNamed(context, '/pinverify', arguments: arg);
   // }
@@ -74,7 +78,7 @@ class MyNavigator {
 
   static void goToService(BuildContext context) {
     Navigator.pushNamed(context, "/service");
-  }  
+  }
 
   static void goToReceiveMoney(BuildContext context) {
     Navigator.pushNamed(context, "/receivemoney");

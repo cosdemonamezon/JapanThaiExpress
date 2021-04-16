@@ -99,6 +99,11 @@ class _PreoderScreenState extends State<PreoderScreen> {
           elevation: 0,
           centerTitle: true,
           title: Text("PreOrders"),
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context, true);
+              }),
           bottom: TabBar(
               labelColor: Colors.redAccent,
               unselectedLabelColor: Colors.white,
@@ -125,7 +130,7 @@ class _PreoderScreenState extends State<PreoderScreen> {
         ),
         body: TabBarView(
           children: [
-            Expanded(
+            SingleChildScrollView(
               // width: double.infinity,
               child: Column(
                 children: [

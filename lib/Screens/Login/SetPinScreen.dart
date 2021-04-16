@@ -70,7 +70,7 @@ class _SetPinState extends State<SetPinScreen> {
               'pin': number,
             }));
         if (response.statusCode == 200) {
-          if (body['code'] == 200) {
+          if (body['code'] == 200 || body['code'] == 999) {
             if (body['data']['type'] == "admin")
               MyNavigator.goToAdmin(context);
             else

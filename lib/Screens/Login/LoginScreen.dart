@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:device_info/device_info.dart';
 import 'dart:convert' as convert;
+import 'dart:convert' show json;
 import 'package:http/http.dart' as http;
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,8 +17,22 @@ import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/utils/japanexpress.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:JapanThaiExpress/widgets/SocialIcon.dart';
+import 'package:JapanThaiExpress/widgets/CustomIcons.dart';
+
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../utils/my_navigator.dart';
+
+GoogleSignIn _googleSignIn = GoogleSignIn(
+  // Optional clientId
+  // clientId: '479882132969-9i9aqik3jfjd7qhci1nqf0bm2g71rm1u.apps.googleusercontent.com',
+  scopes: <String>[
+    'email',
+    'https://www.googleapis.com/auth/contacts.readonly',
+  ],
+);
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -33,10 +48,140 @@ class _LoginScreenState extends State<LoginScreen> {
   String deviceVersion;
   String identifier;
 
+  bool _isSelected = false;
+
+  GoogleSignInAccount _currentUser;
+  String _contactText = '';
+
+  static final FacebookLogin facebookSignIn = new FacebookLogin();
+
+  Future<Null> _logOutFacebook() async {
+    await facebookSignIn.logOut();
+    _showMessage('Logged out.');
+  }
+
+  Future<Null> _loginFacebook() async {
+    final FacebookLoginResult result =
+        await facebookSignIn.logIn(['email', 'public_profile']);
+
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        _showMessage('''
+         Logged in!
+         
+         Token: ${accessToken.token}
+         User id: ${accessToken.userId}
+         Expires: ${accessToken.expires}
+         Permissions: ${accessToken.permissions}
+         Declined permissions: ${accessToken.declinedPermissions}
+         ''');
+
+        final graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${accessToken.token}');
+
+        final Map<String, dynamic> facebookdata =
+            convert.jsonDecode(graphResponse.body);
+        _handleSubmittedSocial(
+            facebookdata['first_name'],
+            facebookdata['last_name'],
+            facebookdata['email'],
+            facebookdata['id'],
+            'facebook',
+            facebookdata['picture']['data']['url']);
+
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        _showMessage('Login cancelled by the user.');
+        break;
+      case FacebookLoginStatus.error:
+        _showMessage('Something went wrong with the login process.\n'
+            'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        break;
+    }
+  }
+
+  Future<void> _handleGetContact(GoogleSignInAccount user) async {
+    setState(() {
+      _contactText = "Loading contact info...";
+    });
+    final http.Response response = await http.get(
+      Uri.parse('https://people.googleapis.com/v1/people/me/connections'
+          '?requestMask.includeField=person.names'),
+      headers: await user.authHeaders,
+    );
+    if (response.statusCode != 200) {
+      setState(() {
+        _contactText = "People API gave a ${response.statusCode} "
+            "response. Check logs for details.";
+      });
+      print('People API ${response.statusCode} response: ${response.body}');
+      return;
+    }
+    final Map<String, dynamic> data = json.decode(response.body);
+    final String namedContact = _pickFirstNamedContact(data);
+    setState(() {
+      if (namedContact != null) {
+        _contactText = "I see you know $namedContact!";
+      } else {
+        _contactText = "No contacts to display.";
+      }
+    });
+  }
+
+  String _pickFirstNamedContact(Map<String, dynamic> data) {
+    final List<dynamic> connections = data['connections'];
+    final Map<String, dynamic> contact = connections.firstWhere(
+      (dynamic contact) => contact['names'] != null,
+      orElse: () => null,
+    );
+    if (contact != null) {
+      final Map<String, dynamic> name = contact['names'].firstWhere(
+        (dynamic name) => name['displayName'] != null,
+        orElse: () => null,
+      );
+      if (name != null) {
+        return name['displayName'];
+      }
+    }
+    return null;
+  }
+
+  Future<void> _loginGoogle() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> _handleSignOut() => _googleSignIn.disconnect();
+
+  void _showMessage(String message) {
+    print(message);
+  }
+
   SharedPreferences prefs;
   _initPrefs() async {
     prefs = await SharedPreferences.getInstance();
   }
+
+  Widget radioButton(bool isSelected) => Container(
+        width: 16.0,
+        height: 16.0,
+        padding: EdgeInsets.all(2.0),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(width: 2.0, color: Colors.black)),
+        child: isSelected
+            ? Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration:
+                    BoxDecoration(shape: BoxShape.circle, color: Colors.black),
+              )
+            : Container(),
+      );
 
   Future<void> _handleSubmitted() async {
     final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
@@ -112,11 +257,99 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<void> _handleSubmittedSocial(String fname, String lname, String email,
+      String uid, String provider, String imageurl) async {
+    final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
+    try {
+      if (Platform.isAndroid) {
+        var build = await deviceInfoPlugin.androidInfo;
+        deviceName = build.model;
+        deviceVersion = build.version.toString();
+        identifier = build.androidId; //UUID for Android
+      } else if (Platform.isIOS) {
+        var data = await deviceInfoPlugin.iosInfo;
+        deviceName = data.name;
+        deviceVersion = data.systemVersion;
+        identifier = data.identifierForVendor; //UUID for iOS
+      }
+
+      var status = await OneSignal.shared.getPermissionSubscriptionState();
+      String playerId = status.subscriptionStatus.userId;
+
+      var url = pathAPI + 'api/login_social';
+      var response = await http.post(url,
+          headers: {'Content-Type': 'application/json'},
+          body: convert.jsonEncode({
+            'userId': uid,
+            'fname': fname,
+            'lname': lname,
+            'email': email,
+            'type': provider,
+            'device': identifier,
+            'noti': playerId,
+          }));
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> body = convert.jsonDecode(response.body);
+        await prefs.setString('token', response.body);
+        if (body['code'] == 200) {
+          if (body['data']['type'] == "admin")
+            MyNavigator.goToAdmin(context);
+          else
+            MyNavigator.goToMember(context);
+          return false;
+        } else if (body['code'] == 999) {
+          MyNavigator.goToSetPin(context);
+          return false;
+        } else {
+          var feedback = convert.jsonDecode(response.body);
+          Flushbar(
+            title: '${feedback['message']}',
+            message: 'เกิดข้อผิดพลาดจากระบบ : ${feedback['code']}',
+            backgroundColor: Colors.redAccent,
+            icon: Icon(
+              Icons.error,
+              size: 28.0,
+              color: Colors.white,
+            ),
+            duration: Duration(seconds: 3),
+            leftBarIndicatorColor: Colors.blue[300],
+          )..show(context);
+        }
+      } else {
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'เกิดข้อผิดพลาดจากระบบ : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+      }
+    } on PlatformException {
+      print('Failed to get platform version');
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _initPrefs();
+
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+      setState(() {
+        _currentUser = account;
+      });
+      if (_currentUser != null) {
+        _handleGetContact(_currentUser);
+      }
+    });
+    _googleSignIn.signInSilently();
   }
 
   @override
@@ -255,7 +488,51 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontSize: 14, fontWeight: FontWeight.w500))),
                   ),
                   _divider(),
-                  //_facebookButton(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SocialIcon(
+                        colors: [
+                          Color(0xFF102397),
+                          Color(0xFF187adf),
+                          Color(0xFF00eaf8),
+                        ],
+                        iconData: CustomIcons.facebook,
+                        onPressed: () {
+                          _loginFacebook();
+                        },
+                      ),
+                      SocialIcon(
+                        colors: [
+                          Color(0xFFff4f38),
+                          Color(0xFFff355d),
+                        ],
+                        iconData: CustomIcons.googlePlus,
+                        onPressed: () {
+                          _loginGoogle();
+                        },
+                      ),
+                      SocialIcon(
+                        colors: [
+                          Color(0xFF17ead9),
+                          Color(0xFF6078ea),
+                        ],
+                        iconData: CustomIcons.twitter,
+                        onPressed: () {},
+                      ),
+                      SocialIcon(
+                        colors: [
+                          Color(0xFF00c6fb),
+                          Color(0xFF005bea),
+                        ],
+                        iconData: CustomIcons.linkedin,
+                        onPressed: () {},
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
                   // SizedBox(height: height * .045),
                   _createAccountLabel(),
                 ],

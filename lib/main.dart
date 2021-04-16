@@ -12,6 +12,7 @@ import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRCodePreview.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePurchaseScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/News/DetailNews.dart';
@@ -33,6 +34,9 @@ import 'AdminScreens/Home/HomeScreen.dart';
 import 'AdminScreens/Home/HomeScreen.dart';
 import 'Screens/Login/ForgotScreen.dart';
 import 'Screens/Register/RegisterScreen.dart';
+
+import 'package:JapanThaiExpress/LoginFB.dart';
+import 'package:JapanThaiExpress/LoginGoogle.dart';
 
 String token;
 var tokenObj;
@@ -107,6 +111,7 @@ var routes = <String, WidgetBuilder>{
   "/depositdetail": (BuildContext context) => DepositDetailScreen(),
   "/qrcodepreview": (BuildContext context) => QRCodePreview(),
   "/timelineorders": (BuildContext context) => TimeLineScreen(),
+  "/timelineorderspurchase": (BuildContext context) => TimeLinePurchaseScreen(),
   "/setpin": (BuildContext context) => SetPinScreen(),
 };
 
@@ -121,7 +126,7 @@ class MyApp extends StatelessWidget {
     ]);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'JapnExpress',
+        title: 'JapanThaiExpress',
         theme: ThemeData(
           //primarySwatch: Colors.grey,
           primaryColor: primaryColor,

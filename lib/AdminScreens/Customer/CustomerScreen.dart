@@ -10,35 +10,34 @@ class CustomerScreen extends StatefulWidget {
 }
 
 class _CustomerScreenState extends State<CustomerScreen> {
+  TextEditingController editingController = TextEditingController();
+
   List<Person> persons = [
     Person(
-        name: 'Bill Will',
-        profileImg: 'assets/pic-1.png',
-        bio: "Software Developer"),
+        name: 'ธวัชชัย มุ้งภูเขียว',
+        profileImg:
+            'https://scontent.fbkk22-6.fna.fbcdn.net/v/t31.18172-8/170037_103317113078424_7910952_o.jpg?_nc_cat=102&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=jq4Aka_E47kAX8bzhi5&_nc_ht=scontent.fbkk22-6.fna&oh=15ce27b68da3a41ea3d1d0c0ac8135dc&oe=60935BE0',
+        bio: "Tel : 094826462"),
     Person(
-        name: 'Andy Smith', profileImg: 'assets/pic-2.png', bio: "UI Designer"),
+        name: 'ผาณิต ปิ่นทอง',
+        profileImg:
+            'https://scontent.fbkk22-3.fna.fbcdn.net/v/t1.6435-9/164603254_10208575861031918_4402544809188298525_n.jpg?_nc_cat=111&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=HUUbZKro7ZUAX9BWCDU&_nc_ht=scontent.fbkk22-3.fna&oh=dd2b97db7f33e16ce484f72d3415d321&oe=60924092',
+        bio: "Tel : 094725253"),
     Person(
-        name: 'Creepy Story',
-        profileImg: 'assets/pic-3.png',
-        bio: "Software Tester"),
+        name: 'นิวัฒน์ พุ่มกลิ่น',
+        profileImg:
+            'https://scontent.fbkk22-3.fna.fbcdn.net/v/t1.18169-1/p200x200/14670814_1160375137357037_2111500651625118280_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=7206a8&_nc_ohc=TReZBgAN8IkAX_nzeuq&_nc_ht=scontent.fbkk22-3.fna&tp=6&oh=b6e7314bf199e781176e2063d3581593&oe=60947C7A',
+        bio: "Tel : 094725111"),
     Person(
-        name: 'Sam Sony',
-        profileImg: 'assets/pic-4.png',
-        bio: "System Engineer"),
+        name: 'ภานุวัฒน์ ชุรี',
+        profileImg:
+            'https://scontent.fbkk22-1.fna.fbcdn.net/v/t1.6435-9/84330606_3054240611293119_7461998935083581440_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=qAPgv2YrfHwAX_92UC5&_nc_oc=AQmlnEcvgiyqDULnLG_G0v3_MLAzRtbGRj1QEofqJCb8flFDhc6Nf3zoaA0DCXUwqiWiR9tAzGtmKzX0xu5yI1pm&_nc_ht=scontent.fbkk22-1.fna&oh=a083379341a5cc85e1c52637b81deb56&oe=609398CB',
+        bio: "Tel : 094725054"),
     Person(
-        name: 'Bill Will',
-        profileImg: 'assets/pic-1.png',
-        bio: "Software Developer"),
-    Person(
-        name: 'Andy Smith', profileImg: 'assets/pic-2.png', bio: "UI Designer"),
-    Person(
-        name: 'Creepy Story',
-        profileImg: 'assets/pic-3.png',
-        bio: "Software Tester"),
-    Person(
-        name: 'Sam Sony',
-        profileImg: 'assets/pic-4.png',
-        bio: "System Engineer")
+        name: 'พงศกร วิชัยยุทธ',
+        profileImg:
+            'https://scontent.fbkk22-1.fna.fbcdn.net/v/t1.6435-9/86350932_2807434042637336_6205288068300144640_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=-IU3JNbbmi4AX8LNhk8&_nc_ht=scontent.fbkk22-1.fna&oh=72f398cd426e78eabbaceaf3b224b2b7&oe=609261FC',
+        bio: "Tel : 094725302"),
   ];
 
   @override
@@ -46,17 +45,36 @@ class _CustomerScreenState extends State<CustomerScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Customer"),
+        title: Text("Customers"),
       ),
-      body: Container(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+      body: SingleChildScrollView(
+        child: Column(
           children: [
-            Column(
-                children: persons.map((p) {
-              return personDetailCard(p);
-            }).toList())
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: TextField(
+                onChanged: (value) {
+                  setState(() {});
+                },
+                controller: editingController,
+                decoration: InputDecoration(
+                    labelText: "Search",
+                    hintText: "Search",
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)))),
+              ),
+            ),
+            ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.only(left: 20.0, right: 20.0),
+              children: [
+                Column(
+                    children: persons.map((p) {
+                  return personDetailCard(p);
+                }).toList())
+              ],
+            ),
           ],
         ),
       ),
@@ -83,7 +101,7 @@ Widget personDetailCard(Person) {
                       shape: BoxShape.circle,
                       image: new DecorationImage(
                           fit: BoxFit.cover,
-                          image: AssetImage(Person.profileImg)))),
+                          image: NetworkImage(Person.profileImg)))),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

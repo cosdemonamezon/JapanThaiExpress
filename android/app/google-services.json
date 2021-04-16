@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "613708100903",
+    "project_id": "japanthaiexpress-3f9e4",
+    "storage_bucket": "japanthaiexpress-3f9e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613708100903:android:a065520f8090bac39e2502",
+        "android_client_info": {
+          "package_name": "com.example.JapanThaiExpress"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613708100903-4lc1s7do1l7hlcq0nu39jt8lqhvdo3or.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.JapanThaiExpress",
+            "certificate_hash": "4a3ee07d535c8b925a54556ae458ca465b094098"
+          }
+        },
+        {
+          "client_id": "613708100903-h4n9ldhg68lka02frph9l3pm3q04b3tv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoujux48WerbLAg0Ze0puoce6P_Oz2dM0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613708100903-h4n9ldhg68lka02frph9l3pm3q04b3tv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
