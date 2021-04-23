@@ -1,6 +1,6 @@
 import 'package:JapanThaiExpress/UserScreens/Profile/components/Bank.dart';
 import 'package:flutter/material.dart';
-
+import 'package:JapanThaiExpress/UserScreens/Profile/Myaccount.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
 
@@ -16,7 +16,9 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "My Account",
             icon: "assets/icons/User Icon.svg",
-            press: () => {},
+            press: () {Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Myaccount()));
+              },
           ),
           ProfileMenu(
             text: "จัดการบัญชี",
