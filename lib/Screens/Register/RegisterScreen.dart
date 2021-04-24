@@ -43,13 +43,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(height: 40),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return Test();
-                    }));
-                    // Navigator.push(
-                    // context, MaterialPageRoute(builder: (context) => Registration())
-                    // );
+                   
+                     Navigator.push(
+                     context, MaterialPageRoute(builder: (context) => Registration())
+                     );
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,

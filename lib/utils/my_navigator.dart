@@ -95,4 +95,7 @@ class MyNavigator {
   static void goToMyaccount(BuildContext context) {
     Navigator.pushNamed(context, '/myaccount');
   }
+  static void goToTest(BuildContext context) {
+    Navigator.pushNamed(context, '/testregis');
+  }
 }

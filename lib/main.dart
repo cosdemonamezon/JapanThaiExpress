@@ -7,6 +7,7 @@ import 'package:JapanThaiExpress/Screens/Login/intro_screen.dart';
 import 'package:JapanThaiExpress/Screens/Login/home_screen.dart';
 import 'package:JapanThaiExpress/Screens/Register/RegisterScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/ForgotScreen.dart';
+import 'package:JapanThaiExpress/Screens/Register/testregis.dart';
 
 import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
@@ -119,6 +120,7 @@ var routes = <String, WidgetBuilder>{
   "/setpin": (BuildContext context) => SetPinScreen(),
   "/auction": (BuildContext context) => Auction(),
   "/myaccount": (BuildContext context) => Myaccount(),
+  "/testregis":(BuildContext context) => testregis(),
 };
 
 class MyApp extends StatelessWidget {
