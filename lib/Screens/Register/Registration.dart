@@ -1,23 +1,24 @@
 import 'package:JapanThaiExpress/Screens/Register/OtpScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter/material.dart';
 
 class Registration extends StatefulWidget {
-  String name,lastname,password,repassword,email;
-  
+  String name, lastname, password, repassword, email;
+
   Registration({Key key}) : super(key: key);
 
   @override
   _RegistrationState createState() => _RegistrationState();
 }
 
+//final _formKey = GlobalKey<FormState>();
+
 class _RegistrationState extends State<Registration> {
   @override
   Widget build(BuildContext context) {
-    String _name,_lastname,_password,_repassword,_email;
-    TextEditingController password = TextEditingController();
-  TextEditingController repassword = TextEditingController();
-    final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+    final _formKey = GlobalKey<FormBuilderState>();
+    String _name, _lastname, _password, _repassword, _email;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
@@ -33,40 +34,130 @@ class _RegistrationState extends State<Registration> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: height * .01),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "ชื่อ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      SizedBox(height: 10),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.person),
-                            labelText: 'fullname',
-                            //border: InputBorder.none,
-                            border: OutlineInputBorder(),
-                            fillColor: Color(0xfff3f3f4),
-                            filled: true),
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return "please enter your name";
-                          }
-                          return null;
-                        },
-                        onSaved: (String name){
-                          _name=name;
-                        },
-                      ),
-                    ],
+                FormBuilder(
+                  key: _formKey,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "ชื่อ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                            name: 'name',
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.person),
+                                labelText: 'Fullname',
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ])),
+                        Text(
+                          "นามสกุล",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                            name: 'lname',
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.person),
+                                labelText: 'Lastname',
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ])),
+                        Text(
+                          "อีเมล์",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                            name: 'email',
+                             keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.email),
+                                labelText: 'Email',
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ])),
+                        Text(
+                          "เบอร์โทรศัพท์",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                            name: 'tel',
+                             keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.phone),
+                                labelText: 'Tel',
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ])),
+                        Text(
+                          "รหัสผ่าน",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                            name: 'password',
+                             obscureText: true,
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.lock),
+                                labelText: 'Password',
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ])),
+                        Text(
+                          "ยืนยันรหัสผ่าน",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                            name: 'confirmpassword',
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.lock),
+                                labelText: 'Confirm Password',
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ])),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(height: 5),
-                Container(
+                /*Container(
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,7 +236,7 @@ class _RegistrationState extends State<Registration> {
                             fontWeight: FontWeight.bold, fontSize: 15),
                       ),
                       SizedBox(height: 10),
-                      TextFormField(
+                       TextFormField(
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               prefixIcon: Icon(Icons.phone),
@@ -175,6 +266,7 @@ class _RegistrationState extends State<Registration> {
                             fontWeight: FontWeight.bold, fontSize: 15),
                       ),
                       SizedBox(height: 10),
+                      Form(child:
                       TextFormField(
                         obscureText: true,
                         obscuringCharacter: "•",
@@ -189,14 +281,12 @@ class _RegistrationState extends State<Registration> {
                           if (value.isEmpty) {
                             return 'กรุณากรอกรหัสผ่าน';
                           }
-                          if(value.length<10){
-                            return 'Please enter valid password';
-                          }
                           return null;
                         },
                         onSaved: (String password){
                           _password=password;
                         },
+                      ),
                       ),
                     ],
                   ),
@@ -238,7 +328,7 @@ class _RegistrationState extends State<Registration> {
                       ),
                     ],
                   ),
-                ),
+                ),*/
                 // Container(
                 //   margin: EdgeInsets.symmetric(vertical: 5),
                 //   child: Column(
@@ -298,19 +388,8 @@ class _RegistrationState extends State<Registration> {
                 SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
-                    /*if(_formkey.currentState.validate())
-                      {
-                        print("successful");
-
-                        return;
-                      }else{
-                        print("UnSuccessfull");
-                      }*/
-                    // Navigator.push(
-                    //   context, MaterialPageRoute(builder: (context) => SetPin())
-                    // );
-                    //Navigator.push(context,
-                     //   MaterialPageRoute(builder: (context) => OtpScreen()));
+                    final isValid = _formKey.currentState.validate();
+                    print(isValid);
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -336,6 +415,7 @@ class _RegistrationState extends State<Registration> {
                     ),
                   ),
                 ),
+                SizedBox(height: 15),
               ],
             ),
           ),
