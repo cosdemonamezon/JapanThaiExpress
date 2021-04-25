@@ -55,7 +55,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
     });
     var url = pathAPI + 'api/preorder/' + id;
     var response = await http.get(
-      url,
+      Uri.parse(url),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': token['data']['token']
