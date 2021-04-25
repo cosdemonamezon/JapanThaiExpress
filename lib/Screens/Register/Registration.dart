@@ -54,7 +54,8 @@ class _RegistrationState extends State<Registration> {
                                 fillColor: Color(0xfff3f3f4),
                                 filled: true),
                             validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
+                              FormBuilderValidators.required(context,
+                                  errorText: 'กรุณากรอกชื่อ'),
                             ])),
                         SizedBox(height: 10),
                         Text(
@@ -73,7 +74,8 @@ class _RegistrationState extends State<Registration> {
                                 fillColor: Color(0xfff3f3f4),
                                 filled: true),
                             validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
+                              FormBuilderValidators.required(context,
+                                  errorText: 'กรุณากรอกนามสกุล'),
                             ])),
                         SizedBox(height: 10),
                         Text(
@@ -93,7 +95,8 @@ class _RegistrationState extends State<Registration> {
                                 fillColor: Color(0xfff3f3f4),
                                 filled: true),
                             validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
+                              FormBuilderValidators.required(context,
+                                  errorText: 'กรุณากรอกอีเมล'),
                             ])),
                         SizedBox(height: 10),
                         Text(
@@ -113,7 +116,8 @@ class _RegistrationState extends State<Registration> {
                                 fillColor: Color(0xfff3f3f4),
                                 filled: true),
                             validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
+                              FormBuilderValidators.required(context,
+                                  errorText: 'กรุณากรอกหมายเลขโทรศัพท์'),
                             ])),
                         SizedBox(height: 10),
                         Text(
@@ -134,7 +138,13 @@ class _RegistrationState extends State<Registration> {
                                 fillColor: Color(0xfff3f3f4),
                                 filled: true),
                             validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
+                              FormBuilderValidators.required(context,
+                                  errorText: 'กรุณากรอกรหัสผ่าน'),
+                              FormBuilderValidators.equal(
+                                  context,
+                                  _formKey.currentState
+                                      .fields['confirmpassword'].value,
+                                  errorText: 'รหัสผ่านไม่ตรงกัน'),
                             ])),
                         SizedBox(height: 10),
                         Text(
@@ -155,7 +165,13 @@ class _RegistrationState extends State<Registration> {
                                 fillColor: Color(0xfff3f3f4),
                                 filled: true),
                             validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
+                              FormBuilderValidators.required(context,
+                                  errorText: 'กรุณากรอกยืนยันรหัสผ่าน'),
+                              FormBuilderValidators.equal(
+                                  context,
+                                  _formKey
+                                      .currentState.fields['password'].value,
+                                  errorText: 'รหัสผ่านไม่ตรงกัน'),
                             ])),
                       ],
                     ),
@@ -164,8 +180,7 @@ class _RegistrationState extends State<Registration> {
                 SizedBox(height: 20),
                 GestureDetector(
                   onTap: () {
-                    _formKey.currentState.save();
-                    final isValid = _formKey.currentState.validate();
+                    final isValid = _formKey.currentState.saveAndValidate();
                     if (isValid) {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
