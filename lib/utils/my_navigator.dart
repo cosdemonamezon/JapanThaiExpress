@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
 
 class MyNavigator {
   static void goToMain(BuildContext context) {
@@ -37,8 +38,20 @@ class MyNavigator {
     Navigator.pushNamed(context, '/qrcodepreview', arguments: arg);
   }
 
-  static void goToTimelineOrders(BuildContext context) {
-    Navigator.pushNamed(context, '/timelineorders');
+  static void goToTimelineOrders(BuildContext context, arg) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TimeLineScreen(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {"id": "1"},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
   }
 
   static void goToTimelinepurchaseOrders(BuildContext context) {

@@ -270,7 +270,10 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
             children: [
               MaterialButton(
                 onPressed: () {
-                  MyNavigator.goToTimelineOrders(context);
+                  var arg = {
+                    "code": "",
+                  };
+                  MyNavigator.goToTimelineOrders(context, arg);
                 },
                 color: Color(0xffdd4b39),
                 child: Text(
