@@ -116,7 +116,7 @@ class _HelpCenterState extends State<HelpCenter> {
         onTap: (){
           var arg = {
             "title": title, 
-            "subtitle": subtitle,             
+            "subtitle": subtitle,            
           };
           MyNavigator.goToHelpDetail(context, arg);
         },
