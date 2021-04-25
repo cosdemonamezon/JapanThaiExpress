@@ -16,7 +16,7 @@ const order_onTheWay = "assets/images/on_the_way.svg";
 const order_delivered = "assets/images/delivered.svg";
 
 class TimeLineScreen extends StatefulWidget {
-  TimeLineScreen({Key key}) : super(key: key);
+  // TimeLineScreen({Key key, Object argument}) : super(key: key);
 
   @override
   _TimeLineScreenState createState() => _TimeLineScreenState();
@@ -29,12 +29,76 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
   Map<String, dynamic> data = {};
   List<dynamic> notidata = [];
   Map<String, dynamic> readnotidata = {};
-  Map<String, dynamic> numberNoti = {};
+  Map<String, dynamic> dataTimeline = {};
+  String id;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final routeArgs1 =
+          ModalRoute.of(context).settings.arguments as Map<String, String>;
+      id = routeArgs1['id'];
+      print(id);
+      _gettimeline(id);
+    });
+  }
+
+  _gettimeline(String id) async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+
+    setState(() {
+      isLoading = true;
+    });
+    var url = pathAPI + 'api/preorder/' + id;
+    var response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token['data']['token']
+      },
+    );
+    if (response.statusCode == 200) {
+      //print(response.statusCode);
+      final Map<String, dynamic> data = convert.jsonDecode(response.body);
+      //print(notinumber);
+      if (data['code'] == 200) {
+        setState(() {
+          dataTimeline = data;
+          setState(() {
+            isLoading = false;
+          });
+        });
+
+        //print(notidata.length);
+      } else {
+        String title = "ข้อผิดพลาดภายในเซิร์ฟเวอร์";
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => dialogDenied(
+            title,
+            picDenied,
+            context,
+          ),
+        );
+      }
+    } else {
+      final Map<String, dynamic> notinumber = convert.jsonDecode(response.body);
+
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => dialogDenied(
+          notinumber['massage'],
+          picDenied,
+          context,
+        ),
+      );
+    }
   }
 
   @override
@@ -43,7 +107,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Text("Service Orders"),
+        title: Text("สถานะรายการ"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -71,11 +135,11 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                     height: 20,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
+                    padding: EdgeInsets.only(left: 10),
                     child: Row(
                       children: [
                         Text(
-                          "Pre Orders",
+                          "ฝากซื้อสินค้า",
                           style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
@@ -85,20 +149,22 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                     ),
                   ),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            padding: EdgeInsets.only(left: 10),
                             child: Text(
-                              "ตุ๊กตา",
+                              dataTimeline.length > 0
+                                  ? dataTimeline['data']['name']
+                                  : 0,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 35,
+                                  fontSize: 22,
                                   color: kFontPrimaryColor),
                             ),
                           ),
@@ -114,7 +180,9 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Text(
-                              "2 Item",
+                              dataTimeline.length > 0
+                                  ? dataTimeline['data']['qty'] + " รายการ"
+                                  : 0,
                               style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18,
@@ -146,11 +214,11 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                             size: 45,
                           ),
                           Text(
-                            "Admin",
+                            "ร้านค้า",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
-                                color: primaryColor),
+                                color: Colors.black),
                           ),
                         ],
                       ),
@@ -171,11 +239,11 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                             size: 45,
                           ),
                           Text(
-                            "Customer",
+                            "ลูกค้า",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
-                                color: primaryColor),
+                                color: Colors.black),
                           ),
                         ],
                       ),
@@ -187,24 +255,66 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
             SizedBox(
               height: 20,
             ),
+            _divider(),
             TimelineTile(
               topLineStyle: LineStyle(color: Colors.red),
-              bottomLineStyle: LineStyle(color: Colors.red),
+              bottomLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "order" ||
+                              dataTimeline['data']['step'] == "payment" ||
+                              dataTimeline['data']['step'] == "buy" ||
+                              dataTimeline['data']['step'] == "shipping" ||
+                              dataTimeline['data']['step'] == "store_japan" ||
+                              dataTimeline['data']['step'] == "transport" ||
+                              dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
               alignment: TimelineAlign.center,
               isFirst: true,
-              indicatorStyle: const IndicatorStyle(
+              indicatorStyle: IndicatorStyle(
                 width: 20,
-                color: Colors.purple,
+                color: dataTimeline.length > 0
+                    ? dataTimeline['data']['step'] == "new" ||
+                            dataTimeline['data']['step'] == "order" ||
+                            dataTimeline['data']['step'] == "payment" ||
+                            dataTimeline['data']['step'] == "buy" ||
+                            dataTimeline['data']['step'] == "shipping" ||
+                            dataTimeline['data']['step'] == "store_japan" ||
+                            dataTimeline['data']['step'] == "transport" ||
+                            dataTimeline['data']['step'] == "store_thai" ||
+                            dataTimeline['data']['step'] == "overdue" ||
+                            dataTimeline['data']['step'] == "delivery"
+                        ? Colors.red
+                        : Colors.black54
+                    : Colors.black54,
                 indicatorY: 0.2,
                 padding: EdgeInsets.all(8),
               ),
               rightChild: Container(
                 child: Column(
                   children: [
-                    SvgPicture.asset(
-                      order_processed,
-                      height: 50,
-                      width: 50,
+                    Icon(
+                      Icons.directions_boat,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "new" ||
+                                  dataTimeline['data']['step'] == "order" ||
+                                  dataTimeline['data']['step'] == "payment" ||
+                                  dataTimeline['data']['step'] == "buy" ||
+                                  dataTimeline['data']['step'] == "shipping" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_japan" ||
+                                  dataTimeline['data']['step'] == "transport" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_thai" ||
+                                  dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? primaryColor
+                              : Colors.black54
+                          : Colors.black54,
+                      size: 45,
                     ),
                     SizedBox(
                       height: 5,
@@ -228,22 +338,73 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
               ),
             ),
             TimelineTile(
-              topLineStyle: LineStyle(color: Colors.red),
-              bottomLineStyle: LineStyle(color: Colors.red),
+              topLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "order" ||
+                              dataTimeline['data']['step'] == "payment" ||
+                              dataTimeline['data']['step'] == "buy" ||
+                              dataTimeline['data']['step'] == "shipping" ||
+                              dataTimeline['data']['step'] == "store_japan" ||
+                              dataTimeline['data']['step'] == "transport" ||
+                              dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              bottomLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "payment" ||
+                              dataTimeline['data']['step'] == "buy" ||
+                              dataTimeline['data']['step'] == "shipping" ||
+                              dataTimeline['data']['step'] == "store_japan" ||
+                              dataTimeline['data']['step'] == "transport" ||
+                              dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
               alignment: TimelineAlign.center,
-              indicatorStyle: const IndicatorStyle(
+              indicatorStyle: IndicatorStyle(
                 width: 20,
-                color: Colors.yellowAccent,
+                color: dataTimeline.length > 0
+                    ? dataTimeline['data']['step'] == "order" ||
+                            dataTimeline['data']['step'] == "payment" ||
+                            dataTimeline['data']['step'] == "buy" ||
+                            dataTimeline['data']['step'] == "shipping" ||
+                            dataTimeline['data']['step'] == "store_japan" ||
+                            dataTimeline['data']['step'] == "transport" ||
+                            dataTimeline['data']['step'] == "store_thai" ||
+                            dataTimeline['data']['step'] == "overdue" ||
+                            dataTimeline['data']['step'] == "delivery"
+                        ? Colors.red
+                        : Colors.black54
+                    : Colors.black54,
                 padding: EdgeInsets.all(8),
                 indicatorY: 0.3,
               ),
-              rightChild: Container(
+              leftChild: Container(
                 child: Column(
                   children: [
-                    SvgPicture.asset(
-                      order_confirmed,
-                      height: 50,
-                      width: 50,
+                    Icon(
+                      Icons.directions_boat,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "order" ||
+                                  dataTimeline['data']['step'] == "payment" ||
+                                  dataTimeline['data']['step'] == "buy" ||
+                                  dataTimeline['data']['step'] == "shipping" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_japan" ||
+                                  dataTimeline['data']['step'] == "transport" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_thai" ||
+                                  dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? primaryColor
+                              : Colors.black54
+                          : Colors.black54,
+                      size: 45,
                     ),
                     SizedBox(
                       height: 5,
@@ -268,183 +429,76 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
               ),
             ),
             TimelineTile(
-              topLineStyle: LineStyle(color: Colors.red),
-              bottomLineStyle: LineStyle(color: Colors.red),
+              topLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "payment" ||
+                              dataTimeline['data']['step'] == "buy" ||
+                              dataTimeline['data']['step'] == "shipping" ||
+                              dataTimeline['data']['step'] == "store_japan" ||
+                              dataTimeline['data']['step'] == "transport" ||
+                              dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              bottomLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "buy" ||
+                              dataTimeline['data']['step'] == "shipping" ||
+                              dataTimeline['data']['step'] == "store_japan" ||
+                              dataTimeline['data']['step'] == "transport" ||
+                              dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
               alignment: TimelineAlign.center,
-              indicatorStyle: const IndicatorStyle(
+              indicatorStyle: IndicatorStyle(
                 width: 20,
-                color: Colors.redAccent,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
-              leftChild: Container(
-                child: Column(
-                  children: [
-                    SvgPicture.asset(
-                      order_shipped,
-                      height: 50,
-                      width: 50,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Start buying",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "order has been shipped",
-                      style: TextStyle(fontSize: 12, color: Colors.black),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            TimelineTile(
-              topLineStyle: LineStyle(color: Colors.red),
-              bottomLineStyle: LineStyle(color: Colors.red),
-              alignment: TimelineAlign.center,
-              indicatorStyle: const IndicatorStyle(
-                width: 20,
-                color: Colors.lightBlueAccent,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
-              leftChild: Container(
-                child: Column(
-                  children: [
-                    SvgPicture.asset(
-                      order_onTheWay,
-                      height: 50,
-                      width: 50,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Add Tracking No.",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "order in the way",
-                      style: TextStyle(fontSize: 12, color: Colors.black),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            TimelineTile(
-              topLineStyle: LineStyle(color: Colors.red),
-              bottomLineStyle: LineStyle(color: Colors.red),
-              alignment: TimelineAlign.center,
-              indicatorStyle: const IndicatorStyle(
-                width: 20,
-                color: Colors.lightBlueAccent,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
-              leftChild: Container(
-                child: Column(
-                  children: [
-                    SvgPicture.asset(
-                      order_onTheWay,
-                      height: 50,
-                      width: 50,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Add delivery cost ",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "order in the way",
-                      style: TextStyle(fontSize: 12, color: Colors.black),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            TimelineTile(
-              topLineStyle: LineStyle(color: Colors.red),
-              bottomLineStyle: LineStyle(color: Colors.red),
-              alignment: TimelineAlign.center,
-              indicatorStyle: const IndicatorStyle(
-                width: 20,
-                color: Colors.green,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
-              leftChild: Container(
-                child: Column(
-                  children: [
-                    SvgPicture.asset(
-                      order_delivered,
-                      height: 50,
-                      width: 50,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Order to Thailand",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "oh yaa!",
-                      style: TextStyle(fontSize: 12, color: Colors.black),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            TimelineTile(
-              alignment: TimelineAlign.center,
-              isLast: true,
-              indicatorStyle: const IndicatorStyle(
-                width: 20,
-                color: Colors.green,
+                color: dataTimeline.length > 0
+                    ? dataTimeline['data']['step'] == "payment" ||
+                            dataTimeline['data']['step'] == "buy" ||
+                            dataTimeline['data']['step'] == "shipping" ||
+                            dataTimeline['data']['step'] == "store_japan" ||
+                            dataTimeline['data']['step'] == "transport" ||
+                            dataTimeline['data']['step'] == "store_thai" ||
+                            dataTimeline['data']['step'] == "overdue" ||
+                            dataTimeline['data']['step'] == "delivery"
+                        ? Colors.red
+                        : Colors.black54
+                    : Colors.black54,
                 padding: EdgeInsets.all(8),
                 indicatorY: 0.3,
               ),
               rightChild: Container(
                 child: Column(
                   children: [
-                    SvgPicture.asset(
-                      order_delivered,
-                      height: 50,
-                      width: 50,
+                    Icon(
+                      Icons.directions_boat,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "payment" ||
+                                  dataTimeline['data']['step'] == "buy" ||
+                                  dataTimeline['data']['step'] == "shipping" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_japan" ||
+                                  dataTimeline['data']['step'] == "transport" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_thai" ||
+                                  dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? primaryColor
+                              : Colors.black54
+                          : Colors.black54,
+                      size: 45,
                     ),
                     SizedBox(
                       height: 5,
                     ),
                     Text(
-                      "Delivered",
+                      "Payment",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -454,7 +508,497 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                       height: 5,
                     ),
                     Text(
-                      "oh yaa!",
+                      "order has been confirmed",
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            TimelineTile(
+              topLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "buy" ||
+                              dataTimeline['data']['step'] == "shipping" ||
+                              dataTimeline['data']['step'] == "store_japan" ||
+                              dataTimeline['data']['step'] == "transport" ||
+                              dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              bottomLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "shipping" ||
+                              dataTimeline['data']['step'] == "store_japan" ||
+                              dataTimeline['data']['step'] == "transport" ||
+                              dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              alignment: TimelineAlign.center,
+              indicatorStyle: IndicatorStyle(
+                width: 20,
+                color: dataTimeline.length > 0
+                    ? dataTimeline['data']['step'] == "buy" ||
+                            dataTimeline['data']['step'] == "shipping" ||
+                            dataTimeline['data']['step'] == "store_japan" ||
+                            dataTimeline['data']['step'] == "transport" ||
+                            dataTimeline['data']['step'] == "store_thai" ||
+                            dataTimeline['data']['step'] == "overdue" ||
+                            dataTimeline['data']['step'] == "delivery"
+                        ? Colors.red
+                        : Colors.black54
+                    : Colors.black54,
+                padding: EdgeInsets.all(8),
+                indicatorY: 0.3,
+              ),
+              leftChild: Container(
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.directions_boat,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "buy" ||
+                                  dataTimeline['data']['step'] == "shipping" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_japan" ||
+                                  dataTimeline['data']['step'] == "transport" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_thai" ||
+                                  dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? primaryColor
+                              : Colors.black54
+                          : Colors.black54,
+                      size: 45,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Production order",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Colors.black),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "order has been confirmed",
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            TimelineTile(
+              topLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "shipping" ||
+                              dataTimeline['data']['step'] == "store_japan" ||
+                              dataTimeline['data']['step'] == "transport" ||
+                              dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              bottomLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "store_japan" ||
+                              dataTimeline['data']['step'] == "transport" ||
+                              dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              alignment: TimelineAlign.center,
+              indicatorStyle: IndicatorStyle(
+                width: 20,
+                color: dataTimeline.length > 0
+                    ? dataTimeline['data']['step'] == "shipping" ||
+                            dataTimeline['data']['step'] == "store_japan" ||
+                            dataTimeline['data']['step'] == "transport" ||
+                            dataTimeline['data']['step'] == "store_thai" ||
+                            dataTimeline['data']['step'] == "overdue" ||
+                            dataTimeline['data']['step'] == "delivery"
+                        ? Colors.red
+                        : Colors.black54
+                    : Colors.black54,
+                padding: EdgeInsets.all(8),
+                indicatorY: 0.3,
+              ),
+              leftChild: Container(
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.directions_boat,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "shipping" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_japan" ||
+                                  dataTimeline['data']['step'] == "transport" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_thai" ||
+                                  dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? primaryColor
+                              : Colors.black54
+                          : Colors.black54,
+                      size: 45,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Shipping",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Colors.black),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "order has been confirmed",
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            TimelineTile(
+              topLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "store_japan" ||
+                              dataTimeline['data']['step'] == "transport" ||
+                              dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              bottomLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "transport" ||
+                              dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              alignment: TimelineAlign.center,
+              indicatorStyle: IndicatorStyle(
+                width: 20,
+                color: dataTimeline.length > 0
+                    ? dataTimeline['data']['step'] == "store_japan" ||
+                            dataTimeline['data']['step'] == "transport" ||
+                            dataTimeline['data']['step'] == "store_thai" ||
+                            dataTimeline['data']['step'] == "overdue" ||
+                            dataTimeline['data']['step'] == "delivery"
+                        ? Colors.red
+                        : Colors.black54
+                    : Colors.black54,
+                padding: EdgeInsets.all(8),
+                indicatorY: 0.3,
+              ),
+              leftChild: Container(
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.directions_boat,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "store_japan" ||
+                                  dataTimeline['data']['step'] == "transport" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_thai" ||
+                                  dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? primaryColor
+                              : Colors.black54
+                          : Colors.black54,
+                      size: 45,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Store on Japan",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Colors.black),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "order has been confirmed",
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            TimelineTile(
+              topLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "transport" ||
+                              dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              bottomLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              alignment: TimelineAlign.center,
+              indicatorStyle: IndicatorStyle(
+                width: 20,
+                color: dataTimeline.length > 0
+                    ? dataTimeline['data']['step'] == "transport" ||
+                            dataTimeline['data']['step'] == "store_thai" ||
+                            dataTimeline['data']['step'] == "overdue" ||
+                            dataTimeline['data']['step'] == "delivery"
+                        ? Colors.red
+                        : Colors.black54
+                    : Colors.black54,
+                padding: EdgeInsets.all(8),
+                indicatorY: 0.3,
+              ),
+              leftChild: Container(
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.directions_boat,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "transport" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_thai" ||
+                                  dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? primaryColor
+                              : Colors.black54
+                          : Colors.black54,
+                      size: 45,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Transport",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Colors.black),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "order has been confirmed",
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            TimelineTile(
+              topLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "store_thai" ||
+                              dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              bottomLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              alignment: TimelineAlign.center,
+              indicatorStyle: IndicatorStyle(
+                width: 20,
+                color: dataTimeline.length > 0
+                    ? dataTimeline['data']['step'] == "store_thai" ||
+                            dataTimeline['data']['step'] == "overdue" ||
+                            dataTimeline['data']['step'] == "delivery"
+                        ? Colors.red
+                        : Colors.black54
+                    : Colors.black54,
+                padding: EdgeInsets.all(8),
+                indicatorY: 0.3,
+              ),
+              leftChild: Container(
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.directions_boat,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "store_thai" ||
+                                  dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? primaryColor
+                              : Colors.black54
+                          : Colors.black54,
+                      size: 45,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Store Thailand",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Colors.black),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "order has been confirmed",
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            TimelineTile(
+              topLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "overdue" ||
+                              dataTimeline['data']['step'] == "delivery"
+                          ? primaryColor
+                          : Colors.black54
+                      : Colors.black54),
+              bottomLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "delivery"
+                          ? primaryColor
+                          : Colors.black54
+                      : Colors.black54),
+              alignment: TimelineAlign.center,
+              indicatorStyle: IndicatorStyle(
+                width: 20,
+                color: dataTimeline.length > 0
+                    ? dataTimeline['data']['step'] == "overdue" ||
+                            dataTimeline['data']['step'] == "delivery"
+                        ? Colors.red
+                        : Colors.black54
+                    : Colors.black54,
+                padding: EdgeInsets.all(8),
+                indicatorY: 0.3,
+              ),
+              rightChild: Container(
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.directions_boat,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? primaryColor
+                              : Colors.black54
+                          : Colors.black54,
+                      size: 45,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Overdue",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Colors.black),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "order has been confirmed",
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            TimelineTile(
+              topLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              bottomLineStyle: LineStyle(
+                  color: dataTimeline.length > 0
+                      ? dataTimeline['data']['step'] == "delivery"
+                          ? Colors.red
+                          : Colors.black54
+                      : Colors.black54),
+              alignment: TimelineAlign.center,
+              indicatorStyle: IndicatorStyle(
+                width: 20,
+                color: dataTimeline.length > 0
+                    ? dataTimeline['data']['step'] == "delivery"
+                        ? Colors.red
+                        : Colors.black54
+                    : Colors.black54,
+                padding: EdgeInsets.all(8),
+                indicatorY: 0.3,
+              ),
+              leftChild: Container(
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.directions_boat,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "delivery"
+                              ? primaryColor
+                              : Colors.black54
+                          : Colors.black54,
+                      size: 45,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Derivered",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Colors.black),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "order has been confirmed",
                       style: TextStyle(fontSize: 12, color: Colors.black),
                     )
                   ],
@@ -465,6 +1009,41 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
         ),
       ),
       bottomNavigationBar: Navigation(),
+    );
+  }
+
+  _divider() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: <Widget>[
+          SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Divider(
+                thickness: 1,
+                color: primaryColor,
+              ),
+            ),
+          ),
+          // Text('or'),
+          // Expanded(
+          //   child: Padding(
+          //     padding: EdgeInsets.symmetric(horizontal: 10),
+          //     child: Divider(
+          //       thickness: 1,
+          //       color: primaryColor,
+          //     ),
+          //   ),
+          // ),
+          SizedBox(
+            width: 20,
+          ),
+        ],
+      ),
     );
   }
 }

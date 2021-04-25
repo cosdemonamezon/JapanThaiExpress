@@ -42,8 +42,13 @@ class _PreoderScreenState extends State<PreoderScreen> {
     setState(() {
       isLoading = true;
     });
+<<<<<<< HEAD
+    var url = pathAPI + 'api/preorders';
+    var response = await http.get(
+=======
     var url = Uri.parse(pathAPI + 'api/preorders');
     var response = await http.post(
+>>>>>>> 31a6998afd51a54d827ed4e77fd80328aeab1a96
       url,
       headers: {
         'Content-Type': 'application/json',
@@ -82,7 +87,7 @@ class _PreoderScreenState extends State<PreoderScreen> {
         barrierDismissible: false,
         context: context,
         builder: (context) => dialogDenied(
-          notinumber['massage'],
+          notinumber['message'],
           picDenied,
           context,
         ),
@@ -219,7 +224,11 @@ class _PreoderScreenState extends State<PreoderScreen> {
                                   ),
                                   trailing: MaterialButton(
                                     onPressed: () {
-                                      MyNavigator.goToTimelineOrders(context);
+                                      var arg = {
+                                        "id": notidata[index]["id"],
+                                      };
+                                      MyNavigator.goToTimelineOrders(
+                                          context, arg);
                                     },
                                     color: Color(0xffdd4b39),
                                     child: Text(
@@ -249,42 +258,45 @@ class _PreoderScreenState extends State<PreoderScreen> {
     );
   }
 
-  Card buildCard(String title, String image) {
-    return Card(
-      child: ListTile(
-          leading: CircleAvatar(
-            radius: 25,
-            backgroundImage: AssetImage(image),
-          ),
-          title: Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              fontSize: 14,
-            ),
-          ),
-          subtitle: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              MaterialButton(
-                onPressed: () {
-                  MyNavigator.goToTimelineOrders(context);
-                },
-                color: Color(0xffdd4b39),
-                child: Text(
-                  "Details",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ],
-          )),
-    );
-  }
+  // Card buildCard(String title, String image) {
+  //   return Card(
+  //     child: ListTile(
+  //         leading: CircleAvatar(
+  //           radius: 25,
+  //           backgroundImage: AssetImage(image),
+  //         ),
+  //         title: Text(
+  //           title,
+  //           style: TextStyle(
+  //             fontWeight: FontWeight.bold,
+  //             color: Colors.black,
+  //             fontSize: 14,
+  //           ),
+  //         ),
+  //         subtitle: Row(
+  //           mainAxisAlignment: MainAxisAlignment.end,
+  //           children: [
+  //             MaterialButton(
+  //               onPressed: () {
+  //                 var arg = {
+  //                   "id": notidata[index]["id"],
+  //                 };
+  //                 MyNavigator.goToTimelineOrders(context, arg);
+  //               },
+  //               color: Color(0xffdd4b39),
+  //               child: Text(
+  //                 "Details",
+  //                 style: TextStyle(
+  //                   fontWeight: FontWeight.bold,
+  //                   color: Colors.white,
+  //                   fontSize: 12,
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         )),
+  //   );
+  // }
 }
 
 Card messageCard(String title, IconData icon, String subtitle) {
