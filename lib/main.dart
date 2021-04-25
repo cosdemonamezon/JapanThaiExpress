@@ -23,7 +23,10 @@ import 'package:JapanThaiExpress/UserScreens/Profile/components/HelpDetail.dart'
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
+import 'package:JapanThaiExpress/UserScreens/Wallet/ChooseService.dart';
+import 'package:JapanThaiExpress/UserScreens/Wallet/RabbitLine.dart';
 import 'package:JapanThaiExpress/UserScreens/Wallet/Topup.dart';
+import 'package:JapanThaiExpress/UserScreens/Wallet/Webview.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -126,6 +129,9 @@ var routes = <String, WidgetBuilder>{
   "/topup": (BuildContext context) => Topup(),
   "/help": (BuildContext context) => HelpCenter(),
   "/helpdetail": (BuildContext context) => HelpDetail(),
+  "/chooseservice": (BuildContext context) => ChooseService(),
+  "/rabbit": (BuildContext context) => RabbitLine(),
+  "/webview": (BuildContext context) => Webview(),
 };
 
 class MyApp extends StatelessWidget {

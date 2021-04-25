@@ -92,10 +92,10 @@ class _TopupState extends State<Topup> {
         print(qrdata['message']);
         print(qrdata['data']['qrcode']);
         setState(() {
-          qrcode = qrdata['data'];
-          //isLoading = true;
+          qrcode = qrdata['data'];          
           qr = true;
           iD = qrdata['data']['id'];
+          isLoading = false;
         });
       } else {
         final Map<String, dynamic> qrdata = convert.jsonDecode(response.body);
@@ -201,7 +201,7 @@ class _TopupState extends State<Topup> {
                   child: Container(
                     height: 200,
                     width: width*0.9,
-                    color: Colors.blue[100],
+                    color: Colors.blue[50],
                     child: Column(
                       children: [
                         Row(
@@ -276,6 +276,9 @@ class _TopupState extends State<Topup> {
                     children: [
                       GestureDetector(
                         onTap: () {
+                          setState(() {
+                            isLoading = true;
+                          });
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             //print(_formKey.currentState.value);
@@ -307,7 +310,9 @@ class _TopupState extends State<Topup> {
                               ]
                             ),
                           ),
-                          child: Text(
+                          child: isLoading == true
+                          ?Center(child: CircularProgressIndicator())
+                          :Text(
                             "ยืนยัน",
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),

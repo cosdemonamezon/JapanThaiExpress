@@ -55,6 +55,7 @@ dependencies:
   dio: ^4.0.0
   path_provider: ^2.0.0
   permission_handler: ^7.0.0
+  webview_flutter: ^2.0.4
 
 dependency_overrides:
   intl: 0.17.0-nullsafety.2
@@ -98,6 +99,8 @@ flutter:
     - assets/success.png
     - assets/denied.png
     - assets/pp.png
+    - assets/logo_gateway_line.png
+    - assets/stock.png
     - assets/alucard.jpg
     - assets/o1.jpg
     - assets/o2.jpg
