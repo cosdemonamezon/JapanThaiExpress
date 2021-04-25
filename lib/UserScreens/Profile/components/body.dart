@@ -1,6 +1,7 @@
 import 'package:JapanThaiExpress/UserScreens/Profile/components/Bank.dart';
+import 'package:JapanThaiExpress/UserScreens/Profile/components/Myaccount.dart';
 import 'package:flutter/material.dart';
-import 'package:JapanThaiExpress/UserScreens/Profile/Myaccount.dart';
+
 import 'profile_menu.dart';
 import 'profile_pic.dart';
 

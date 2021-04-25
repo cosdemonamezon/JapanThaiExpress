@@ -18,11 +18,12 @@ import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/News/DetailNews.dart';
 import 'package:JapanThaiExpress/UserScreens/News/NewsScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/ProfileScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/Profile/components/Myaccount.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Auction.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
-import 'package:JapanThaiExpress/UserScreens/Profile/Myaccount.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
