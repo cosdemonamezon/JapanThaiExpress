@@ -74,7 +74,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
-      var url = pathAPI + 'api/app/promotion_list?page=$page&page_size=$pageSize';
+      var url = Uri.parse(pathAPI + 'api/app/promotion_list?page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {

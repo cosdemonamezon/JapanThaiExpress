@@ -57,7 +57,7 @@ class _LoginPinState extends State<LoginPin> {
           identifier = data.identifierForVendor; //UUID for iOS
         }
 
-        var url = pathAPI + 'api/login_pin_mobile';
+        var url = Uri.parse(pathAPI + 'api/login_pin_mobile');
         var response = await http.post(url,
             headers: {'Content-Type': 'application/json'},
             body: convert.jsonEncode({

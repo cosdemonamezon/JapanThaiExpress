@@ -37,7 +37,7 @@ class _NewsScreenState extends State<NewsScreen> {
       tokendata = token['data']['token'];
     });
 
-    var url = pathAPI + 'api/list_news';
+    var url = Uri.parse(pathAPI + 'api/list_news');
     var response = await http.get(
       url,
       headers: {

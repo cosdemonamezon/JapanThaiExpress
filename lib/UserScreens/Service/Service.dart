@@ -50,7 +50,7 @@ class _ServiceState extends State<Service> {
       tokendata = token['data']['token'];
     });
 
-    var url = pathAPI + 'api/banners';
+    var url = Uri.parse(pathAPI + 'api/banners');
     var response = await http.get(
       url,
       headers: {

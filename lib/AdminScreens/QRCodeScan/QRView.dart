@@ -164,7 +164,7 @@ class _QRViewExampleState extends State<QRViewExample> {
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
 
-      var url = pathAPI + 'api/scan_track';
+      var url = Uri.parse(pathAPI + 'api/scan_track');
       var response = await http.post(url,
           headers: {
             'Content-Type': 'application/json',

@@ -42,7 +42,7 @@ class _PreoderScreenState extends State<PreoderScreen> {
     setState(() {
       isLoading = true;
     });
-    var url = pathAPI + 'api/preorders';
+    var url = Uri.parse(pathAPI + 'api/preorders');
     var response = await http.post(
       url,
       headers: {

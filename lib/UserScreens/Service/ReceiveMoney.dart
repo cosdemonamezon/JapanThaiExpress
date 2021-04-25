@@ -97,7 +97,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
-      var url = pathAPI + 'api/get_exchange?status=&page=$page&page_size=$pageSize';
+      var url = Uri.parse(pathAPI + 'api/get_exchange?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {
@@ -137,7 +137,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
 
   _getRateJPY() async{
     var ocpKey = 'ba0779b6ee0b460f9b3c64d9ae64f851';
-    var url = 'https://bbl-sea-apim-p.azure-api.net/api/ExchangeRateService/FxCal/1/JPY/THB';
+    var url = Uri.parse('https://bbl-sea-apim-p.azure-api.net/api/ExchangeRateService/FxCal/1/JPY/THB');
     var response = await http.get(
       url,
       headers: {
@@ -163,7 +163,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
       isLoading = true;
     });
 
-    var url = pathAPI + 'api/setting_app';
+    var url = Uri.parse(pathAPI + 'api/setting_app');
     var response = await http.get(
       url,
       headers: {
@@ -208,7 +208,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
     setState(() {
       isLoading = true;
     });
-    var url = pathAPI + 'api/create_exchange';
+    var url = Uri.parse(pathAPI + 'api/create_exchange');
     var response = await http.post(
       url,
       headers: {

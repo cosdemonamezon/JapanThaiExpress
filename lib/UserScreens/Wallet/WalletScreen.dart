@@ -1,6 +1,11 @@
+import 'package:JapanThaiExpress/UserScreens/Wallet/Topup.dart';
 import 'package:JapanThaiExpress/UserScreens/Wallet/WalletDetail.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class WalletScreen extends StatefulWidget {
   WalletScreen({Key key}) : super(key: key);
@@ -17,6 +22,8 @@ class _WalletScreenState extends State<WalletScreen> {
   Color _borderContainer;
   bool colorSwitched = false;
   var logoImage;
+  SharedPreferences prefs;
+  String wallet = "....";
 
   void changeTheme() async {
     if (colorSwitched) {
@@ -64,6 +71,17 @@ class _WalletScreenState extends State<WalletScreen> {
   void initState() {
     changeTheme();
     super.initState();
+    _getWallet();
+  }
+
+  _getWallet() async{
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    //print(token['data']['wallet']);
+    setState(() {
+      wallet = token['data']['wallet'];
+    });
   }
 
   @override
@@ -73,6 +91,14 @@ class _WalletScreenState extends State<WalletScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Wallet"),
+        leading: IconButton(
+          onPressed: (){
+            MyNavigator.goBackUserHome(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.white,)
+        ),
       ),
       body: SafeArea(
         child: GestureDetector(
@@ -160,7 +186,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               child: ListView(
                                 children: <Widget>[
                                   Text(
-                                    '790',
+                                    '${wallet}',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: _textColor,
@@ -202,28 +228,28 @@ class _WalletScreenState extends State<WalletScreen> {
                                 GestureDetector(
                                   onTap: (){
                                     Navigator.push(
-                                      context, MaterialPageRoute(builder: (context) => WalletDetail())
+                                      context, MaterialPageRoute(builder: (context) => Topup())
                                     );
                                   },
                                   child: _actionList(
-                                    'assets/images/ic_money.png', 'Request'),
+                                    'assets/images/ic_money.png', 'เติมเงิน'),
                                 ),
                               ]),
                               TableRow(children: [
                                 GestureDetector(
                                   onTap: (){
-                                    Navigator.push(
-                                      context, MaterialPageRoute(builder: (context) => WalletDetail())
-                                    );
+                                    // Navigator.push(
+                                    //   context, MaterialPageRoute(builder: (context) => WalletDetail())
+                                    // );
                                   },
                                   child: _actionList('assets/images/ic_transact.png',
                                   'Transactions'),
                                 ),
                                 GestureDetector(
                                   onTap: (){
-                                    Navigator.push(
-                                      context, MaterialPageRoute(builder: (context) => WalletDetail())
-                                    );
+                                    // Navigator.push(
+                                    //   context, MaterialPageRoute(builder: (context) => WalletDetail())
+                                    // );
                                   },
                                   child: _actionList('assets/images/ic_reward.png',
                                   'Reward Points'),

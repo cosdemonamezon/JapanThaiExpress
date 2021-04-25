@@ -22,6 +22,22 @@
           }
         },
         {
+          "client_id": "613708100903-8f8o2ecesnb1smlgrk9h9a11qaf9sbh4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.JapanThaiExpress",
+            "certificate_hash": "81f8c4e2512cf710cdb493c8105b05c69b7ccb9b"
+          }
+        },
+        {
+          "client_id": "613708100903-hkv2o9t344ne90i6565o9eqc9vqdpo48.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.JapanThaiExpress",
+            "certificate_hash": "4a834479661f20ada137721827704d5f6b5713ba"
+          }
+        },
+        {
           "client_id": "613708100903-h4n9ldhg68lka02frph9l3pm3q04b3tv.apps.googleusercontent.com",
           "client_type": 3
         }

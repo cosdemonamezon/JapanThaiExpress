@@ -1,9 +1,16 @@
 import 'package:JapanThaiExpress/UserScreens/Products/components/body.dart';
+import 'package:JapanThaiExpress/UserScreens/Products/components/categorries.dart';
+import 'package:JapanThaiExpress/UserScreens/Products/components/item_card.dart';
+import 'package:JapanThaiExpress/UserScreens/Products/details/details_screen.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 
 class ProductScreen extends StatefulWidget {
@@ -14,16 +21,197 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  bool isLoading = true;
+  List<dynamic> product = [];
+  String tokendata = "";
+  SharedPreferences prefs;
+  int page = 1;
+  int pageSize = 10;
+  int totalResults = 0;
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+  @override
+  void initState() {
+    super.initState();
+    _getProduct();
+  }
+
+  void _onRefresh() async{
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    //ทุกครั้งที่รีเฟรชจะเคียร์อาร์เรย์และ set page เป็น 1
+    setState(() { 
+      product.clear();
+      page = 1;
+    });
+    _getProduct(); //ทุกครั้งที่ทำการรีเฟรช จะดึงข้อมูลใหม่
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async{
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    if (page < (totalResults / pageSize).ceil()) {
+      if(mounted){
+        print("mounted");
+        setState(() {
+          page = ++page;
+        });
+        _getProduct();
+        _refreshController.loadComplete();
+      }
+      else{
+        print("unmounted");
+        _refreshController.loadComplete();
+      }
+    } else {
+      _refreshController.loadNoData();
+      _refreshController.resetNoData();
+    }
+
+  }
+
+  _getProduct() async{
+    try {
+      setState(() {
+        page == 1 ? isLoading = true : isLoading = false;
+      });
+      prefs = await SharedPreferences.getInstance();
+      var tokenString = prefs.getString('token');
+      var token = convert.jsonDecode(tokenString);     
+      
+      var url = Uri.parse(pathAPI + 'api/app/product_page?status=&page=$page&page_size=$pageSize');
+      var response = await http.get(
+        url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },        
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> productdata = convert.jsonDecode(response.body);
+        setState(() {
+          totalResults = productdata['data']['total'];
+          product.addAll(productdata['data']['data']);
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+            isLoading = false;
+        });
+        final Map<String, dynamic> productdata = convert.jsonDecode(response.body);
+        print(productdata['message']);
+      }
+      
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print('error from backend');
+    }
+    
+  }
+
+  
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    return DefaultTabController(
+      length: 2,
       child: Scaffold(
         appBar: buildAppBar(),
-        body: Body(),
+        body: TabBarView(
+          children: [
+              isLoading == true ?
+              Center(
+                child: CircularProgressIndicator(),
+              )
+              :SmartRefresher(
+              enablePullDown: true,
+              enablePullUp: true,
+              header: ClassicHeader(
+                refreshStyle: RefreshStyle.Follow,
+                refreshingText: 'กำลังโหลด.....',
+                completeText: 'โหลดข้อมูลสำเร็จ',
+              ),
+              footer: CustomFooter(
+                builder: (BuildContext context,LoadStatus mode){
+                  Widget body ;
+                  if(mode==LoadStatus.idle){
+                    //body =  Text("ไม่พบรายการ");
+                  }
+                  else if(mode==LoadStatus.loading){
+                    body =  CircularProgressIndicator();
+                  }
+                  else if(mode == LoadStatus.failed){
+                    body = Text("Load Failed!Click retry!");
+                  }
+                  else if(mode == LoadStatus.canLoading){
+                    body = Text("release to load more");
+                  }
+                  else if (mode == LoadStatus.noMore){
+                    //body = Text("No more Data");
+                    body = Text("ไม่พบข้อมูล");
+                  }
+                  return Container(
+                    height: 55.0,
+                    child: Center(child:body),
+                  );
+                },
+              ),
+              controller: _refreshController,
+              onRefresh: _onRefresh,
+              onLoading: _onLoading,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
+                child: GridView.builder(
+                  itemCount: product.length,                  
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: kDefaultPaddin,
+                    crossAxisSpacing: kDefaultPaddin,
+                    childAspectRatio: 0.75,
+                  ),
+                  itemBuilder: (context, index) => buildItemCard(
+                    product[index]['name'],
+                    product[index]['id'],
+                    product[index]['image'],
+                    product[index]['price'],
+                    // press: () => Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => DetailsScreen(
+                    //       product: product[index],
+                    //     ),
+                    //   ),
+                    // ),
+                  ),
+                ),
+              ),        
+                  
+            ),
+            Container(
+              height: height,
+              child: Column(
+                children: [
+                  Center(
+                    child: Icon(Icons.ac_unit_outlined),
+                  ),
+                ],
+              ),
+            ),
+        ]),
+        
         bottomNavigationBar: NavigationBar(),
       ),
     );
   }
+
   AppBar buildAppBar() {
     return AppBar(
         backgroundColor: Color(0xFFd73925),
@@ -35,6 +223,29 @@ class _ProductScreenState extends State<ProductScreen> {
           },
         ),
         title: Text("Products"),
+        bottom: TabBar(
+                  labelColor: Colors.redAccent,
+                  unselectedLabelColor: Colors.white,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  indicator: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)),
+                      color: Colors.white),
+                  tabs: [
+                    Tab(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text("สินค้า"),
+                      ),
+                    ),
+                    Tab(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text("ประวัติ"),
+                      ),
+                    ),
+                  ]),
         actions: <Widget>[
           IconButton(icon: SvgPicture.asset(
             "assets/icons/search.svg",
@@ -55,5 +266,45 @@ class _ProductScreenState extends State<ProductScreen> {
           SizedBox(width: kDefaultPaddin / 2)
         ],
       );
+  }
+
+  buildItemCard(String name, int index, String img, String price){
+    return GestureDetector(
+      onTap:(){
+        
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(kDefaultPaddin),
+              // height: 180,
+              // width: 160,
+              decoration: BoxDecoration(
+                color: Color(0xFF3D82AE),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Hero(
+                tag: "${index}",
+                child: Image.network(img),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: kDefaultPaddin / 4),
+            child: Text(
+              // products is out demo list
+              name,
+              style: TextStyle(color: kTextLightColor),
+            ),
+          ),
+          Text(
+            price, 
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ) 
+        ],
+      ),
+    );
   }
 }

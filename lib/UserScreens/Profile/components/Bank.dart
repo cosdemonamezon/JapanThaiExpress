@@ -34,7 +34,7 @@ class _BankState extends State<Bank> {
       tokendata = token['data']['token'];
     });
 
-    var url = pathAPI + 'api/bank';
+    var url = Uri.parse(pathAPI + 'api/bank');
     var response = await http.get(
       url,
       headers: {

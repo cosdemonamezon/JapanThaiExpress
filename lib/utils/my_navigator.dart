@@ -76,6 +76,10 @@ class MyNavigator {
     Navigator.pushNamed(context, '/newsdetail', arguments: arg);
   }
 
+  static void goToHelpDetail(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/helpdetail', arguments: arg);
+  }
+
   static void goToService(BuildContext context) {
     Navigator.pushNamed(context, "/service");
   }
@@ -88,7 +92,15 @@ class MyNavigator {
     Navigator.pushNamed(context, "/profile");
   }
 
+  static void goToHelp(BuildContext context) {
+    Navigator.pushNamed(context, "/help");
+  }
+
   static void goBackUserHome(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, "/goback", (route) => false);
   }
+  static void goToTopup(BuildContext context) {
+    Navigator.pushNamedAndRemoveUntil(context, "/topup", (route) => false);
+  }
+  
 }
