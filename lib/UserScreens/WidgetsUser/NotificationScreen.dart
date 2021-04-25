@@ -35,7 +35,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       //isLoading = false;
       tokendata = token['data']['token'];
     });
-    var url = pathAPI + 'api/get_noti_user';
+    var url = Uri.parse(pathAPI + 'api/get_noti_user');
     var response = await http.get(
       url,
       headers: {

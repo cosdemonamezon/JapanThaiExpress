@@ -40,7 +40,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     setState(() {
       isLoading = true;
     });
-    var url = pathAPI + 'api/get_noti_admin';
+    var url = Uri.parse(pathAPI + 'api/get_noti_admin');
     var response = await http.get(
       url,
       headers: {

@@ -78,7 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
          ''');
 
         final graphResponse = await http.get(
-            'https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${accessToken.token}');
+          Uri.parse(
+            'https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${accessToken.token}')
+            );
 
         final Map<String, dynamic> facebookdata =
             convert.jsonDecode(graphResponse.body);
@@ -205,7 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
       var status = await OneSignal.shared.getPermissionSubscriptionState();
       String playerId = status.subscriptionStatus.userId;
 
-      var url = pathAPI + 'api/login_mobile';
+      var url = Uri.parse(pathAPI + 'api/login_mobile');
       var response = await http.post(url,
           headers: {'Content-Type': 'application/json'},
           body: convert.jsonEncode({
@@ -280,7 +282,7 @@ class _LoginScreenState extends State<LoginScreen> {
       var status = await OneSignal.shared.getPermissionSubscriptionState();
       String playerId = status.subscriptionStatus.userId;
 
-      var url = pathAPI + 'api/login_social';
+      var url = Uri.parse(pathAPI + 'api/login_social');
       var response = await http.post(url,
           headers: {'Content-Type': 'application/json'},
           body: convert.jsonEncode({

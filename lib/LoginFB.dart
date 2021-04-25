@@ -35,7 +35,7 @@ class _LoginFBState extends State<LoginFB> {
          ''');
 
         final graphResponse = await http.get(
-            'https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${accessToken.token}');
+            Uri.parse('https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${accessToken.token}'));
 
         print(graphResponse);
 

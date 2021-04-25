@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
     }
     print(identifier);
 
-    var url = pathAPI + 'api/check_mac_mobile';
+    var url = Uri.parse(pathAPI + 'api/check_mac_mobile');
     var response = await http.post(url,
         headers: {'Content-Type': 'application/json'},
         body: convert.jsonEncode({

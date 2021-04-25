@@ -40,7 +40,7 @@ class _DepositScreenState extends State<DepositScreen> {
     setState(() {
       isLoading = true;
     });
-    var url = pathAPI + 'api/transaction_list';
+    var url = Uri.parse(pathAPI + 'api/transaction_list');
     var response = await http.get(
       url,
       headers: {

@@ -105,7 +105,7 @@ class _DepositState extends State<Deposit> {
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
-      var url = pathAPI + 'api/get_depository?status=&page=$page&page_size=$pageSize';
+      var url = Uri.parse(pathAPI + 'api/get_depository?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {
@@ -151,7 +151,7 @@ class _DepositState extends State<Deposit> {
       //isLoading = true;
     });
 
-    var url = pathAPI + 'api/depository_type';
+    var url = Uri.parse(pathAPI + 'api/depository_type');
     var response = await http.get(
       url,
       headers: {
@@ -184,7 +184,7 @@ class _DepositState extends State<Deposit> {
       //isLoading = true;
     });
 
-    var url = pathAPI + 'api/shipping_option';
+    var url = Uri.parse(pathAPI + 'api/shipping_option');
     var response = await http.get(
       url,
       headers: {
@@ -218,11 +218,11 @@ class _DepositState extends State<Deposit> {
     });
     //print(tokendata);
 
-    var url = pathAPI + 'api/address_mem';
+    var url = Uri.parse(pathAPI + 'api/address_mem');
     var response = await http.get(
       url,
       headers: {
-        //'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
         'Authorization': token['data']['token'],
       }
     );
@@ -237,7 +237,8 @@ class _DepositState extends State<Deposit> {
         tel = address[0]['tel'];
       });
     } else {
-      print("error");
+      final Map<String, dynamic> addressdata = convert.jsonDecode(response.body);
+      print(addressdata['message']);
     }
   }
 
@@ -253,7 +254,7 @@ class _DepositState extends State<Deposit> {
     setState(() {
       isLoading = true;
     });
-    var url = pathAPI + 'api/create_depository';
+    var url = Uri.parse(pathAPI + 'api/create_depository');
     var response = await http.post(
       url,
       headers: {

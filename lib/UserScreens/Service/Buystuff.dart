@@ -88,7 +88,7 @@ class _BuystuffState extends State<Buystuff> {
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
-      var url = pathAPI + 'api/preorders?status=&page=$page&page_size=$pageSize';
+      var url = Uri.parse(pathAPI + 'api/preorders?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {
@@ -154,7 +154,7 @@ class _BuystuffState extends State<Buystuff> {
     setState(() {
       isLoading = true;
     });
-    var url = pathAPI + 'api/depository_type';
+    var url = Uri.parse(pathAPI + 'api/depository_type');
     var response = await http.post(
       url,
       headers: {

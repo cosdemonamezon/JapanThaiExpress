@@ -42,8 +42,13 @@ class _PreoderScreenState extends State<PreoderScreen> {
     setState(() {
       isLoading = true;
     });
+<<<<<<< HEAD
     var url = pathAPI + 'api/preorders';
     var response = await http.get(
+=======
+    var url = Uri.parse(pathAPI + 'api/preorders');
+    var response = await http.post(
+>>>>>>> 31a6998afd51a54d827ed4e77fd80328aeab1a96
       url,
       headers: {
         'Content-Type': 'application/json',

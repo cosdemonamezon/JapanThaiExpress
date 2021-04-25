@@ -60,7 +60,7 @@ class _SetPinState extends State<SetPinScreen> {
         var tokenString = prefs.getString('token');
         final Map<String, dynamic> body = convert.jsonDecode(tokenString);
 
-        var url = pathAPI + 'api/set_pin';
+        var url = Uri.parse(pathAPI + 'api/set_pin');
         var response = await http.post(url,
             headers: {
               'Content-Type': 'application/json',
