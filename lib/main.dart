@@ -7,6 +7,7 @@ import 'package:JapanThaiExpress/Screens/Login/intro_screen.dart';
 import 'package:JapanThaiExpress/Screens/Login/home_screen.dart';
 import 'package:JapanThaiExpress/Screens/Register/RegisterScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/ForgotScreen.dart';
+import 'package:JapanThaiExpress/Screens/Register/Registration.dart';
 import 'package:JapanThaiExpress/Screens/Register/testregis.dart';
 
 import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
@@ -116,7 +117,7 @@ var routes = <String, WidgetBuilder>{
   "/login": (BuildContext context) => LoginScreen(),
   "/pinverify": (BuildContext context) => LoginPin(),
   "/forgot": (BuildContext context) => ForgotScreen(),
-  "/register": (BuildContext context) => RegisterScreen(),
+  "/register": (BuildContext context) => Registration(),
   "/depositdetail": (BuildContext context) => DepositDetailScreen(),
   "/qrcodepreview": (BuildContext context) => QRCodePreview(),
   "/timelineorders": (BuildContext context) => TimeLineScreen(),

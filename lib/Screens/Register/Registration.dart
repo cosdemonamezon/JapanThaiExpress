@@ -1,10 +1,10 @@
 import 'package:JapanThaiExpress/Screens/Register/OtpScreen.dart';
+import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class Registration extends StatefulWidget {
-  String name, lastname, password, repassword, email;
   Registration({Key key}) : super(key: key);
 
   @override
@@ -17,6 +17,7 @@ class _RegistrationState extends State<Registration> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("สมัครสมาชิก"),
@@ -140,11 +141,11 @@ class _RegistrationState extends State<Registration> {
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context,
                                   errorText: 'กรุณากรอกรหัสผ่าน'),
-                              FormBuilderValidators.equal(
-                                  context,
-                                  _formKey.currentState
-                                      .fields['confirmpassword'].value,
-                                  errorText: 'รหัสผ่านไม่ตรงกัน'),
+                              // FormBuilderValidators.equal(
+                              //     context,
+                              //     _formKey.currentState
+                              //         .fields['confirmpassword'].value,
+                              //     errorText: 'รหัสผ่านไม่ตรงกัน'),
                             ])),
                         SizedBox(height: 10),
                         Text(
@@ -167,11 +168,11 @@ class _RegistrationState extends State<Registration> {
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context,
                                   errorText: 'กรุณากรอกยืนยันรหัสผ่าน'),
-                              FormBuilderValidators.equal(
-                                  context,
-                                  _formKey
-                                      .currentState.fields['password'].value,
-                                  errorText: 'รหัสผ่านไม่ตรงกัน'),
+                              // FormBuilderValidators.equal(
+                              //     context,
+                              //     _formKey
+                              //         .currentState.fields['password'].value,
+                              //     errorText: 'รหัสผ่านไม่ตรงกัน'),
                             ])),
                       ],
                     ),
