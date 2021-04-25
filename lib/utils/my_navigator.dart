@@ -112,8 +112,16 @@ class MyNavigator {
   static void goBackUserHome(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, "/goback", (route) => false);
   }
+
   static void goToTopup(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, "/topup", (route) => false);
   }
-  
+
+  static void goToAuction(BuildContext context) {
+    Navigator.pushNamed(context, '/auction');
+  }
+
+  static void goToMyaccount(BuildContext context) {
+    Navigator.pushNamed(context, '/myaccount');
+  }
 }
