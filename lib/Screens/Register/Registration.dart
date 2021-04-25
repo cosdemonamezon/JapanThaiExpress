@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 class Registration extends StatefulWidget {
   String name, lastname, password, repassword, email;
-
   Registration({Key key}) : super(key: key);
 
   @override
@@ -15,9 +14,11 @@ class Registration extends StatefulWidget {
 //final _formKey = GlobalKey<FormState>();
 
 class _RegistrationState extends State<Registration> {
+  final _formKey = GlobalKey<FormBuilderState>();
+  static final GlobalKey<FormFieldState<String>> _searchFormKey =
+      GlobalKey<FormFieldState<String>>();
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormBuilderState>();
     String _name, _lastname, _password, _repassword, _email;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -59,6 +60,7 @@ class _RegistrationState extends State<Registration> {
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context),
                             ])),
+                        SizedBox(height: 10),
                         Text(
                           "นามสกุล",
                           style: TextStyle(
@@ -77,6 +79,7 @@ class _RegistrationState extends State<Registration> {
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context),
                             ])),
+                        SizedBox(height: 10),
                         Text(
                           "อีเมล์",
                           style: TextStyle(
@@ -85,7 +88,7 @@ class _RegistrationState extends State<Registration> {
                         SizedBox(height: 10),
                         FormBuilderTextField(
                             name: 'email',
-                             keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.email),
                                 labelText: 'Email',
@@ -96,6 +99,7 @@ class _RegistrationState extends State<Registration> {
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context),
                             ])),
+                        SizedBox(height: 10),
                         Text(
                           "เบอร์โทรศัพท์",
                           style: TextStyle(
@@ -104,7 +108,7 @@ class _RegistrationState extends State<Registration> {
                         SizedBox(height: 10),
                         FormBuilderTextField(
                             name: 'tel',
-                             keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.phone),
                                 labelText: 'Tel',
@@ -115,6 +119,7 @@ class _RegistrationState extends State<Registration> {
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context),
                             ])),
+                        SizedBox(height: 10),
                         Text(
                           "รหัสผ่าน",
                           style: TextStyle(
@@ -123,7 +128,8 @@ class _RegistrationState extends State<Registration> {
                         SizedBox(height: 10),
                         FormBuilderTextField(
                             name: 'password',
-                             obscureText: true,
+                            obscureText: true,
+                            obscuringCharacter: "•",
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.lock),
                                 labelText: 'Password',
@@ -134,6 +140,7 @@ class _RegistrationState extends State<Registration> {
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context),
                             ])),
+                        SizedBox(height: 10),
                         Text(
                           "ยืนยันรหัสผ่าน",
                           style: TextStyle(
@@ -142,6 +149,8 @@ class _RegistrationState extends State<Registration> {
                         SizedBox(height: 10),
                         FormBuilderTextField(
                             name: 'confirmpassword',
+                            obscureText: true,
+                            obscuringCharacter: "•",
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.lock),
                                 labelText: 'Confirm Password',
@@ -388,8 +397,16 @@ class _RegistrationState extends State<Registration> {
                 SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
+
+                    _formKey.currentState.save();
                     final isValid = _formKey.currentState.validate();
-                    print(isValid);
+                    if (isValid) {
+                      
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return OtpScreen();
+                      }));
+                    }
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,
