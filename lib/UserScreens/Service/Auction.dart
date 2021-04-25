@@ -56,7 +56,7 @@ class _AuctionState extends State<Auction> {
 
     var url = pathAPI + 'api/shipping_option';
     var response = await http.get(
-      url,
+      Uri.parse(url),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': token['data']['token']
@@ -86,7 +86,7 @@ class _AuctionState extends State<Auction> {
 
     var url = pathAPI + 'api/shipping_option';
     var response = await http.get(
-      url,
+      Uri.parse(url),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': token['data']['token']
@@ -168,7 +168,7 @@ class _AuctionState extends State<Auction> {
       var url = pathAPI +
           'api/app/auction_page?status=&page=$page&page_size=$pageSize';
       var response = await http.get(
-        url,
+        Uri.parse(url),
         headers: {
           //'Content-Type': 'application/json',
           'Authorization': token['data']['token']
@@ -205,7 +205,7 @@ class _AuctionState extends State<Auction> {
     }
   }
 
-_settingApp() async{
+  _settingApp() async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -214,15 +214,13 @@ _settingApp() async{
     });
 
     var url = pathAPI + 'api/setting_app';
-    var response = await http.get(
-      url,
-      headers: {
-        //'Content-Type': 'application/json',
-        'Authorization': token['data']['token']
-      }
-    );
-    if (response.statusCode == 200){
-      final Map<String, dynamic> settingdata = convert.jsonDecode(response.body);
+    var response = await http.get(Uri.parse(url), headers: {
+      //'Content-Type': 'application/json',
+      'Authorization': token['data']['token']
+    });
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> settingdata =
+          convert.jsonDecode(response.body);
       //print(settingdata);
       if (settingdata['code'] == 200) {
         setState(() {
@@ -230,22 +228,22 @@ _settingApp() async{
           // rate = datasetting['exchange_rate'].toString();
           // fee = datasetting['fee'].toString();
           //_rate = TextEditingController(text: datasetting['exchange_rate'].toString());
-          service =datasetting['fee'].toString();
+          service = datasetting['fee'].toString();
           //_com = TextEditingController(text: datasetting['exhange_com'].toString());
           rate = datasetting['exchange_rate'].toString();
           //fee = _fee.text;
-         // com = _com.text;
+          // com = _com.text;
         });
         // print(_rate);
         // print(_fee);
       } else {
         print("error");
       }
-    }
-    else{
+    } else {
       print("error");
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -430,7 +428,7 @@ _settingApp() async{
                           SizedBox(height: 10),
                           FormBuilderTextField(
                             keyboardType: TextInputType.number,
-                            name: 'งบประมาณ', 
+                            name: 'งบประมาณ',
                             maxLines: 1,
                             obscureText: false,
                             decoration: InputDecoration(
@@ -442,21 +440,19 @@ _settingApp() async{
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context),
                             ]),
-                             onChanged: (text){
-                                /*var x = budget;
+                            onChanged: (text) {
+                              /*var x = budget;
                                 var a = double.parse('$rate');
                                 var b = service;
                                 var c = double.parse('$total');
                                 var y = x+b;
                                 //var z = y*a;
                                 //var m=0+z; */
-                                 
-                               setState(() {
-                                 budget=text;
-                                 
-                                
-                                });
-                             },
+
+                              setState(() {
+                                budget = text;
+                              });
+                            },
                           ),
                         ],
                       ),
@@ -524,7 +520,7 @@ _settingApp() async{
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20),
-                                      child: Text(budget +" เยน"),
+                                      child: Text(budget + " เยน"),
                                     ),
                                   ],
                                 ),
