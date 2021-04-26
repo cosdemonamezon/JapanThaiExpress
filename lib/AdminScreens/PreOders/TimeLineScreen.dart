@@ -53,7 +53,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
     setState(() {
       isLoading = true;
     });
-    var url = pathAPI + 'api/preorder/' + id;
+    var url = Uri.parse(pathAPI + 'api/preorder/' + id);
     var response = await http.get(
       url,
       headers: {

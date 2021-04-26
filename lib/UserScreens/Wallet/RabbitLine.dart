@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RabbitLine extends StatefulWidget {
   RabbitLine({Key key}) : super(key: key);
@@ -71,7 +72,9 @@ class _RabbitLineState extends State<RabbitLine> {
             "paymentUrl": linepay,
               
           };
-          MyNavigator.goToWebview(context, arg);
+          //MyNavigator.goToWebview(context, arg);
+          launch(linepay);
+          MyNavigator.goBackUserHome(context);
         });
         
         //print(linepay);

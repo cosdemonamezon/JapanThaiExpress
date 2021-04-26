@@ -1,3 +1,4 @@
+import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:io';
@@ -15,13 +16,15 @@ class _WebviewState extends State<Webview> {
     Map data = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text('https://sandbox-web-pay.line.me/'),
+        centerTitle: true,
+        title: Text('หน้าชำระเงิน'),
       ),
       body: WebView(
-        initialUrl: 'https://www.google.com/',
+        initialUrl: data['paymentUrl'],
         javascriptMode: JavascriptMode.unrestricted,
         gestureNavigationEnabled: true,
       ),
+      bottomNavigationBar: Navigation(),
     );
   }
 }
