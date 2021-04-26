@@ -97,6 +97,14 @@ class MyNavigator {
     Navigator.pushNamed(context, '/webview', arguments: arg);
   }
 
+  static void goToDetailProduct(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/detailproduct', arguments: arg);
+  }
+
+  static void goToOrderProduct(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/orderproduct', arguments: arg);
+  }
+
   static void goToService(BuildContext context) {
     Navigator.pushNamed(context, "/service");
   }

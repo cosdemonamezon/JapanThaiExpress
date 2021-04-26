@@ -182,6 +182,8 @@ class _ProductScreenState extends State<ProductScreen> {
                     product[index]['id'],
                     product[index]['image'],
                     product[index]['price'],
+                    product[index]['description'],
+                    
                     // press: () => Navigator.push(
                     //   context,
                     //   MaterialPageRoute(
@@ -224,54 +226,61 @@ class _ProductScreenState extends State<ProductScreen> {
         ),
         title: Text("Products"),
         bottom: TabBar(
-                  labelColor: Colors.redAccent,
-                  unselectedLabelColor: Colors.white,
-                  indicatorSize: TabBarIndicatorSize.label,
-                  indicator: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)),
-                      color: Colors.white),
-                  tabs: [
-                    Tab(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text("สินค้า"),
-                      ),
-                    ),
-                    Tab(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text("ประวัติ"),
-                      ),
-                    ),
-                  ]),
-        actions: <Widget>[
-          IconButton(icon: SvgPicture.asset(
-            "assets/icons/search.svg",
-            // icon default color is white
-            color: kTextColor,
+          labelColor: Colors.redAccent,
+          unselectedLabelColor: Colors.white,
+          indicatorSize: TabBarIndicatorSize.label,
+          indicator: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10)),
+            color: Colors.white),
+          tabs: [
+          Tab(
+            child: Align(
+              alignment: Alignment.center,
+              child: Text("สินค้า"),
+            ),
           ),
+          Tab(
+            child: Align(
+              alignment: Alignment.center,
+              child: Text("ประวัติ"),
+            ),
+          ),
+        ]),
+        actions: <Widget>[
+        IconButton(icon: SvgPicture.asset(
+          "assets/icons/search.svg",
+          // icon default color is white
+          color: kTextColor,
+        ),
           onPressed: (){
             
           },
-          ),
-          IconButton(icon: SvgPicture.asset(
-            "assets/icons/cart.svg",
-            // icon default color is white
-            color: kTextColor,
-          ),
+        ),
+        IconButton(icon: SvgPicture.asset(
+          "assets/icons/cart.svg",
+          // icon default color is white
+          color: kTextColor,
+        ),
           onPressed: (){},
-          ),
-          SizedBox(width: kDefaultPaddin / 2)
-        ],
-      );
+        ),
+        SizedBox(width: kDefaultPaddin / 2)
+      ],
+    );
   }
 
-  buildItemCard(String name, int index, String img, String price){
+  buildItemCard(String name, int index, String img, String price, String description){
     return GestureDetector(
       onTap:(){
-        
+        var arg = {
+          "id": index, 
+          "price": price,
+          "name": name,
+          "img": img,
+          "description": description
+        };
+        MyNavigator.goToDetailProduct(context, arg);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,11 +292,11 @@ class _ProductScreenState extends State<ProductScreen> {
               // width: 160,
               decoration: BoxDecoration(
                 color: Color(0xFF3D82AE),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(5),
               ),
               child: Hero(
                 tag: "${index}",
-                child: Image.network(img),
+                child: Image.network(img, fit: BoxFit.fill,),
               ),
             ),
           ),

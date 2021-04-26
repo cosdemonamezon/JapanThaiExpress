@@ -34,6 +34,14 @@ class _RegistrationState extends State<Registration> {
                 SizedBox(height: height * .01),
                 FormBuilder(
                   key: _formKey,
+                  initialValue: {
+                    'name':'',
+                    'lname': '',
+                    'email': '',
+                    'tel': '',
+                    'password': '',
+                    'confirmpassword': '',
+                  },
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
                     child: Column(

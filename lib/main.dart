@@ -19,6 +19,8 @@ import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/News/DetailNews.dart';
 import 'package:JapanThaiExpress/UserScreens/News/NewsScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/Products/details/DetailProduct.dart';
+import 'package:JapanThaiExpress/UserScreens/Products/details/OrderProduct.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/ProfileScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/HelpCenter.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/HelpDetail.dart';
@@ -141,6 +143,8 @@ var routes = <String, WidgetBuilder>{
   "/webview": (BuildContext context) => Webview(),
   "/auction": (BuildContext context) => Auction(),
   "/myaccount": (BuildContext context) => Myaccount(),
+  "/detailproduct": (BuildContext context) => DetailProduct(),
+  "/orderproduct": (BuildContext context) => OrderProduct(),
   //"/testregis": (BuildContext context) => testregis(),
 };
 
