@@ -93,8 +93,23 @@ class MyNavigator {
     Navigator.pushNamed(context, '/helpdetail', arguments: arg);
   }
 
+  static void goToWebview(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/webview', arguments: arg);
+  }
+
   static void goToService(BuildContext context) {
     Navigator.pushNamed(context, "/service");
+  }
+
+  static void goToChooseService(BuildContext context) {
+    Navigator.pushNamed(context, "/chooseservice");
+  }
+  static void goToLineRabbit(BuildContext context) {
+    Navigator.pushNamed(context, "/rabbit");
+  }
+
+  static void goToTopup(BuildContext context) {
+    Navigator.pushNamed(context, "/topup");
   }
 
   static void goToReceiveMoney(BuildContext context) {
@@ -112,10 +127,14 @@ class MyNavigator {
   static void goBackUserHome(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, "/goback", (route) => false);
   }
+  // static void goToTopup(BuildContext context) {
+  //   Navigator.pushNamedAndRemoveUntil(context, "/topup", (route) => false);
+  // }
+  
 
-  static void goToTopup(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, "/topup", (route) => false);
-  }
+  // static void goToTopup(BuildContext context) {
+  //   Navigator.pushNamedAndRemoveUntil(context, "/topup", (route) => false);
+  // }
 
   static void goToAuction(BuildContext context) {
     Navigator.pushNamed(context, '/auction');

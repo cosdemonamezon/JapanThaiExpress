@@ -227,9 +227,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                 ),
                                 GestureDetector(
                                   onTap: (){
-                                    Navigator.push(
-                                      context, MaterialPageRoute(builder: (context) => Topup())
-                                    );
+                                    MyNavigator.goToChooseService(context);
                                   },
                                   child: _actionList(
                                     'assets/images/ic_money.png', 'เติมเงิน'),
