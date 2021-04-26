@@ -59,6 +59,8 @@ dependencies:
   webview_flutter: ^2.0.4
   url_launcher: ^6.0.3
 
+
+
 dependency_overrides:
   intl: 0.17.0-nullsafety.2
   image: ^2.1.12
