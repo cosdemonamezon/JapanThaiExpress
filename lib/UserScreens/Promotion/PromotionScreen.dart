@@ -112,13 +112,13 @@ class _PromotionScreenState extends State<PromotionScreen> {
       appBar: AppBar(
         title: Text("Promotion"),
         leading: IconButton(
-          onPressed: (){
+          onPressed: () {
             MyNavigator.goBackUserHome(context);
           },
           icon: Icon(
-            Icons.arrow_back_rounded,
-            color: Colors.white,)
-        ),
+            Icons.arrow_back_ios_rounded,
+            color: Colors.white,
+          )),
       ),
       body: Container(
         height: height,

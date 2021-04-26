@@ -127,11 +127,9 @@ Card dashboardItem(String title, IconData icon, int page, context) {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Service()));
           } else if (page == 3) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => ProductScreen()));
+            MyNavigator.goToProductScreen(context);
           } else if (page == 4) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => WalletScreen()));
+            MyNavigator.goToWallet(context);
           } else if (page == 5) {
             MyNavigator.goToNews(context);
             // Navigator.push(

@@ -1,4 +1,6 @@
+import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'dart:convert' as convert;
@@ -129,13 +131,34 @@ class _OrderProductState extends State<OrderProduct> {
           final Map<String, dynamic> oderdata = convert.jsonDecode(response.body);
           if (oderdata['code']==200) {
             print(oderdata['message']);
+            String picSuccess = "assets/success.png";
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) => alertOderSuccess(
+                oderdata['message'],            
+                picSuccess,
+                context,
+              ),
+            );
           } else {
             print(oderdata['message']);
           }
         } else {
           final Map<String, dynamic> oderdata = convert.jsonDecode(response.body);
           print(oderdata['message']);
-          
+          //MyNavigator.goToWallet(context);
+          String picSuccess = "assets/wanning.png";
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) => alertWanning(
+              oderdata['message'],            
+              picSuccess,
+              context,
+            ),
+          );
+
         }
   }
 
@@ -497,6 +520,7 @@ class _OrderProductState extends State<OrderProduct> {
           ),
         ),
       ),
+      bottomNavigationBar: NavigationBar(),
     );
   }
 
@@ -663,6 +687,166 @@ class _OrderProductState extends State<OrderProduct> {
               Navigator.pop(context);
               //selectdialog();
             }),
+      ),
+    );
+  }
+
+  alertWanning(String title, String img, context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Constants.padding),
+      ),
+      elevation: 4,
+      backgroundColor: Colors.transparent,
+      child: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.only(
+                left: Constants.padding,
+                top: Constants.avatarRadius + Constants.padding,
+                right: Constants.padding,
+                bottom: Constants.padding),
+            margin: EdgeInsets.only(top: Constants.avatarRadius),
+            decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: kFontPrimaryColor,
+                borderRadius: BorderRadius.circular(Constants.padding),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+                ]),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Center(
+                  child: Image.asset(
+                    img,
+                    fit: BoxFit.cover,
+                    height: 60,
+                    width: 60,
+                    //color: kButtonColor,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: kInputSearchColor),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                SizedBox(
+                  height: 33,
+                ),
+                Container(
+                  width: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: kPrimaryColor,
+                  ),
+                  child: FlatButton(
+                    onPressed: () {
+                      MyNavigator.goToWallet(context);
+                    },
+                    child: Text(
+                      "ตกลง",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: kTextButtonColor),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  alertOderSuccess(String title, String img, context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Constants.padding),
+      ),
+      elevation: 4,
+      backgroundColor: Colors.transparent,
+      child: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.only(
+                left: Constants.padding,
+                top: Constants.avatarRadius + Constants.padding,
+                right: Constants.padding,
+                bottom: Constants.padding),
+            margin: EdgeInsets.only(top: Constants.avatarRadius),
+            decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: kFontPrimaryColor,
+                borderRadius: BorderRadius.circular(Constants.padding),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+                ]),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Center(
+                  child: Image.asset(
+                    img,
+                    fit: BoxFit.cover,
+                    height: 60,
+                    width: 60,
+                    //color: kButtonColor,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: kInputSearchColor),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                SizedBox(
+                  height: 33,
+                ),
+                Container(
+                  width: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: kPrimaryColor,
+                  ),
+                  child: FlatButton(
+                    onPressed: () {
+                      MyNavigator.goToWallet(context);
+                    },
+                    child: Text(
+                      "ตกลง",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: kTextButtonColor),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -12,7 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
-
 class ProductScreen extends StatefulWidget {
   ProductScreen({Key key}) : super(key: key);
 
@@ -28,7 +27,8 @@ class _ProductScreenState extends State<ProductScreen> {
   int page = 1;
   int pageSize = 10;
   int totalResults = 0;
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -36,12 +36,12 @@ class _ProductScreenState extends State<ProductScreen> {
     _getProduct();
   }
 
-  void _onRefresh() async{
+  void _onRefresh() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
     //ทุกครั้งที่รีเฟรชจะเคียร์อาร์เรย์และ set page เป็น 1
-    setState(() { 
+    setState(() {
       product.clear();
       page = 1;
     });
@@ -49,19 +49,18 @@ class _ProductScreenState extends State<ProductScreen> {
     _refreshController.refreshCompleted();
   }
 
-  void _onLoading() async{
+  void _onLoading() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     if (page < (totalResults / pageSize).ceil()) {
-      if(mounted){
+      if (mounted) {
         print("mounted");
         setState(() {
           page = ++page;
         });
         _getProduct();
         _refreshController.loadComplete();
-      }
-      else{
+      } else {
         print("unmounted");
         _refreshController.loadComplete();
       }
@@ -69,28 +68,29 @@ class _ProductScreenState extends State<ProductScreen> {
       _refreshController.loadNoData();
       _refreshController.resetNoData();
     }
-
   }
 
-  _getProduct() async{
+  _getProduct() async {
     try {
       setState(() {
         page == 1 ? isLoading = true : isLoading = false;
       });
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
-      var token = convert.jsonDecode(tokenString);     
-      
-      var url = Uri.parse(pathAPI + 'api/app/product_page?status=&page=$page&page_size=$pageSize');
+      var token = convert.jsonDecode(tokenString);
+
+      var url = Uri.parse(pathAPI +
+          'api/app/product_page?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {
           //'Content-Type': 'application/json',
           'Authorization': token['data']['token']
-        },        
+        },
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> productdata = convert.jsonDecode(response.body);
+        final Map<String, dynamic> productdata =
+            convert.jsonDecode(response.body);
         setState(() {
           totalResults = productdata['data']['total'];
           product.addAll(productdata['data']['data']);
@@ -98,183 +98,157 @@ class _ProductScreenState extends State<ProductScreen> {
         });
       } else {
         setState(() {
-            isLoading = false;
+          isLoading = false;
         });
-        final Map<String, dynamic> productdata = convert.jsonDecode(response.body);
+        final Map<String, dynamic> productdata =
+            convert.jsonDecode(response.body);
         print(productdata['message']);
       }
-      
     } catch (e) {
       setState(() {
         isLoading = false;
       });
       print('error from backend');
     }
-    
   }
 
-  
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: buildAppBar(),
-        body: TabBarView(
-          children: [
-              isLoading == true ?
-              Center(
-                child: CircularProgressIndicator(),
-              )
-              :SmartRefresher(
-              enablePullDown: true,
-              enablePullUp: true,
-              header: ClassicHeader(
-                refreshStyle: RefreshStyle.Follow,
-                refreshingText: 'กำลังโหลด.....',
-                completeText: 'โหลดข้อมูลสำเร็จ',
-              ),
-              footer: CustomFooter(
-                builder: (BuildContext context,LoadStatus mode){
-                  Widget body ;
-                  if(mode==LoadStatus.idle){
-                    //body =  Text("ไม่พบรายการ");
-                  }
-                  else if(mode==LoadStatus.loading){
-                    body =  CircularProgressIndicator();
-                  }
-                  else if(mode == LoadStatus.failed){
-                    body = Text("Load Failed!Click retry!");
-                  }
-                  else if(mode == LoadStatus.canLoading){
-                    body = Text("release to load more");
-                  }
-                  else if (mode == LoadStatus.noMore){
-                    //body = Text("No more Data");
-                    body = Text("ไม่พบข้อมูล");
-                  }
-                  return Container(
-                    height: 55.0,
-                    child: Center(child:body),
-                  );
-                },
-              ),
-              controller: _refreshController,
-              onRefresh: _onRefresh,
-              onLoading: _onLoading,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
-                child: GridView.builder(
-                  itemCount: product.length,                  
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: kDefaultPaddin,
-                    crossAxisSpacing: kDefaultPaddin,
-                    childAspectRatio: 0.75,
-                  ),
-                  itemBuilder: (context, index) => buildItemCard(
-                    product[index]['name'],
-                    product[index]['id'],
-                    product[index]['image'],
-                    product[index]['price'],
-                    product[index]['description'],
-                    
-                    // press: () => Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => DetailsScreen(
-                    //       product: product[index],
-                    //     ),
-                    //   ),
-                    // ),
-                  ),
-                ),
-              ),        
-                  
-            ),
-            Container(
+    return Scaffold(
+      appBar: buildAppBar(),
+      body: isLoading == true
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
               height: height,
-              child: Column(
-                children: [
-                  Center(
-                    child: Icon(Icons.ac_unit_outlined),
-                  ),
-                ],
+              child: SmartRefresher(
+                enablePullDown: true,
+                enablePullUp: true,
+                header: ClassicHeader(
+                  refreshStyle: RefreshStyle.Follow,
+                  refreshingText: 'กำลังโหลด.....',
+                  completeText: 'โหลดข้อมูลสำเร็จ',
+                ),
+                footer: CustomFooter(
+                  builder: (BuildContext context, LoadStatus mode) {
+                    Widget body;
+                    if (mode == LoadStatus.idle) {
+                      //body =  Text("ไม่พบรายการ");
+                    } else if (mode == LoadStatus.loading) {
+                      body = CircularProgressIndicator();
+                    } else if (mode == LoadStatus.failed) {
+                      body = Text("Load Failed!Click retry!");
+                    } else if (mode == LoadStatus.canLoading) {
+                      body = Text("release to load more");
+                    } else if (mode == LoadStatus.noMore) {
+                      //body = Text("No more Data");
+                      body = Text("ไม่พบข้อมูล");
+                    }
+                    return Container(
+                      height: 55.0,
+                      child: Center(child: body),
+                    );
+                  },
+                ),
+                controller: _refreshController,
+                onRefresh: _onRefresh,
+                onLoading: _onLoading,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kDefaultPaddin),
+                      child: GridView.builder(
+                        itemCount: product.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: kDefaultPaddin,
+                          crossAxisSpacing: kDefaultPaddin,
+                          childAspectRatio: 0.75,
+                        ),
+                        itemBuilder: (context, index) => buildItemCard(
+                          product[index]['name'],
+                          product[index]['id'],
+                          product[index]['image'],
+                          product[index]['price'],
+                          product[index]['description'],
+
+                          // press: () => Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => DetailsScreen(
+                          //       product: product[index],
+                          //     ),
+                          //   ),
+                          // ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-        ]),
-        
-        bottomNavigationBar: NavigationBar(),
-      ),
+      bottomNavigationBar: NavigationBar(),
     );
   }
 
   AppBar buildAppBar() {
     return AppBar(
-        backgroundColor: Color(0xFFd73925),
-        elevation: 0,
-        leading: 
-          IconButton(icon: SvgPicture.asset("assets/icons/back.svg"), 
-          onPressed: (){
+      backgroundColor: Color(0xFFd73925),
+      elevation: 0,
+      leading: IconButton(
+          onPressed: () {
             MyNavigator.goBackUserHome(context);
           },
-        ),
-        title: Text("Products"),
-        bottom: TabBar(
-          labelColor: Colors.redAccent,
-          unselectedLabelColor: Colors.white,
-          indicatorSize: TabBarIndicatorSize.label,
-          indicator: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10)),
-            color: Colors.white),
-          tabs: [
-          Tab(
-            child: Align(
-              alignment: Alignment.center,
-              child: Text("สินค้า"),
-            ),
-          ),
-          Tab(
-            child: Align(
-              alignment: Alignment.center,
-              child: Text("ประวัติ"),
-            ),
-          ),
-        ]),
-        actions: <Widget>[
-        IconButton(icon: SvgPicture.asset(
-          "assets/icons/search.svg",
-          // icon default color is white
-          color: kTextColor,
-        ),
-          onPressed: (){
-            
-          },
-        ),
-        IconButton(icon: SvgPicture.asset(
-          "assets/icons/cart.svg",
-          // icon default color is white
-          color: kTextColor,
-        ),
-          onPressed: (){},
-        ),
-        SizedBox(width: kDefaultPaddin / 2)
-      ],
+          icon: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Colors.white,
+          )),
+      // leading:
+      //   IconButton(icon: SvgPicture.asset("assets/icons/back.svg"),
+      //   onPressed: (){
+      //     MyNavigator.goBackUserHome(context);
+      //   },
+      // ),
+      title: Text("Products"),
+
+      // actions: <Widget>[
+      //   IconButton(
+      //     icon: SvgPicture.asset(
+      //       "assets/icons/search.svg",
+      //       // icon default color is white
+      //       color: kTextColor,
+      //     ),
+      //     onPressed: () {},
+      //   ),
+      //   IconButton(
+      //     icon: SvgPicture.asset(
+      //       "assets/icons/cart.svg",
+      //       // icon default color is white
+      //       color: kTextColor,
+      //     ),
+      //     onPressed: () {},
+      //   ),
+      //   SizedBox(width: kDefaultPaddin / 2)
+      // ],
     );
   }
 
-  buildItemCard(String name, int index, String img, String price, String description){
+  buildItemCard(
+      String name, int index, String img, String price, String description) {
     return GestureDetector(
-      onTap:(){
+      onTap: () {
         var arg = {
-          "id": index, 
+          "id": index,
           "price": price,
           "name": name,
           "img": img,
@@ -296,7 +270,10 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
               child: Hero(
                 tag: "${index}",
-                child: Image.network(img, fit: BoxFit.fill,),
+                child: Image.network(
+                  img,
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
           ),
@@ -309,9 +286,9 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
           ),
           Text(
-            price, 
+            price,
             style: TextStyle(fontWeight: FontWeight.bold),
-          ) 
+          )
         ],
       ),
     );

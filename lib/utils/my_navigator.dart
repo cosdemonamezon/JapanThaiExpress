@@ -128,8 +128,16 @@ class MyNavigator {
     Navigator.pushNamed(context, "/profile");
   }
 
+  static void goToProductScreen(BuildContext context) {
+    Navigator.pushNamed(context, "/product");
+  }
+
   static void goToHelp(BuildContext context) {
     Navigator.pushNamed(context, "/help");
+  }
+
+  static void goToWallet(BuildContext context) {
+    Navigator.pushNamed(context, "/wallet");
   }
 
   static void goBackUserHome(BuildContext context) {

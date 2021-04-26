@@ -31,20 +31,17 @@ class _NewsScreenState extends State<NewsScreen> {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
-    
+
     setState(() {
       //isLoading = true;
       tokendata = token['data']['token'];
     });
 
     var url = Uri.parse(pathAPI + 'api/list_news');
-    var response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token['data']['token']
-      }
-    );
+    var response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token['data']['token']
+    });
     if (response.statusCode == 200) {
       //print("object");
       final Map<String, dynamic> newsdata = convert.jsonDecode(response.body);
@@ -55,15 +52,9 @@ class _NewsScreenState extends State<NewsScreen> {
           isLoading = false;
           news = newsdata['data'];
         });
-      } else {
-
-      }
-    } else {
-      
-    }
+      } else {}
+    } else {}
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -73,44 +64,47 @@ class _NewsScreenState extends State<NewsScreen> {
       appBar: AppBar(
         title: Text("News"),
         leading: IconButton(
-          onPressed: (){
-            MyNavigator.goBackUserHome(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: Colors.white,)
-        ),
+            onPressed: () {
+              MyNavigator.goBackUserHome(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: Colors.white,
+            )),
       ),
       body: Container(
         height: height,
         padding: EdgeInsets.symmetric(horizontal: 5),
         color: Colors.grey[200],
-        child: isLoading == true ?
-        Center(
-          child: CircularProgressIndicator(),
-        ) 
-        :Column(
-          children: [
-            SizedBox(height: 20,),
-            Container(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: news.length,
-                itemBuilder: (BuildContext context, int index){
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-                    child: newsCard(
-                      news[index]['photo']==null?'https://picsum.photos/200/300' :news[index]['photo'],
-                      news[index]['title'],
-                      news[index]['detail']
+        child: isLoading == true
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: news.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 5.0, horizontal: 5.0),
+                          child: newsCard(
+                              news[index]['photo'] == null
+                                  ? 'https://picsum.photos/200/300'
+                                  : news[index]['photo'],
+                              news[index]['title'],
+                              news[index]['detail']),
+                        );
+                      },
                     ),
-                  );
-                },
-                
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
       bottomNavigationBar: NavigationBar(),
     );
@@ -129,12 +123,8 @@ class _NewsScreenState extends State<NewsScreen> {
         ),
       ),
       child: GestureDetector(
-        onTap: (){
-          var arg = {
-            "title": title, 
-            "subtitle": subtitle, 
-            "img": img
-          };
+        onTap: () {
+          var arg = {"title": title, "subtitle": subtitle, "img": img};
           MyNavigator.goToNewsDetial(context, arg);
           // Navigator.push(
           //   context, MaterialPageRoute(builder: (context) => DetailNews()));
@@ -165,28 +155,42 @@ class _NewsScreenState extends State<NewsScreen> {
                   ),
                 ),
               ),
-              SizedBox(width: 16,),
+              SizedBox(
+                width: 16,
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10,),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                      ),
                       child: Text(
                         title,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: kTextButtonColor),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: kTextButtonColor),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: subtitle.length <= 120 ? Text(
-                        subtitle,
-                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: kFontSecondTextColor),
-                      )
-                      :Text(
-                        subtitle.substring(0, 120)+"...",
-                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: kFontSecondTextColor),
-                      ),
+                      child: subtitle.length <= 120
+                          ? Text(
+                              subtitle,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: kFontSecondTextColor),
+                            )
+                          : Text(
+                              subtitle.substring(0, 120) + "...",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: kFontSecondTextColor),
+                            ),
                     )
                   ],
                 ),

@@ -197,51 +197,84 @@ class _TopupState extends State<Topup> {
             child: qr == false 
             ?Column(
               children: [
+                SizedBox(height: 20,),
                 Center(
                   child: Container(
-                    height: 200,
+                    height: 180,
                     width: width*0.9,
                     color: Colors.blue[50],
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text("ชื่อบัญชี :"),
-                            setting['jt_account'] == null ? Text(".")
-                            :Text("${setting['jt_account']}"),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text("เลขที่บัญชี :"),
-                            setting['jt_promptpay'] == null ? Text(".")
-                            :Text(
-                              "${setting['jt_promptpay']}",
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text("ธนาคาร :"),
-                            setting['jt_bank'] == null ? Text(".")
-                            :Text(
-                              "${setting['jt_bank']}"),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text("สาขา :"),
-                            setting['jt_branch'] == null ? Text(".")
-                            :Text(
-                              "${setting['jt_branch']}"),
-                          ],
-                        ),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        children: [
+                          SizedBox(height: 20,),
+                          Row(
+                            children: [
+                              Text(
+                                "ชื่อบัญชี :", style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              SizedBox(width: 20,),
+                              setting['jt_account'] == null ? Text(".")
+                              :Text(
+                                "${setting['jt_account']}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "เลขที่บัญชี :", style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              setting['jt_promptpay'] == null ? Text(".")
+                              :Text(
+                                "${setting['jt_promptpay']}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 22),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "ธนาคาร :", style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              SizedBox(width: 20,),
+                              setting['jt_bank'] == null ? Text(".")
+                              :Text(
+                                "${setting['jt_bank']}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "สาขา :",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              SizedBox(width: 40,),
+                              setting['jt_branch'] == null ? Text(".")
+                              :Text(
+                                "${setting['jt_branch']}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   
                 ),
+                SizedBox(height: 20,),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: Column(
@@ -275,12 +308,12 @@ class _TopupState extends State<Topup> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isLoading = true;
-                          });
+                        onTap: () {                          
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
+                            setState(() {
+                              isLoading = true;
+                            });
                             //print(_formKey.currentState.value);
                             _genQRcode(_formKey.currentState.value);
                           } else {

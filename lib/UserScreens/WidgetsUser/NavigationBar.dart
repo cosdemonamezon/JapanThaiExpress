@@ -35,9 +35,10 @@ class _NavigationBarState extends State<NavigationBar> {
                       color: Colors.white,
                       icon: Icon(Icons.home_filled),
                       onPressed: () {
-                        Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => DashbordScreen())
-                        );
+                        // Navigator.push(
+                        //   context, MaterialPageRoute(builder: (context) => DashbordScreen())
+                        // );
+                        MyNavigator.goBackUserHome(context);
                       }
                     ),
                   ),

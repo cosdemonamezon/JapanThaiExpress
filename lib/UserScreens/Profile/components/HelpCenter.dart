@@ -1,4 +1,3 @@
-
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
@@ -29,18 +28,16 @@ class _HelpCenterState extends State<HelpCenter> {
     _helpCenter();
   }
 
-  _helpCenter() async{
+  _helpCenter() async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
-    var url = Uri.parse(pathAPI + 'api/app/help_center_page?status=&page=$page&page_size=$pageSize');
-    var response = await http.get(
-      url,
-      headers: {
-        //'Content-Type': 'application/json',
-        'Authorization': token['data']['token']
-      }
-    );
+    var url = Uri.parse(pathAPI +
+        'api/app/help_center_page?status=&page=$page&page_size=$pageSize');
+    var response = await http.get(url, headers: {
+      //'Content-Type': 'application/json',
+      'Authorization': token['data']['token']
+    });
     if (response.statusCode == 200) {
       final Map<String, dynamic> helpdata = convert.jsonDecode(response.body);
       print(helpdata['message']);
@@ -58,7 +55,7 @@ class _HelpCenterState extends State<HelpCenter> {
       print(response.statusCode);
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -66,41 +63,51 @@ class _HelpCenterState extends State<HelpCenter> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Help Center"),
+        leading: IconButton(
+            onPressed: () {
+              MyNavigator.goToProfileScreen(context);
+              
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+            )),
       ),
       body: Container(
         height: height,
         padding: EdgeInsets.symmetric(horizontal: 5),
         color: Colors.grey[200],
-        child: isLoading == true ?
-        Center(
-          child: CircularProgressIndicator(),
-        )
-        :Column(
-          children: [
-            SizedBox(height: 20,),
-            Container(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: help.length,
-                itemBuilder: (BuildContext context, int index){
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-                    child: helpCard(
-                      help[index]['title'], 
-                      help[index]['description'],
-                    ),
-                  );
-                }
+        child: isLoading == true
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: help.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5.0, horizontal: 5.0),
+                            child: helpCard(
+                              help[index]['title'],
+                              help[index]['description'],
+                            ),
+                          );
+                        }),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
       bottomNavigationBar: NavigationBar(),
     );
   }
 
-  Container helpCard(String title, String subtitle){
+  Container helpCard(String title, String subtitle) {
     return Container(
       //height: 100,
       decoration: BoxDecoration(
@@ -113,15 +120,18 @@ class _HelpCenterState extends State<HelpCenter> {
         ),
       ),
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           var arg = {
-            "title": title, 
-            "subtitle": subtitle,            
+            "title": title,
+            "subtitle": subtitle,
           };
           MyNavigator.goToHelpDetail(context, arg);
         },
         child: ListTile(
-          title: Text(title),
+          title: Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
           trailing: Icon(Icons.arrow_forward_ios),
         ),
       ),

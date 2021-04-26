@@ -1,3 +1,4 @@
+import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
@@ -226,6 +227,7 @@ class _DetailProductState extends State<DetailProduct> {
           ],
         ),
       ),
+      bottomNavigationBar: NavigationBar(),
     );
   }
 

@@ -157,6 +157,9 @@ class _RabbitLineState extends State<RabbitLine> {
                           });
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
+                            setState(() {
+                              isLoading = true;
+                            });
                             //print(_formKey.currentState.value);
                             _linePay(_formKey.currentState.value);
                           } else {

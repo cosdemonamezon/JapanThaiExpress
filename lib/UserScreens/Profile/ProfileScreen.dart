@@ -73,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               MyNavigator.goBackUserHome(context);
             },
             icon: Icon(
-              Icons.arrow_back_rounded,
+              Icons.arrow_back_ios_rounded,
               color: Colors.white,
             )),
       ),
@@ -91,14 +91,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     MaterialPageRoute(builder: (context) => Myaccount()));
               },
             ),
-            ProfileMenu(
-              text: "จัดการบัญชี",
-              icon: "assets/icons/coins.svg",
-              press: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Bank()));
-              },
-            ),
+            // ProfileMenu(
+            //   text: "จัดการบัญชี",
+            //   icon: "assets/icons/coins.svg",
+            //   press: () {
+            //     Navigator.push(
+            //         context, MaterialPageRoute(builder: (context) => Bank()));
+            //   },
+            // ),
             // ProfileMenu(
             //   text: "Settings",
             //   icon: "assets/icons/Settings.svg",

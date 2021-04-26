@@ -1,6 +1,7 @@
 import 'package:JapanThaiExpress/UserScreens/Wallet/Topup.dart';
 import 'package:JapanThaiExpress/UserScreens/Wallet/WalletDetail.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
+import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,6 +25,8 @@ class _WalletScreenState extends State<WalletScreen> {
   var logoImage;
   SharedPreferences prefs;
   String wallet = "....";
+  Map<String, dynamic> datawallet;
+  bool isLoading = true;
 
   void changeTheme() async {
     if (colorSwitched) {
@@ -74,14 +77,32 @@ class _WalletScreenState extends State<WalletScreen> {
     _getWallet();
   }
 
-  _getWallet() async{
+  _getWallet() async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
     //print(token['data']['wallet']);
-    setState(() {
-      wallet = token['data']['wallet'];
-    });
+    var url = Uri.parse(pathAPI + 'api/get_member');
+    var response = await http.get(
+      url,
+      headers: {
+        //'Content-Type': 'application/json',
+        'Authorization': token['data']['token']
+      },
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> wallettdata = convert.jsonDecode(response.body);
+      setState(() {
+        datawallet = wallettdata['data'];
+        wallet = datawallet['wallet'];
+        isLoading = false;
+      });
+    } else {
+    }
+
+    // setState(() {
+    //   wallet = token['data']['wallet'];
+    // });
   }
 
   @override
@@ -92,13 +113,13 @@ class _WalletScreenState extends State<WalletScreen> {
       appBar: AppBar(
         title: Text("Wallet"),
         leading: IconButton(
-          onPressed: (){
-            MyNavigator.goBackUserHome(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: Colors.white,)
-        ),
+            onPressed: () {
+              MyNavigator.goBackUserHome(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: Colors.white,
+            )),
       ),
       body: SafeArea(
         child: GestureDetector(
@@ -110,17 +131,19 @@ class _WalletScreenState extends State<WalletScreen> {
             }
             changeTheme();
           },
-          child: Container(
+          child: isLoading == true ?
+          Center(
+            child: CircularProgressIndicator(),
+          )
+          :Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                stops: [0.2, 0.3, 0.5, 0.8],
-                colors: _backgroundColor
-              )
-            ),
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    stops: [0.2, 0.3, 0.5, 0.8],
+                    colors: _backgroundColor)),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -144,10 +167,9 @@ class _WalletScreenState extends State<WalletScreen> {
                     Text(
                       'James Cashman',
                       style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold
-                      ),
+                          fontSize: 24,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
@@ -155,27 +177,22 @@ class _WalletScreenState extends State<WalletScreen> {
                   height: 400.0,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    color: _borderContainer,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15)
-                    )
-                  ),
+                      color: _borderContainer,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15))),
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15)
-                        ),
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          stops: [0.2, 0.4, 0.6, 0.8],
-                          colors: _actionContainerColor
-                        )
-                      ),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15),
+                              topRight: Radius.circular(15)),
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              stops: [0.2, 0.4, 0.6, 0.8],
+                              colors: _actionContainerColor)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -217,40 +234,45 @@ class _WalletScreenState extends State<WalletScreen> {
                             children: [
                               TableRow(children: [
                                 GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     Navigator.push(
-                                      context, MaterialPageRoute(builder: (context) => WalletDetail())
-                                    );
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                WalletDetail()));
                                   },
                                   child: _actionList(
-                                    'assets/images/ic_send.png', 'Send Money'),
+                                      'assets/images/ic_send.png',
+                                      'Send Money'),
                                 ),
                                 GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     MyNavigator.goToChooseService(context);
                                   },
                                   child: _actionList(
-                                    'assets/images/ic_money.png', 'เติมเงิน'),
+                                      'assets/images/ic_money.png', 'เติมเงิน'),
                                 ),
                               ]),
                               TableRow(children: [
                                 GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     // Navigator.push(
                                     //   context, MaterialPageRoute(builder: (context) => WalletDetail())
                                     // );
                                   },
-                                  child: _actionList('assets/images/ic_transact.png',
-                                  'Transactions'),
+                                  child: _actionList(
+                                      'assets/images/ic_transact.png',
+                                      'Transactions'),
                                 ),
                                 GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     // Navigator.push(
                                     //   context, MaterialPageRoute(builder: (context) => WalletDetail())
                                     // );
                                   },
-                                  child: _actionList('assets/images/ic_reward.png',
-                                  'Reward Points'),
+                                  child: _actionList(
+                                      'assets/images/ic_reward.png',
+                                      'Reward Points'),
                                 ),
                               ])
                             ],
