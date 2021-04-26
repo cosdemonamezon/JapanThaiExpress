@@ -1,4 +1,5 @@
 import 'package:JapanThaiExpress/Screens/Register/Registration.dart';
+import 'package:JapanThaiExpress/Screens/Register/Test.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -41,10 +42,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 SizedBox(height: 40),
                 GestureDetector(
-                  onTap: (){
-                    Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Registration())
-                    );
+                  onTap: () {
+                   
+                     Navigator.push(
+                     context, MaterialPageRoute(builder: (context) => Registration())
+                     );
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -60,12 +62,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             spreadRadius: 2)
                       ],
                       gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [Color(0xff757575), Color(0xfff424242)]),
+                    ),
+                    child: Text(
+                      "Continue",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Colors.grey.shade200,
+                          offset: Offset(2, 4),
+                          blurRadius: 5,
+                          spreadRadius: 2)
+                    ],
+                    gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
-                        colors: [Color(0xff757575), Color(0xfff424242)]
-                      ),
-                    ),
-                    child: Text("Continue", style: TextStyle(fontSize: 20, color: Colors.white),),
+                        colors: [Color(0xff2196F3), Color(0xff1976D2)]),
+                  ),
+                  child: Text(
+                    "Facebook",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -83,42 +111,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           spreadRadius: 2)
                     ],
                     gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [Color(0xff2196F3), Color(0xff1976D2)]
-                    ),
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [Color(0xffffffff), Color(0xfffffff)]),
                   ),
-                  child: Text("Facebook", style: TextStyle(fontSize: 20, color: Colors.white),),
-                ),
-                SizedBox(height: 20),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                          color: Colors.grey.shade200,
-                          offset: Offset(2, 4),
-                          blurRadius: 5,
-                          spreadRadius: 2)
-                    ],
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [Color(0xffffffff), Color(0xfffffff)]
-                    ),
+                  child: Text(
+                    "Google Plus",
+                    style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
-                  child: Text("Google Plus", style: TextStyle(fontSize: 20, color: Colors.black),),
                 ),
                 SizedBox(height: 20),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   alignment: Alignment.bottomCenter,
                   child: Text('Already account ?',
-                    style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xffbdbdbd))),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xffbdbdbd))),
                 ),
               ],
             ),

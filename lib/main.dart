@@ -7,6 +7,8 @@ import 'package:JapanThaiExpress/Screens/Login/intro_screen.dart';
 import 'package:JapanThaiExpress/Screens/Login/home_screen.dart';
 import 'package:JapanThaiExpress/Screens/Register/RegisterScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/ForgotScreen.dart';
+import 'package:JapanThaiExpress/Screens/Register/Registration.dart';
+import 'package:JapanThaiExpress/Screens/Register/testregis.dart';
 
 import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
@@ -27,6 +29,11 @@ import 'package:JapanThaiExpress/UserScreens/Wallet/ChooseService.dart';
 import 'package:JapanThaiExpress/UserScreens/Wallet/RabbitLine.dart';
 import 'package:JapanThaiExpress/UserScreens/Wallet/Topup.dart';
 import 'package:JapanThaiExpress/UserScreens/Wallet/Webview.dart';
+import 'package:JapanThaiExpress/UserScreens/Profile/components/Myaccount.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/Auction.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -113,7 +120,7 @@ var routes = <String, WidgetBuilder>{
   "/login": (BuildContext context) => LoginScreen(),
   "/pinverify": (BuildContext context) => LoginPin(),
   "/forgot": (BuildContext context) => ForgotScreen(),
-  "/register": (BuildContext context) => RegisterScreen(),
+  "/register": (BuildContext context) => Registration(),
   "/depositdetail": (BuildContext context) => DepositDetailScreen(),
   "/qrcodepreview": (BuildContext context) => QRCodePreview(),
   "/timelineorders": (BuildContext context) => TimeLineScreen(),
@@ -132,6 +139,9 @@ var routes = <String, WidgetBuilder>{
   "/chooseservice": (BuildContext context) => ChooseService(),
   "/rabbit": (BuildContext context) => RabbitLine(),
   "/webview": (BuildContext context) => Webview(),
+  "/auction": (BuildContext context) => Auction(),
+  "/myaccount": (BuildContext context) => Myaccount(),
+  //"/testregis": (BuildContext context) => testregis(),
 };
 
 class MyApp extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:JapanThaiExpress/UserScreens/Profile/components/Myaccount.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/Bank.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/body.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/profile_menu.dart';
@@ -26,7 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String deviceVersion;
   String identifier;
 
-  _logOut() async{
+  _logOut() async {
     final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
     if (Platform.isAndroid) {
       var build = await deviceInfoPlugin.androidInfo;
@@ -39,34 +40,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
       deviceVersion = data.systemVersion;
       identifier = data.identifierForVendor; //UUID for iOS
     }
-    
+
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
     var url = Uri.parse(pathAPI + 'api/app/logout');
-    var response = await http.post(
-      url,
-      headers: {
-        //'Content-Type': 'application/json',
-        'Authorization': token['data']['token']
-      },
-      body: ({
-        'device': identifier,        
-      })
-
-    );
+    var response = await http.post(url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        body: ({
+          'device': identifier,
+        }));
     if (response.statusCode == 200) {
       final Map<String, dynamic> bodydata = convert.jsonDecode(response.body);
-      if (bodydata['code']==200) {
+      if (bodydata['code'] == 200) {
         MyNavigator.goToLogin(context);
-        
       } else {
         print(bodydata['code']);
       }
-    } else {
-    }
+    } else {}
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -74,13 +69,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: Text("Profile"),
         leading: IconButton(
-          onPressed: (){
-            MyNavigator.goBackUserHome(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: Colors.white,)
-        ),
+            onPressed: () {
+              MyNavigator.goBackUserHome(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              color: Colors.white,
+            )),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(vertical: 20),
@@ -91,14 +86,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ProfileMenu(
               text: "My Account",
               icon: "assets/icons/User Icon.svg",
-              press: () => {},
+              press: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Myaccount()));
+              },
             ),
             ProfileMenu(
               text: "จัดการบัญชี",
               icon: "assets/icons/coins.svg",
               press: () {
                 Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Bank()));
+                    context, MaterialPageRoute(builder: (context) => Bank()));
               },
             ),
             // ProfileMenu(

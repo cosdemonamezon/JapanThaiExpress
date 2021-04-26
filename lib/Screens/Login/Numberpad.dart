@@ -92,11 +92,11 @@ class _NumberpadState extends State<Numberpad> {
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               NumpadButton(
                 haveBorder: false,
-                icon: Icons.fingerprint,
+                // icon: Icons.fingerprint,
                 onPressed: () => authenfigerscan(),
               ),
               NumpadButton(

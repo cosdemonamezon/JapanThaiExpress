@@ -439,7 +439,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               //border: InputBorder.none,
                               border: OutlineInputBorder(),
                               fillColor: Color(0xfff3f3f4),
-                              filled: true),
+                              filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),

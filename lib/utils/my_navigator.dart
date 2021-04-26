@@ -131,4 +131,19 @@ class MyNavigator {
   //   Navigator.pushNamedAndRemoveUntil(context, "/topup", (route) => false);
   // }
   
+
+  // static void goToTopup(BuildContext context) {
+  //   Navigator.pushNamedAndRemoveUntil(context, "/topup", (route) => false);
+  // }
+
+  static void goToAuction(BuildContext context) {
+    Navigator.pushNamed(context, '/auction');
+  }
+
+  static void goToMyaccount(BuildContext context) {
+    Navigator.pushNamed(context, '/myaccount');
+  }
+  static void goToTest(BuildContext context) {
+    Navigator.pushNamed(context, '/testregis');
+  }
 }
