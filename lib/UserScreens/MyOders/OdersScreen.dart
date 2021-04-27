@@ -1,5 +1,11 @@
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
+import 'package:JapanThaiExpress/constants.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class OdersScreen extends StatefulWidget {
   OdersScreen({Key key}) : super(key: key);
@@ -9,6 +15,100 @@ class OdersScreen extends StatefulWidget {
 }
 
 class _OdersScreenState extends State<OdersScreen> {
+  bool isLoading = false;
+  SharedPreferences prefs;
+  List<dynamic> order = [];
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+  int totalResults = 0;
+  int page = 1;
+  int pageSize = 10;
+
+  @override
+  void initState() {
+    super.initState();
+    _getOrderlist();
+  }
+
+  void _onRefresh() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    //ทุกครั้งที่รีเฟรชจะเคียร์อาร์เรย์และ set page เป็น 1
+    setState(() {
+      order.clear();
+      page = 1;
+    });
+    _getOrderlist(); //ทุกครั้งที่ทำการรีเฟรช จะดึงข้อมูลใหม่
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    //items.add((items.length+1).toString());
+    if (page < (totalResults / pageSize).ceil()) {
+      if (mounted) {
+        print("mounted");
+        setState(() {
+          page = ++page;
+        });
+        _getOrderlist();
+        _refreshController.loadComplete();
+      } else {
+        print("unmounted");
+        _refreshController.loadComplete();
+      }
+    } else {
+      _refreshController.loadNoData();
+      _refreshController.resetNoData();
+    }
+  }
+
+  _getOrderlist() async{
+    try {
+      setState(() {
+        page == 1 ? isLoading = true : isLoading = false;
+      });
+      prefs = await SharedPreferences.getInstance();
+      var tokenString = prefs.getString('token');
+      var token = convert.jsonDecode(tokenString);
+      var url = Uri.parse(pathAPI +
+          'api/app/order_list?status=&page=$page&page_size=$pageSize');
+          var response = await http.get(
+        url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        // body: ({
+        //   'status': '',
+        //   'page': page.toString(),
+        //   'page_size': pageSize.toString(),
+        // })
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> orderdata = convert.jsonDecode(response.body);
+        setState(() {
+          totalResults = orderdata['data']['total'];
+          order.addAll(orderdata['data']['data']);
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        print('error from backend ${response.statusCode}');
+      }
+      
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -18,6 +118,14 @@ class _OdersScreenState extends State<OdersScreen> {
           elevation: 0,
           centerTitle: true,
           title: Text("Pre Oders"),
+          leading: IconButton(
+            onPressed: () {
+              MyNavigator.goBackUserHome(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: Colors.white,
+            )),
           bottom: TabBar(
             labelColor: Colors.redAccent,
             unselectedLabelColor: Colors.white,
@@ -47,45 +155,20 @@ class _OdersScreenState extends State<OdersScreen> {
         body: TabBarView(
           children: [
             Container(
-              child: ListView(
+              child: ListView.builder(
+                itemCount: order.length,
                 shrinkWrap: true,
                 padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                children: [
-                  SizedBox(height: 15,),
-                  //messageCard("Learn Git and GitHub without any code!", Icons.account_box, "Software developer"),
-                  buildCard(
-                    "Square style can be done by changing small code in the Material Button And Icon Button In Flutter !",
-                    "assets/o1.jpg",
-                  ),
-                  buildCard(
-                    "A Material Design raised button. A raised button consists of a rectangular piece of material that hovers over the interface. Documentation. Input and selections",
-                    "assets/o2.jpg",
-                  ),
-                  buildCard(
-                    "Implementing an icon-only toggle button. The following example shows a toggle button with three buttons that have icons",
-                    "assets/o3.jpg",
-                  ),
-                  buildCard(
-                    "a free and open source (MIT license) Material Flutter Button that supports variety of buttons style demands. 08 June 2019",
-                    "assets/o4.jpg",
-                  ),
-                  buildCard(
-                    "Here we discuss all paramaters available of the Flutter's MaterialButton Class. ... In Material Design, button's elevation is around 2dp to 8dp",
-                    "assets/o5.jpg",
-                  ),
-                  buildCard(
-                    "A material design “Raised button”. · color — This is the color used for the background color of the button while it is in it's default, unpressed state.",
-                    "assets/o6.jpg",
-                  ),
-                  buildCard(
-                    "Buttons are the Flutter widgets, which is a part of the material design library. Flutter provides several types of buttons that have different shapes",
-                    "assets/o7.jpg",
-                  ),
-                  buildCard(
-                    "Hi everyone in this flutter article I am working with flutter button UI Design. Flutter button with image",
-                    "assets/o8.jpg",
-                  ),
-                ],
+                itemBuilder: (BuildContext context, int index){
+                  return buildCard(
+                    order[index]['code'],
+                    order[index]['product_name'],
+                    order[index]['qty'],
+                    order[index]['price'],
+                    order[index]['total'],
+                  );
+                }
+                
               ),
             ),
 
@@ -97,31 +180,56 @@ class _OdersScreenState extends State<OdersScreen> {
     );
   }
 
-  Card buildCard(String title, String image) {
+  Card buildCard(String title, String subtitle, String subtitle1, String subtitle2, String subtitle3,) {
     return Card(
-      child: ListTile(
-        leading: CircleAvatar(
-          radius: 25,
-          backgroundImage: AssetImage(image),
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14,
-          ),
-        ),
-        subtitle: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+      child: ListTile(        
+        title: Column(
           children: [
-            MaterialButton(
-              onPressed: (){},
-              color: Colors.green,
-              child: Text(
-                "Details",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.white, fontSize: 12,
+            Row(
+              children: [
+                Text(
+                  "รหัสสินค้า  ：",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14,
+                  ),
                 ),
-              ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.black, fontSize: 17,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        subtitle: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text("ชื่อสินค้า     ："),
+                Text(subtitle),
+              ],
+            ),
+            Row(
+              children: [
+                Text("จำนวน        ："),
+                Text(subtitle1+ "    ชิ้น"),
+              ],
+            ),
+            Row(
+              children: [
+                Text("ราคาสินค้า ："),
+                Text(subtitle2 + " บาท"),
+              ],
+            ),
+            Row(
+              children: [
+                Text("ยอดรวม     ："),
+                Text(subtitle3+ " บาท"),
+              ],
             ),
           ],
         )
@@ -129,6 +237,7 @@ class _OdersScreenState extends State<OdersScreen> {
     );
   }
 }
+
 Card messageCard(String title, IconData icon, String subtitle) {
   return Card(
     child: ListTile(

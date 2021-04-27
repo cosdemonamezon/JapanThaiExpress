@@ -165,7 +165,7 @@ class _WalletScreenState extends State<WalletScreen> {
                       style: TextStyle(fontSize: 18, color: Colors.black),
                     ),
                     Text(
-                      'James Cashman',
+                      '${datawallet['fname_th']} '+' ${datawallet['lname_th']}',
                       style: TextStyle(
                           fontSize: 24,
                           color: Colors.black,
@@ -211,7 +211,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                         fontSize: 30),
                                   ),
                                   Text(
-                                    'Available Cash',
+                                    'ยอดเงินคงเหลือ',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: _iconColor, fontSize: 16),

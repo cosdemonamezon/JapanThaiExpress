@@ -92,7 +92,7 @@ class _NewsScreenState extends State<NewsScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
                           padding: EdgeInsets.symmetric(
-                              vertical: 5.0, horizontal: 5.0),
+                              vertical: 3.0, horizontal: 5.0),
                           child: newsCard(
                               news[index]['photo'] == null
                                   ? 'https://picsum.photos/200/300'
@@ -156,7 +156,7 @@ class _NewsScreenState extends State<NewsScreen> {
                 ),
               ),
               SizedBox(
-                width: 16,
+                width: 10,
               ),
               Expanded(
                 child: Column(

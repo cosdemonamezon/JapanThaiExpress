@@ -23,7 +23,14 @@ class _BuystuffState extends State<Buystuff> {
   List<bool> checked = [false, true, false, false, true];
   String valueChoose;
   List dropdownValue = [
-    "Food", "Transport","Personal","Shopping","Medical","Rent","Movie","Salary"
+    "Food",
+    "Transport",
+    "Personal",
+    "Shopping",
+    "Medical",
+    "Rent",
+    "Movie",
+    "Salary"
   ];
   final _formKey = GlobalKey<FormBuilderState>();
   SharedPreferences prefs;
@@ -35,8 +42,8 @@ class _BuystuffState extends State<Buystuff> {
   int totalResults = 0;
   int page = 1;
   int pageSize = 10;
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
-
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -44,12 +51,12 @@ class _BuystuffState extends State<Buystuff> {
     _preOrders();
   }
 
-  void _onRefresh() async{
+  void _onRefresh() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
     //ทุกครั้งที่รีเฟรชจะเคียร์อาร์เรย์และ set page เป็น 1
-    setState(() { 
+    setState(() {
       listdata.clear();
       page = 1;
     });
@@ -57,19 +64,18 @@ class _BuystuffState extends State<Buystuff> {
     _refreshController.refreshCompleted();
   }
 
-  void _onLoading() async{
+  void _onLoading() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     if (page < (totalResults / pageSize).ceil()) {
-      if(mounted){
+      if (mounted) {
         print("mounted");
         setState(() {
           page = ++page;
         });
         _preOrders();
         _refreshController.loadComplete();
-      }
-      else{
+      } else {
         print("unmounted");
         _refreshController.loadComplete();
       }
@@ -77,10 +83,9 @@ class _BuystuffState extends State<Buystuff> {
       _refreshController.loadNoData();
       _refreshController.resetNoData();
     }
-
   }
 
-  _preOrders() async{    
+  _preOrders() async {
     try {
       setState(() {
         page == 1 ? isLoading = true : isLoading = false;
@@ -88,7 +93,8 @@ class _BuystuffState extends State<Buystuff> {
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
-      var url = Uri.parse(pathAPI + 'api/preorders?status=&page=$page&page_size=$pageSize');
+      var url = Uri.parse(
+          pathAPI + 'api/preorders?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {
@@ -98,7 +104,7 @@ class _BuystuffState extends State<Buystuff> {
         // body: ({
         //   'status': '',
         //   'page': page.toString(),
-        //   'page_size': pageSize.toString(),            
+        //   'page_size': pageSize.toString(),
         // })
       );
       if (response.statusCode == 200) {
@@ -122,12 +128,11 @@ class _BuystuffState extends State<Buystuff> {
       }
     } catch (e) {
       setState(() {
-          isLoading = false;
-        });
+        isLoading = false;
+      });
       print('error from backend');
     }
   }
-
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -145,7 +150,7 @@ class _BuystuffState extends State<Buystuff> {
     });
   }
 
-  _preorderMem(Map<String, dynamic> values) async{
+  _preorderMem(Map<String, dynamic> values) async {
     print(values);
     print(img64);
     prefs = await SharedPreferences.getInstance();
@@ -154,45 +159,46 @@ class _BuystuffState extends State<Buystuff> {
     setState(() {
       isLoading = true;
     });
-    var url = Uri.parse(pathAPI + 'api/depository_type');
-    var response = await http.post(
-      url,
-      headers: {
-        //'Content-Type': 'application/json',
-        'Authorization': token['data']['token']
-      },
-      body: ({
-        'url': values['url'],
-        'name': values['name'],
-        'description': values['description'],
-        'qty': values['qty'],
-        'note': values['note'],
-        'image': "data:image/png;base64,",
-      })
-    );
+    var url = Uri.parse(pathAPI + 'api/preorder_mem');
+    var response = await http.post(url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        body: ({
+          'url': values['url'],
+          'name': values['name'],
+          'description': values['description'],
+          'qty': values['qty'],
+          //'note': values['note'],
+          'image': "data:image/png;base64," + img64,
+        }));
     if (response.statusCode == 201) {
-      final Map<String, dynamic> datapreorder = convert.jsonDecode(response.body);
-      if (datapreorder['code'] == 201){
+      final Map<String, dynamic> datapreorder =
+          convert.jsonDecode(response.body);
+      if (datapreorder['code'] == 201) {
         print(datapreorder['message']);
         //MyNavigator.goToService(context);
+        setState(() {
+          isLoading = false;
+        });
         String picSuccess = "assets/success.png";
         showDialog(
           barrierDismissible: false,
           context: context,
           builder: (context) => alertPreorder(
-            datapreorder['message'],            
+            datapreorder['message'],
             picSuccess,
             context,
           ),
         );
-      }
-      else {
+      } else {
         String picSuccess = "assets/success.png";
         showDialog(
           barrierDismissible: false,
           context: context,
           builder: (context) => alertPreorder(
-            "",            
+            "",
             picSuccess,
             context,
           ),
@@ -200,254 +206,268 @@ class _BuystuffState extends State<Buystuff> {
       }
     } else {
       String picSuccess = "assets/success.png";
-        showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (context) => alertPreorder(
-            "",            
-            picSuccess,
-            context,
-          ),
-        );
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => alertPreorder(
+          "",
+          picSuccess,
+          context,
+        ),
+      );
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          title: Text("รับฝากซื้อสินค้า"),
-          leading: IconButton(
-            onPressed: (){
-              MyNavigator.goToService(context);
-              // Navigator.push(
-              //   context, MaterialPageRoute(builder: (context) => Service()));
-            },
-            icon: Icon(Icons.arrow_back_ios_rounded,)
-          ),
-          bottom: TabBar(
-            labelColor: Colors.redAccent,
-            unselectedLabelColor: Colors.white,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicator: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10)),
-              color: Colors.white),
-            tabs: [
-              Tab(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text("รายการ"),
-                ),
-              ),
-              Tab(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text("ฝากซื้อสินค้า"),
-                ),
-              ),
-            ]
-          )
-        ),
-        body: TabBarView(
-          children: [
-            isLoading == true ?
-            Center(
-              child: CircularProgressIndicator(),
-            ) 
-            :SmartRefresher(
-              enablePullDown: true,
-              enablePullUp: true,
-              header: ClassicHeader(
-                refreshStyle: RefreshStyle.Follow,
-                refreshingText: 'กำลังโหลด.....',
-                completeText: 'โหลดข้อมูลสำเร็จ',
-              ),
-              footer: CustomFooter(
-                builder: (BuildContext context,LoadStatus mode){
-                  Widget body ;
-                  if(mode==LoadStatus.idle){
-                    //body =  Text("ไม่พบรายการ");
-                  }
-                  else if(mode==LoadStatus.loading){
-                    body =  CircularProgressIndicator();
-                  }
-                  else if(mode == LoadStatus.failed){
-                    body = Text("Load Failed!Click retry!");
-                  }
-                  else if(mode == LoadStatus.canLoading){
-                      body = Text("release to load more");
-                  }
-                  else if (mode == LoadStatus.noMore){
-                    //body = Text("No more Data");
-                    body = Text("ไม่พบข้อมูล");
-                  }
-                  return Container(
-                    height: 55.0,
-                    child: Center(child:body),
-                  );
-                },
-              ),
-              controller: _refreshController,
-              onRefresh: _onRefresh,
-              onLoading: _onLoading,
-              child: ListView.builder(
-                itemCount: listdata.length,
-                itemBuilder: (BuildContext context, int index){                  
-                  return buildCard(
-                    listdata[index]['name'],
-                    listdata[index]['note']==null?'ไม่มีข้อมูล' :listdata[index]['note'],
-                    listdata[index]['price']==null?'ไม่มีข้อมูล' :listdata[index]['price'],
-                    listdata[index]['track_jp']==null?'ไม่มีข้อมูล' :listdata[index]['track_jp'],
-                    listdata[index]['image'],
-                  );
-                }
-                  // buildCard(
-                  //   "Hi everyone in this flutter article I am working with flutter button UI Design. Flutter button with image",
-                  //   "assets/o8.jpg",
-                  // ),
-                  // buildCard(
-                  //   "Buttons are the Flutter widgets, which is a part of the material design library. Flutter provides several types of buttons that have different shapes",
-                  //   "assets/o7.jpg",
-                  // ),
-                
-              ),
-            ),
-            //tab 2
-            Container(
-              height: height,
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: SingleChildScrollView(
-                child: FormBuilder(
-                  key: _formKey,
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+              elevation: 0,
+              centerTitle: true,
+              title: Text("รับฝากซื้อสินค้า"),
+              leading: IconButton(
+                  onPressed: () {
+                    MyNavigator.goToService(context);
+                    // Navigator.push(
+                    //   context, MaterialPageRoute(builder: (context) => Service()));
+                  },
+                  icon: Icon(
+                    Icons.arrow_back_ios_rounded,
+                  )),
+              bottom: TabBar(
+                  labelColor: Colors.redAccent,
+                  unselectedLabelColor: Colors.white,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  indicator: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)),
+                      color: Colors.white),
+                  tabs: [
+                    Tab(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text("รายการ"),
+                      ),
+                    ),
+                    Tab(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text("ฝากซื้อสินค้า"),
+                      ),
+                    ),
+                  ])),
+          body: TabBarView(
+            children: [
+              isLoading == true
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : SmartRefresher(
+                      enablePullDown: true,
+                      enablePullUp: true,
+                      header: ClassicHeader(
+                        refreshStyle: RefreshStyle.Follow,
+                        refreshingText: 'กำลังโหลด.....',
+                        completeText: 'โหลดข้อมูลสำเร็จ',
+                      ),
+                      footer: CustomFooter(
+                        builder: (BuildContext context, LoadStatus mode) {
+                          Widget body;
+                          if (mode == LoadStatus.idle) {
+                            //body =  Text("ไม่พบรายการ");
+                          } else if (mode == LoadStatus.loading) {
+                            body = CircularProgressIndicator();
+                          } else if (mode == LoadStatus.failed) {
+                            body = Text("Load Failed!Click retry!");
+                          } else if (mode == LoadStatus.canLoading) {
+                            body = Text("release to load more");
+                          } else if (mode == LoadStatus.noMore) {
+                            //body = Text("No more Data");
+                            body = Text("ไม่พบข้อมูล");
+                          }
+                          return Container(
+                            height: 55.0,
+                            child: Center(child: body),
+                          );
+                        },
+                      ),
+                      controller: _refreshController,
+                      onRefresh: _onRefresh,
+                      onLoading: _onLoading,
+                      child: ListView.builder(
+                          itemCount: listdata.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return buildCard(
+                              listdata[index]['name'],
+                              listdata[index]['code'] == null
+                                  ? 'ไม่มีข้อมูล'
+                                  : listdata[index]['code'],
+                              listdata[index]['description'] == null
+                                  ? 'ไม่มีข้อมูล'
+                                  : listdata[index]['description'],
+                              listdata[index]['price'] == null
+                                  ? 'ไม่มีข้อมูล'
+                                  : listdata[index]['price'],
+                              listdata[index]['track_jp'] == null
+                                  ? 'ไม่มีข้อมูล'
+                                  : listdata[index]['track_jp'],
+                              listdata[index]['image'] == null
+                                  ? "https://picsum.photos/200/300"
+                                  : listdata[index]['image'],
+                            );
+                          }),
+                    ),
+              //tab 2
+              Container(
+                height: height,
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(
+                  child: FormBuilder(
+                    key: _formKey,
                     initialValue: {
                       'url': '',
                       'name': '',
                       'description': '',
                       'qty': '',
-                      'note': '',
+                      //'note': '',
                     },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: height * .04),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Product URL", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                            SizedBox(height: 10),
-                            FormBuilderTextField(
-                              name: 'url',
-                              decoration: InputDecoration(
-                              //border: InputBorder.none,
-                                border: OutlineInputBorder(),
-                                fillColor: Color(0xfff3f3f4),
-                                filled: true
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: height * .04),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Product URL",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
                               ),
-                              // validator: FormBuilderValidators.compose([
-                              //   FormBuilderValidators.required(context),
-                              //   // FormBuilderValidators.numeric(context),
-                              //   // FormBuilderValidators.max(context, 70),
-                              // ]),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Name", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                            SizedBox(height: 10),
-                            FormBuilderTextField(
-                              name: 'name',
-                              decoration: InputDecoration(
-                              //border: InputBorder.none,
-                                border: OutlineInputBorder(),
-                                fillColor: Color(0xfff3f3f4),
-                                filled: true
+                              SizedBox(height: 10),
+                              FormBuilderTextField(
+                                name: 'url',
+                                decoration: InputDecoration(
+                                    //border: InputBorder.none,
+                                    border: OutlineInputBorder(),
+                                    fillColor: Color(0xfff3f3f4),
+                                    filled: true),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(context, errorText: 'กรุณาใส่ url สินค้า'),
+                                  // FormBuilderValidators.numeric(context),
+                                  // FormBuilderValidators.max(context, 70),
+                                ]),
                               ),
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(context),
-                                // FormBuilderValidators.numeric(context),
-                                // FormBuilderValidators.max(context, 70),
-                              ]),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Description", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                            SizedBox(height: 10),
-                            FormBuilderTextField(
-                              name: 'description',
-                              maxLines: 3,
-                              decoration: InputDecoration(
-                              //border: InputBorder.none,
-                                border: OutlineInputBorder(),
-                                fillColor: Color(0xfff3f3f4),
-                                filled: true
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Name",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Qty", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                            SizedBox(height: 10),
-                            FormBuilderTextField(
-                              name: 'qty',
-                              decoration: InputDecoration(
-                              //border: InputBorder.none,
-                                border: OutlineInputBorder(),
-                                fillColor: Color(0xfff3f3f4),
-                                filled: true
+                              SizedBox(height: 10),
+                              FormBuilderTextField(
+                                name: 'name',
+                                decoration: InputDecoration(
+                                    //border: InputBorder.none,
+                                    border: OutlineInputBorder(),
+                                    fillColor: Color(0xfff3f3f4),
+                                    filled: true),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(context, errorText: 'กรุณาใส่ชื่อสินค้า'),
+                                  // FormBuilderValidators.numeric(context),
+                                  // FormBuilderValidators.max(context, 70),
+                                ]),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Note", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                            SizedBox(height: 10),
-                            FormBuilderTextField(
-                              name: 'note',
-                              maxLines: 3,
-                              decoration: InputDecoration(
-                              //border: InputBorder.none,
-                                border: OutlineInputBorder(),
-                                fillColor: Color(0xfff3f3f4),
-                                filled: true
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Description",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
                               ),
-                            ),
-                          ],
+                              SizedBox(height: 10),
+                              FormBuilderTextField(
+                                name: 'description',
+                                maxLines: 3,
+                                decoration: InputDecoration(
+                                    //border: InputBorder.none,
+                                    border: OutlineInputBorder(),
+                                    fillColor: Color(0xfff3f3f4),
+                                    filled: true),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Qty",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
+                              ),
+                              SizedBox(height: 10),
+                              FormBuilderTextField(
+                                keyboardType: TextInputType.number,
+                                name: 'qty',
+                                decoration: InputDecoration(
+                                    //border: InputBorder.none,
+                                    border: OutlineInputBorder(),
+                                    fillColor: Color(0xfff3f3f4),
+                                    filled: true),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(context, errorText: 'กรุณาใส่จำนวนสินค้า'),
+                                  // FormBuilderValidators.numeric(context),
+                                  // FormBuilderValidators.max(context, 70),
+                                ]),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Container(
+                        //   margin: EdgeInsets.symmetric(vertical: 5),
+                        //   child: Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                        //     children: [
+                        //       Text("Note", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                        //       SizedBox(height: 10),
+                        //       FormBuilderTextField(
+                        //         name: 'note',
+                        //         maxLines: 3,
+                        //         decoration: InputDecoration(
+                        //         //border: InputBorder.none,
+                        //           border: OutlineInputBorder(),
+                        //           fillColor: Color(0xfff3f3f4),
+                        //           filled: true
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
 
-                      SizedBox(
+                        SizedBox(
                           height: 5,
                         ),
                         GestureDetector(
@@ -469,191 +489,204 @@ class _BuystuffState extends State<Buystuff> {
                           ),
                         ),
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Container(
-                              width: width*0.68,
-                              margin: EdgeInsets.symmetric(vertical: 5),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("โค๊ดโปรโมชั่น", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                                  SizedBox(height: 10),
-                                  FormBuilderTextField(
-                                    name: 'code',
-                                    decoration: InputDecoration(
-                                    //border: InputBorder.none,
-                                      border: OutlineInputBorder(),
-                                      fillColor: Color(0xfff3f3f4),
-                                      filled: true
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   crossAxisAlignment: CrossAxisAlignment.end,
+                        //   children: [
+                        //     Container(
+                        //       width: width * 0.68,
+                        //       margin: EdgeInsets.symmetric(vertical: 5),
+                        //       child: Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         children: [
+                        //           Text(
+                        //             "โค๊ดโปรโมชั่น",
+                        //             style: TextStyle(
+                        //                 fontWeight: FontWeight.bold,
+                        //                 fontSize: 15),
+                        //           ),
+                        //           SizedBox(height: 10),
+                        //           FormBuilderTextField(
+                        //             name: 'code',
+                        //             decoration: InputDecoration(
+                        //                 //border: InputBorder.none,
+                        //                 border: OutlineInputBorder(),
+                        //                 fillColor: Color(0xfff3f3f4),
+                        //                 filled: true),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //     Container(
+                        //       width: width * 0.2,
+                        //       margin: EdgeInsets.symmetric(vertical: 5),
+                        //       child: Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.end,
+                        //         mainAxisAlignment: MainAxisAlignment.end,
+                        //         children: [
+                        //           //SizedBox(height: 3),
+                        //           GestureDetector(
+                        //             onTap: () {
 
-                            Container(
-                              width: width*0.2,
-                              margin: EdgeInsets.symmetric(vertical: 5),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  //SizedBox(height: 3),
-                                  GestureDetector(
-                                    onTap: (){},
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(vertical: 15),
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                          BorderRadius.all(Radius.circular(5)),
-                                        boxShadow: <BoxShadow>[
-                                          BoxShadow(
-                                            color: Colors.grey.shade200,
-                                            offset: Offset(2, 4),
-                                            blurRadius: 5,
-                                            spreadRadius: 2)
-                                        ],
-                                        gradient: LinearGradient(
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.centerRight,
-                                            colors: [
-                                              Color(0xffdd4b39),
-                                              Color(0xffdd4b39)
-                                            ]),
-                                      ),
-                                      child: Text(
-                                        "ใช้",
-                                        style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        //             },
+                        //             child: Container(
+                        //               padding:
+                        //                   EdgeInsets.symmetric(vertical: 15),
+                        //               alignment: Alignment.center,
+                        //               decoration: BoxDecoration(
+                        //                 borderRadius: BorderRadius.all(
+                        //                     Radius.circular(5)),
+                        //                 boxShadow: <BoxShadow>[
+                        //                   BoxShadow(
+                        //                       color: Colors.grey.shade200,
+                        //                       offset: Offset(2, 4),
+                        //                       blurRadius: 5,
+                        //                       spreadRadius: 2)
+                        //                 ],
+                        //                 gradient: LinearGradient(
+                        //                     begin: Alignment.centerLeft,
+                        //                     end: Alignment.centerRight,
+                        //                     colors: [
+                        //                       Color(0xffdd4b39),
+                        //                       Color(0xffdd4b39)
+                        //                     ]),
+                        //               ),
+                        //               child: Text(
+                        //                 "ใช้",
+                        //                 style: TextStyle(
+                        //                     fontSize: 20, color: Colors.white),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text("ค่าบริการ"),
-                          ],
-                        ),
-                        Container(
-                          width: width*0.9,
-                          height: height*0.09,
-                          color: Colors.blue[50],
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 45),
-                                child: Text("300 บาท"),
-                              ),
-                              Center(
-                                child: VerticalDivider(
-                                  thickness: 1,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                child: Row(
-                                  children: [
-                                    Text("รายละเอียด"),
-                                    IconButton(
-                                      icon: Icon(Icons.keyboard_arrow_up), 
-                                      onPressed: (){}
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.start,
+                        //   children: [
+                        //     Text("ค่าบริการ"),
+                        //   ],
+                        // ),
+                        // Container(
+                        //   width: width * 0.9,
+                        //   height: height * 0.09,
+                        //   color: Colors.blue[50],
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       Padding(
+                        //         padding:
+                        //             const EdgeInsets.symmetric(horizontal: 45),
+                        //         child: Text("300 บาท"),
+                        //       ),
+                        //       Center(
+                        //         child: VerticalDivider(
+                        //           thickness: 1,
+                        //           color: Colors.grey,
+                        //         ),
+                        //       ),
+                        //       Padding(
+                        //         padding:
+                        //             const EdgeInsets.symmetric(horizontal: 20),
+                        //         child: Row(
+                        //           children: [
+                        //             Text("รายละเอียด"),
+                        //             IconButton(
+                        //                 icon: Icon(Icons.keyboard_arrow_up),
+                        //                 onPressed: () {})
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
 
                         SizedBox(
                           height: 5,
                         ),
 
-                        Container(
-                          width: width*0.9,
-                          height: height*0.20,
-                          color: Colors.blue[50],
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: Text("ค่าขนส่ง"),
-                                  ),
-                                  
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: Text("30 บาท"),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: Text("ไปกลับ"),
-                                  ),
-                                  
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: Text("0.0 บาท"),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: Text("ระยะทาง"),
-                                  ),
-                                  
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: Text("0   km"),
-                                  ),
-                                ],
-                              ),
-
-                              SizedBox(
-                                height: 15,
-                              ),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: Text("ยอดรวม"),
-                                  ),
-                                  
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: Text("30 บาท"),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Container(
+                        //   width: width * 0.9,
+                        //   height: height * 0.20,
+                        //   color: Colors.blue[50],
+                        //   child: Column(
+                        //     children: [
+                        //       Row(
+                        //         mainAxisAlignment:
+                        //             MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           Padding(
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 horizontal: 20),
+                        //             child: Text("ค่าขนส่ง"),
+                        //           ),
+                        //           Padding(
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 horizontal: 20),
+                        //             child: Text("30 บาท"),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //       Row(
+                        //         mainAxisAlignment:
+                        //             MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           Padding(
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 horizontal: 20),
+                        //             child: Text("ไปกลับ"),
+                        //           ),
+                        //           Padding(
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 horizontal: 20),
+                        //             child: Text("0.0 บาท"),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //       Row(
+                        //         mainAxisAlignment:
+                        //             MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           Padding(
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 horizontal: 20),
+                        //             child: Text("ระยะทาง"),
+                        //           ),
+                        //           Padding(
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 horizontal: 20),
+                        //             child: Text("0   km"),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //       SizedBox(
+                        //         height: 15,
+                        //       ),
+                        //       Row(
+                        //         mainAxisAlignment:
+                        //             MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           Padding(
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 horizontal: 20),
+                        //             child: Text("ยอดรวม"),
+                        //           ),
+                        //           Padding(
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 horizontal: 20),
+                        //             child: Text("30 บาท"),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
 
                         SizedBox(
                           height: 20,
@@ -666,10 +699,14 @@ class _BuystuffState extends State<Buystuff> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  _formKey.currentState.save();
-                                  print(_formKey.currentState.value);
-                                  _preorderMem(
-                                      _formKey.currentState.value);
+                                  if (_formKey.currentState.validate()) {
+                                    _formKey.currentState.save();
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    //print(_formKey.currentState.value);
+                                    _preorderMem(_formKey.currentState.value);
+                                  } else {}
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -693,38 +730,39 @@ class _BuystuffState extends State<Buystuff> {
                                           Color(0xffdd4b39)
                                         ]),
                                   ),
-                                  child: Text(
-                                    "Confirm",
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.white),
-                                  ),
+                                  child: isLoading == true
+                                      ? Center(
+                                          child: CircularProgressIndicator())
+                                      : Text(
+                                          "ยืนยัน",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
                                 ),
                               ),
                               SizedBox(height: 15),
                             ],
                           ),
                         ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-          
-        ),
-        bottomNavigationBar: NavigationBar(),
-      ));
-    
+            ],
+          ),
+          bottomNavigationBar: NavigationBar(),
+        ));
   }
 
-  Card buildCard(String title, String title2, String title3, String title4, String image) {
+  Card buildCard(String title, String title2, String title3, String title4,
+      String title5, String image) {
     return Card(
       child: ListTile(
           leading: CircleAvatar(
             radius: 25,
-            backgroundImage: image == null 
-            ?NetworkImage(image)
-            :NetworkImage("https://picsum.photos/200/300"),
+            backgroundImage: NetworkImage(image),
           ),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -747,7 +785,7 @@ class _BuystuffState extends State<Buystuff> {
                 ),
               ),
               Text(
-                "ราคา："+title3,
+                title3,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -755,14 +793,21 @@ class _BuystuffState extends State<Buystuff> {
                 ),
               ),
               Text(
-                "tag："+title4,
+                "ราคา：" + title4,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                "tag：" + title5,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                   fontSize: 14,
                 ),
               )
-              
             ],
           ),
           subtitle: Row(
@@ -772,9 +817,9 @@ class _BuystuffState extends State<Buystuff> {
                 onPressed: () {
                   //MyNavigator.goToTimelineOrders(context);
                 },
-                color: Colors.green,
+                color: primaryColor,
                 child: Text(
-                  "Details",
+                  "ดูเพิ่ม",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -783,8 +828,7 @@ class _BuystuffState extends State<Buystuff> {
                 ),
               ),
             ],
-          )
-      ),
+          )),
     );
   }
 }
