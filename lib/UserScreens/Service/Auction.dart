@@ -20,7 +20,7 @@ class _AuctionState extends State<Auction> {
   Map<String, dynamic> datasetting = {};
   String budget = "0";
   String service = "0";
-  String rate = "";
+  String rate = "0";
   String total = "0";
   SharedPreferences prefs;
   String _transport;
@@ -441,17 +441,32 @@ class _AuctionState extends State<Auction> {
                               FormBuilderValidators.required(context),
                             ]),
                             onChanged: (text) {
-                              /*var x = budget;
-                                var a = double.parse('$rate');
-                                var b = service;
-                                var c = double.parse('$total');
-                                var y = x+b;
-                                //var z = y*a;
-                                //var m=0+z; */
+                              var c;
+                              var x = double.parse('$text');
+                              var a = double.parse('$rate');
+                              var b = double.parse('$service');
+                              if (text.isEmpty) {
+                                print('ว่าง');
+                                setState(() {
+                                  budget = text.toString();
+                                  total = c.toString();
+                                });
+                              } else {
+                                c = (x + b) * a;
+                                setState(() {
+                                  budget = text.toString();
+                                  total = c.toString();
+                                });
+                              }
 
-                              setState(() {
-                                budget = text;
-                              });
+                              // //   var c = double.parse('$total');
+                              // //   var y = x+b;
+                              // //   var z = y*a;
+                              // //   var m=0+z;
+                              // if (text != null) {
+
+                              // }
+                              // print(text);
                             },
                           ),
                         ],
