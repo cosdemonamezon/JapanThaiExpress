@@ -943,7 +943,7 @@ class _DepositState extends State<Deposit> {
                               border: OutlineInputBorder(),
                               fillColor: Color(0xfff3f3f4),
                               filled: true),
-                              validator: FormBuilderValidators.compose([
+                          validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
                             // FormBuilderValidators.numeric(context),
                             // FormBuilderValidators.max(context, 70),
@@ -971,7 +971,7 @@ class _DepositState extends State<Deposit> {
                               border: OutlineInputBorder(),
                               fillColor: Color(0xfff3f3f4),
                               filled: true),
-                              validator: FormBuilderValidators.compose([
+                          validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
                             // FormBuilderValidators.numeric(context),
                             // FormBuilderValidators.max(context, 70),
@@ -990,8 +990,7 @@ class _DepositState extends State<Deposit> {
                           onTap: () {
                             if (_formKey1.currentState.validate()) {
                               _formKey1.currentState.save();
-                            } else {
-                            }
+                            } else {}
                             // _formKey.currentState.save();
                             // print(_formKey.currentState.value);
                             // _preorderMem(

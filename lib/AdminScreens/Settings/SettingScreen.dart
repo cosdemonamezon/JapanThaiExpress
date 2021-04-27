@@ -2,23 +2,103 @@ import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:JapanThaiExpress/constants.dart';
+
 import '../../utils/my_navigator.dart';
 
-class MaintainScreen extends StatefulWidget {
-  MaintainScreen({Key key}) : super(key: key);
+class SettingScreen extends StatefulWidget {
+  SettingScreen({Key key}) : super(key: key);
 
   @override
-  _MaintainScreenState createState() => _MaintainScreenState();
+  _SettingScreenState createState() => _SettingScreenState();
 }
 
-class _MaintainScreenState extends State<MaintainScreen> {
+class _SettingScreenState extends State<SettingScreen> {
+  bool isLoading = false;
+  int id;
+
+  final _formKey = GlobalKey<FormBuilderState>();
+  SharedPreferences prefs;
+  String tokendata = "";
+  List<dynamic> SettingData = []; //ประกาศตัวแปร อาร์เรย์ ไว้
+  int totalResults = 0;
+  int page = 1;
+  int pageSize = 10;
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  List<String> settingMemeberName = [];
+
+  TextEditingController address_thai;
+  TextEditingController address_japan;
+  TextEditingController jt_account;
+  TextEditingController jt_bank;
+  TextEditingController jt_branch;
+  TextEditingController jt_number;
+  TextEditingController jt_promptpay;
+
+  @override
+  void initState() {
+    super.initState();
+    _getDepositoryScreenory();
+  }
+
+  _getDepositoryScreenory() async {
+    try {
+      setState(() {
+        page == 1 ? isLoading = true : isLoading = false;
+      });
+      prefs = await SharedPreferences.getInstance();
+      var tokenString = prefs.getString('token');
+      var token = convert.jsonDecode(tokenString);
+      var url = Uri.parse(pathAPI + 'api/setting_app');
+      var response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> depdata = convert.jsonDecode(response.body);
+        var Data = convert.jsonDecode(response.body);
+        var familyMembers = Data["data"];
+
+        setState(() {
+          address_thai =
+              TextEditingController(text: Data['data']['address_thai']);
+          address_japan =
+              TextEditingController(text: Data['data']['address_japan']);
+          jt_account = TextEditingController(text: Data['data']['jt_account']);
+          jt_number = TextEditingController(text: Data['data']['jt_number']);
+          jt_bank = TextEditingController(text: Data['data']['jt_bank']);
+          jt_branch = TextEditingController(text: Data['data']['jt_branch']);
+          jt_promptpay =
+              TextEditingController(text: Data['data']['jt_promptpay']);
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        print('error from backend ${response.statusCode}');
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("เรทบริการ"),
+        title: Text("ตั้งค่าข้อมูล"),
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -41,16 +121,16 @@ class _MaintainScreenState extends State<MaintainScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    _divider("เงื่อนไขบริการ"),
+                    _divider("ข้อมูลบริษัท"),
                     SizedBox(
                       height: 5,
                     ),
-                    Text("Exchange Rate"),
+                    Text("ที่อยู่ไทย"),
                     SizedBox(
                       height: 10,
                     ),
                     TextFormField(
-                      initialValue: '0.32 / 1 Bath',
+                      controller: address_thai,
                       decoration: InputDecoration(
                         //labelText: 'Label text',
                         //errorText: 'Error message',
@@ -61,12 +141,12 @@ class _MaintainScreenState extends State<MaintainScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Fee"),
+                    Text("ที่อยู่ญี่ปุ่น"),
                     SizedBox(
                       height: 10,
                     ),
                     TextFormField(
-                      initialValue: '0.32 / 1 Bath',
+                      controller: address_japan,
                       decoration: InputDecoration(
                         //labelText: 'Label text',
                         //errorText: 'Error message',
@@ -77,12 +157,16 @@ class _MaintainScreenState extends State<MaintainScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Exchange Fee"),
+                    _divider("บัญชีบริษัท"),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text("ชื่อบัญชีบริษัท"),
                     SizedBox(
                       height: 10,
                     ),
                     TextFormField(
-                      initialValue: '0.32 / 1 Bath',
+                      controller: jt_account,
                       decoration: InputDecoration(
                         //labelText: 'Label text',
                         //errorText: 'Error message',
@@ -90,15 +174,51 @@ class _MaintainScreenState extends State<MaintainScreen> {
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("Exchange Com"),
+                    Text("เลขที่บัญชี"),
                     SizedBox(
                       height: 10,
                     ),
                     TextFormField(
-                      initialValue: '0.32 / 1 Bath',
+                      controller: jt_number,
+                      decoration: InputDecoration(
+                        //labelText: 'Label text',
+                        //errorText: 'Error message',
+                        hintText: "",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    Text("ธนาคาร"),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: jt_bank,
+                      decoration: InputDecoration(
+                        //labelText: 'Label text',
+                        //errorText: 'Error message',
+                        hintText: "",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    Text("สาขา"),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: jt_branch,
+                      decoration: InputDecoration(
+                        //labelText: 'Label text',
+                        //errorText: 'Error message',
+                        hintText: "",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    Text("พร้อมเพล"),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: jt_promptpay,
                       decoration: InputDecoration(
                         //labelText: 'Label text',
                         //errorText: 'Error message',

@@ -58,6 +58,7 @@ dependencies:
   #permission_handler: ^7.0.0
   webview_flutter: ^2.0.4
   url_launcher: ^6.0.3
+  fluttertoast: ^8.0.6
 
 dependency_overrides:
   intl: 0.17.0-nullsafety.2
@@ -123,13 +124,18 @@ flutter:
     - assets/1.png
     - assets/images/card_bg.png
     - assets/images/nopic.png
+    - assets/images/logo.png
+    - assets/images/powered_by.png
+    - assets/images/send_in.png
+    - assets/images/send_out.png
+    - assets/images/in.png
+    - assets/images/out.png
   fonts:
-      - family: Nunito
-        fonts:
-          - asset: assets/Nunito.ttf
-      - family: CustomIcons
-        fonts:
-          - asset: assets/CustomIcons.ttf
+    - family: Prompt
+      fonts:
+        - asset: assets/fonts/Prompt/Prompt-Regular.ttf
+        - asset: assets/fonts/Prompt/Prompt-Italic.ttf
+          style: italic
 
   # To add assets to your application, add an assets section, like this:
   # assets:

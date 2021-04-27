@@ -1,7 +1,8 @@
 import 'package:JapanThaiExpress/AdminScreens/Customer/CustomerScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositScreen.dart';
-import 'package:JapanThaiExpress/AdminScreens/HomeServices/HomeServices.dart';
+import 'package:JapanThaiExpress/AdminScreens/Depository/DepositoryScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/Exchange/ExchangeScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Maintain/MaintainScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/PreoderScreen.dart';
@@ -11,22 +12,29 @@ import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRView.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key}) : super(key: key);
+import '../PreOders/PreoderScreen.dart';
+
+class HomeServices extends StatefulWidget {
+  HomeServices({Key key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomeServicesState createState() => _HomeServicesState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeServicesState extends State<HomeServices> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("ระบบบริการงาน JPEX"),
-        automaticallyImplyLeading: false,
+        title: Text("คำขอบริการ"),
+        elevation: 0,
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context, true);
+            }),
       ),
       body: Container(
         height: height,
@@ -39,13 +47,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.all(3.0),
                 children: [
                   dashboardItem(
-                      "รายการสั่งซื้อ", Icons.list_alt_outlined, 1, context),
-                  dashboardItem("คำขอบริการ", Icons.list_alt, 2, context),
-                  dashboardItem("เรทบริการ", Icons.money, 3, context),
-                  dashboardItem("รายการเติมเงิน", Icons.transform, 4, context),
-                  dashboardItem(
-                      "ข้อมูลลูกค้า", Icons.supervised_user_circle, 5, context),
-                  dashboardItem("QR Scan", Icons.qr_code, 6, context),
+                      "รายการฝากซื้อ", Icons.list_alt_outlined, 1, context),
+                  dashboardItem("รายการฝากส่ง", Icons.list_alt, 2, context),
+                  dashboardItem("รายการฝากโอน", Icons.money, 3, context),
+                  dashboardItem("รายการประมูล", Icons.transform, 4, context),
                 ],
               ),
             ),
@@ -80,22 +85,16 @@ Card dashboardItem(String title, IconData icon, int page, context) {
         onTap: () {
           if (page == 1) {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PrechaseScreen()));
+                MaterialPageRoute(builder: (context) => PreoderScreen()));
           } else if (page == 2) {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HomeServices()));
+                MaterialPageRoute(builder: (context) => DepositoryScreen()));
           } else if (page == 3) {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MaintainScreen()));
+                MaterialPageRoute(builder: (context) => ExchangeScreen()));
           } else if (page == 4) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => DepositScreen()));
-          } else if (page == 5) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CustomerScreen()));
-          } else if (page == 6) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => QRViewExample()));
           }
         },
         child: Column(

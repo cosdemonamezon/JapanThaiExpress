@@ -43,7 +43,7 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
       isLoading = true;
     });
     var url = Uri.parse(pathAPI + 'api/preorders');
-    var response = await http.post(
+    var response = await http.get(
       url,
       headers: {
         'Content-Type': 'application/json',
@@ -270,10 +270,10 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
             children: [
               MaterialButton(
                 onPressed: () {
-                  var arg = {
-                    "code": "",
-                  };
-                  MyNavigator.goToTimelineOrders(context, arg);
+                  // var arg = {
+                  //   "code": "",
+                  // };
+                  // MyNavigator.goToTimelineOrders(context, arg);
                 },
                 color: Color(0xffdd4b39),
                 child: Text(

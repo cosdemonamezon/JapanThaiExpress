@@ -15,17 +15,14 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../utils/my_navigator.dart';
-import '../../utils/my_navigator.dart';
-
-class MessageScreen extends StatefulWidget {
-  MessageScreen({Key key}) : super(key: key);
+class ExchangeScreen extends StatefulWidget {
+  ExchangeScreen({Key key}) : super(key: key);
 
   @override
-  _MessageScreenState createState() => _MessageScreenState();
+  _ExchangeScreenState createState() => _ExchangeScreenState();
 }
 
-class _MessageScreenState extends State<MessageScreen> {
+class _ExchangeScreenState extends State<ExchangeScreen> {
   List<bool> checked = [false, true, false, false, true];
   String valueChoose;
   bool isLoading = false;
@@ -48,7 +45,7 @@ class _MessageScreenState extends State<MessageScreen> {
   final _formKey1 = GlobalKey<FormBuilderState>();
   SharedPreferences prefs;
   String tokendata = "";
-  List<dynamic> MessageScreendata = []; //ประกาศตัวแปร อาร์เรย์ ไว้
+  List<dynamic> ExchangeScreendata = []; //ประกาศตัวแปร อาร์เรย์ ไว้
   int totalResults = 0;
   int page = 1;
   int pageSize = 10;
@@ -59,9 +56,9 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   void initState() {
     super.initState();
-    _getMessageScreenory();
+    _getExchangeScreenory();
     _addressMem();
-    _MessageScreenoryType();
+    _ExchangeScreenoryType();
     _shippingOption();
   }
 
@@ -71,10 +68,10 @@ class _MessageScreenState extends State<MessageScreen> {
     // if failed,use refreshFailed()
     //ทุกครั้งที่รีเฟรชจะเคียร์อาร์เรย์และ set page เป็น 1
     setState(() {
-      MessageScreendata.clear();
+      ExchangeScreendata.clear();
       page = 1;
     });
-    _getMessageScreenory(); //ทุกครั้งที่ทำการรีเฟรช จะดึงข้อมูลใหม่
+    _getExchangeScreenory(); //ทุกครั้งที่ทำการรีเฟรช จะดึงข้อมูลใหม่
     _refreshController.refreshCompleted();
   }
 
@@ -89,7 +86,7 @@ class _MessageScreenState extends State<MessageScreen> {
         setState(() {
           page = ++page;
         });
-        _getMessageScreenory();
+        _getExchangeScreenory();
         _refreshController.loadComplete();
       } else {
         print("unmounted");
@@ -101,7 +98,7 @@ class _MessageScreenState extends State<MessageScreen> {
     }
   }
 
-  _getMessageScreenory() async {
+  _getExchangeScreenory() async {
     try {
       setState(() {
         page == 1 ? isLoading = true : isLoading = false;
@@ -110,7 +107,7 @@ class _MessageScreenState extends State<MessageScreen> {
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
       var url = Uri.parse(
-          pathAPI + 'api/get_topic?status=&page=$page&page_size=$pageSize');
+          pathAPI + 'api/get_exchange?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {
@@ -127,13 +124,13 @@ class _MessageScreenState extends State<MessageScreen> {
         final Map<String, dynamic> depdata = convert.jsonDecode(response.body);
         setState(() {
           totalResults = depdata['data']['total'];
-          MessageScreendata.addAll(depdata['data']['data']);
+          ExchangeScreendata.addAll(depdata['data']['data']);
           isLoading = false;
           // print(depdata['message']);
           // print(totalResults);
           // print("test");
-          // print(MessageScreendata.length);
-          // print(MessageScreendata[1]['description']);
+          // print(ExchangeScreendata.length);
+          // print(ExchangeScreendata[1]['description']);
         });
       } else {
         setState(() {
@@ -148,7 +145,7 @@ class _MessageScreenState extends State<MessageScreen> {
     }
   }
 
-  _MessageScreenoryType() async {
+  _ExchangeScreenoryType() async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -156,7 +153,7 @@ class _MessageScreenState extends State<MessageScreen> {
       //isLoading = true;
     });
 
-    var url = Uri.parse(pathAPI + 'api/MessageScreenory_type');
+    var url = Uri.parse(pathAPI + 'api/ExchangeScreenory_type');
     var response = await http.get(
       url,
       headers: {
@@ -165,12 +162,12 @@ class _MessageScreenState extends State<MessageScreen> {
       },
     );
     if (response.statusCode == 200) {
-      final Map<String, dynamic> dataMessageScreen =
+      final Map<String, dynamic> dataExchangeScreen =
           convert.jsonDecode(response.body);
-      if (dataMessageScreen['code'] == 200) {
-        //print(dataMessageScreen['message']);
+      if (dataExchangeScreen['code'] == 200) {
+        //print(dataExchangeScreen['message']);
         setState(() {
-          dropdownValue = dataMessageScreen['data'];
+          dropdownValue = dataExchangeScreen['data'];
         });
         // for (var i = 0; i < dataValue.length; i++) {
         //   dropdownValue += dataValue[i]['name'];
@@ -246,7 +243,7 @@ class _MessageScreenState extends State<MessageScreen> {
     }
   }
 
-  _createMessageScreenory(Map<String, dynamic> values) async {
+  _createExchangeScreenory(Map<String, dynamic> values) async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -258,7 +255,7 @@ class _MessageScreenState extends State<MessageScreen> {
     setState(() {
       isLoading = true;
     });
-    var url = Uri.parse(pathAPI + 'api/create_MessageScreenory');
+    var url = Uri.parse(pathAPI + 'api/create_ExchangeScreenory');
     var response = await http.post(url,
         headers: {
           //'Content-Type': 'application/json',
@@ -271,20 +268,20 @@ class _MessageScreenState extends State<MessageScreen> {
           'cost_th': costth,
         }));
     if (response.statusCode == 201) {
-      final Map<String, dynamic> MessageScreendata =
+      final Map<String, dynamic> ExchangeScreendata =
           convert.jsonDecode(response.body);
-      print(MessageScreendata);
-      if (MessageScreendata['code'] == 201) {
-        print(MessageScreendata['message']);
-        //MyNavigator.goToMessageScreen(context);
+      print(ExchangeScreendata);
+      if (ExchangeScreendata['code'] == 201) {
+        print(ExchangeScreendata['message']);
+        //MyNavigator.goToExchangeScreen(context);
         // Navigator.push(
-        //   context, MaterialPageRoute(builder: (context) => MessageScreen()));
+        //   context, MaterialPageRoute(builder: (context) => ExchangeScreen()));
         // String picSuccess = "assets/success.png";
         // showDialog(
         //   barrierDismissible: false,
         //   context: context,
-        //   builder: (context) => alertMessageScreen(
-        //     MessageScreendata['message'],
+        //   builder: (context) => alertExchangeScreen(
+        //     ExchangeScreendata['message'],
         //     picSuccess,
         //     context,
         //   ),
@@ -335,11 +332,11 @@ class _MessageScreenState extends State<MessageScreen> {
           appBar: AppBar(
               elevation: 0,
               centerTitle: true,
-              title: Text("กล่องข้อความ"),
+              title: Text("รายการฝากโอน"),
               leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    MyNavigator.goToAdmin(context);
+                    Navigator.pop(context, true);
                   }),
               bottom: TabBar(
                   labelColor: Colors.redAccent,
@@ -407,29 +404,137 @@ class _MessageScreenState extends State<MessageScreen> {
                         onLoading: _onLoading,
                         child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: MessageScreendata.length,
+                            itemCount: ExchangeScreendata.length,
                             padding: EdgeInsets.only(left: 5.0, right: 5.0),
                             itemBuilder: (BuildContext context, int index) {
                               return Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
-                                  onTap: () {
-                                    MyNavigator.goToMessageRoom(context,
-                                        MessageScreendata[index]['id']);
-                                  },
-                                  child: messageCard(
-                                      MessageScreendata[index]['title'],
-                                      Icons.message_outlined,
-                                      MessageScreendata[index]['user']
-                                                  ['fname_th']
-                                              .toString() +
-                                          ' ' +
-                                          MessageScreendata[index]['user']
-                                                  ['lname_th']
-                                              .toString(),
-                                      MessageScreendata[index]['send_at']
-                                          .toString()),
+                                  onTap: () {},
+                                  child: Card(
+                                    color: Colors.white,
+                                    elevation: 4.0,
+                                    child: Container(
+                                      decoration:
+                                          BoxDecoration(color: Colors.white),
+                                      child: ListTile(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 20.0, vertical: 10.0),
+                                        leading: Container(
+                                            padding:
+                                                EdgeInsets.only(right: 14.0),
+                                            decoration: BoxDecoration(
+                                                border: Border(
+                                                    right: BorderSide(
+                                                        width: 2.0,
+                                                        color: primaryColor))),
+                                            child: Icon(
+                                              Icons.money,
+                                            )),
+                                        title: Text(
+                                          'เลขที่ :' +
+                                              ExchangeScreendata[index]['code'],
+                                          style: TextStyle(
+                                              color: kTextButtonColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        subtitle: Row(
+                                          children: <Widget>[
+                                            Flexible(
+                                                child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "เรทค่าเงิน :" +
+                                                          ExchangeScreendata[
+                                                              index]['rate'],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
+                                                    ),
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "Fee :" +
+                                                          ExchangeScreendata[
+                                                              index]['fee'],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
+                                                    ),
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "คอมมิชชั่น :" +
+                                                          ExchangeScreendata[
+                                                              index]['com'],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
+                                                    ),
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "ยอดรวม :" +
+                                                          ExchangeScreendata[
+                                                              index]['total'],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
+                                                    ),
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "วันที่บันทึก :" +
+                                                          ExchangeScreendata[
+                                                                      index]
+                                                                  ['created_at']
+                                                              .split("T")[0],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
+                                                    ),
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                ]))
+                                          ],
+                                        ),
+                                        trailing: MaterialButton(
+                                          onPressed: () {
+                                            var arg = {
+                                              "id": ExchangeScreendata[index]
+                                                  ['id'],
+                                            };
+                                            MyNavigator.goToTimelineExchange(
+                                                context, arg);
+                                          },
+                                          color: Color(0xffdd4b39),
+                                          child: Text(
+                                            "ดูเพิ่ม",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {},
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               );
                             }),
@@ -443,19 +548,248 @@ class _MessageScreenState extends State<MessageScreen> {
         ));
   }
 
-  Card messageCard(String title, IconData icon, String subtitle, String date) {
+  Card addressCard(String title, String title1, String subtitle) {
+    return Card(
+      color: Colors.orange[50],
+      child: ListTile(
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            title == null
+                ? Text("...")
+                : Text(
+                    title,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: kTextButtonColor),
+                  ),
+            title1 == null
+                ? Text("...")
+                : Text(
+                    title1,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        color: kTextButtonColor),
+                  ),
+          ],
+        ),
+        subtitle: subtitle == null
+            ? Text("...")
+            : Text(
+                subtitle,
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: kTextButtonColor),
+              ),
+        trailing: IconButton(
+            icon: Icon(
+              Icons.edit,
+              size: 25,
+            ),
+            onPressed: () {
+              showDialog(
+                //barrierDismissible: false,
+                context: context,
+                builder: (context) => selectdialog(
+                  context,
+                ),
+              );
+              //selectdialog();
+            }),
+      ),
+    );
+  }
+
+  Card selectCard(String title, String title1, String subtitle, int index) {
+    return Card(
+      color: kFontPrimaryColor,
+      child: ListTile(
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                  color: kTextButtonColor),
+            ),
+            Text(
+              title1,
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  color: kTextButtonColor),
+            ),
+          ],
+        ),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+              color: kTextButtonColor),
+        ),
+        trailing: IconButton(
+            icon: Icon(
+              Icons.edit,
+              size: 25,
+            ),
+            onPressed: () {
+              setState(() {
+                id = address[index]['id'];
+                name = title;
+                add = title1;
+                tel = subtitle;
+              });
+              Navigator.pop(context);
+              //selectdialog();
+            }),
+      ),
+    );
+  }
+
+  Card buildCard(
+    String title,
+    String title2,
+    String title3,
+    String title4,
+  ) {
     return Card(
       child: ListTile(
-        leading: Icon(
-          icon,
-          color: Color(0xffdd4b39),
-          size: 40.0,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                title2,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                title3,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                title4,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          subtitle: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              MaterialButton(
+                onPressed: () {
+                  //MyNavigator.goToTimelineOrders(context);
+                },
+                color: Colors.green,
+                child: Text(
+                  "Details",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+
+  selectdialog(context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Constants.padding),
+      ),
+      elevation: 1,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.only(
+            left: Constants.padding,
+            top: Constants.avatarRadius - Constants.padding,
+            right: Constants.padding,
+            bottom: Constants.padding),
+        margin: EdgeInsets.only(top: Constants.avatarRadius),
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: kFontPrimaryColor,
+            borderRadius: BorderRadius.circular(Constants.padding),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black, offset: Offset(0, 2), blurRadius: 2),
+            ]),
+        child: Container(
+          height: 350,
+          child: Column(
+            children: [
+              Text("เลือกที่อยู่",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 18,
+                  )),
+              Container(
+                height: 300,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          physics: const ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: address.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return selectCard(
+                              address[index]['name'],
+                              address[index]['address'],
+                              address[index]['tel'],
+                              index,
+                            );
+                          }),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      //barrierDismissible: false,
+                      context: context,
+                      builder: (context) => addDialog(
+                        context,
+                      ),
+                    );
+                  },
+                  child: Text("เพิ่มที่อยู่")),
+            ],
+          ),
         ),
-        title: Text(
-          title,
-          style: TextStyle(fontWeight: FontWeight.w400),
-        ),
-        subtitle: Text(subtitle + '\nวันที่ : ' + date),
       ),
     );
   }
