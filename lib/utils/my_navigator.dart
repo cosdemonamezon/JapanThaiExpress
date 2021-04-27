@@ -1,3 +1,5 @@
+import 'package:JapanThaiExpress/AdminScreens/Depository/TimeLineDepository.dart';
+import 'package:JapanThaiExpress/AdminScreens/Message/MessageRoom.dart';
 import 'package:flutter/material.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
 
@@ -38,7 +40,39 @@ class MyNavigator {
     Navigator.pushNamed(context, '/qrcodepreview', arguments: arg);
   }
 
-  static void goToTimelineOrders(BuildContext context, arg) {
+  static void goToTimelinePreorder(BuildContext context, int id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TimeLineScreen(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {"id": id},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
+  }
+
+  static void goToTimelineDepository(BuildContext context, int id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TimeLineDepository(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {"id": id.toString()},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
+  }
+
+  static void goToTimelineExchange(BuildContext context, arg) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -48,6 +82,22 @@ class MyNavigator {
         // settings.
         settings: RouteSettings(
           arguments: {"id": "1"},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
+  }
+
+  static void goToMessageRoom(BuildContext context, int id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MessageRoom(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {"id": id},
         ),
       ),
     );
@@ -120,6 +170,7 @@ class MyNavigator {
   static void goToChooseService(BuildContext context) {
     Navigator.pushNamed(context, "/chooseservice");
   }
+
   static void goToLineRabbit(BuildContext context) {
     Navigator.pushNamed(context, "/rabbit");
   }
@@ -154,7 +205,6 @@ class MyNavigator {
   // static void goToTopup(BuildContext context) {
   //   Navigator.pushNamedAndRemoveUntil(context, "/topup", (route) => false);
   // }
-  
 
   // static void goToTopup(BuildContext context) {
   //   Navigator.pushNamedAndRemoveUntil(context, "/topup", (route) => false);
@@ -167,7 +217,12 @@ class MyNavigator {
   static void goToMyaccount(BuildContext context) {
     Navigator.pushNamed(context, '/myaccount');
   }
+
   static void goToTest(BuildContext context) {
     Navigator.pushNamed(context, '/testregis');
+  }
+
+  static void goToHomeServices(BuildContext context) {
+    Navigator.pushNamed(context, "/homeservices");
   }
 }

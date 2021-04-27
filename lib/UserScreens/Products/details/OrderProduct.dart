@@ -46,7 +46,6 @@ class _OrderProductState extends State<OrderProduct> {
     super.initState();
     _shippingOption();
     _addressMem();
-    
   }
 
   _addressMem() async {
@@ -187,31 +186,24 @@ class _OrderProductState extends State<OrderProduct> {
           'code': values['code'],
         }));
     if (response.statusCode == 200) {
-      final Map<String, dynamic> promotiondata = convert.jsonDecode(response.body);
+      final Map<String, dynamic> promotiondata =
+          convert.jsonDecode(response.body);
       print(promotiondata['message']);
-      if (promotiondata['data']['type']=="fix") {
-        setState(() {          
-                               
+      if (promotiondata['data']['type'] == "fix") {
+        setState(() {
           var a = double.parse(promotiondata['data']['discount']);
           var b = double.parse(numprice);
           var c = double.parse(numqty);
-          var d = b*c;
-          var e = d-a;
+          var d = b * c;
+          var e = d - a;
           total = e.toString();
         });
-      } else {
-      }
-      setState(() {
-        
-      });
-
-    } else {
-    }
+      } else {}
+      setState(() {});
+    } else {}
   }
 
-  _cal(){
-
-  }
+  _cal() {}
 
   // _sumTotal(String qty, String price) {
   //     //data['qty']
@@ -271,57 +263,68 @@ class _OrderProductState extends State<OrderProduct> {
                   elevation: 1,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(2)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: 80.0,
-                          height: 80.0,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: NetworkImage(data['img']),
+                  child: ListTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Container(
+                            width: 80.0,
+                            height: 80.0,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: NetworkImage(data['img']),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            data['name'],
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "ราคา " + data['price'],
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "จำนวน " + data['qty'] + " ชิ้น",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.remove_shopping_cart_rounded,
-                          color: Colors.red,
-                          size: 25,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            data['name'].length <= 10
+                                ? Text(
+                                    data['name'],
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : Text(
+                                    data['name'].substring(0, 15) + "...",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                            Text(
+                              "ราคา " + data['price'],
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "จำนวน " + data['qty'] + " ชิ้น",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
-                        onPressed: () {},
+                      ],
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.remove_shopping_cart_rounded,
+                        color: Colors.red,
+                        size: 25,
                       ),
-                    ],
+                      onPressed: () {},
+                    ),
                   ),
                 ),
                 Row(
@@ -365,7 +368,7 @@ class _OrderProductState extends State<OrderProduct> {
                               setState(() {
                                 isLoading = true;
                                 numprice = data['price'];
-                                numqty =data['qty'];
+                                numqty = data['qty'];
                               });
                               //print(_formKey.currentState.value);
                               _usePromotion(_formKey.currentState.value);
@@ -435,7 +438,7 @@ class _OrderProductState extends State<OrderProduct> {
                                     _transport = costh['price'];
                                     //print(costh);
                                     //costth = option['price'];
-                                    
+
                                     _sumTotal();
                                   });
                                 },

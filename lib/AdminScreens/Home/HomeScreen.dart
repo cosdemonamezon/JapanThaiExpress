@@ -1,6 +1,7 @@
 import 'package:JapanThaiExpress/AdminScreens/Customer/CustomerScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/HomeServices/HomeServices.dart';
 import 'package:JapanThaiExpress/AdminScreens/Maintain/MaintainScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/PreoderScreen.dart';
@@ -24,7 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Admin Dashboard"),
+        title: Text("ระบบบริการงาน JPEX"),
+        automaticallyImplyLeading: false,
       ),
       body: Container(
         height: height,
@@ -37,13 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.all(3.0),
                 children: [
                   dashboardItem(
-                      "Purchase Orders", Icons.list_alt_outlined, 1, context),
-                  dashboardItem("Service Orders", Icons.list_alt, 2, context),
-                  dashboardItem("Maintain Rate", Icons.money, 3, context),
+                      "รายการสั่งซื้อ", Icons.list_alt_outlined, 1, context),
+                  dashboardItem("คำขอบริการ", Icons.list_alt, 2, context),
+                  dashboardItem("เรทบริการ", Icons.money, 3, context),
+                  dashboardItem("รายการเติมเงิน", Icons.transform, 4, context),
                   dashboardItem(
-                      "Refill notification", Icons.transform, 4, context),
-                  dashboardItem("Customer Manage", Icons.supervised_user_circle,
-                      5, context),
+                      "ข้อมูลลูกค้า", Icons.supervised_user_circle, 5, context),
                   dashboardItem("QR Scan", Icons.qr_code, 6, context),
                 ],
               ),
@@ -82,7 +83,7 @@ Card dashboardItem(String title, IconData icon, int page, context) {
                 MaterialPageRoute(builder: (context) => PrechaseScreen()));
           } else if (page == 2) {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PreoderScreen()));
+                MaterialPageRoute(builder: (context) => HomeServices()));
           } else if (page == 3) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => MaintainScreen()));

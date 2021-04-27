@@ -1,6 +1,8 @@
 import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Notification/NotificationScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/Settings/SettingScreen.dart';
+
 import 'package:flutter/material.dart';
 
 class Navigation extends StatefulWidget {
@@ -19,14 +21,13 @@ class _NavigationState extends State<Navigation> {
       decoration: BoxDecoration(
         color: Color(0xffdd4b39),
       ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
-              child: Column(
+      child: Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
                 children: [
                   CircleAvatar(
                     backgroundColor: Color(0xFF343434),
@@ -43,92 +44,101 @@ class _NavigationState extends State<Navigation> {
                         }),
                   ),
                   Text(
-                    "Home",
+                    "หน้าหลัก",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Color(0xFF343434),
-                    //backgroundImage: AssetImage(pathicon1),
-                    radius: 24,
-                    child: IconButton(
-                        color: Colors.white,
-                        icon: Icon(Icons.chat),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MessageScreen()));
-                        }),
-                  ),
-                  Text(
-                    "Message",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Color(0xFF343434),
+                      //backgroundImage: AssetImage(pathicon1),
+                      radius: 24,
+                      child: IconButton(
+                          color: Colors.white,
+                          icon: Icon(Icons.chat),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MessageScreen()));
+                          }),
+                    ),
+                    Text(
+                      "ข้อความ",
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Color(0xFF343434),
-                    //backgroundImage: AssetImage(pathicon1),
-                    radius: 24,
-                    child: IconButton(
-                        color: Colors.white,
-                        icon: Icon(Icons.notification_important),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => NotificationScreen()));
-                        }),
-                  ),
-                  Text(
-                    "Notification",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Color(0xFF343434),
+                      //backgroundImage: AssetImage(pathicon1),
+                      radius: 24,
+                      child: IconButton(
+                          color: Colors.white,
+                          icon: Icon(Icons.notification_important),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        NotificationScreen()));
+                          }),
+                    ),
+                    Text(
+                      "แจ้งเตือน",
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Color(0xFF343434),
-                    //backgroundImage: AssetImage(pathicon1),
-                    radius: 24,
-                    child: IconButton(
-                        color: Colors.white,
-                        icon: Icon(Icons.settings_applications),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => NotificationScreen()));
-                        }),
-                  ),
-                  Text(
-                    "Setting",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Color(0xFF343434),
+                      //backgroundImage: AssetImage(pathicon1),
+                      radius: 24,
+                      child: IconButton(
+                          color: Colors.white,
+                          icon: Icon(Icons.settings_applications),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SettingScreen()));
+                          }),
+                    ),
+                    Text(
+                      "ตั้งค่า",
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

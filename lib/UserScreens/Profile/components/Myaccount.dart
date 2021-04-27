@@ -1,3 +1,8 @@
+import 'dart:async';
+// import 'dart:ui';
+
+import 'dart:io';
+
 import 'package:JapanThaiExpress/UserScreens/Profile/ProfileScreen.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +17,47 @@ class Myaccount extends StatefulWidget {
 }
 
 class _MyaccountState extends State<Myaccount> {
+  File _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    print(pickedFile.path);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future getcamera() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     Size size = MediaQuery.of(context).size;
+
+    //final picker = ImagePicker();
+    /*_imgFromCamera() async {
+      File image = await ImagePicker.pickImage(
+      source:ImageSource.camera,
+
+      setState(() {
+    _image = image;
+  }),);}*/
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -51,20 +93,46 @@ class _MyaccountState extends State<Myaccount> {
                     Center(
                         child: Stack(
                       children: [
+                        
                         Container(
                           width: 150,
                           height: 150,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 4,
-                                  color: Theme.of(context)
-                                      .scaffoldBackgroundColor),
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    "https://image.sistacafe.com/images/uploads/summary/image/41751/3e9fea8de38ad5631fd691a1e9c54c26.jpg"),
-                              )),
+                           child: _image != null
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(80),
+                      child: Image.file(
+                        _image,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.fitHeight,
+                      ),
+                    )
+                  : Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(80)),
+                      width: 100,
+                      height: 100,
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Colors.grey[800],
+                      ),
+                    ),
+            
+                          /*child: _image == null
+                              ? Image.asset("assets/images/nopic.png")
+                              : Image.file(
+                                  _image,
+                                  fit: BoxFit.cover,
+                                ),*/
+                          // decoration: BoxDecoration(
+                          //   border:
+                          //       Border.all(width: 4, color: Colors.grey[300]),
+                          //   shape: BoxShape.circle,
+                          //   // image: DecorationImage(
+                          //   //   fit: BoxFit.cover,
+                          //   // )
+                          // ),
                         ),
                         Positioned(
                           bottom: 0,
@@ -91,15 +159,15 @@ class _MyaccountState extends State<Myaccount> {
                                       title: Text('Camera'),
                                       onTap: () {
                                         Navigator.pop(context);
-                                        //selectImageSource(ImageSource.camera);
+                                        getcamera();
                                       },
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.photo_album),
                                       title: Text('Gallery'),
                                       onTap: () {
-                                        Navigator.pop(context);
-                                        //selectImageSource(ImageSource.gallery);
+                                        // Navigator.pop(context);
+                                        getImage();
                                       },
                                     ),
                                   ]),
@@ -245,29 +313,28 @@ class _MyaccountState extends State<Myaccount> {
                     TextButton(
                       child: Text('บันทึก'),
                       style: TextButton.styleFrom(
-                        primary: Colors.white, 
+                        primary: Colors.white,
                         backgroundColor: Colors.deepOrange[800],
                         onSurface: Colors.grey,
                         textStyle: TextStyle(
-                            fontSize: 20,
-                            height: 1.8,
+                          fontSize: 20,
+                          height: 1.8,
                         ),
-                       
                       ),
                       onPressed: () {
-                         String picSuccess = "assets/success.png";
-                              showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (context) => alertProfilescreen(
-                                  'ดำเนินการสำเร็จ',
-                                  picSuccess,
-                                  context,
-                                ),
-                              );
-                              // _formKey.currentState.save();
-                              // print(_formKey.currentState.value);
-                              //_preorderMem(_formKey.currentState.value);
+                        String picSuccess = "assets/success.png";
+                        showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (context) => alertProfilescreen(
+                            'ดำเนินการสำเร็จ',
+                            picSuccess,
+                            context,
+                          ),
+                        );
+                        // _formKey.currentState.save();
+                        // print(_formKey.currentState.value);
+                        //_preorderMem(_formKey.currentState.value);
                       },
                     ),
                     SizedBox(height: 30),
@@ -280,10 +347,13 @@ class _MyaccountState extends State<Myaccount> {
       ),
     );
   }
+
+  _imgFromGallery() async {
+    print("object");
+    File image = (await picker.getImage(source: ImageSource.gallery)) as File;
+
+    setState(() {
+      _image = image;
+    });
+  }
 }
-/*void _showImageSourceActionSheet(BuildContext context) {
-    Function(ImageSource) selectImageSource = (imageSource) {
-      //context
-         // .read<ProfileBloc>()
-          //.add(OpenImagePicker(imageSource: imageSource));
-    }*/

@@ -62,7 +62,7 @@ class _NewsScreenState extends State<NewsScreen> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("News"),
+        title: Text("ข่าว"),
         leading: IconButton(
             onPressed: () {
               MyNavigator.goBackUserHome(context);
@@ -176,7 +176,7 @@ class _NewsScreenState extends State<NewsScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: subtitle.length <= 120
+                      child: subtitle.length <= 100
                           ? Text(
                               subtitle,
                               style: TextStyle(
@@ -185,7 +185,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                   color: kFontSecondTextColor),
                             )
                           : Text(
-                              subtitle.substring(0, 120) + "...",
+                              subtitle.substring(0, 100) + "...",
                               style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,

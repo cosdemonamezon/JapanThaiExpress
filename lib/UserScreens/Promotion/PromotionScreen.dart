@@ -110,7 +110,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Promotion"),
+        title: Text("โปรโมชั่น"),
         leading: IconButton(
           onPressed: () {
             MyNavigator.goBackUserHome(context);
@@ -232,7 +232,7 @@ Card buildCard(String title, String title2, String title3, String title4,){
               onPressed: () {
                 //MyNavigator.goToTimelineOrders(context);
               },
-              color: Colors.green,
+              color: primaryColor,
               child: Text(
                 "Details",
                 style: TextStyle(

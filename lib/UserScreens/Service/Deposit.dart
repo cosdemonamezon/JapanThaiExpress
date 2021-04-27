@@ -532,8 +532,10 @@ class _DepositState extends State<Deposit> {
                           // initialValue: 'Male',
                           allowClear: true,
                           hint: Text('หมวดหมู่สินค้า'),
-                          validator: FormBuilderValidators.compose(
-                              [FormBuilderValidators.required(context)]),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context,
+                                errorText: 'กรุณาเลือกหมวดหมู่สินค้า')
+                          ]),
                           items: dropdownValue
                               .map((option) => DropdownMenuItem(
                                     value: option['name'],
@@ -574,14 +576,14 @@ class _DepositState extends State<Deposit> {
                           },
                           child: Center(
                             child: Container(
-                              height: 120,
-                              width: 120,
+                              height: 150,
+                              width: 180,
                               //color: Colors.red,
                               child: _image == null
                                   ? Image.asset("assets/images/nopic.png")
                                   : Image.file(
                                       _image,
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.fill,
                                     ),
                             ),
                           ),
@@ -597,14 +599,22 @@ class _DepositState extends State<Deposit> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  if (isLoading == true) {
-                                    print("กดไม่ได้");
-                                  } else {
+                                  if (_formKey.currentState.validate()) {
                                     _formKey.currentState.save();
-                                    print(_formKey.currentState.value);
+                                    setState(() {
+                                      isLoading = true;
+                                    });
                                     _createDepository(
                                         _formKey.currentState.value);
-                                  }
+                                  } else {}
+                                  // if (isLoading == true) {
+                                  //   print("กดไม่ได้");
+                                  // } else {
+                                  //   _formKey.currentState.save();
+                                  //   print(_formKey.currentState.value);
+                                  //   _createDepository(
+                                  //       _formKey.currentState.value);
+                                  // }
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -769,11 +779,13 @@ class _DepositState extends State<Deposit> {
   ) {
     return Card(
       child: ListTile(
-        leading: Container(
-          width: 90,
-          height: 150,
-          child: Image.network(img, fit: BoxFit.cover,)
-        ),
+          leading: Container(
+              width: 90,
+              height: 150,
+              child: Image.network(
+                img,
+                fit: BoxFit.cover,
+              )),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,

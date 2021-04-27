@@ -347,7 +347,7 @@ class _BuystuffState extends State<Buystuff> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Product URL",
+                                "ลิ้งค์ URL สินค้า *",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 15),
                               ),
@@ -374,7 +374,7 @@ class _BuystuffState extends State<Buystuff> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Name",
+                                "ชื่อสินค้า *",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 15),
                               ),
@@ -424,7 +424,7 @@ class _BuystuffState extends State<Buystuff> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Qty",
+                                "จำนวน *",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 15),
                               ),
@@ -476,8 +476,8 @@ class _BuystuffState extends State<Buystuff> {
                           },
                           child: Center(
                             child: Container(
-                              height: 120,
-                              width: 120,
+                              height: 180,
+                              width: 180,
                               //color: Colors.red,
                               child: _image == null
                                   ? Image.asset("assets/images/nopic.png")
@@ -689,7 +689,7 @@ class _BuystuffState extends State<Buystuff> {
                         // ),
 
                         SizedBox(
-                          height: 20,
+                          height: 5,
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 5),

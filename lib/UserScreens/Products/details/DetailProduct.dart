@@ -82,7 +82,13 @@ class _DetailProductState extends State<DetailProduct> {
                         //CounterWithFavBtn(),
                         Column(
                           children: [
-                            Text(data['price']),
+                            Text(
+                              "ราคา "+data['price'],
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -177,7 +183,7 @@ class _DetailProductState extends State<DetailProduct> {
                                       });
                                     }, 
                                     child: Text(
-                                      "Buy Now".toUpperCase(),
+                                      "ซื้อทันที".toUpperCase(),
                                       style: TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
@@ -207,16 +213,22 @@ class _DetailProductState extends State<DetailProduct> {
                               flex: 1,
                               child: Hero(
                                 tag: data['id'], 
-                                child: Image.network(
-                                  data['img'],
-                                  fit: BoxFit.fill,
+                                child: Container(
+                                  height: height*0.33,
+                                  width: 100,
+                                  child: Image.network(
+                                    data['img'],
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
                             ),
                           ],
                         ),
                         Center(
-                          child: Text(data['name']),
+                          child: data['name'].length <= 10
+                          ?Text(data['name'])
+                          :Text(data['name'].substring(0, 22) + "..."),
                         ),
                       ],
                     ),
@@ -258,21 +270,21 @@ class _DetailProductState extends State<DetailProduct> {
         ), 
         onPressed: () => Navigator.pop(context),
       ),
-      actions: <Widget>[
-        IconButton(
-          icon: SvgPicture.asset("assets/icons/search.svg"), 
-          onPressed: () {
+      // actions: <Widget>[
+      //   IconButton(
+      //     icon: SvgPicture.asset("assets/icons/search.svg"), 
+      //     onPressed: () {
 
-          },
-        ),
-        IconButton(
-          icon: SvgPicture.asset("assets/icons/cart.svg"), 
-          onPressed: () {
+      //     },
+      //   ),
+      //   IconButton(
+      //     icon: SvgPicture.asset("assets/icons/cart.svg"), 
+      //     onPressed: () {
 
-          },
-        ),
-        SizedBox(width: kDefaultPaddin / 2),
-      ],
+      //     },
+      //   ),
+      //   SizedBox(width: kDefaultPaddin / 2),
+      // ],
     );
   }
 }

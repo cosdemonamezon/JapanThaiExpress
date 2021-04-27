@@ -33,8 +33,10 @@ class _DashbordScreenState extends State<DashbordScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(        
-        title: Text("Dashbord"),
+      appBar: AppBar(   
+        centerTitle: true,  
+        automaticallyImplyLeading: false,   
+        title: Text("JapanThaiExpress"),
         // actions: [
         //   IconButton(
         //     icon: Icon(Icons.account_circle, size: 40, color: Colors.white,), 

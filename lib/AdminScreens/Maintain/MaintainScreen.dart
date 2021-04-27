@@ -1,5 +1,9 @@
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
+import 'package:JapanThaiExpress/constants.dart';
+import '../../utils/my_navigator.dart';
 
 class MaintainScreen extends StatefulWidget {
   MaintainScreen({Key key}) : super(key: key);
@@ -14,7 +18,12 @@ class _MaintainScreenState extends State<MaintainScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Maintain Rate"),
+        title: Text("เรทบริการ"),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              MyNavigator.goToAdmin(context);
+            }),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -30,25 +39,13 @@ class _MaintainScreenState extends State<MaintainScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 50,
+                      height: 20,
                     ),
-                    Text("Update Yen"),
+                    _divider("เงื่อนไขบริการ"),
                     SizedBox(
-                      height: 50,
+                      height: 5,
                     ),
-                    TextFormField(
-                      initialValue: '0.29 / 1 Bath',
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText: 'Error message',
-                        hintText: "",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Text("Update Yen for Auction"),
+                    Text("Exchange Rate"),
                     SizedBox(
                       height: 10,
                     ),
@@ -62,7 +59,55 @@ class _MaintainScreenState extends State<MaintainScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 230,
+                      height: 10,
+                    ),
+                    Text("Fee"),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      initialValue: '0.32 / 1 Bath',
+                      decoration: InputDecoration(
+                        //labelText: 'Label text',
+                        //errorText: 'Error message',
+                        hintText: "",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("Exchange Fee"),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      initialValue: '0.32 / 1 Bath',
+                      decoration: InputDecoration(
+                        //labelText: 'Label text',
+                        //errorText: 'Error message',
+                        hintText: "",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("Exchange Com"),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      initialValue: '0.32 / 1 Bath',
+                      decoration: InputDecoration(
+                        //labelText: 'Label text',
+                        //errorText: 'Error message',
+                        hintText: "",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,
@@ -83,7 +128,7 @@ class _MaintainScreenState extends State<MaintainScreen> {
                             colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
                       ),
                       child: Text(
-                        "Adjust Rate",
+                        "บันทึก",
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                     ),
@@ -95,6 +140,41 @@ class _MaintainScreenState extends State<MaintainScreen> {
         ),
       ),
       bottomNavigationBar: Navigation(),
+    );
+  }
+
+  _divider(String str) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: <Widget>[
+          SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Divider(
+                thickness: 2,
+                color: primaryColor,
+              ),
+            ),
+          ),
+          Text(str),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Divider(
+                thickness: 2,
+                color: primaryColor,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+        ],
+      ),
     );
   }
 }

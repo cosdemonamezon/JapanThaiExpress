@@ -221,7 +221,7 @@ class _ProductScreenState extends State<ProductScreen> {
       //     MyNavigator.goBackUserHome(context);
       //   },
       // ),
-      title: Text("Products"),
+      title: Text("สินค้า"),
 
       // actions: <Widget>[
       //   IconButton(
@@ -281,9 +281,16 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: kDefaultPaddin / 4),
-            child: Text(
+            child: 
+            name.length <= 10
+            ?Text(
               // products is out demo list
               name,
+              style: TextStyle(color: kTextLightColor),
+            )
+            :Text(
+              // products is out demo list
+              name.substring(0, 20) + "...",
               style: TextStyle(color: kTextLightColor),
             ),
           ),

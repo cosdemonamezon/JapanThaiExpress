@@ -11,6 +11,7 @@ import 'package:JapanThaiExpress/Screens/Register/Registration.dart';
 import 'package:JapanThaiExpress/Screens/Register/testregis.dart';
 
 import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/HomeServices/HomeServices.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRCodePreview.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
@@ -153,6 +154,7 @@ var routes = <String, WidgetBuilder>{
   "/product": (BuildContext context) => ProductScreen(),
   "/myorder": (BuildContext context) => OdersScreen(),
   "/buystuff": (BuildContext context) => Buystuff(),
+  "/homeservices": (BuildContext context) => HomeServices(),
   //"/testregis": (BuildContext context) => testregis(),
 };
 
@@ -169,6 +171,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'JapanThaiExpress',
         theme: ThemeData(
+          fontFamily: 'Prompt',
           //primarySwatch: Colors.grey,
           primaryColor: primaryColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,

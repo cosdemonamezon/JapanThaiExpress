@@ -66,7 +66,7 @@ class _OdersScreenState extends State<OdersScreen> {
     }
   }
 
-  _getOrderlist() async{
+  _getOrderlist() async {
     try {
       setState(() {
         page == 1 ? isLoading = true : isLoading = false;
@@ -76,7 +76,7 @@ class _OdersScreenState extends State<OdersScreen> {
       var token = convert.jsonDecode(tokenString);
       var url = Uri.parse(pathAPI +
           'api/app/order_list?status=&page=$page&page_size=$pageSize');
-          var response = await http.get(
+      var response = await http.get(
         url,
         headers: {
           //'Content-Type': 'application/json',
@@ -89,7 +89,8 @@ class _OdersScreenState extends State<OdersScreen> {
         // })
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> orderdata = convert.jsonDecode(response.body);
+        final Map<String, dynamic> orderdata =
+            convert.jsonDecode(response.body);
         setState(() {
           totalResults = orderdata['data']['total'];
           order.addAll(orderdata['data']['data']);
@@ -101,24 +102,21 @@ class _OdersScreenState extends State<OdersScreen> {
         });
         print('error from backend ${response.statusCode}');
       }
-      
     } catch (e) {
       setState(() {
         isLoading = false;
       });
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          title: Text("Pre Oders"),
-          leading: IconButton(
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        title: Text("รายการสินค้า"),
+        leading: IconButton(
             onPressed: () {
               MyNavigator.goBackUserHome(context);
             },
@@ -126,114 +124,92 @@ class _OdersScreenState extends State<OdersScreen> {
               Icons.arrow_back_ios_rounded,
               color: Colors.white,
             )),
-          bottom: TabBar(
-            labelColor: Colors.redAccent,
-            unselectedLabelColor: Colors.white,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicator: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10)),
-              color: Colors.white),
-            tabs: [
-              Tab(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text("New Orders"),
-                ),
-              ),
-              Tab(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text("History"),
-                ),
-              ),
-              
-            ]
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            Container(
-              child: ListView.builder(
-                itemCount: order.length,
-                shrinkWrap: true,
-                padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                itemBuilder: (BuildContext context, int index){
-                  return buildCard(
-                    order[index]['code'],
-                    order[index]['product_name'],
-                    order[index]['qty'],
-                    order[index]['price'],
-                    order[index]['total'],
-                  );
-                }
-                
-              ),
-            ),
-
-            Icon(Icons.movie),
-          ],
-        ),
-        bottomNavigationBar: NavigationBar(),
+        
       ),
+      body: Container(
+        child: ListView.builder(
+            itemCount: order.length,
+            shrinkWrap: true,
+            padding: EdgeInsets.only(left: 15.0, right: 15.0),
+            itemBuilder: (BuildContext context, int index) {
+              return buildCard(
+                order[index]['code'],
+                order[index]['product_name'],
+                order[index]['qty'],
+                order[index]['price'],
+                order[index]['total'],
+              );
+            }),
+      ),
+      bottomNavigationBar: NavigationBar(),
     );
   }
 
-  Card buildCard(String title, String subtitle, String subtitle1, String subtitle2, String subtitle3,) {
+  Card buildCard(
+    String title,
+    String subtitle,
+    String subtitle1,
+    String subtitle2,
+    String subtitle3,
+  ) {
     return Card(
-      child: ListTile(        
-        title: Column(
-          children: [
-            Row(
-              children: [
-                Text(
-                  "รหัสสินค้า  ：",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14,
+      child: ListTile(
+          title: Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "รหัสสินค้า  ：",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
                   ),
-                ),
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.black, fontSize: 17,
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 17,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        subtitle: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text("ชื่อสินค้า     ："),
-                Text(subtitle),
-              ],
-            ),
-            Row(
-              children: [
-                Text("จำนวน        ："),
-                Text(subtitle1+ "    ชิ้น"),
-              ],
-            ),
-            Row(
-              children: [
-                Text("ราคาสินค้า ："),
-                Text(subtitle2 + " บาท"),
-              ],
-            ),
-            Row(
-              children: [
-                Text("ยอดรวม     ："),
-                Text(subtitle3+ " บาท"),
-              ],
-            ),
-          ],
-        )
-      ),
+                ],
+              ),
+            ],
+          ),
+          subtitle: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text("ชื่อสินค้า   ："),
+                  subtitle.length <= 30
+                      ? Text(subtitle)
+                      : Text(subtitle.substring(0, 30)),
+                ],
+              ),
+              Row(
+                children: [
+                  Text("จำนวน     ："),
+                  Text(subtitle1 + "    ชิ้น"),
+                ],
+              ),
+              Row(
+                children: [
+                  Text("ราคาสินค้า ："),
+                  Text(subtitle2 + " บาท"),
+                ],
+              ),
+              Row(
+                children: [
+                  Text("ยอดรวม   ："),
+                  Text(subtitle3 + " บาท"),
+                ],
+              ),
+            ],
+          )),
     );
   }
 }
@@ -241,12 +217,16 @@ class _OdersScreenState extends State<OdersScreen> {
 Card messageCard(String title, IconData icon, String subtitle) {
   return Card(
     child: ListTile(
-      leading: Icon(icon, color: Colors.blue,size: 40.0,),
+      leading: Icon(
+        icon,
+        color: Colors.blue,
+        size: 40.0,
+      ),
       title: Text(
-        title ,style: TextStyle(fontWeight: FontWeight.w400),
+        title,
+        style: TextStyle(fontWeight: FontWeight.w400),
       ),
       subtitle: Text(subtitle),
     ),
   );
 }
-

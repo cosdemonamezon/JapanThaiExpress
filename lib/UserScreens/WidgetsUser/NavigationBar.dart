@@ -1,3 +1,4 @@
+import 'package:JapanThaiExpress/AdminScreens/Message/MessageScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/Contact.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NotificationScreen.dart';
@@ -17,113 +18,129 @@ class _NavigationBarState extends State<NavigationBar> {
     return Container(
       height: 100,
       width: double.infinity,
-      decoration: BoxDecoration(color: Color(0xffdd4b39),),
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
+      decoration: BoxDecoration(
+        color: Color(0xffdd4b39),
+      ),
+      child: Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
                 children: [
                   CircleAvatar(
                     backgroundColor: Color(0xFF343434),
                     //backgroundImage: AssetImage(pathicon1),
                     radius: 24,
                     child: IconButton(
-                      color: Colors.white,
-                      icon: Icon(Icons.home_filled),
-                      onPressed: () {
-                        // Navigator.push(
-                        //   context, MaterialPageRoute(builder: (context) => DashbordScreen())
-                        // );
-                        MyNavigator.goBackUserHome(context);
-                      }
+                        color: Colors.white,
+                        icon: Icon(Icons.home),
+                        onPressed: () {
+                          // Navigator.pushReplacement(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => HomeScreen()));
+                          MyNavigator.goBackUserHome(context);
+                        }),
+                  ),
+                  Text(
+                    "หน้าหลัก",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Color(0xFF343434),
+                      //backgroundImage: AssetImage(pathicon1),
+                      radius: 24,
+                      child: IconButton(
+                          color: Colors.white,
+                          icon: Icon(Icons.chat),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NotificationScreen()));
+                          }),
                     ),
-                  ),
-                  Text(
-                    "Home",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                ],
+                    Text(
+                      "แจ้งเตือน",
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Color(0xFF343434),
-                    //backgroundImage: AssetImage(pathicon1),
-                    radius: 24,
-                    child: IconButton(
-                      color: Colors.white,
-                      icon: Icon(Icons.notification_important),
-                      onPressed: () {
-                        Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => NotificationScreen())
-                        );
-                    }),
-                  ),
-                  Text(
-                    "Notification",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Color(0xFF343434),
+                      //backgroundImage: AssetImage(pathicon1),
+                      radius: 24,
+                      child: IconButton(
+                          color: Colors.white,
+                          icon: Icon(Icons.notification_important),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        MessageScreen()));
+                          }),
+                    ),
+                    Text(
+                      "ข้อความ",
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Color(0xFF343434),
-                    //backgroundImage: AssetImage(pathicon1),
-                    radius: 24,
-                    child: IconButton(
-                      color: Colors.white,
-                      icon: Icon(Icons.contact_phone),
-                      onPressed: () {
-                      Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => Contact())
-                      );
-                    }),
-                  ),
-                  Text(
-                    "Contact Us",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Color(0xFF343434),
+                      //backgroundImage: AssetImage(pathicon1),
+                      radius: 24,
+                      child: IconButton(
+                          color: Colors.white,
+                          icon: Icon(Icons.settings_applications),
+                          onPressed: () {
+                            // Navigator.pushReplacement(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => SettingScreen()));
+                            MyNavigator.goToProfileScreen(context);
+                          }),
+                    ),
+                    Text(
+                      "ตั้งค่า",
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Color(0xFF343434),
-                    //backgroundImage: AssetImage(pathicon1),
-                    radius: 24,
-                    child: IconButton(
-                      color: Colors.white,
-                      icon: Icon(Icons.account_circle),
-                      onPressed: () {
-                        MyNavigator.goToProfileScreen(context);
-                    }),
-                  ),
-                  Text(
-                    "Profile",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
