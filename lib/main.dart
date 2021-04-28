@@ -115,7 +115,7 @@ void main() async {
 
 var routes = <String, WidgetBuilder>{
   '/': (context) => token == null
-      ? SplashScreen()
+      ? LoginScreen()
       : tokenObj['data']['type'] == 'admin'
           ? HomeScreen()
           : DashbordScreen(),

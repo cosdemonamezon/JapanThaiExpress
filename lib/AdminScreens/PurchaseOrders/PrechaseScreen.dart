@@ -98,7 +98,7 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
         appBar: AppBar(
           elevation: 0,
           centerTitle: true,
-          title: Text("Purchanse Orders"),
+          title: Text("รายการสินค้า"),
           leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
@@ -117,13 +117,13 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
                 Tab(
                   child: Align(
                     alignment: Alignment.center,
-                    child: Text("New Orders"),
+                    child: Text("รายการใหม่"),
                   ),
                 ),
                 Tab(
                   child: Align(
                     alignment: Alignment.center,
-                    child: Text("History"),
+                    child: Text("ประวัติ"),
                   ),
                 ),
               ]),

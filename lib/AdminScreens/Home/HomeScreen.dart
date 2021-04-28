@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       "รายการสั่งซื้อ", Icons.list_alt_outlined, 1, context),
                   dashboardItem("คำขอบริการ", Icons.list_alt, 2, context),
                   dashboardItem("เรทบริการ", Icons.money, 3, context),
-                  dashboardItem("รายการเติมเงิน", Icons.transform, 4, context),
+                  dashboardItem("รายการเติมเงิน", Icons.payment, 4, context),
                   dashboardItem(
                       "ข้อมูลลูกค้า", Icons.supervised_user_circle, 5, context),
                   dashboardItem("QR Scan", Icons.qr_code, 6, context),

@@ -45,7 +45,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Customers"),
+        title: Text("รายการสมาชิก"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -58,8 +58,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 },
                 controller: editingController,
                 decoration: InputDecoration(
-                    labelText: "Search",
-                    hintText: "Search",
+                    labelText: "ค้นหา",
+                    hintText: "ค้นหา",
                     prefixIcon: Icon(Icons.search),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0)))),

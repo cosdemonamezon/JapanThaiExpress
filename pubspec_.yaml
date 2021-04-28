@@ -59,6 +59,8 @@ dependencies:
   webview_flutter: ^2.0.4
   url_launcher: ^6.0.3
   fluttertoast: ^8.0.6
+  font_awesome_flutter: ^9.0.0
+
 
 dependency_overrides:
   intl: 0.17.0-nullsafety.2
@@ -130,16 +132,16 @@ flutter:
     - assets/images/send_out.png
     - assets/images/in.png
     - assets/images/out.png
-  fonts:
+fonts:
+    - family: CustomIcons
+      fonts:
+        - asset: assets/CustomIcons.ttf
+
     - family: Prompt
       fonts:
         - asset: assets/fonts/Prompt/Prompt-Regular.ttf
         - asset: assets/fonts/Prompt/Prompt-Italic.ttf
-          style: italic
-
-    - family: CustomIcons
-      fonts:
-        - asset: assets/CustomIcons.ttf
+          style: italic 
 
   # To add assets to your application, add an assets section, like this:
   # assets:

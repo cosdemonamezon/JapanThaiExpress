@@ -77,10 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
          Declined permissions: ${accessToken.declinedPermissions}
          ''');
 
-        final graphResponse = await http.get(
-          Uri.parse(
-            'https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${accessToken.token}')
-            );
+        final graphResponse = await http.get(Uri.parse(
+            'https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${accessToken.token}'));
 
         final Map<String, dynamic> facebookdata =
             convert.jsonDecode(graphResponse.body);
@@ -477,7 +475,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
                       ),
                       child: Text(
-                        "Sign In",
+                        "เข้าสู่ระบบ",
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                     ),
@@ -489,7 +487,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           MyNavigator.goToForgot(context);
                         },
-                        child: Text('Forgot Password ?',
+                        child: Text('ลืมรหัสผ่าน ?',
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500))),
                   ),

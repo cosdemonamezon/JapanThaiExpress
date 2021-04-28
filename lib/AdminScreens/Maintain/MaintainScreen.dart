@@ -50,7 +50,7 @@ class _MaintainScreenState extends State<MaintainScreen> {
                       height: 10,
                     ),
                     TextFormField(
-                      initialValue: '0.32 / 1 Bath',
+                      initialValue: '0.32',
                       decoration: InputDecoration(
                         //labelText: 'Label text',
                         //errorText: 'Error message',
@@ -66,7 +66,7 @@ class _MaintainScreenState extends State<MaintainScreen> {
                       height: 10,
                     ),
                     TextFormField(
-                      initialValue: '0.32 / 1 Bath',
+                      initialValue: '300',
                       decoration: InputDecoration(
                         //labelText: 'Label text',
                         //errorText: 'Error message',
@@ -82,7 +82,7 @@ class _MaintainScreenState extends State<MaintainScreen> {
                       height: 10,
                     ),
                     TextFormField(
-                      initialValue: '0.32 / 1 Bath',
+                      initialValue: '0',
                       decoration: InputDecoration(
                         //labelText: 'Label text',
                         //errorText: 'Error message',
@@ -98,7 +98,7 @@ class _MaintainScreenState extends State<MaintainScreen> {
                       height: 10,
                     ),
                     TextFormField(
-                      initialValue: '0.32 / 1 Bath',
+                      initialValue: '0.03',
                       decoration: InputDecoration(
                         //labelText: 'Label text',
                         //errorText: 'Error message',

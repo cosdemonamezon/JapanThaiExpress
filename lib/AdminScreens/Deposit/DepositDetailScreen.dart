@@ -19,7 +19,7 @@ class _DepositDetailScreenState extends State<DepositDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Refill Detail"),
+        title: Text("รายละเอียดการเติมเงิน"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -47,7 +47,7 @@ class _DepositDetailScreenState extends State<DepositDetailScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Account Transfer"),
+                    Text("ชื่อบัญชี"),
                     SizedBox(
                       height: 10,
                     ),
@@ -64,7 +64,7 @@ class _DepositDetailScreenState extends State<DepositDetailScreen> {
                     SizedBox(
                       height: 30,
                     ),
-                    Text("Amount"),
+                    Text("ยอดเงิน"),
                     SizedBox(
                       height: 10,
                     ),
@@ -73,7 +73,7 @@ class _DepositDetailScreenState extends State<DepositDetailScreen> {
                       decoration: InputDecoration(
                         //labelText: 'Label text',
                         //errorText: 'Error message',
-                        hintText: "Amount",
+                        hintText: "ยอดเงิน",
                         border: OutlineInputBorder(),
                       ),
                       initialValue: data['amount'],
@@ -81,7 +81,7 @@ class _DepositDetailScreenState extends State<DepositDetailScreen> {
                     SizedBox(
                       height: 30,
                     ),
-                    Text("Note"),
+                    Text("หมายเหตุ"),
                     SizedBox(
                       height: 10,
                     ),
@@ -91,7 +91,7 @@ class _DepositDetailScreenState extends State<DepositDetailScreen> {
                       decoration: InputDecoration(
                         //labelText: 'Label text',
                         //errorText: 'Error message',
-                        hintText: "detail",
+                        hintText: "รายละเอียด",
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -115,7 +115,7 @@ class _DepositDetailScreenState extends State<DepositDetailScreen> {
                             value: checked[i],
                           ),
                           Text(
-                            'Confirm Order',
+                            'ยืนยันรายการ',
                             style: Theme.of(context)
                                 .textTheme
                                 .subtitle1
