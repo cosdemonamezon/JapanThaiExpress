@@ -33,8 +33,10 @@ class _DashbordScreenState extends State<DashbordScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(        
-        title: Text("Dashbord"),
+      appBar: AppBar(   
+        centerTitle: true,  
+        automaticallyImplyLeading: false,   
+        title: Text("JapanThaiExpress"),
         // actions: [
         //   IconButton(
         //     icon: Icon(Icons.account_circle, size: 40, color: Colors.white,), 
@@ -81,12 +83,12 @@ class _DashbordScreenState extends State<DashbordScreen> {
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(3.0),
                 children: [
-                  dashboardItem("My Oders", Icons.add_shopping_cart, 1, context),
-                  dashboardItem("Our services", Icons.settings_applications, 2, context),
-                  dashboardItem("Products", Icons.card_giftcard, 3, context),
-                  dashboardItem("Wallet", Icons.credit_card, 4, context),
-                  dashboardItem("News", Icons.fiber_new, 5, context),
-                  dashboardItem("Promotion", Icons.new_releases, 6, context),
+                  dashboardItem("รายการซื้อสินค้า", Icons.add_shopping_cart, 1, context),
+                  dashboardItem("บริการของเรา", Icons.settings_applications, 2, context),
+                  dashboardItem("ผลิตภัณฑ์", Icons.card_giftcard, 3, context),
+                  dashboardItem("กระเป๋าสตางค์", Icons.credit_card, 4, context),
+                  dashboardItem("ข่าว", Icons.fiber_new, 5, context),
+                  dashboardItem("โปรโมชั่น", Icons.new_releases, 6, context),
                 ],
               ),
             ),
@@ -121,11 +123,9 @@ Card dashboardItem(String title, IconData icon, int page, context) {
       child: new InkWell(
         onTap: () {
           if (page == 1) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => OdersScreen()));
+            MyNavigator.goToMyOrder(context);
           } else if (page == 2) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Service()));
+            MyNavigator.goToService(context);
           } else if (page == 3) {
             MyNavigator.goToProductScreen(context);
           } else if (page == 4) {

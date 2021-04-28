@@ -18,6 +18,7 @@ import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePurchaseScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/MyOders/OdersScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/News/DetailNews.dart';
 import 'package:JapanThaiExpress/UserScreens/News/NewsScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Products/ProductScreen.dart';
@@ -26,6 +27,7 @@ import 'package:JapanThaiExpress/UserScreens/Products/details/OrderProduct.dart'
 import 'package:JapanThaiExpress/UserScreens/Profile/ProfileScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/HelpCenter.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/HelpDetail.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/Buystuff.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
@@ -150,6 +152,8 @@ var routes = <String, WidgetBuilder>{
   "/orderproduct": (BuildContext context) => OrderProduct(),
   "/wallet": (BuildContext context) => WalletScreen(),
   "/product": (BuildContext context) => ProductScreen(),
+  "/myorder": (BuildContext context) => OdersScreen(),
+  "/buystuff": (BuildContext context) => Buystuff(),
   "/homeservices": (BuildContext context) => HomeServices(),
   //"/testregis": (BuildContext context) => testregis(),
 };

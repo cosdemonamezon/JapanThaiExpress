@@ -306,6 +306,42 @@ class _DepositState extends State<Deposit> {
     }
   }
 
+  _createAddmem(Map<String, dynamic> values) async {
+    print(values);
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    var url = Uri.parse(pathAPI + 'api/create_add_mem');
+    var response = await http.post(url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        body: ({
+          'name': values['name'],
+          'address': values['description'],
+          'tel': values['tel'],
+        }));
+    if (response.statusCode == 201) {
+      final Map<String, dynamic> creatdata = convert.jsonDecode(response.body);
+      if (creatdata['code'] == 201) {
+        setState(() {
+          isLoading = false;
+        });
+        String picSuccess = "assets/success.png";
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => alertAddmember(
+            creatdata['message'],
+            picSuccess,
+            context,
+          ),
+        );
+      } else {}
+    } else {}
+  }
+
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -410,6 +446,7 @@ class _DepositState extends State<Deposit> {
                             itemCount: depositdata.length,
                             itemBuilder: (BuildContext context, int index) {
                               return buildCard(
+                                depositdata[index]['image'],
                                 depositdata[index]['ship_tel'],
                                 depositdata[index]['ship_name'],
                                 depositdata[index]['ship_address'],
@@ -495,8 +532,10 @@ class _DepositState extends State<Deposit> {
                           // initialValue: 'Male',
                           allowClear: true,
                           hint: Text('หมวดหมู่สินค้า'),
-                          validator: FormBuilderValidators.compose(
-                              [FormBuilderValidators.required(context)]),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context,
+                                errorText: 'กรุณาเลือกหมวดหมู่สินค้า')
+                          ]),
                           items: dropdownValue
                               .map((option) => DropdownMenuItem(
                                     value: option['name'],
@@ -537,14 +576,14 @@ class _DepositState extends State<Deposit> {
                           },
                           child: Center(
                             child: Container(
-                              height: 120,
-                              width: 120,
+                              height: 150,
+                              width: 180,
                               //color: Colors.red,
                               child: _image == null
                                   ? Image.asset("assets/images/nopic.png")
                                   : Image.file(
                                       _image,
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.fill,
                                     ),
                             ),
                           ),
@@ -560,14 +599,22 @@ class _DepositState extends State<Deposit> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  if (isLoading == true) {
-                                    print("กดไม่ได้");
-                                  } else {
+                                  if (_formKey.currentState.validate()) {
                                     _formKey.currentState.save();
-                                    print(_formKey.currentState.value);
+                                    setState(() {
+                                      isLoading = true;
+                                    });
                                     _createDepository(
                                         _formKey.currentState.value);
-                                  }
+                                  } else {}
+                                  // if (isLoading == true) {
+                                  //   print("กดไม่ได้");
+                                  // } else {
+                                  //   _formKey.currentState.save();
+                                  //   print(_formKey.currentState.value);
+                                  //   _createDepository(
+                                  //       _formKey.currentState.value);
+                                  // }
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -724,6 +771,7 @@ class _DepositState extends State<Deposit> {
   }
 
   Card buildCard(
+    String img,
     String title,
     String title2,
     String title3,
@@ -731,6 +779,13 @@ class _DepositState extends State<Deposit> {
   ) {
     return Card(
       child: ListTile(
+          leading: Container(
+              width: 90,
+              height: 150,
+              child: Image.network(
+                img,
+                fit: BoxFit.cover,
+              )),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -754,7 +809,7 @@ class _DepositState extends State<Deposit> {
               Text(
                 title3,
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w400,
                   color: Colors.black,
                   fontSize: 14,
                 ),
@@ -776,9 +831,9 @@ class _DepositState extends State<Deposit> {
                 onPressed: () {
                   //MyNavigator.goToTimelineOrders(context);
                 },
-                color: Colors.green,
+                color: primaryColor,
                 child: Text(
-                  "Details",
+                  "ดูเพิ่ม",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -814,7 +869,7 @@ class _DepositState extends State<Deposit> {
                   color: Colors.black, offset: Offset(0, 2), blurRadius: 2),
             ]),
         child: Container(
-          height: 350,
+          height: 390,
           child: Column(
             children: [
               Text("เลือกที่อยู่",
@@ -845,6 +900,9 @@ class _DepositState extends State<Deposit> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 10,
+              ),
               GestureDetector(
                   onTap: () {
                     showDialog(
@@ -855,7 +913,26 @@ class _DepositState extends State<Deposit> {
                       ),
                     );
                   },
-                  child: Text("เพิ่มที่อยู่")),
+                  child: Container(
+                    height: 45,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                            color: Colors.grey.shade200,
+                            offset: Offset(2, 4),
+                            blurRadius: 5,
+                            spreadRadius: 2)
+                      ],
+                      gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
+                    ),
+                    child: Text("เพิ่มที่อยู่",
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                  )),
             ],
           ),
         ),
@@ -989,7 +1066,11 @@ class _DepositState extends State<Deposit> {
                         GestureDetector(
                           onTap: () {
                             if (_formKey1.currentState.validate()) {
+                              setState(() {
+                                isLoading = true;
+                              });
                               _formKey1.currentState.save();
+                              _createAddmem(_formKey1.currentState.value);
                             } else {}
                             // _formKey.currentState.save();
                             // print(_formKey.currentState.value);
@@ -1018,11 +1099,13 @@ class _DepositState extends State<Deposit> {
                                     Color(0xffdd4b39)
                                   ]),
                             ),
-                            child: Text(
-                              "ยืนยัน",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                            ),
+                            child: isLoading == true
+                                ? Center(child: CircularProgressIndicator())
+                                : Text(
+                                    "ยืนยัน",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ),
                           ),
                         ),
                         SizedBox(height: 15),

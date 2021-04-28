@@ -20,6 +20,7 @@ class _OrderProductState extends State<OrderProduct> {
   String _transport;
   String costth = "0";
   Map<String, dynamic> costh;
+  Map<String, dynamic> usepromotion;
   List address = [];
   int id;
   String name;
@@ -27,10 +28,18 @@ class _OrderProductState extends State<OrderProduct> {
   String tel;
   String price;
   String qty;
+  String numprice;
+  String numqty;
   String discount = "0";
-  String total = "0.00";
+  String transport;
+  String total = "0.00"; //ยอดรวม
   String product_id;
   final _formKey = GlobalKey<FormBuilderState>();
+  bool isLoading = false;
+
+  var a;
+  var b;
+  var d;
 
   @override
   void initState() {
@@ -96,7 +105,7 @@ class _OrderProductState extends State<OrderProduct> {
         print(dataship['message']);
         setState(() {
           dropdownValue = dataship['data'];
-          _transport = dropdownValue[0]['name'];
+          _transport = dropdownValue[0]['price'];
           //costth = dropdownValue[0]['price'];
         });
 
@@ -127,40 +136,88 @@ class _OrderProductState extends State<OrderProduct> {
           'ship_address': add,
           'ship_tel': tel,
         }));
-        if (response.statusCode == 200) {
-          final Map<String, dynamic> oderdata = convert.jsonDecode(response.body);
-          if (oderdata['code']==200) {
-            print(oderdata['message']);
-            String picSuccess = "assets/success.png";
-            showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (context) => alertOderSuccess(
-                oderdata['message'],            
-                picSuccess,
-                context,
-              ),
-            );
-          } else {
-            print(oderdata['message']);
-          }
-        } else {
-          final Map<String, dynamic> oderdata = convert.jsonDecode(response.body);
-          print(oderdata['message']);
-          //MyNavigator.goToWallet(context);
-          String picSuccess = "assets/wanning.png";
-          showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (context) => alertWanning(
-              oderdata['message'],            
-              picSuccess,
-              context,
-            ),
-          );
-
-        }
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> oderdata = convert.jsonDecode(response.body);
+      if (oderdata['code'] == 200) {
+        print(oderdata['message']);
+        String picSuccess = "assets/success.png";
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => alertOderSuccess(
+            oderdata['message'],
+            picSuccess,
+            context,
+          ),
+        );
+      } else {
+        print(oderdata['message']);
+      }
+    } else {
+      final Map<String, dynamic> oderdata = convert.jsonDecode(response.body);
+      print(oderdata['message']);
+      //MyNavigator.goToWallet(context);
+      String picSuccess = "assets/wanning.png";
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => alertWanning(
+          oderdata['message'],
+          picSuccess,
+          context,
+        ),
+      );
+    }
   }
+
+  _usePromotion(Map<String, dynamic> values) async {
+    print(values);
+    print(values['code']);
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    var url = Uri.parse(pathAPI + 'api/app/use_promotion');
+    var response = await http.post(url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        body: ({
+          'code': values['code'],
+        }));
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> promotiondata =
+          convert.jsonDecode(response.body);
+      print(promotiondata['message']);
+      if (promotiondata['data']['type'] == "fix") {
+        setState(() {
+          var a = double.parse(promotiondata['data']['discount']);
+          var b = double.parse(numprice);
+          var c = double.parse(numqty);
+          var d = b * c;
+          var e = d - a;
+          total = e.toString();
+        });
+      } else {}
+      setState(() {});
+    } else {}
+  }
+
+  _cal() {}
+
+  // _sumTotal(String qty, String price) {
+  //     //data['qty']
+  //     var a = double.parse(qty);
+  //     var b = double.parse(price);
+  //     var d = double.parse(costh['price']);
+  //     var c = a * b;
+  //     var e = c + d;
+  //     setState(() {
+  //       total = e.toString();
+  //     });
+
+  //     print(e);
+  //   }
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +251,7 @@ class _OrderProductState extends State<OrderProduct> {
           child: FormBuilder(
             key: _formKey,
             initialValue: {
-              'code': '',              
+              'code': '',
             },
             child: Column(
               children: [
@@ -206,57 +263,68 @@ class _OrderProductState extends State<OrderProduct> {
                   elevation: 1,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(2)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: 80.0,
-                          height: 80.0,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: NetworkImage(data['img']),
+                  child: ListTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Container(
+                            width: 80.0,
+                            height: 80.0,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: NetworkImage(data['img']),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            data['name'],
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "ราคา " + data['price'],
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "จำนวน " + data['qty'] + " ชิ้น",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.remove_shopping_cart_rounded,
-                          color: Colors.red,
-                          size: 25,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            data['name'].length <= 10
+                                ? Text(
+                                    data['name'],
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : Text(
+                                    data['name'].substring(0, 15) + "...",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                            Text(
+                              "ราคา " + data['price'],
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "จำนวน " + data['qty'] + " ชิ้น",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
-                        onPressed: () {},
+                      ],
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.remove_shopping_cart_rounded,
+                        color: Colors.red,
+                        size: 25,
                       ),
-                    ],
+                      onPressed: () {},
+                    ),
                   ),
                 ),
                 Row(
@@ -296,9 +364,14 @@ class _OrderProductState extends State<OrderProduct> {
                           //SizedBox(height: 3),
                           GestureDetector(
                             onTap: () {
+                              _formKey.currentState.save();
                               setState(() {
-                                discount = "1";
+                                isLoading = true;
+                                numprice = data['price'];
+                                numqty = data['qty'];
                               });
+                              //print(_formKey.currentState.value);
+                              _usePromotion(_formKey.currentState.value);
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 15),
@@ -362,8 +435,10 @@ class _OrderProductState extends State<OrderProduct> {
                                   setState(() {
                                     //option.length;
                                     costh = option;
+                                    _transport = costh['price'];
                                     //print(costh);
                                     //costth = option['price'];
+
                                     _sumTotal();
                                   });
                                 },
@@ -445,9 +520,9 @@ class _OrderProductState extends State<OrderProduct> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: costh == null
-                                ? Text(costth + "   บาท")
-                                : Text(costh['price'] + "   บาท"),
+                            child: _transport == null
+                                ? Text("0.00   บาท")
+                                : Text(_transport + "   บาท"),
                           ),
                         ],
                       ),
@@ -713,7 +788,9 @@ class _OrderProductState extends State<OrderProduct> {
                 borderRadius: BorderRadius.circular(Constants.padding),
                 boxShadow: [
                   BoxShadow(
-                      color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+                      color: Colors.black,
+                      offset: Offset(0, 10),
+                      blurRadius: 10),
                 ]),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -793,7 +870,9 @@ class _OrderProductState extends State<OrderProduct> {
                 borderRadius: BorderRadius.circular(Constants.padding),
                 boxShadow: [
                   BoxShadow(
-                      color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+                      color: Colors.black,
+                      offset: Offset(0, 10),
+                      blurRadius: 10),
                 ]),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -829,7 +908,7 @@ class _OrderProductState extends State<OrderProduct> {
                   ),
                   child: FlatButton(
                     onPressed: () {
-                      MyNavigator.goToWallet(context);
+                      MyNavigator.goToMyOrder(context);
                     },
                     child: Text(
                       "ตกลง",

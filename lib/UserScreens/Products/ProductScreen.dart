@@ -145,7 +145,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       body = Text("release to load more");
                     } else if (mode == LoadStatus.noMore) {
                       //body = Text("No more Data");
-                      body = Text("ไม่พบข้อมูล");
+                      //body = Text("ไม่พบข้อมูล");
                     }
                     return Container(
                       height: 55.0,
@@ -156,44 +156,46 @@ class _ProductScreenState extends State<ProductScreen> {
                 controller: _refreshController,
                 onRefresh: _onRefresh,
                 onLoading: _onLoading,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: kDefaultPaddin),
-                      child: GridView.builder(
-                        itemCount: product.length,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: kDefaultPaddin,
-                          crossAxisSpacing: kDefaultPaddin,
-                          childAspectRatio: 0.75,
-                        ),
-                        itemBuilder: (context, index) => buildItemCard(
-                          product[index]['name'],
-                          product[index]['id'],
-                          product[index]['image'],
-                          product[index]['price'],
-                          product[index]['description'],
+                child: SingleChildScrollView(
+                                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: kDefaultPaddin),
+                        child: GridView.builder(
+                          itemCount: product.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: kDefaultPaddin,
+                            crossAxisSpacing: kDefaultPaddin,
+                            childAspectRatio: 0.75,
+                          ),
+                          itemBuilder: (context, index) => buildItemCard(
+                            product[index]['name'],
+                            product[index]['id'],
+                            product[index]['image'],
+                            product[index]['price'],
+                            product[index]['description'],
 
-                          // press: () => Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => DetailsScreen(
-                          //       product: product[index],
-                          //     ),
-                          //   ),
-                          // ),
+                            // press: () => Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => DetailsScreen(
+                            //       product: product[index],
+                            //     ),
+                            //   ),
+                            // ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -219,7 +221,7 @@ class _ProductScreenState extends State<ProductScreen> {
       //     MyNavigator.goBackUserHome(context);
       //   },
       // ),
-      title: Text("Products"),
+      title: Text("สินค้า"),
 
       // actions: <Widget>[
       //   IconButton(
@@ -279,9 +281,16 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: kDefaultPaddin / 4),
-            child: Text(
+            child: 
+            name.length <= 10
+            ?Text(
               // products is out demo list
               name,
+              style: TextStyle(color: kTextLightColor),
+            )
+            :Text(
+              // products is out demo list
+              name.substring(0, 20) + "...",
               style: TextStyle(color: kTextLightColor),
             ),
           ),

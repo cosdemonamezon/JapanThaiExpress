@@ -159,6 +159,14 @@ class MyNavigator {
     Navigator.pushNamed(context, "/service");
   }
 
+  static void goToMyOrder(BuildContext context) {
+    Navigator.pushNamed(context, "/myorder");
+  }
+
+  static void goToBuyStuff(BuildContext context) {
+    Navigator.pushNamed(context, "/buystuff");
+  }
+
   static void goToChooseService(BuildContext context) {
     Navigator.pushNamed(context, "/chooseservice");
   }

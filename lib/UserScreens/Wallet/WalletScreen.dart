@@ -161,11 +161,11 @@ class _WalletScreenState extends State<WalletScreen> {
                 Column(
                   children: <Widget>[
                     Text(
-                      'Hello',
+                      'สวัสดี',
                       style: TextStyle(fontSize: 18, color: Colors.black),
                     ),
                     Text(
-                      'James Cashman',
+                      '${datawallet['fname_th']} '+' ${datawallet['lname_th']}',
                       style: TextStyle(
                           fontSize: 24,
                           color: Colors.black,
@@ -198,10 +198,17 @@ class _WalletScreenState extends State<WalletScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            height: 70,
+                            height: height*0.15,
+                            width: width*0.9,
                             child: Center(
                               child: ListView(
                                 children: <Widget>[
+                                  Text(
+                                    'ยอดเงินคงเหลือ',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: _iconColor, fontSize: 16),
+                                  ),
                                   Text(
                                     '${wallet}',
                                     textAlign: TextAlign.center,
@@ -210,12 +217,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 30),
                                   ),
-                                  Text(
-                                    'Available Cash',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: _iconColor, fontSize: 16),
-                                  ),
+                                  
                                 ],
                               ),
                             ),
