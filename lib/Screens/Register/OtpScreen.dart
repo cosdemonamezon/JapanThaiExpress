@@ -5,10 +5,12 @@ import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/size_config.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:JapanThaiExpress/constants.dart';
 
 class OtpScreen extends StatefulWidget {
   OtpScreen({Key key}) : super(key: key);
@@ -18,6 +20,9 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
+  final _formKey = GlobalKey<FormBuilderState>();
+  SharedPreferences prefs;
+  String tel;
   FocusNode pin2FocusNode;
   FocusNode pin3FocusNode;
   FocusNode pin4FocusNode;
@@ -27,10 +32,8 @@ class _OtpScreenState extends State<OtpScreen> {
   String currentText = "";
   TextEditingController textEditingController = TextEditingController();
   String tokendata = "";
-  SharedPreferences prefs;
   final formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  String tel;
 
   @override
   void initState() {

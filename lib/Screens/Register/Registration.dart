@@ -3,6 +3,10 @@ import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:JapanThaiExpress/constants.dart';
 
 // ignore: must_be_immutable
 class Registration extends StatefulWidget {
@@ -14,7 +18,12 @@ class Registration extends StatefulWidget {
 
 class _RegistrationState extends State<Registration> {
   final _formKey = GlobalKey<FormBuilderState>();
-
+  SharedPreferences prefs;
+  String fname_th;
+  String lname_th;
+  String email;
+  String tel;
+  String password;
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -234,5 +243,41 @@ class _RegistrationState extends State<Registration> {
         ),
       ),
     );
+  }
+
+  _Registration() async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+
+    //print(token);
+    setState(() {
+      //isLoading = true;
+      // tokendata = token['data']['token'];
+    });
+    //print(tokendata);
+
+    var url = Uri.parse(pathAPI + 'api/register');
+    var response = await http.post(
+      url,
+      headers: {
+        //'Content-Type': 'application/json',
+        'Authorization': token['data']['token'],
+      },
+      body: ({
+        'fname_th': _formKey.currentState.fields['name'].value,
+        'lname_th': _formKey.currentState.fields['lname'].value,
+        'email': _formKey.currentState.fields['email'].value,
+        'tel': _formKey.currentState.fields['tel'].value,
+        'password': _formKey.currentState.fields['password'].value,
+      }),
+    );
+    if (response.statusCode == 201) {
+      print(response.body);
+    } else {
+      final Map<String, dynamic> addressdata =
+          convert.jsonDecode(response.body);
+      print(addressdata['message']);
+    }
   }
 }
