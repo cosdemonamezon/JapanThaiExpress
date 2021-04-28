@@ -5,6 +5,7 @@ import 'package:JapanThaiExpress/Screens/Login/LoginScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/SetPinScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/intro_screen.dart';
 import 'package:JapanThaiExpress/Screens/Login/home_screen.dart';
+import 'package:JapanThaiExpress/Screens/Register/OtpScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/RegisterScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/ForgotScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/Registration.dart';
@@ -151,6 +152,7 @@ var routes = <String, WidgetBuilder>{
   "/wallet": (BuildContext context) => WalletScreen(),
   "/product": (BuildContext context) => ProductScreen(),
   "/homeservices": (BuildContext context) => HomeServices(),
+  "/otpscreen": (BuildContext context) => OtpScreen(),
   //"/testregis": (BuildContext context) => testregis(),
 };
 
