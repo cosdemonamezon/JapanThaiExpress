@@ -61,7 +61,7 @@ class _MyaccountState extends State<Myaccount> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text("My account"),
+        title: Text("ตั้งค่าสมาชิก"),
         leading: IconButton(
             onPressed: () {
               MyNavigator.goToProfileScreen(context);

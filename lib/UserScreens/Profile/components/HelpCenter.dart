@@ -62,7 +62,7 @@ class _HelpCenterState extends State<HelpCenter> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Help Center"),
+        title: Text("ช่วยแนะนำ"),
         leading: IconButton(
             onPressed: () {
               MyNavigator.goToProfileScreen(context);

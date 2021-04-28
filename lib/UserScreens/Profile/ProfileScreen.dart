@@ -67,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        title: Text("โปรไฟล์"),
         leading: IconButton(
             onPressed: () {
               MyNavigator.goBackUserHome(context);
@@ -84,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ProfilePic(),
             SizedBox(height: 20),
             ProfileMenu(
-              text: "My Account",
+              text: "ตั้งค่าสมาชิก",
               icon: "assets/icons/User Icon.svg",
               press: () {
                 Navigator.push(context,
@@ -105,14 +105,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //   press: () {},
             // ),
             ProfileMenu(
-              text: "Help Center",
+              text: "ช่วยแนะนำ",
               icon: "assets/icons/Question mark.svg",
               press: () {
                 MyNavigator.goToHelp(context);
               },
             ),
             ProfileMenu(
-              text: "Log Out",
+              text: "ออกจากระบบ",
               icon: "assets/icons/Log out.svg",
               press: () {
                 _logOut();

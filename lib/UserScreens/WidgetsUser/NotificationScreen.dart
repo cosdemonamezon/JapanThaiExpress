@@ -88,7 +88,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           itemCount: noti.length,
           itemBuilder: (BuildContext context, int index){
             return Padding(
-              padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+              padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
               child: messageCard(
                 noti[index]['title'],
                 "assets/icons/Megaphone.svg",
@@ -112,7 +112,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           leading: Container(
             child: SvgPicture.asset(
               img,
-              height: 30,
+              height: 33,
               width: 30,
               fit: BoxFit.fill,
               color: kCicleColor,

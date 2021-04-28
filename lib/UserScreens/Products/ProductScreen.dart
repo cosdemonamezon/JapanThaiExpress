@@ -157,7 +157,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 onRefresh: _onRefresh,
                 onLoading: _onLoading,
                 child: SingleChildScrollView(
-                                  child: Column(
+                  child: Column(
                     children: [
                       SizedBox(
                         height: 20,
@@ -170,7 +170,8 @@ class _ProductScreenState extends State<ProductScreen> {
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           physics: NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: kDefaultPaddin,
                             crossAxisSpacing: kDefaultPaddin,
@@ -262,41 +263,49 @@ class _ProductScreenState extends State<ProductScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Container(
-              padding: EdgeInsets.all(kDefaultPaddin),
-              // height: 180,
-              // width: 160,
-              decoration: BoxDecoration(
-                color: Color(0xFF3D82AE),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Hero(
-                tag: "${index}",
-                child: Image.network(
-                  img,
-                  fit: BoxFit.fill,
+            child: Card(
+              elevation: 2,
+                          child: Container(
+                padding: EdgeInsets.all(1),
+                // height: 180,
+                // width: 160,
+                decoration: BoxDecoration(
+                  //color: Color(0xFF3D82AE),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    //color: Color(0xFF3D82AE),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Image.network(
+                    img,
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: kDefaultPaddin / 4),
-            child: 
-            name.length <= 10
-            ?Text(
-              // products is out demo list
-              name,
-              style: TextStyle(color: kTextLightColor),
-            )
-            :Text(
-              // products is out demo list
-              name.substring(0, 20) + "...",
-              style: TextStyle(color: kTextLightColor),
-            ),
+            child: name.length <= 10
+                ? Text(
+                    // products is out demo list
+                    name,
+                    style: TextStyle(
+                        color: kTextLightColor,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400),
+                  )
+                : Text(
+                    // products is out demo list
+                    name.substring(0, 20) + "...",
+                    style: TextStyle(color: kTextLightColor),
+                  ),
           ),
           Text(
-            price,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            price + " บาท",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           )
         ],
       ),
