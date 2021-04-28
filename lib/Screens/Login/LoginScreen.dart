@@ -354,7 +354,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _handleGetContact(_currentUser);
       }
     });
-    _googleSignIn.signInSilently();
+    // _googleSignIn.signInSilently();
   }
 
   @override
