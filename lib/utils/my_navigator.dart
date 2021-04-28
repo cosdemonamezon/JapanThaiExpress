@@ -225,4 +225,8 @@ class MyNavigator {
   static void goToHomeServices(BuildContext context) {
     Navigator.pushNamed(context, "/homeservices");
   }
+
+  static void goToOtpScreen(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/otpscreen', arguments: arg);
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:JapanThaiExpress/Screens/Register/OtpScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +36,7 @@ class _RegistrationState extends State<Registration> {
                 FormBuilder(
                   key: _formKey,
                   initialValue: {
-                    'name':'',
+                    'name': '',
                     'lname': '',
                     'email': '',
                     'tel': '',
@@ -189,13 +190,18 @@ class _RegistrationState extends State<Registration> {
                 SizedBox(height: 20),
                 GestureDetector(
                   onTap: () {
-                    final isValid = _formKey.currentState.saveAndValidate();
-                    if (isValid) {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return OtpScreen();
-                      }));
-                    }
+                    _formKey.currentState.save();
+                    var arg = {'tel': '0859908017'};
+                    MyNavigator.goToOtpScreen(context, arg);
+                    // print(arg);
+                    // final isValid = _formKey.currentState.saveAndValidate();
+                    // if (isValid) {
+                    //   var arg = _formKey.currentState.value;
+                    //   // Navigator.push(context,
+                    //   //     MaterialPageRoute(builder: (context) {
+                    //   //   return OtpScreen();
+                    //   // }));
+                    // }
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,

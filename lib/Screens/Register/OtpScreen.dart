@@ -6,7 +6,9 @@ import 'package:JapanThaiExpress/size_config.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OtpScreen extends StatefulWidget {
   OtpScreen({Key key}) : super(key: key);
@@ -24,45 +26,29 @@ class _OtpScreenState extends State<OtpScreen> {
   bool hasError = false;
   String currentText = "";
   TextEditingController textEditingController = TextEditingController();
-  // ..text = "123456";
-
-  StreamController<ErrorAnimationType> errorController;
+  String tokendata = "";
+  SharedPreferences prefs;
   final formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  String tel;
 
   @override
   void initState() {
-    super.initState();    
-    errorController = StreamController<ErrorAnimationType>();
+    super.initState();
   }
 
   @override
   void dispose() {
-    super.dispose();    
-    errorController.close();
-  }  
-
-  // int length = 6;
-  // onChange(String number){
-  //   if(number.length == length){
-  //     if (number == "123456") {
-  //       print("number : "+ number);
-  //     }  
-  //     //print(number);
-  //   }
-  //   else {
-  //     print(number);
-  //   }    
-  // }
-
-
-  
-
-
-
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    Map data = ModalRoute.of(context).settings.arguments;
+    setState(() {
+      tel = data['tel'];
+    });
+    _sendOtp(tel);
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -70,16 +56,20 @@ class _OtpScreenState extends State<OtpScreen> {
         title: Text("OTP Verification"),
       ),
       body: Column(
-        children: [  
-          SizedBox( height: 20,),        
+        children: [
+          SizedBox(
+            height: 20,
+          ),
           Center(
             child: Text(
               "OTP Verification",
             ),
           ),
-          Center(child: Text("We sent your code to +1 898 860 ***")),
+          Center(child: Text("We sent your code to " + tel)),
           Center(child: buildTimer()),
-          SizedBox( height: 50,),
+          SizedBox(
+            height: 50,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Form(
@@ -106,13 +96,13 @@ class _OtpScreenState extends State<OtpScreen> {
                   borderRadius: BorderRadius.circular(5),
                   fieldHeight: 50,
                   fieldWidth: 40,
-                  activeFillColor:hasError ? Colors.orange : Colors.white,
+                  activeFillColor: hasError ? Colors.orange : Colors.white,
                 ),
                 cursorColor: Colors.black,
                 animationDuration: Duration(milliseconds: 300),
                 //backgroundColor: Colors.blue.shade50,
                 enableActiveFill: true,
-                errorAnimationController: errorController,
+                // errorAnimationController: errorController,
                 controller: textEditingController,
                 keyboardType: TextInputType.number,
                 boxShadows: [
@@ -134,60 +124,61 @@ class _OtpScreenState extends State<OtpScreen> {
               ),
             ),
           ),
-          SizedBox( height: 14,),
+          SizedBox(
+            height: 14,
+          ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30),
             child: ButtonTheme(
               height: 50,
               child: FlatButton(
-                onPressed: (){
+                onPressed: () {
                   formKey.currentState.validate();
-                  if (currentText.length != 6) {
-                    //errorController.add(ErrorAnimationType.shake);
-                    print(currentText.length);
-                    print(currentText);
-                    print("object");
-                    setState(() {
-                      hasError = true;
-                    });
-                  } else {
-                    setState(() {
-                      hasError = false;
-                      scaffoldKey.currentState.showSnackBar(SnackBar(
-                        content: Text("Aye!!"),
-                        duration: Duration(seconds: 5),                        
-                      ));
-                      Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => SetPin())
-                      );
-                    });
-                  }
+                  // if (currentText.length != 6) {
+                  //   //errorController.add(ErrorAnimationType.shake);
+                  //   print(currentText.length);
+                  //   print(currentText);
+                  //   print("object");
+                  //   setState(() {
+                  //     hasError = true;
+                  //   });
+                  // } else {
+                  //   setState(() {
+                  //     hasError = false;
+                  //     scaffoldKey.currentState.showSnackBar(SnackBar(
+                  //       content: Text("Aye!!"),
+                  //       duration: Duration(seconds: 5),
+                  //     ));
+                  //     Navigator.push(context,
+                  //         MaterialPageRoute(builder: (context) => SetPin()));
+                  //   });
+                  // }
                 },
                 child: Center(
                   child: Text(
                     "VERIFY".toUpperCase(),
                     style: TextStyle(
-                      color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold
-                    ),
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-              ),              
+              ),
             ),
             decoration: BoxDecoration(
-                    color: Colors.green.shade300,
-                    borderRadius: BorderRadius.circular(5),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.green.shade200,
-                          offset: Offset(1, -2),
-                          blurRadius: 5),
-                      BoxShadow(
-                          color: Colors.green.shade200,
-                          offset: Offset(-1, 2),
-                          blurRadius: 5)
-                    ]),
+                color: Colors.green.shade300,
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.green.shade200,
+                      offset: Offset(1, -2),
+                      blurRadius: 5),
+                  BoxShadow(
+                      color: Colors.green.shade200,
+                      offset: Offset(-1, 2),
+                      blurRadius: 5)
+                ]),
           ),
-
         ],
       ),
     );
@@ -208,5 +199,25 @@ class _OtpScreenState extends State<OtpScreen> {
         ),
       ],
     );
+  }
+
+  _sendOtp(String tel) async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    var url = Uri.parse(pathAPI + 'api/sendOTP');
+    var response = await http.post(url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        body: ({
+          'tel': tel.toString(),
+        }));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = convert.jsonDecode(response.body);
+      print(data);
+    }
   }
 }
