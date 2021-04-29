@@ -387,14 +387,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 120),
+                  SizedBox(height: 50),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Phone number",
+                          "เบอร์โทร",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
@@ -409,9 +409,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               filled: true),
                           // valueTransformer: (text) => num.tryParse(text),
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
-                            FormBuilderValidators.numeric(context),
-                            FormBuilderValidators.maxLength(context, 10),
+                            FormBuilderValidators.required(context,
+                                errorText: 'กรุณากรอกเบอร์โทร'),
+                            FormBuilderValidators.minLength(context, 10,
+                                errorText: 'กรุณากรอกเบอร์โทรให้ถูกต้อง')
                           ]),
                           keyboardType: TextInputType.number,
                         ),
@@ -425,7 +426,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Password",
+                          "รหัสผ่าน",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
@@ -440,11 +441,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               filled: false),
                           // valueTransformer: (text) => num.tryParse(text),
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
-                            FormBuilderValidators.numeric(context),
-                            FormBuilderValidators.maxLength(context, 6),
+                            FormBuilderValidators.required(context,
+                                errorText: 'กรุณากรอกรหัสผ่าน'),
+                            FormBuilderValidators.minLength(context, 6,
+                                errorText: 'รหัสผ่านอย่างน้อย 6 ตัว'),
                           ]),
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.visiblePassword,
                         ),
                       ],
                     ),
@@ -452,7 +454,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
-                      _handleSubmitted();
+                      if (_formKey.currentState.saveAndValidate()) {
+                        _handleSubmitted();
+                      }
                       // Navigator.push(context,
                       //     MaterialPageRoute(builder: (context) => LoginPin()));
                     },
@@ -492,6 +496,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontSize: 14, fontWeight: FontWeight.w500))),
                   ),
                   _divider(),
+                  SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -516,26 +521,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           _loginGoogle();
                         },
                       ),
-                      SocialIcon(
-                        colors: [
-                          Color(0xFF17ead9),
-                          Color(0xFF6078ea),
-                        ],
-                        iconData: CustomIcons.twitter,
-                        onPressed: () {},
-                      ),
-                      SocialIcon(
-                        colors: [
-                          Color(0xFF00c6fb),
-                          Color(0xFF005bea),
-                        ],
-                        iconData: CustomIcons.linkedin,
-                        onPressed: () {},
-                      )
+                      // SocialIcon(
+                      //   colors: [
+                      //     Color(0xFF17ead9),
+                      //     Color(0xFF6078ea),
+                      //   ],
+                      //   iconData: CustomIcons.twitter,
+                      //   onPressed: () {},
+                      // ),
+                      // SocialIcon(
+                      //   colors: [
+                      //     Color(0xFF00c6fb),
+                      //     Color(0xFF005bea),
+                      //   ],
+                      //   iconData: CustomIcons.linkedin,
+                      //   onPressed: () {},
+                      // )
                     ],
-                  ),
-                  SizedBox(
-                    height: 30,
                   ),
                   // SizedBox(height: height * .045),
                   _createAccountLabel(),
@@ -564,7 +566,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          Text('or'),
+          Text('หรือ'),
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -642,14 +644,7 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Don\'t have an account ?',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Register',
+              'สมัครสมาชิก',
               style: TextStyle(
                   color: Color(0xfff79c4f),
                   fontSize: 15,
