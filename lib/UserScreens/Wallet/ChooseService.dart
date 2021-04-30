@@ -36,7 +36,7 @@ class _ChooseServiceState extends State<ChooseService> {
               SizedBox(height: 10),
               newsCard(                
                 "assets/stock.png",
-                "เติมเงิน",
+                "PromptPay",
                 "อัปโหลดสลิปเติมเงิน",
                 "2",
               ),

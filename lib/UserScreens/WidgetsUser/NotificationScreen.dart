@@ -65,7 +65,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Scaffold(
       appBar: AppBar(
         //centerTitle: true,
-        title: Text("NOTIFICATION"),
+        title: Text("การแจ้งเตือน"),
         leading: IconButton(
           onPressed: () {
             MyNavigator.goBackUserHome(context);

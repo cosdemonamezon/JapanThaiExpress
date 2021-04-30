@@ -84,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ProfilePic(),
             SizedBox(height: 20),
             ProfileMenu(
-              text: "ตั้งค่าสมาชิก",
+              text: "แก้ไขโปรไฟล์",
               icon: "assets/icons/User Icon.svg",
               press: () {
                 Navigator.push(context,
@@ -105,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //   press: () {},
             // ),
             ProfileMenu(
-              text: "ช่วยแนะนำ",
+              text: "ศูนย์ช่วยเหลือ",
               icon: "assets/icons/Question mark.svg",
               press: () {
                 MyNavigator.goToHelp(context);

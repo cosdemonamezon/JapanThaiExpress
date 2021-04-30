@@ -59,6 +59,7 @@ dependencies:
   webview_flutter: ^2.0.4
   url_launcher: ^6.0.3
   fluttertoast: ^8.0.6
+  material_design_icons_flutter: ^3.2.3895
 
 dependency_overrides:
   intl: 0.17.0-nullsafety.2
