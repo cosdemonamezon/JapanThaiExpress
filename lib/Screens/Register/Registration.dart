@@ -199,7 +199,7 @@ class _RegistrationState extends State<Registration> {
                 SizedBox(height: 20),
                 GestureDetector(
                   onTap: () {
-                    // _formKey.currentState.save();
+                    _formKey.currentState.save();
                     // var arg = {'tel': '0859908017'};
 
                     print(_formKey.currentState.value);

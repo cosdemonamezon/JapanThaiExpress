@@ -27,21 +27,19 @@ class _ChooseServiceState extends State<ChooseService> {
           child: Column(
             children: [
               SizedBox(height: 35),
-              newsCard(                
+              newsCard(
                 "assets/logo_gateway_line.png",
                 "Rabbit LINE Pay",
                 "ชำระเงินผ่านร้านค้า LINE Pay",
                 "1",
               ),
               SizedBox(height: 10),
-              newsCard(                
-                "assets/stock.png",
+              newsCard(
+                "assets/promptpay.png",
                 "PromptPay",
                 "อัปโหลดสลิปเติมเงิน",
                 "2",
               ),
-
-              
             ],
           ),
         ),
@@ -63,7 +61,7 @@ class _ChooseServiceState extends State<ChooseService> {
         ),
       ),
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           if (id == "1") {
             MyNavigator.goToLineRabbit(context);
           } else {
@@ -91,29 +89,45 @@ class _ChooseServiceState extends State<ChooseService> {
                   ),
                 ),
               ),
-              SizedBox(width: 10,),
+              SizedBox(
+                width: 10,
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10,),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                      ),
                       child: Text(
                         title,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: kTextButtonColor),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: kTextButtonColor),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: subtitle.length <= 120 ? Text(
-                        subtitle,
-                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14, color: kFontSecondTextColor),
-                      )
-                      :Text(
-                        subtitle.substring(0, 120)+"...",
-                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: kFontSecondTextColor),
-                      ),
+                      child: subtitle.length <= 120
+                          ? Text(
+                              subtitle,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  color: kFontSecondTextColor),
+                            )
+                          : Text(
+                              subtitle.substring(0, 120) + "...",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: kFontSecondTextColor),
+                            ),
                     )
                   ],
                 ),
