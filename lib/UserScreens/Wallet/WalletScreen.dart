@@ -111,7 +111,7 @@ class _WalletScreenState extends State<WalletScreen> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Wallet"),
+        title: Text("กระเป๋าสตางค์"),
         leading: IconButton(
             onPressed: () {
               MyNavigator.goBackUserHome(context);
@@ -245,7 +245,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   },
                                   child: _actionList(
                                       'assets/images/ic_send.png',
-                                      'Send Money'),
+                                      'รายการเติมเงิน'),
                                 ),
                                 GestureDetector(
                                   onTap: () {
@@ -264,7 +264,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   },
                                   child: _actionList(
                                       'assets/images/ic_transact.png',
-                                      'Transactions'),
+                                      'ธุรกรรม'),
                                 ),
                                 GestureDetector(
                                   onTap: () {
@@ -274,7 +274,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   },
                                   child: _actionList(
                                       'assets/images/ic_reward.png',
-                                      'Reward Points'),
+                                      'สะสมแต้ม'),
                                 ),
                               ])
                             ],

@@ -26,6 +26,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String deviceName;
   String deviceVersion;
   String identifier;
+  String profile;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
 
   _logOut() async {
     final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
@@ -63,6 +70,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } else {}
   }
 
+  _loadData() async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    var url = Uri.parse(pathAPI + 'api/get_member');
+    var response = await http.get(
+      url,
+      headers: {
+        //'Content-Type': 'application/json',
+        'Authorization': token['data']['token']
+      },
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = convert.jsonDecode(response.body);
+      setState(() {
+        profile = data['data']['profile'];
+      });
+    } else {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,10 +108,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: EdgeInsets.symmetric(vertical: 20),
         child: Column(
           children: [
-            ProfilePic(),
+            SizedBox(
+              height: 150,
+              width: 150,
+              child: Stack(
+                fit: StackFit.expand,
+                overflow: Overflow.visible,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: profile == null
+                        ? NetworkImage('https://via.placeholder.com/150')
+                        : NetworkImage(profile),
+                  ),
+                ],
+              ),
+            ),
             SizedBox(height: 20),
             ProfileMenu(
-              text: "ตั้งค่าสมาชิก",
+              text: "แก้ไขโปรไฟล์",
               icon: "assets/icons/User Icon.svg",
               press: () {
                 Navigator.push(context,
@@ -105,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //   press: () {},
             // ),
             ProfileMenu(
-              text: "ช่วยแนะนำ",
+              text: "ศูนย์ช่วยเหลือ",
               icon: "assets/icons/Question mark.svg",
               press: () {
                 MyNavigator.goToHelp(context);

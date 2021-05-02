@@ -270,6 +270,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
             title: Text("รับโอนเงิน"),
             leading: IconButton(
                 onPressed: () {

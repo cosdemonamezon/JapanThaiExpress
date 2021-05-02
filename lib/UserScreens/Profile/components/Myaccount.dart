@@ -1,13 +1,16 @@
 import 'dart:async';
-// import 'dart:ui';
 
 import 'dart:io';
 
 import 'package:JapanThaiExpress/UserScreens/Profile/ProfileScreen.dart';
 import 'package:JapanThaiExpress/alert.dart';
+import 'package:JapanThaiExpress/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class Myaccount extends StatefulWidget {
   Myaccount({Key key}) : super(key: key);
@@ -17,12 +20,14 @@ class Myaccount extends StatefulWidget {
 }
 
 class _MyaccountState extends State<Myaccount> {
+  SharedPreferences prefs;
   File _image;
   final picker = ImagePicker();
+  String profile;
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    print(pickedFile.path);
+
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
@@ -44,29 +49,45 @@ class _MyaccountState extends State<Myaccount> {
     });
   }
 
+  _loadData() async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    var url = Uri.parse(pathAPI + 'api/get_member');
+    var response = await http.get(
+      url,
+      headers: {
+        //'Content-Type': 'application/json',
+        'Authorization': token['data']['token']
+      },
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = convert.jsonDecode(response.body);
+      print(data['data']['profile']);
+      setState(() {
+        profile = data['data']['profile'];
+      });
+    } else {}
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     Size size = MediaQuery.of(context).size;
 
-    //final picker = ImagePicker();
-    /*_imgFromCamera() async {
-      File image = await ImagePicker.pickImage(
-      source:ImageSource.camera,
-
-      setState(() {
-    _image = image;
-  }),);}*/
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text("ตั้งค่าสมาชิก"),
+        title: Text("แก้ไขโปรไฟล์"),
         leading: IconButton(
             onPressed: () {
-              MyNavigator.goToProfileScreen(context);
-              //Navigator.push(
-              //context, MaterialPageRoute(builder: (context) => Auction()));
+              Navigator.pop(context);
             },
             icon: Icon(
               Icons.arrow_back_ios_rounded,
@@ -93,46 +114,15 @@ class _MyaccountState extends State<Myaccount> {
                     Center(
                         child: Stack(
                       children: [
-                        
                         Container(
                           width: 150,
                           height: 150,
-                           child: _image != null
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(80),
-                      child: Image.file(
-                        _image,
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.fitHeight,
-                      ),
-                    )
-                  : Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(80)),
-                      width: 100,
-                      height: 100,
-                      child: Icon(
-                        Icons.camera_alt,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-            
-                          /*child: _image == null
-                              ? Image.asset("assets/images/nopic.png")
-                              : Image.file(
-                                  _image,
-                                  fit: BoxFit.cover,
-                                ),*/
-                          // decoration: BoxDecoration(
-                          //   border:
-                          //       Border.all(width: 4, color: Colors.grey[300]),
-                          //   shape: BoxShape.circle,
-                          //   // image: DecorationImage(
-                          //   //   fit: BoxFit.cover,
-                          //   // )
-                          // ),
+                          child: CircleAvatar(
+                            backgroundImage: profile == null
+                                ? NetworkImage(
+                                    'https://via.placeholder.com/150')
+                                : NetworkImage(profile),
+                          ),
                         ),
                         Positioned(
                           bottom: 0,
@@ -346,14 +336,5 @@ class _MyaccountState extends State<Myaccount> {
         ),
       ),
     );
-  }
-
-  _imgFromGallery() async {
-    print("object");
-    File image = (await picker.getImage(source: ImageSource.gallery)) as File;
-
-    setState(() {
-      _image = image;
-    });
   }
 }

@@ -494,6 +494,7 @@ class _DepositState extends State<Deposit> {
                             ],
                           ),
                         ),
+                        SizedBox(height: 10),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 5),
                           child: Column(
@@ -545,25 +546,64 @@ class _DepositState extends State<Deposit> {
                               .toList(),
                         ),
                         SizedBox(height: 5),
-                        for (int i = 1; i <= dropdownShip.length; i++)
-                          ListTile(
-                            title: Text(dropdownShip[i - 1]['name']),
-                            leading: Radio(
-                                value: i,
-                                groupValue: _value,
-                                activeColor: Color(0xFF6200EE),
-                                onChanged: i > dropdownShip.length
-                                    ? null
-                                    : (int value) {
-                                        setState(() {
-                                          _value = value;
-                                          _transport =
-                                              dropdownShip[i - 1]['name'];
-                                          costth = dropdownShip[i - 1]['price'];
-                                          //print(costth);
-                                        });
-                                      }),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "รูปแบบการจัดส่ง",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
+                        ),
+                        FormBuilderDropdown(
+                          name: 'shiping_option',
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: '',
+                          ),
+                          // initialValue: 'Male',
+                          allowClear: true,
+                          hint: Text('รูปแบบการจัดส่ง'),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context,
+                                errorText: 'กรุณาเลือกรูปแบบการจัดส่ง')
+                          ]),
+                          items: dropdownShip
+                              .map((option) => DropdownMenuItem(
+                                    value: option['name'],
+                                    child: Text(option['name']),
+                                  ))
+                              .toList(),
+                        ),
+                        // for (int i = 1; i <= dropdownShip.length; i++)
+                        //   ListTile(
+                        //     title: Text(dropdownShip[i - 1]['name']),
+                        //     leading: Radio(
+                        //         value: i,
+                        //         groupValue: _value,
+                        //         activeColor: Color(0xFF6200EE),
+                        //         onChanged: i > dropdownShip.length
+                        //             ? null
+                        //             : (int value) {
+                        //                 setState(() {
+                        //                   _value = value;
+                        //                   _transport =
+                        //                       dropdownShip[i - 1]['name'];
+                        //                   costth = dropdownShip[i - 1]['price'];
+                        //                   //print(costth);
+                        //                 });
+                        //               }),
+                        //   ),
                         // FormBuilderRadioGroup(
                         //   name: name,
                         //   //options: options

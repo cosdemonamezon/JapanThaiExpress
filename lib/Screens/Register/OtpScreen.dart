@@ -48,10 +48,6 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     Map data = ModalRoute.of(context).settings.arguments;
-    setState(() {
-      tel = data['tel'];
-    });
-    _sendOtp(tel);
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(

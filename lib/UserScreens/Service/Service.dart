@@ -81,7 +81,7 @@ class _ServiceState extends State<Service> {
     return Scaffold(
       appBar: AppBar(
         //centerTitle: true,
-        title: Text("บริการ"),
+        title: Text("บริการของเรา"),
         leading: IconButton(
           onPressed: () {
             MyNavigator.goBackUserHome(context);

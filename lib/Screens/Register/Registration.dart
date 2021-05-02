@@ -67,7 +67,7 @@ class _RegistrationState extends State<Registration> {
                             name: 'name',
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person),
-                                labelText: 'ชื่อ',
+                                labelText: 'ชื่อ(ภาษาไทย)',
                                 //border: InputBorder.none,
                                 border: OutlineInputBorder(),
                                 fillColor: Color(0xfff3f3f4),
@@ -87,7 +87,7 @@ class _RegistrationState extends State<Registration> {
                             name: 'lname',
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person),
-                                labelText: 'นามสกุล',
+                                labelText: 'นามสกุล(ภาษาไทย)',
                                 //border: InputBorder.none,
                                 border: OutlineInputBorder(),
                                 fillColor: Color(0xfff3f3f4),
@@ -200,8 +200,10 @@ class _RegistrationState extends State<Registration> {
                 GestureDetector(
                   onTap: () {
                     _formKey.currentState.save();
-                    var arg = {'tel': '0859908017'};
-                    MyNavigator.goToOtpScreen(context, arg);
+                    // var arg = {'tel': '0859908017'};
+
+                    print(_formKey.currentState.value);
+                    // MyNavigator.goToOtpScreen(context, arg);
                     // print(arg);
                     // final isValid = _formKey.currentState.saveAndValidate();
                     // if (isValid) {
