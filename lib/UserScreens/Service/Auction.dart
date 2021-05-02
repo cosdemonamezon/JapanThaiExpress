@@ -257,7 +257,8 @@ class _AuctionState extends State<Auction> {
               title: Text("ประมูลสินค้า"),
               leading: IconButton(
                   onPressed: () {
-                    MyNavigator.goToService(context);
+                    Navigator.pop(context);
+                    //MyNavigator.goToService(context);
                     //Navigator.push(
                     //context, MaterialPageRoute(builder: (context) => Auction()));
                   },

@@ -17,6 +17,14 @@ class _DetailNewsState extends State<DetailNews> {
     print(data);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: Colors.white,
+            )),
         title: Text("Detail News"),
       ),
       body: ListView(

@@ -1,4 +1,5 @@
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
+import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
@@ -100,7 +101,18 @@ class _OdersScreenState extends State<OdersScreen> {
         setState(() {
           isLoading = false;
         });
-        print('error from backend ${response.statusCode}');
+        //print('error from backend ${response.statusCode}');
+        final Map<String, dynamic> orderdata =
+            convert.jsonDecode(response.body);
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => alert404(
+            orderdata['message'],
+            picWanning,
+            context,
+          ),
+        );
       }
     } catch (e) {
       setState(() {
@@ -124,23 +136,58 @@ class _OdersScreenState extends State<OdersScreen> {
               Icons.arrow_back_ios_rounded,
               color: Colors.white,
             )),
-        
       ),
-      body: Container(
-        child: ListView.builder(
-            itemCount: order.length,
-            shrinkWrap: true,
-            padding: EdgeInsets.only(left: 15.0, right: 15.0),
-            itemBuilder: (BuildContext context, int index) {
-              return buildCard(
-                order[index]['code'],
-                order[index]['product_name'],
-                order[index]['qty'],
-                order[index]['price'],
-                order[index]['total'],
-              );
-            }),
-      ),
+      body: isLoading == true
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              child: SmartRefresher(
+              enablePullDown: true,
+              enablePullUp: true,
+              header: ClassicHeader(
+                refreshStyle: RefreshStyle.Follow,
+                refreshingText: 'กำลังโหลด.....',
+                completeText: 'โหลดข้อมูลสำเร็จ',
+              ),
+              footer: CustomFooter(
+                builder: (BuildContext context, LoadStatus mode) {
+                  Widget body;
+                  if (mode == LoadStatus.idle) {
+                    //body =  Text("ไม่พบรายการ");
+                  } else if (mode == LoadStatus.loading) {
+                    body = CircularProgressIndicator();
+                  } else if (mode == LoadStatus.failed) {
+                    body = Text("Load Failed!Click retry!");
+                  } else if (mode == LoadStatus.canLoading) {
+                    body = Text("release to load more");
+                  } else if (mode == LoadStatus.noMore) {
+                    //body = Text("No more Data");
+                    body = Text("ไม่พบข้อมูล");
+                  }
+                  return Container(
+                    height: 55.0,
+                    child: Center(child: body),
+                  );
+                },
+              ),
+              controller: _refreshController,
+              onRefresh: _onRefresh,
+              onLoading: _onLoading,
+              child: ListView.builder(
+                  itemCount: order.length,
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                  itemBuilder: (BuildContext context, int index) {
+                    return buildCard(
+                      order[index]['code'],
+                      order[index]['product_name'],
+                      order[index]['qty'],
+                      order[index]['price'],
+                      order[index]['total'],
+                    );
+                  }),
+            )),
       bottomNavigationBar: NavigationBar(),
     );
   }
@@ -154,62 +201,120 @@ class _OdersScreenState extends State<OdersScreen> {
   ) {
     return Card(
       child: ListTile(
-          title: Column(
-            children: [
-              Row(
+        title: Row(
+          children: [
+            Container(
+              width: 80,
+              //color: Colors.blue,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "รหัสสินค้า  ：",
+                    "รหัสสินค้า:",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
-                      fontSize: 14,
+                      fontSize: 13,
                     ),
                   ),
+                  Text(
+                    "ชื่อสินค้า:",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 13,
+                    ),
+                  ),
+                  Text(
+                    "จำนวน:",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 13,
+                    ),
+                  ),
+                  Text(
+                    "ราคาสินค้า:",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 13,
+                    ),
+                  ),
+                  Text(
+                    "ยอดรวม:",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: 270,
+              //color: Colors.red,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
                   Text(
                     title,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
-                      fontSize: 17,
+                      fontSize: 15,
+                    ),
+                  ),
+                  subtitle.length <= 30
+                      ? Text(
+                          subtitle,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        )
+                      : Text(
+                          subtitle.substring(0, 40) + "...",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                  Text(
+                    subtitle1 + " ชิ้น",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                      fontSize: 13,
+                    ),
+                  ),
+                  Text(
+                    subtitle2 + " บาท",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                      fontSize: 13,
+                    ),
+                  ),
+                  Text(
+                    subtitle3 + " บาท",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                      fontSize: 13,
                     ),
                   ),
                 ],
               ),
-            ],
-          ),
-          subtitle: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text("ชื่อสินค้า   ："),
-                  subtitle.length <= 30
-                      ? Text(subtitle)
-                      : Text(subtitle.substring(0, 30)),
-                ],
-              ),
-              Row(
-                children: [
-                  Text("จำนวน     ："),
-                  Text(subtitle1 + "    ชิ้น"),
-                ],
-              ),
-              Row(
-                children: [
-                  Text("ราคาสินค้า ："),
-                  Text(subtitle2 + " บาท"),
-                ],
-              ),
-              Row(
-                children: [
-                  Text("ยอดรวม   ："),
-                  Text(subtitle3 + " บาท"),
-                ],
-              ),
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

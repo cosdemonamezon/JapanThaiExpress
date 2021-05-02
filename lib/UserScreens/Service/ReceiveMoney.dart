@@ -119,10 +119,11 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           // print(exchangedata[1]['description']);
         });
       } else {
+        final Map<String, dynamic> exchange = convert.jsonDecode(response.body);
         setState(() {
           isLoading = false;
         });
-        print('error from backend ${response.statusCode}');
+        print('error from backend ${exchange['message']}');
       }
     } catch (e) {
       setState(() {
@@ -242,9 +243,22 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
       } else {
         print("error");
       }
-    } else if (response.statusCode == 400) {
-      final Map<String, dynamic> tranfer = convert.jsonDecode(response.body);
-      print(tranfer['message']);
+    } else if (response.statusCode == 402) {
+      final Map<String, dynamic> trandata = convert.jsonDecode(response.body);
+      print(trandata['message']);
+      setState(() {
+        isLoading = false;
+      });
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => alertTranfer(
+          trandata['message'],
+          picWanning,
+          context,
+        ),
+      );
+      print(trandata['message']);
     } else {}
   }
 
@@ -259,7 +273,8 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
             title: Text("รับโอนเงิน"),
             leading: IconButton(
                 onPressed: () {
-                  MyNavigator.goToService(context);
+                  //MyNavigator.goToService(context);
+                  Navigator.pop(context);
                   // Navigator.push(
                   //   context, MaterialPageRoute(builder: (context) => Service()));
                 },
@@ -334,12 +349,21 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                           itemCount: exchangedata.length,
                           itemBuilder: (BuildContext context, int index) {
                             return buildCard(
+                              exchangedata[index]['id'].toString(),
                               exchangedata[index]['code'],
                               exchangedata[index]['bank'],
                               exchangedata[index]['total'],
                               exchangedata[index]['description'] == null
                                   ? 'ไม่มีข้อมูล'
                                   : exchangedata[index]['description'],
+                              exchangedata[index]['created_at'],
+                              exchangedata[index]['status'],
+                              exchangedata[index]['fee'],
+                              exchangedata[index]['account_name'],
+                              exchangedata[index]['account_no'],
+                              exchangedata[index]['slip'] == null
+                                  ? 'ไม่มีข้อมูล'
+                                  : exchangedata[index]['slip'],
                             );
                           }),
                     ),
@@ -371,7 +395,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "ธนาคาร",
+                              "ธนาคาร *",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
@@ -383,6 +407,10 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                                   border: OutlineInputBorder(),
                                   fillColor: Color(0xfff3f3f4),
                                   filled: true),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(context,
+                                    errorText: 'กรุณาเลือกธนาคาร')
+                              ]),
                             ),
                           ],
                         ),
@@ -393,7 +421,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "ชื่อบัญชี",
+                              "ชื่อบัญชี *",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
@@ -405,6 +433,10 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                                   border: OutlineInputBorder(),
                                   fillColor: Color(0xfff3f3f4),
                                   filled: true),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(context,
+                                    errorText: 'กรุณากรอกชื่อบัญชี')
+                              ]),
                             ),
                           ],
                         ),
@@ -415,7 +447,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "เลขที่บัญชี",
+                              "เลขที่บัญชี *",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
@@ -428,6 +460,10 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                                   border: OutlineInputBorder(),
                                   fillColor: Color(0xfff3f3f4),
                                   filled: true),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(context,
+                                    errorText: 'กรุณากรอกเลขที่บัญชี')
+                              ]),
                             ),
                           ],
                         ),
@@ -440,7 +476,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "จำนวนเงิน",
+                              "จำนวนเงิน *",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
@@ -459,24 +495,31 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                                   filled: true),
                               onChanged: (text) {
                                 //print("First text field: $text");
-                                var x = double.parse('$text');
-                                var a = double.parse('$rate');
-                                var b = double.parse('$fee');
-                                var c = double.parse('$com');
+                                var x =
+                                    double.parse('$text'); //จำนวนเงิน ที่กรอก
+                                var a =
+                                    double.parse('$rate'); //อัตตราแลกเปลี่ยน
+                                var b = double.parse('$fee'); //ค่าบริการ
+                                var c = double.parse('$com'); //ค่าคอม
                                 var y = x * a;
                                 var z = y * c;
                                 var m = z + b;
+                                var d = y + m;
                                 //print(y);
                                 // print(a);
                                 // print(b);
                                 // print(c);
                                 setState(() {
                                   _sum =
-                                      TextEditingController(text: m.toString());
-                                  sum = m.toString();
+                                      TextEditingController(text: d.toString());
+                                  sum = d.toString();
                                 });
                                 // print(sum);
                               },
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(context,
+                                    errorText: 'กรุณาใส่จำนวนเงิน')
+                              ]),
                             ),
                           ],
                         ),
@@ -645,27 +688,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                       ),
 
                       SizedBox(height: 15),
-                      // for (var i = 0; i < 1; i += 1)
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.start,
-                      //   children: [
-                      //     Checkbox(
-                      //       onChanged: i == 4
-                      //         ? null
-                      //         : (bool value) {
-                      //         setState(() {
-                      //           checked[i] = value;
-                      //         });
-                      //       },
-                      //       tristate: i == 1,
-                      //       value: checked[i],
-                      //     ),
-                      //     Text(
-                      //       'Confirm Order',
-                      //       style: Theme.of(context).textTheme.subtitle1.copyWith(color: i == 4 ? Colors.black38 : Colors.black),
-                      //     ),
-                      //   ],
-                      // ),
+
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 5),
                         child: Column(
@@ -676,16 +699,14 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                             SizedBox(height: 15),
                             GestureDetector(
                               onTap: () {
-                                // Navigator.push(
-                                //   context, MaterialPageRoute(builder: (context) => SetPin())
-                                // );
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                _formKey.currentState.save();
-                                //print(_formKey.currentState.value);
-                                
-                                _createExchange(_formKey.currentState.value);
+                                if (_formKey.currentState.validate()) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  _formKey.currentState.save();
+                                  //print(_formKey.currentState.value);
+                                  _createExchange(_formKey.currentState.value);
+                                } else {}
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
@@ -748,47 +769,146 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
   }
 
   Card buildCard(
+    String id,
     String title,
     String title2,
     String title3,
     String title4,
+    String date,
+    String status,
+    String fee,
+    String name,
+    String account,
+    String img,
   ) {
     return Card(
       child: ListTile(
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
+          title: Row(
             children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
+              Container(
+                //color: Colors.blueAccent,
+                width: 100,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "เลขรายการ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      "ธนาคาร",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      "ยอดโอน",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      "รายละเอียด",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      "วันที่ทำรายการ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      "สถานะ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Text(
-                title2,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
-              ),
-              Text(
-                title3,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
-              ),
-              Text(
-                title4,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
+              Container(
+                //color: Colors.blueAccent,
+                width: 270,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      ":" + title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      ":" + title2,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      ":" + title3,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                    ),
+                    title4.length <= 40
+                        ? Text(
+                            ":" + title4,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
+                          )
+                        : Text(
+                            ":" + title4.substring(0, 60) + "...",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
+                          ),
+                    Text(
+                      ":" + date,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      ":" + status,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color:
+                            status == "approved" ? Colors.green : Colors.black,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -798,7 +918,26 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
             children: [
               MaterialButton(
                 onPressed: () {
+                  var arg = {
+                    "id": id,
+                    "code": title,
+                    "bank": title2,
+                    "total": title3,
+                    "description": title4,
+                    "date": date,
+                    "fee": fee,
+                    "name": name,
+                    "account": account,
+                    "status": status,
+                    "img": img,
+                  };
+                  MyNavigator.goToReceiveDetail(context, arg);
                   //MyNavigator.goToTimelineOrders(context);
+                  //String id,
+                  // String title,
+                  // String title2,
+                  // String title3,
+                  // String title4,
                 },
                 color: primaryColor,
                 child: Text(
@@ -809,9 +948,91 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                     fontSize: 12,
                   ),
                 ),
-              ),
+              )
             ],
           )),
+    );
+  }
+
+  alertTranfer(String title, String img, context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Constants.padding),
+      ),
+      elevation: 4,
+      backgroundColor: Colors.transparent,
+      child: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.only(
+                left: Constants.padding,
+                top: Constants.avatarRadius + Constants.padding,
+                right: Constants.padding,
+                bottom: Constants.padding),
+            margin: EdgeInsets.only(top: Constants.avatarRadius),
+            decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: kFontPrimaryColor,
+                borderRadius: BorderRadius.circular(Constants.padding),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black,
+                      offset: Offset(0, 10),
+                      blurRadius: 10),
+                ]),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Center(
+                  child: Image.asset(
+                    img,
+                    fit: BoxFit.cover,
+                    height: 60,
+                    width: 60,
+                    //color: kButtonColor,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: kInputSearchColor),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                SizedBox(
+                  height: 33,
+                ),
+                Container(
+                  width: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: kPrimaryColor,
+                  ),
+                  child: FlatButton(
+                    onPressed: () {
+                      MyNavigator.goToWallet(context);
+                    },
+                    child: Text(
+                      "ตกลง",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: kTextButtonColor),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

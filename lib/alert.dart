@@ -725,3 +725,84 @@ alertProfilescreen(String title, String img, context) {
     ),
   );
 }
+
+alert404(String title, String img, context){
+  return Dialog(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(Constants.padding),
+    ),
+    elevation: 4,
+    backgroundColor: Colors.transparent,
+    child: Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.only(
+              left: 60,
+              top: 20,
+              right: 60,
+              bottom: 20),
+          margin: EdgeInsets.only(top: Constants.avatarRadius),
+          decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: kFontPrimaryColor,
+              borderRadius: BorderRadius.circular(Constants.padding),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+              ]),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Center(
+                child: Image.asset(
+                  img,
+                  fit: BoxFit.cover,
+                  height: 60,
+                  width: 60,
+                  //color: kButtonColor,
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                title,
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: kInputSearchColor),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                height: 33,
+              ),
+              Container(
+                width: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: kPrimaryColor,
+                ),
+                child: FlatButton(
+                  onPressed: () {
+                    //MyNavigator.goBackUserHome(context);
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "ยืนยัน",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: kTextButtonColor),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}

@@ -25,15 +25,13 @@ class _DetailProductState extends State<DetailProduct> {
   String ship_address;
   String ship_tel;
   int numOfItems = 1;
+  String qtyproduct;
 
   @override
   void initState() {
     super.initState();
-    
   }
 
-
-  
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -44,6 +42,8 @@ class _DetailProductState extends State<DetailProduct> {
     return Scaffold(
       appBar: buildAppBar(context),
       body: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        scrollDirection: Axis.vertical,
         child: Column(
           children: [
             SizedBox(
@@ -51,9 +51,9 @@ class _DetailProductState extends State<DetailProduct> {
               child: Stack(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: size.height * 0.39),
+                    margin: EdgeInsets.only(top: size.height * 0.33),
                     padding: EdgeInsets.only(
-                      top: size.height * 0.02,
+                      top: size.height * 0.01,
                       left: kDefaultPaddin,
                       right: kDefaultPaddin,
                     ),
@@ -71,8 +71,7 @@ class _DetailProductState extends State<DetailProduct> {
                         //Description(data: data),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                            vertical: kDefaultPaddin
-                          ),
+                              vertical: kDefaultPaddin),
                           child: Text(
                             data['description'],
                             style: TextStyle(height: 1.3),
@@ -82,12 +81,23 @@ class _DetailProductState extends State<DetailProduct> {
                         //CounterWithFavBtn(),
                         Column(
                           children: [
-                            Text(
-                              "ราคา "+data['price'],
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
+                            Center(
+                              child: Text(
+                                "ราคา " + data['price'] + " บาท",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Center(
+                              child: Text(
+                                "*คงเหลือ " + data['qty'] + " ชิ้น*",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400),
+                              ),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,15 +113,18 @@ class _DetailProductState extends State<DetailProduct> {
                                             numOfItems--;
                                             qty = numOfItems.toString();
                                           });
-                                          print(qty);
+                                          //print(qty);
                                         }
                                       },
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin / 2),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: kDefaultPaddin / 2),
                                       child: Text(
                                         numOfItems.toString().padLeft(2, "0"),
-                                        style: Theme.of(context).textTheme.headline6,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
                                       ),
                                     ),
                                     buildOutlineButton(
@@ -121,7 +134,7 @@ class _DetailProductState extends State<DetailProduct> {
                                           numOfItems++;
                                           qty = numOfItems.toString();
                                         });
-                                        print(qty);
+                                        //print(qty);
                                       },
                                     ),
                                   ],
@@ -132,10 +145,11 @@ class _DetailProductState extends State<DetailProduct> {
                                   height: 32,
                                   width: 32,
                                   decoration: BoxDecoration(
-                                    color: Color(0xFFFF6464), 
+                                    color: Color(0xFFFF6464),
                                     shape: BoxShape.circle,
                                   ),
-                                  child: SvgPicture.asset("assets/icons/heart.svg"),
+                                  child: SvgPicture.asset(
+                                      "assets/icons/heart.svg"),
                                 ),
                               ],
                             ),
@@ -143,7 +157,8 @@ class _DetailProductState extends State<DetailProduct> {
                         ),
                         //AddToCart(),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: kDefaultPaddin),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: kDefaultPaddin),
                           child: Row(
                             children: <Widget>[
                               Container(
@@ -151,37 +166,65 @@ class _DetailProductState extends State<DetailProduct> {
                                 height: 50,
                                 width: 58,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(18),
-                                  border: Border.all(color: kPrimaryColor)
-                                ),
+                                    borderRadius: BorderRadius.circular(18),
+                                    border: Border.all(color: kPrimaryColor)),
                                 child: IconButton(
                                   icon: SvgPicture.asset(
                                     "assets/icons/add_to_cart.svg",
-                                    color:  kPrimaryColor,
-                                  ), 
+                                    color: kPrimaryColor,
+                                  ),
                                   onPressed: () {},
                                 ),
                               ),
                               Expanded(
                                 child: SizedBox(
-                                  height: 50,                              
+                                  height: 45,
                                   child: FlatButton(
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18)
-                                    ),
+                                        borderRadius:
+                                            BorderRadius.circular(18)),
                                     color: kPrimaryColor,
                                     onPressed: () {
                                       setState(() {
-                                        var arg = {
-                                          "id": data['id'], 
-                                          "price": data['price'],
-                                          "name": data['name'],
-                                          "img": data['img'],
-                                          "qty": qty
-                                        };
-                                        MyNavigator.goToOrderProduct(context, arg);
+                                        qtyproduct =
+                                            data['qty']; // จำนวนสินค้าคงเหลือ
+                                        var qtypro = int.parse(qtyproduct);
+
+                                        var orderqty = int.parse(qty);
+                                        // print(qtypro);
+                                        // print(orderqty);
+                                        if (orderqty > qtypro) {
+                                          final snackBar = SnackBar(
+                                            elevation: 4,
+                                            content: Container(
+                                                height: 50,
+                                                child: Text(
+                                                    'จำนวนสินค้ามีไม่พอ !')),
+                                            action: SnackBarAction(
+                                              label: 'ตกลง',
+                                              onPressed: () {
+                                                // Some code to undo the change.
+                                              },
+                                            ),
+                                          );
+
+                                          // Find the ScaffoldMessenger in the widget tree
+                                          // and use it to show a SnackBar.
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar);
+                                        } else {
+                                          var arg = {
+                                            "id": data['id'],
+                                            "price": data['price'],
+                                            "name": data['name'],
+                                            "img": data['img'],
+                                            "qty": qty
+                                          };
+                                          MyNavigator.goToOrderProduct(
+                                              context, arg);
+                                        }
                                       });
-                                    }, 
+                                    },
                                     child: Text(
                                       "ซื้อทันที".toUpperCase(),
                                       style: TextStyle(
@@ -200,21 +243,22 @@ class _DetailProductState extends State<DetailProduct> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[                   
+                      children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[                            
+                          children: <Widget>[
                             //SizedBox(width: kDefaultPaddin),
                             Expanded(
                               flex: 1,
                               child: Hero(
-                                tag: data['id'], 
+                                tag: data['id'],
                                 child: Container(
-                                  height: height*0.33,
+                                  height: height * 0.30,
                                   width: 100,
                                   child: Image.network(
                                     data['img'],
@@ -227,8 +271,8 @@ class _DetailProductState extends State<DetailProduct> {
                         ),
                         Center(
                           child: data['name'].length <= 10
-                          ?Text(data['name'])
-                          :Text(data['name'].substring(0, 22) + "..."),
+                              ? Text(data['name'])
+                              : Text(data['name'].substring(0, 22) + "..."),
                         ),
                       ],
                     ),
@@ -267,18 +311,18 @@ class _DetailProductState extends State<DetailProduct> {
         icon: SvgPicture.asset(
           "assets/icons/back.svg",
           color: Colors.white,
-        ), 
+        ),
         onPressed: () => Navigator.pop(context),
       ),
       // actions: <Widget>[
       //   IconButton(
-      //     icon: SvgPicture.asset("assets/icons/search.svg"), 
+      //     icon: SvgPicture.asset("assets/icons/search.svg"),
       //     onPressed: () {
 
       //     },
       //   ),
       //   IconButton(
-      //     icon: SvgPicture.asset("assets/icons/cart.svg"), 
+      //     icon: SvgPicture.asset("assets/icons/cart.svg"),
       //     onPressed: () {
 
       //     },
@@ -288,4 +332,3 @@ class _DetailProductState extends State<DetailProduct> {
     );
   }
 }
-

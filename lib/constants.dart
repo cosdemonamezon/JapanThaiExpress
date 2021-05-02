@@ -60,6 +60,7 @@ const String kAddressNullError = "Please Enter your address";
 
 String picSuccess = "assets/success.png";
 String picDenied = "assets/denied.png";
+String picWanning = "assets/wanning.png";
 
 final otpInputDecoration = InputDecoration(
   contentPadding:

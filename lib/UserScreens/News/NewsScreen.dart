@@ -45,14 +45,16 @@ class _NewsScreenState extends State<NewsScreen> {
     if (response.statusCode == 200) {
       //print("object");
       final Map<String, dynamic> newsdata = convert.jsonDecode(response.body);
-      print(newsdata);
+      //print(newsdata);
       if (newsdata['code'] == 200) {
         print(newsdata['message']);
         setState(() {
           isLoading = false;
           news = newsdata['data'];
         });
-      } else {}
+      } else {
+
+      }
     } else {}
   }
 
@@ -126,13 +128,7 @@ class _NewsScreenState extends State<NewsScreen> {
         onTap: () {
           var arg = {"title": title, "subtitle": subtitle, "img": img};
           MyNavigator.goToNewsDetial(context, arg);
-          // Navigator.push(
-          //   context, MaterialPageRoute(builder: (context) => DetailNews()));
-          // Navigator.pushNamed(context, "/newdetail", arguments: {
-          //   'title': title,
-          //   'detail': subtitle,
-          //   'photo': img,
-          // });
+          
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
