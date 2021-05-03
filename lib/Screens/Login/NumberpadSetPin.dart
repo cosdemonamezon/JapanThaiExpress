@@ -94,7 +94,7 @@ class _NumberpadsetpinState extends State<Numberpadsetpin> {
             children: [
               NumpadButton(
                 haveBorder: false,
-                 icon: Icons.fingerprint,
+                //  icon: Icons.fingerprint,
                 // onPressed: () => authenfigerscan(),
               ),
               NumpadButton(

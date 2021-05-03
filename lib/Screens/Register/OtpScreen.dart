@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/size_config.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -20,9 +21,8 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  final _formKey = GlobalKey<FormBuilderState>();
   SharedPreferences prefs;
-  String tel = '0000000000';
+  Map<String, dynamic> _data;
   FocusNode pin2FocusNode;
   FocusNode pin3FocusNode;
   FocusNode pin4FocusNode;
@@ -35,9 +35,14 @@ class _OtpScreenState extends State<OtpScreen> {
   final formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
+  _initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
   @override
   void initState() {
     super.initState();
+    _initPrefs();
   }
 
   @override
@@ -48,12 +53,15 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     Map data = ModalRoute.of(context).settings.arguments;
-    print(data);
+    setState(() {
+      _data = data;
+    });
+    print(_data);
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
-        title: Text("OTP Verification"),
+        title: Text("ยืนยัน OTP"),
       ),
       body: Column(
         children: [
@@ -62,10 +70,10 @@ class _OtpScreenState extends State<OtpScreen> {
           ),
           Center(
             child: Text(
-              "OTP Verification",
+              "ยืนยัน OTP",
             ),
           ),
-          Center(child: Text("We sent your code to " + tel)),
+          Center(child: Text("รหัสยืนยันได้ส่งไปที่เบอร์โทร " + data['tel'])),
           Center(child: buildTimer()),
           SizedBox(
             height: 50,
@@ -85,8 +93,8 @@ class _OtpScreenState extends State<OtpScreen> {
                 blinkWhenObscuring: true,
                 animationType: AnimationType.fade,
                 validator: (v) {
-                  if (v.length < 3) {
-                    return "I'm from validator";
+                  if (v.length < 5) {
+                    return "กรุณากรอกรหัสยืนยัน";
                   } else {
                     return null;
                   }
@@ -129,55 +137,34 @@ class _OtpScreenState extends State<OtpScreen> {
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30),
-            child: ButtonTheme(
-              height: 50,
-              child: FlatButton(
-                onPressed: () {
-                  formKey.currentState.validate();
-                  // if (currentText.length != 6) {
-                  //   //errorController.add(ErrorAnimationType.shake);
-                  //   print(currentText.length);
-                  //   print(currentText);
-                  //   print("object");
-                  //   setState(() {
-                  //     hasError = true;
-                  //   });
-                  // } else {
-                  //   setState(() {
-                  //     hasError = false;
-                  //     scaffoldKey.currentState.showSnackBar(SnackBar(
-                  //       content: Text("Aye!!"),
-                  //       duration: Duration(seconds: 5),
-                  //     ));
-                  //     Navigator.push(context,
-                  //         MaterialPageRoute(builder: (context) => SetPin()));
-                  //   });
-                  // }
-                },
-                child: Center(
-                  child: Text(
-                    "VERIFY".toUpperCase(),
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
+            child: GestureDetector(
+              onTap: () {
+                _checkOtp(data['tel'], data['otp_ref'], currentText);
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(vertical: 15),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: Colors.grey.shade200,
+                        offset: Offset(2, 4),
+                        blurRadius: 5,
+                        spreadRadius: 2)
+                  ],
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
+                ),
+                child: Text(
+                  "ยืนยัน",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ),
             ),
-            decoration: BoxDecoration(
-                color: Colors.green.shade300,
-                borderRadius: BorderRadius.circular(5),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.green.shade200,
-                      offset: Offset(1, -2),
-                      blurRadius: 5),
-                  BoxShadow(
-                      color: Colors.green.shade200,
-                      offset: Offset(-1, 2),
-                      blurRadius: 5)
-                ]),
           ),
         ],
       ),
@@ -188,7 +175,7 @@ class _OtpScreenState extends State<OtpScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("This code will expired in "),
+        Text("รหัสผ่านจะหมดอายุใน "),
         TweenAnimationBuilder(
           tween: Tween(begin: 60.0, end: 0.0),
           duration: Duration(seconds: 60),
@@ -201,23 +188,47 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  _sendOtp(String tel) async {
-    prefs = await SharedPreferences.getInstance();
-    var tokenString = prefs.getString('token');
-    var token = convert.jsonDecode(tokenString);
-    var url = Uri.parse(pathAPI + 'api/sendOTP');
-    var response = await http.post(url,
-        headers: {
-          //'Content-Type': 'application/json',
-          'Authorization': token['data']['token']
-        },
-        body: ({
-          'tel': tel.toString(),
-        }));
-
+  _checkOtp(String tel, String ref, String code) async {
+    var url = Uri.parse(pathAPI + 'api/checkOTP');
+    var response = await http.post(
+      url,
+      headers: {},
+      body: ({
+        'tel': tel,
+        'otp_ref': ref,
+        'otp_code': code,
+      }),
+    );
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = convert.jsonDecode(response.body);
-      print(data);
+      final Map<String, dynamic> res = convert.jsonDecode(response.body);
+      print(res);
+      _register(_data);
+    } else {
+      final Map<String, dynamic> res = convert.jsonDecode(response.body);
+      print(res);
+    }
+  }
+
+  _register(Map<dynamic, dynamic> data) async {
+    var url = Uri.parse(pathAPI + 'api/register');
+    var response = await http.post(
+      url,
+      headers: {},
+      body: ({
+        'fname_th': data['fname_th'],
+        'lname_th': data['lname_th'],
+        'email': data['email'],
+        'tel': data['tel'],
+        'password': data['password'],
+      }),
+    );
+    if (response.statusCode == 201) {
+      final Map<String, dynamic> res = convert.jsonDecode(response.body);
+      await prefs.setString('token', response.body);
+      MyNavigator.goToSetPin(context);
+    } else {
+      final Map<String, dynamic> res = convert.jsonDecode(response.body);
+      print(res);
     }
   }
 }

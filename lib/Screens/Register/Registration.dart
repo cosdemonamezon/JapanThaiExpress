@@ -30,7 +30,7 @@ class _RegistrationState extends State<Registration> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text("สมัครสมาชิก"),
@@ -213,19 +213,7 @@ class _RegistrationState extends State<Registration> {
                   onTap: () {
                     final isValid = _formKey.currentState.saveAndValidate();
                     if (isValid) {
-                      print(
-                          _sendOtp(_formKey.currentState.fields['tel'].value));
-                      // var arg = {
-                      //   'tel': _formKey.currentState.fields['tel'].value,
-                      //   'password':
-                      //       _formKey.currentState.fields['password'].value,
-                      //   'fname_th': _formKey.currentState.fields['fname'].value,
-                      //   'lname_th': _formKey.currentState.fields['lname'].value,
-                      //   'email': _formKey.currentState.fields['email'].value,
-                      //   'otp_ref': otp_ref,
-                      // };
-                      // print(arg);
-                      //   MyNavigator.goToOtpScreen(context, arg);
+                      _sendOtp(_formKey.currentState.fields['tel'].value);
                     }
                   },
                   child: Container(
@@ -297,7 +285,7 @@ class _RegistrationState extends State<Registration> {
     }
   }
 
-  Future<bool> _sendOtp(String tel) async {
+  _sendOtp(String tel) async {
     var url = Uri.parse(pathAPI + 'api/sendOTP');
     var response = await http.post(
       url,
@@ -308,12 +296,18 @@ class _RegistrationState extends State<Registration> {
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> res = convert.jsonDecode(response.body);
-      print(res);
       setState(() {
         otp_ref = res['data']['otp_ref'];
       });
-    } else {
-      print('ไม่สำเร็จ');
-    }
+      var arg = {
+        'tel': _formKey.currentState.fields['tel'].value,
+        'password': _formKey.currentState.fields['password'].value,
+        'fname_th': _formKey.currentState.fields['fname'].value,
+        'lname_th': _formKey.currentState.fields['lname'].value,
+        'email': _formKey.currentState.fields['email'].value,
+        'otp_ref': otp_ref,
+      };
+      MyNavigator.goToOtpScreen(context, arg);
+    } else {}
   }
 }

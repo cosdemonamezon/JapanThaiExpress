@@ -7,6 +7,7 @@ import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
@@ -24,6 +25,13 @@ class _MyaccountState extends State<Myaccount> {
   File _image;
   final picker = ImagePicker();
   String profile;
+  final _formKey = GlobalKey<FormBuilderState>();
+
+  String _fname_th;
+  String _lname_th;
+  String _fname_en;
+  String _lname_en;
+  String _email;
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -63,8 +71,13 @@ class _MyaccountState extends State<Myaccount> {
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = convert.jsonDecode(response.body);
-      print(data['data']['profile']);
+      print(data['data']);
       setState(() {
+        _fname_th = data['data']['fname_th'];
+        _lname_th = data['data']['lname_th'];
+        _fname_en = data['data']['fname_en'];
+        _lname_en = data['data']['lname_en'];
+        _email = data['data']['email'];
         profile = data['data']['profile'];
       });
     } else {}
@@ -79,7 +92,6 @@ class _MyaccountState extends State<Myaccount> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -170,162 +182,129 @@ class _MyaccountState extends State<Myaccount> {
                       ],
                     )),
                     SizedBox(height: 10),
-                    Text(
-                      "ชื่อ(ภาษาไทย)",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                    ),
-                    SizedBox(height: 10),
-                    TextFormField(
-                      //name: 'email',
-                      //keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.person),
-                          labelText: 'ชื่อ',
-                          //border: InputBorder.none,
-                          border: OutlineInputBorder(),
-                          fillColor: Color(0xfff3f3f4),
-                          filled: true),
-                      /*validator: TextFormField.compose([
-                                  TextFormField.required(context),
-                              ])*/
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "นามสกุล(ภาษาไทย)",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                    ),
-                    SizedBox(height: 10),
-                    TextFormField(
-                      //name: 'email',
-                      //keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.person),
-                          labelText: 'นามสกุล',
-                          //border: InputBorder.none,
-                          border: OutlineInputBorder(),
-                          fillColor: Color(0xfff3f3f4),
-                          filled: true),
-                      /*validator: TextFormField.compose([
-                                  TextFormField.required(context),
-                              ])*/
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "ชื่อ(ภาษาอังกฤษ)",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                    ),
-                    SizedBox(height: 10),
-                    TextFormField(
-                      //name: 'email',
-                      //keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.person),
-                          labelText: 'Name',
-                          //border: InputBorder.none,
-                          border: OutlineInputBorder(),
-                          fillColor: Color(0xfff3f3f4),
-                          filled: true),
-                      /*validator: TextFormField.compose([
-                                  TextFormField.required(context),
-                              ])*/
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "นามสกุล(ภาษาอังกฤษ)",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                    ),
-                    SizedBox(height: 10),
-                    TextFormField(
-                      //name: 'email',
-                      //keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.person),
-                          labelText: 'Lastname',
-                          //border: InputBorder.none,
-                          border: OutlineInputBorder(),
-                          fillColor: Color(0xfff3f3f4),
-                          filled: true),
-                      /*validator: TextFormField.compose([
-                                  TextFormField.required(context),
-                              ])*/
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Email Address",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                    ),
-                    SizedBox(height: 10),
-                    TextFormField(
-                      //name: 'email',
-                      //keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.email),
-                          labelText: 'Email Address',
-                          //border: InputBorder.none,
-                          border: OutlineInputBorder(),
-                          fillColor: Color(0xfff3f3f4),
-                          filled: true),
-                      /*validator: TextFormField.compose([
-                                  TextFormField.required(context),
-                              ])*/
-                    ),
+                    FormBuilder(
+                        key: _formKey,
+                        initialValue: {
+                          'fname_th': '',
+                          'lname_th': '',
+                          'fname_en': '',
+                          'lname_en': '',
+                          'email': '',
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "ชื่อ (ภาษาไทย)",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            ),
+                            SizedBox(height: 10),
+                            FormBuilderTextField(
+                              name: 'fname_th',
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.person),
+                                  labelText: 'ชื่อ(ภาษาไทย)',
+                                  //border: InputBorder.none,
+                                  border: OutlineInputBorder(),
+                                  fillColor: Color(0xfff3f3f4),
+                                  filled: true),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "นามสกุล (ภาษาไทย)",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            ),
+                            SizedBox(height: 10),
+                            FormBuilderTextField(
+                              name: 'lname_th',
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.person),
+                                  labelText: 'นามสกุล(ภาษาไทย)',
+                                  //border: InputBorder.none,
+                                  border: OutlineInputBorder(),
+                                  fillColor: Color(0xfff3f3f4),
+                                  filled: true),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "ชื่อ (ภาษาอังกฤษ)",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            ),
+                            SizedBox(height: 10),
+                            FormBuilderTextField(
+                              name: 'fname_en',
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.person),
+                                  labelText: 'ชื่อ(ภาษาอังกฤษ)',
+                                  //border: InputBorder.none,
+                                  border: OutlineInputBorder(),
+                                  fillColor: Color(0xfff3f3f4),
+                                  filled: true),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "นามสกุล (ภาษาอังกฤษ)",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            ),
+                            SizedBox(height: 10),
+                            FormBuilderTextField(
+                              name: 'lname_en',
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.person),
+                                  labelText: 'นามสกุล(ภาษาอังกฤษ)',
+                                  //border: InputBorder.none,
+                                  border: OutlineInputBorder(),
+                                  fillColor: Color(0xfff3f3f4),
+                                  filled: true),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "อีเมล",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            ),
+                            FormBuilderTextField(
+                              name: 'email',
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.email),
+                                  labelText: 'อีเมล',
+                                  //border: InputBorder.none,
+                                  border: OutlineInputBorder(),
+                                  fillColor: Color(0xfff3f3f4),
+                                  filled: true),
+                            ),
+                          ],
+                        )),
                     SizedBox(height: 20),
-                    /*Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: Colors.grey.shade200,
-                              offset: Offset(2, 4),
-                              blurRadius: 5,
-                              spreadRadius: 2)
-                        ],
-                        gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
-                      ),
-                      child: Text(
-                        "บันทึก",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                        
-                      ),
-                    ),*/
-                    //SizedBox(height: 10),
-                    TextButton(
-                      child: Text('บันทึก'),
-                      style: TextButton.styleFrom(
-                        primary: Colors.white,
-                        backgroundColor: Colors.deepOrange[800],
-                        onSurface: Colors.grey,
-                        textStyle: TextStyle(
-                          fontSize: 20,
-                          height: 1.8,
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                color: Colors.grey.shade200,
+                                offset: Offset(2, 4),
+                                blurRadius: 5,
+                                spreadRadius: 2)
+                          ],
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
+                        ),
+                        child: Text(
+                          "บันทึก",
+                          style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ),
-                      onPressed: () {
-                        String picSuccess = "assets/success.png";
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) => alertProfilescreen(
-                            'ดำเนินการสำเร็จ',
-                            picSuccess,
-                            context,
-                          ),
-                        );
-                        // _formKey.currentState.save();
-                        // print(_formKey.currentState.value);
-                        //_preorderMem(_formKey.currentState.value);
-                      },
                     ),
                     SizedBox(height: 30),
                   ],
