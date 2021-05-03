@@ -91,14 +91,14 @@ class _WalletScreenState extends State<WalletScreen> {
       },
     );
     if (response.statusCode == 200) {
-      final Map<String, dynamic> wallettdata = convert.jsonDecode(response.body);
+      final Map<String, dynamic> wallettdata =
+          convert.jsonDecode(response.body);
       setState(() {
         datawallet = wallettdata['data'];
         wallet = datawallet['wallet'];
         isLoading = false;
       });
-    } else {
-    }
+    } else {}
 
     // setState(() {
     //   wallet = token['data']['wallet'];
@@ -131,162 +131,164 @@ class _WalletScreenState extends State<WalletScreen> {
             }
             changeTheme();
           },
-          child: isLoading == true ?
-          Center(
-            child: CircularProgressIndicator(),
-          )
-          :Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    stops: [0.2, 0.3, 0.5, 0.8],
-                    colors: _backgroundColor)),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                SizedBox(
-                  height: 5.0,
-                ),
-                Image.asset(
-                  logoImage,
-                  fit: BoxFit.contain,
-                  height: 100.0,
-                  width: 100.0,
-                ),
-                Column(
-                  children: <Widget>[
-                    Text(
-                      'สวัสดี',
-                      style: TextStyle(fontSize: 18, color: Colors.black),
-                    ),
-                    Text(
-                      '${datawallet['fname_th']} '+' ${datawallet['lname_th']}',
-                      style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-                Container(
-                  height: 400.0,
+          child: isLoading == true
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Container(
+                  height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      color: _borderContainer,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15))),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15),
-                              topRight: Radius.circular(15)),
-                          gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              stops: [0.2, 0.4, 0.6, 0.8],
-                              colors: _actionContainerColor)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          stops: [0.2, 0.3, 0.5, 0.8],
+                          colors: _backgroundColor)),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Image.asset(
+                        logoImage,
+                        fit: BoxFit.contain,
+                        height: 100.0,
+                        width: 100.0,
+                      ),
+                      Column(
                         children: <Widget>[
-                          Container(
-                            height: height*0.15,
-                            width: width*0.9,
-                            child: Center(
-                              child: ListView(
-                                children: <Widget>[
-                                  Text(
-                                    'ยอดเงินคงเหลือ',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: _iconColor, fontSize: 16),
-                                  ),
-                                  Text(
-                                    '${wallet}',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: _textColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 30),
-                                  ),
-                                  
-                                ],
-                              ),
-                            ),
+                          Text(
+                            'สวัสดี',
+                            style: TextStyle(fontSize: 18, color: Colors.black),
                           ),
-                          Divider(
-                            height: 0.5,
-                            color: Colors.grey,
-                          ),
-                          Table(
-                            border: TableBorder.symmetric(
-                              inside: BorderSide(
-                                  color: Colors.grey,
-                                  style: BorderStyle.solid,
-                                  width: 0.5),
-                            ),
-                            children: [
-                              TableRow(children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             WalletDetail()));
-                                  },
-                                  child: _actionList(
-                                      'assets/images/ic_send.png',
-                                      'รายการเติมเงิน'),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    MyNavigator.goToChooseService(context);
-                                  },
-                                  child: _actionList(
-                                      'assets/images/ic_money.png', 'เติมเงิน'),
-                                ),
-                              ]),
-                              TableRow(children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    // Navigator.push(
-                                    //   context, MaterialPageRoute(builder: (context) => WalletDetail())
-                                    // );
-                                  },
-                                  child: _actionList(
-                                      'assets/images/ic_transact.png',
-                                      'ธุรกรรม'),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    // Navigator.push(
-                                    //   context, MaterialPageRoute(builder: (context) => WalletDetail())
-                                    // );
-                                  },
-                                  child: _actionList(
-                                      'assets/images/ic_reward.png',
-                                      'สะสมแต้ม'),
-                                ),
-                              ])
-                            ],
-                          ),
+                          Text(
+                            '${datawallet['fname_th']} ' +
+                                ' ${datawallet['lname_th']}',
+                            style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          )
                         ],
                       ),
-                    ),
+                      Container(
+                        height: 400.0,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: _borderContainer,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(15),
+                                    topRight: Radius.circular(15)),
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    stops: [0.2, 0.4, 0.6, 0.8],
+                                    colors: _actionContainerColor)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  height: height * 0.15,
+                                  width: width * 0.9,
+                                  child: Center(
+                                    child: ListView(
+                                      children: <Widget>[
+                                        Text(
+                                          'ยอดเงินคงเหลือ',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: _iconColor, fontSize: 16),
+                                        ),
+                                        Text(
+                                          '${wallet}',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: _textColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 30),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Divider(
+                                  height: 0.5,
+                                  color: Colors.grey,
+                                ),
+                                Table(
+                                  border: TableBorder.symmetric(
+                                    inside: BorderSide(
+                                        color: Colors.grey,
+                                        style: BorderStyle.solid,
+                                        width: 0.5),
+                                  ),
+                                  children: [
+                                    TableRow(children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          // Navigator.push(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //         builder: (context) =>
+                                          //             WalletDetail()));
+                                        },
+                                        child: _actionList(
+                                            'assets/images/ic_send.png',
+                                            'รายการเติมเงิน'),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          MyNavigator.goToChooseService(
+                                              context);
+                                        },
+                                        child: _actionList(
+                                            'assets/images/ic_money.png',
+                                            'เติมเงิน'),
+                                      ),
+                                    ]),
+                                    TableRow(children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          // Navigator.push(
+                                          //   context, MaterialPageRoute(builder: (context) => WalletDetail())
+                                          // );
+                                        },
+                                        child: _actionList(
+                                            'assets/images/ic_transact.png',
+                                            'ธุรกรรม'),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          // Navigator.push(
+                                          //   context, MaterialPageRoute(builder: (context) => WalletDetail())
+                                          // );
+                                        },
+                                        child: _actionList(
+                                            'assets/images/ic_reward.png',
+                                            'สะสมแต้ม'),
+                                      ),
+                                    ])
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
-          ),
+                ),
         ),
       ),
       bottomNavigationBar: NavigationBar(),

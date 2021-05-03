@@ -195,23 +195,6 @@ class _PromotionScreenState extends State<PromotionScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                type == "fix"
-                ?Text(
-                  "ส่วนลด " + title2 + " บาท",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                    fontSize: 16,
-                  ),
-                )
-                :Text(
-                  "ส่วนลด " + title2 + " เปอร์เซ็น",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                    fontSize: 16,
-                  ),
-                ),
                 Text(
                   title,
                   style: TextStyle(
@@ -220,6 +203,23 @@ class _PromotionScreenState extends State<PromotionScreen> {
                     fontSize: 20,
                   ),
                 ),
+                type == "fix"
+                    ? Text(
+                        "ส่วนลด " + title2 + " บาท",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      )
+                    : Text(
+                        "ส่วนลด " + title2 + " เปอร์เซ็น",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
               ],
             ),
             MaterialButton(
@@ -245,7 +245,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                  fontSize: 12,
+                  fontSize: 14,
                 ),
               ),
             ),
