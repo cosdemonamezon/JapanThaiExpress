@@ -237,11 +237,11 @@ class _WalletScreenState extends State<WalletScreen> {
                               TableRow(children: [
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                WalletDetail()));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             WalletDetail()));
                                   },
                                   child: _actionList(
                                       'assets/images/ic_send.png',

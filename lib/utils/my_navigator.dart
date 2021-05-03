@@ -159,6 +159,10 @@ class MyNavigator {
     Navigator.pushNamed(context, '/orderproduct', arguments: arg);
   }
 
+  static void goToReceiveDetail(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/receivedetail', arguments: arg);
+  }
+
   static void goToService(BuildContext context) {
     Navigator.pushNamed(context, "/service");
   }

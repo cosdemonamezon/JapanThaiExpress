@@ -29,6 +29,7 @@ import 'package:JapanThaiExpress/UserScreens/Profile/ProfileScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/HelpCenter.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/HelpDetail.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/ReceiveDetail.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 import 'package:JapanThaiExpress/UserScreens/Wallet/ChooseService.dart';
@@ -157,6 +158,8 @@ var routes = <String, WidgetBuilder>{
   "/homeservices": (BuildContext context) => HomeServices(),
   "/myorder": (BuildContext context) => OdersScreen(),
   "/otpscreen": (BuildContext context) => OtpScreen(),
+  "/receivedetail": (BuildContext context) => ReceiveDetail(),
+  //"/testregis": (BuildContext context) => testregis(),
   "/messageuser": (BuildContext context) => MessageScreen(),
 };
 

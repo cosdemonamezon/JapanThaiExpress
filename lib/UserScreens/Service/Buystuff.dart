@@ -231,7 +231,8 @@ class _BuystuffState extends State<Buystuff> {
               title: Text("รับฝากซื้อสินค้า"),
               leading: IconButton(
                   onPressed: () {
-                    MyNavigator.goToService(context);
+                    Navigator.pop(context);
+                    //MyNavigator.goToService(context);
                     // Navigator.push(
                     //   context, MaterialPageRoute(builder: (context) => Service()));
                   },

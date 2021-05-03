@@ -60,6 +60,7 @@ dependencies:
   url_launcher: ^6.0.3
   fluttertoast: ^8.0.6
   font_awesome_flutter: ^9.0.0
+  clipboard: ^0.1.2+8
 
 
 dependency_overrides:
@@ -91,22 +92,13 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+    - assets/
     - assets/images/
     - assets/icons/
     - assets/icons/Live Recording.svg
     - assets/icons/Megaphone.svg
     - assets/icons/coins.svg
     - assets/logo.png
-    - assets/pic-1.png
-    - assets/pic-2.png
-    - assets/pic-3.png
-    - assets/pic-4.png
-    - assets/success.png
-    - assets/denied.png
-    - assets/wanning.png
-    - assets/pp.png
-    - assets/logo_gateway_line.png
-    - assets/stock.png
     - assets/alucard.jpg
     - assets/o1.jpg
     - assets/o2.jpg
@@ -122,6 +114,18 @@ flutter:
     - assets/amiclep10.jpg
     - assets/plgp5.jpg
     - assets/mlkp5.jpg
+    - assets/pic-1.png
+    - assets/pic-2.png
+    - assets/pic-3.png
+    - assets/pic-4.png
+    - assets/success.png
+    - assets/denied.png
+    - assets/wanning.png
+    - assets/watting.gif
+    - assets/images/ddd123.png
+    - assets/pp.png
+    - assets/logo_gateway_line.png
+    - assets/stock.png
     - assets/kbank.jpg
     - assets/1.png
     - assets/images/card_bg.png

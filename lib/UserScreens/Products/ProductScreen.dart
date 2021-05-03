@@ -3,6 +3,7 @@ import 'package:JapanThaiExpress/UserScreens/Products/components/categorries.dar
 import 'package:JapanThaiExpress/UserScreens/Products/components/item_card.dart';
 import 'package:JapanThaiExpress/UserScreens/Products/details/details_screen.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
+import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
@@ -103,6 +104,15 @@ class _ProductScreenState extends State<ProductScreen> {
         final Map<String, dynamic> productdata =
             convert.jsonDecode(response.body);
         print(productdata['message']);
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => alert404(
+            productdata['message'],
+            picWanning,
+            context,
+          ),
+        );
       }
     } catch (e) {
       setState(() {
@@ -182,6 +192,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             product[index]['id'],
                             product[index]['image'],
                             product[index]['price'],
+                            product[index]['qty'],
                             product[index]['description'],
 
                             // press: () => Navigator.push(
@@ -216,12 +227,7 @@ class _ProductScreenState extends State<ProductScreen> {
             Icons.arrow_back_ios_rounded,
             color: Colors.white,
           )),
-      // leading:
-      //   IconButton(icon: SvgPicture.asset("assets/icons/back.svg"),
-      //   onPressed: (){
-      //     MyNavigator.goBackUserHome(context);
-      //   },
-      // ),
+
       title: Text("สินค้า"),
 
       // actions: <Widget>[
@@ -246,8 +252,8 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  buildItemCard(
-      String name, int index, String img, String price, String description) {
+  buildItemCard(String name, int index, String img, String price, String qty,
+      String description) {
     return GestureDetector(
       onTap: () {
         var arg = {
@@ -255,7 +261,8 @@ class _ProductScreenState extends State<ProductScreen> {
           "price": price,
           "name": name,
           "img": img,
-          "description": description
+          "description": description,
+          "qty": qty
         };
         MyNavigator.goToDetailProduct(context, arg);
       },
@@ -265,7 +272,7 @@ class _ProductScreenState extends State<ProductScreen> {
           Expanded(
             child: Card(
               elevation: 2,
-                          child: Container(
+              child: Container(
                 padding: EdgeInsets.all(1),
                 // height: 180,
                 // width: 160,
@@ -306,6 +313,10 @@ class _ProductScreenState extends State<ProductScreen> {
           Text(
             price + " บาท",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          ),
+          Text(
+            "คงเหลือ " + qty + " ชิ้น",
+            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 11),
           )
         ],
       ),
