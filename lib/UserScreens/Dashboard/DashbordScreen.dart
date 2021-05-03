@@ -9,6 +9,7 @@ import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DashbordScreen extends StatefulWidget {
   DashbordScreen({Key key}) : super(key: key);
@@ -84,11 +85,11 @@ class _DashbordScreenState extends State<DashbordScreen> {
                 padding: EdgeInsets.all(3.0),
                 children: [
                   dashboardItem("รายการซื้อสินค้า", Icons.add_shopping_cart, 1, context),
-                  dashboardItem("บริการของเรา", Icons.settings_applications, 2, context),
-                  dashboardItem("ผลิตภัณฑ์", Icons.card_giftcard, 3, context),
-                  dashboardItem("กระเป๋าสตางค์", Icons.credit_card, 4, context),
-                  dashboardItem("ข่าว", Icons.fiber_new, 5, context),
-                  dashboardItem("โปรโมชั่น", Icons.new_releases, 6, context),
+                  dashboardItem("บริการของเรา", Icons.local_shipping_outlined, 2, context),
+                  dashboardItem("สินค้า", Icons.store_outlined, 3, context),
+                  dashboardItem("กระเป๋าสตางค์", Icons.account_balance_wallet_outlined, 4, context),
+                  dashboardItem("ข่าว", Icons.web_outlined, 5, context),
+                  dashboardItem("โปรโมชั่น", Icons.redeem, 6, context),
                 ],
               ),
             ),

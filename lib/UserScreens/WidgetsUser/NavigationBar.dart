@@ -16,24 +16,25 @@ class _NavigationBarState extends State<NavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: 80,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Color(0xffdd4b39),
       ),
       child: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+          padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Column(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Color(0xFF343434),
+                    backgroundColor: Color(0xffdd4b39),
                     //backgroundImage: AssetImage(pathicon1),
                     radius: 24,
                     child: IconButton(
+                        iconSize: 30,
                         color: Colors.white,
                         icon: Icon(Icons.home),
                         onPressed: () {
@@ -58,12 +59,13 @@ class _NavigationBarState extends State<NavigationBar> {
                 child: Column(
                   children: [
                     CircleAvatar(
-                      backgroundColor: Color(0xFF343434),
+                      backgroundColor: Color(0xffdd4b39),
                       //backgroundImage: AssetImage(pathicon1),
                       radius: 24,
                       child: IconButton(
+                        iconSize: 30,
                           color: Colors.white,
-                          icon: Icon(Icons.chat),
+                          icon: Icon(Icons.notifications),
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -86,18 +88,15 @@ class _NavigationBarState extends State<NavigationBar> {
                 child: Column(
                   children: [
                     CircleAvatar(
-                      backgroundColor: Color(0xFF343434),
+                      backgroundColor: Color(0xffdd4b39),
                       //backgroundImage: AssetImage(pathicon1),
                       radius: 24,
                       child: IconButton(
+                        iconSize: 30,
                           color: Colors.white,
-                          icon: Icon(Icons.notification_important),
+                          icon: Icon(Icons.chat_bubble),
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        MessageScreen()));
+                            MyNavigator.goTomessageuser(context);
                           }),
                     ),
                     Text(
@@ -115,12 +114,13 @@ class _NavigationBarState extends State<NavigationBar> {
                 child: Column(
                   children: [
                     CircleAvatar(
-                      backgroundColor: Color(0xFF343434),
+                      backgroundColor: Color(0xffdd4b39),
                       //backgroundImage: AssetImage(pathicon1),
                       radius: 24,
                       child: IconButton(
+                        iconSize: 30,
                           color: Colors.white,
-                          icon: Icon(Icons.settings_applications),
+                          icon: Icon(Icons.settings),
                           onPressed: () {
                             // Navigator.pushReplacement(
                             //     context,

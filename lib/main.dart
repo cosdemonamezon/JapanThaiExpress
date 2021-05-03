@@ -58,6 +58,8 @@ import 'Screens/Register/RegisterScreen.dart';
 import 'package:JapanThaiExpress/LoginFB.dart';
 import 'package:JapanThaiExpress/LoginGoogle.dart';
 
+import 'UserScreens/Messageuser/MessageScreen.dart';
+
 String token;
 var tokenObj;
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -153,12 +155,9 @@ var routes = <String, WidgetBuilder>{
   "/wallet": (BuildContext context) => WalletScreen(),
   "/product": (BuildContext context) => ProductScreen(),
   "/homeservices": (BuildContext context) => HomeServices(),
-<<<<<<< HEAD
   "/myorder": (BuildContext context) => OdersScreen(),
-=======
   "/otpscreen": (BuildContext context) => OtpScreen(),
->>>>>>> 01fe91041de820c80d6f0b00a9fb54ca63595960
-  //"/testregis": (BuildContext context) => testregis(),
+  "/messageuser": (BuildContext context) => MessageScreen(),
 };
 
 class MyApp extends StatelessWidget {
