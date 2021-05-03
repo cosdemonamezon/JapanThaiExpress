@@ -124,10 +124,10 @@ class _ServiceState extends State<Service> {
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(3.0),
                 children: [
-                  dashboardItem("รับฝากส่ง", Icons.local_shipping, 1, context),
-                  dashboardItem("รับฝากซื้อ", Icons.shopping_cart, 2, context),
-                  dashboardItem("ประมูลสินค้า", Icons.monetization_on, 3, context),
-                  dashboardItem("รับโอนเงิน", Icons.local_atm, 4, context),
+                  dashboardItem("รับฝากส่ง", Icons.local_shipping_outlined, 1, context),
+                  dashboardItem("รับฝากซื้อ", Icons.shopping_cart_outlined, 2, context),
+                  dashboardItem("ประมูลสินค้า", Icons.monetization_on_outlined, 3, context),
+                  dashboardItem("รับโอนเงิน", Icons.local_atm_outlined, 4, context),
                   
                 ],
               ),

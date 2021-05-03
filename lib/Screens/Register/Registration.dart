@@ -27,7 +27,7 @@ class _RegistrationState extends State<Registration> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-
+    
     return Scaffold(
       appBar: AppBar(
         title: Text("สมัครสมาชิก"),
@@ -202,17 +202,17 @@ class _RegistrationState extends State<Registration> {
                     _formKey.currentState.save();
                     // var arg = {'tel': '0859908017'};
 
-                    print(_formKey.currentState.value);
-                    // MyNavigator.goToOtpScreen(context, arg);
-                    // print(arg);
-                    // final isValid = _formKey.currentState.saveAndValidate();
-                    // if (isValid) {
-                    //   var arg = _formKey.currentState.value;
-                    //   // Navigator.push(context,
-                    //   //     MaterialPageRoute(builder: (context) {
-                    //   //   return OtpScreen();
-                    //   // }));
-                    // }
+                   // print(_formKey.currentState.value);
+                     MyNavigator.goToOtpScreen(context);
+                     //print(arg);
+                     /*final isValid = _formKey.currentState.saveAndValidate();
+                     if (isValid) {
+                       var arg = _formKey.currentState.value;
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                     return OtpScreen();
+                     }));
+                    }*/
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,

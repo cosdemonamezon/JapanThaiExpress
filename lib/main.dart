@@ -159,7 +159,7 @@ var routes = <String, WidgetBuilder>{
   "/myorder": (BuildContext context) => OdersScreen(),
   "/otpscreen": (BuildContext context) => OtpScreen(),
   "/receivedetail": (BuildContext context) => ReceiveDetail(),
-  //"/testregis": (BuildContext context) => testregis(),
+  
   "/messageuser": (BuildContext context) => MessageScreen(),
 };
 

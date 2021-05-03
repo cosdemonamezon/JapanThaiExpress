@@ -126,7 +126,7 @@ class _OdersScreenState extends State<OdersScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        centerTitle: true,
+        //centerTitle: true,
         title: Text("รายการสินค้า"),
         leading: IconButton(
             onPressed: () {

@@ -442,20 +442,21 @@ class _AuctionState extends State<Auction> {
                               FormBuilderValidators.required(context),
                             ]),
                             onChanged: (text) {
-                              var c;
-                              var x = double.parse('$text');
-                              var a = double.parse('$rate');
-                              var b = double.parse('$service');
-                              if (text.isEmpty) {
-                                print('ว่าง');
+                              if (text.isEmpty || text == null) {
+                               
                                 setState(() {
-                                  budget = text.toString();
-                                  total = c.toString();
+                                  budget = '0';
+                                  total = '0';
                                 });
                               } else {
+                                var c;
+                                var x = double.parse('$text');
+                                var a = double.parse('$rate');
+                                var b = double.parse('$service');
                                 c = (x + b) * a;
+
                                 setState(() {
-                                  budget = text.toString();
+                                  budget = text;
                                   total = c.toString();
                                 });
                               }
