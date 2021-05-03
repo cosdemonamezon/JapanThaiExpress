@@ -17,7 +17,8 @@ class MyNavigator {
   }
 
   static void goToLogin(BuildContext context) {
-    Navigator.pushNamed(context, "/login");
+    Navigator.pushNamedAndRemoveUntil(
+        context, "/login", (Route<dynamic> route) => false);
   }
 
   static void goToLoginByPin(BuildContext context) {
@@ -116,11 +117,13 @@ class MyNavigator {
   // }
 
   static void goToAdmin(BuildContext context) {
-    Navigator.pushNamed(context, "/adminhome");
+    Navigator.pushNamedAndRemoveUntil(
+        context, "/adminhome", (Route<dynamic> route) => false);
   }
 
   static void goToMember(BuildContext context) {
-    Navigator.pushNamed(context, "/memberhome");
+    Navigator.pushNamedAndRemoveUntil(
+        context, "/memberhome", (Route<dynamic> route) => false);
   }
 
   static void goToUser(BuildContext context) {
@@ -236,5 +239,9 @@ class MyNavigator {
 
   static void goToOtpScreen(BuildContext context) {
     Navigator.pushNamed(context, '/otpscreen');
+  }
+
+  static void goToSettingAdmin(BuildContext context) {
+    Navigator.pushNamed(context, '/settingadmin');
   }
 }

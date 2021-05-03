@@ -102,7 +102,8 @@ class _SettingScreenState extends State<SettingScreen> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              MyNavigator.goToAdmin(context);
+              // MyNavigator.goToAdmin(context);
+              Navigator.pop(context);
             }),
       ),
       body: SingleChildScrollView(
@@ -259,7 +260,7 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Navigation(),
+      // bottomNavigationBar: Navigation(),
     );
   }
 

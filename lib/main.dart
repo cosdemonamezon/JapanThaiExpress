@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:JapanThaiExpress/AdminScreens/Settings/SettingScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/SplashScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginPin.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginScreen.dart';
@@ -161,6 +162,7 @@ var routes = <String, WidgetBuilder>{
   "/receivedetail": (BuildContext context) => ReceiveDetail(),
   
   "/messageuser": (BuildContext context) => MessageScreen(),
+  "/settingadmin": (BuildContext context) => SettingScreen(),
 };
 
 class MyApp extends StatelessWidget {

@@ -22,7 +22,7 @@ class OtpScreen extends StatefulWidget {
 class _OtpScreenState extends State<OtpScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   SharedPreferences prefs;
-  String tel;
+  String tel = '0000000000';
   FocusNode pin2FocusNode;
   FocusNode pin3FocusNode;
   FocusNode pin4FocusNode;
@@ -48,6 +48,7 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     Map data = ModalRoute.of(context).settings.arguments;
+    print(data);
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(

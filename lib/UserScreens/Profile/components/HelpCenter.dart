@@ -62,11 +62,11 @@ class _HelpCenterState extends State<HelpCenter> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("ช่วยแนะนำ"),
+        title: Text("ศูนย์ช่วยเหลือ"),
         leading: IconButton(
             onPressed: () {
-              MyNavigator.goToProfileScreen(context);
-              
+              // MyNavigator.goToProfileScreen(context);
+              Navigator.pop(context);
             },
             icon: Icon(
               Icons.arrow_back_ios_rounded,
@@ -75,7 +75,7 @@ class _HelpCenterState extends State<HelpCenter> {
       body: Container(
         height: height,
         padding: EdgeInsets.symmetric(horizontal: 5),
-        color: Colors.grey[200],
+        // color: Colors.grey[200],
         child: isLoading == true
             ? Center(
                 child: CircularProgressIndicator(),
@@ -111,7 +111,7 @@ class _HelpCenterState extends State<HelpCenter> {
     return Container(
       //height: 100,
       decoration: BoxDecoration(
-        color: Colors.blue[50],
+        color: Color(0xFFF5F6F9),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(18),
           topRight: Radius.circular(18),
@@ -130,7 +130,7 @@ class _HelpCenterState extends State<HelpCenter> {
         child: ListTile(
           title: Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            style: TextStyle(fontSize: 14),
           ),
           trailing: Icon(Icons.arrow_forward_ios),
         ),

@@ -132,6 +132,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     MaterialPageRoute(builder: (context) => Myaccount()));
               },
             ),
+            ProfileMenu(
+              text: "จัดการที่อยู่",
+              icon: "assets/icons/User Icon.svg",
+              press: () {
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => Myaccount()));
+              },
+            ),
             // ProfileMenu(
             //   text: "จัดการบัญชี",
             //   icon: "assets/icons/coins.svg",
