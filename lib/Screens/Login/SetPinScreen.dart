@@ -149,11 +149,14 @@ class _SetPinState extends State<SetPinScreen> {
                       image: DecorationImage(
                         fit: BoxFit.fitHeight,
                         image: AssetImage("assets/logo.png"),
+                        
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 50),
+                SizedBox(height: 20),
+                Text('กรุณาตั้งค่า PIN',style: TextStyle(fontSize: 20),),
+                SizedBox(height: 10),
                 Numberpadsetpin(
                   length: length,
                   onChange: onChange,

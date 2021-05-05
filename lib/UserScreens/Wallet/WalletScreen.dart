@@ -1,4 +1,4 @@
-import 'package:JapanThaiExpress/UserScreens/Wallet/Topup.dart';
+//import 'package:JapanThaiExpress/UserScreens/Wallet/Topup.dart';
 import 'package:JapanThaiExpress/UserScreens/Wallet/WalletDetail.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
@@ -28,51 +28,8 @@ class _WalletScreenState extends State<WalletScreen> {
   Map<String, dynamic> datawallet;
   bool isLoading = true;
 
-  void changeTheme() async {
-    if (colorSwitched) {
-      setState(() {
-        logoImage = 'assets/images/wallet_dark_logo.png';
-        _backgroundColor = [
-          Color.fromRGBO(252, 214, 0, 1),
-          Color.fromRGBO(251, 207, 6, 1),
-          Color.fromRGBO(250, 197, 16, 1),
-          Color.fromRGBO(249, 161, 28, 1),
-        ];
-        _iconColor = Colors.white;
-        _textColor = Color.fromRGBO(253, 211, 4, 1);
-        _borderContainer = Color.fromRGBO(34, 58, 90, 0.2);
-        _actionContainerColor = [
-          Color.fromRGBO(47, 75, 110, 1),
-          Color.fromRGBO(43, 71, 105, 1),
-          Color.fromRGBO(39, 64, 97, 1),
-          Color.fromRGBO(34, 58, 90, 1),
-        ];
-      });
-    } else {
-      setState(() {
-        logoImage = 'assets/images/wallet_logo.png';
-        _borderContainer = Color.fromRGBO(252, 233, 187, 1);
-        _backgroundColor = [
-          Color.fromRGBO(249, 249, 249, 1),
-          Color.fromRGBO(241, 241, 241, 1),
-          Color.fromRGBO(233, 233, 233, 1),
-          Color.fromRGBO(222, 222, 222, 1),
-        ];
-        _iconColor = Colors.black;
-        _textColor = Colors.black;
-        _actionContainerColor = [
-          Color.fromRGBO(255, 212, 61, 1),
-          Color.fromRGBO(255, 212, 55, 1),
-          Color.fromRGBO(255, 211, 48, 1),
-          Color.fromRGBO(255, 211, 43, 1),
-        ];
-      });
-    }
-  }
-
   @override
   void initState() {
-    changeTheme();
     super.initState();
     _getWallet();
   }
@@ -121,204 +78,182 @@ class _WalletScreenState extends State<WalletScreen> {
               color: Colors.white,
             )),
       ),
-      body: SafeArea(
-        child: GestureDetector(
-          onLongPress: () {
-            if (colorSwitched) {
-              colorSwitched = false;
-            } else {
-              colorSwitched = true;
-            }
-            changeTheme();
-          },
-          child: isLoading == true
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          stops: [0.2, 0.3, 0.5, 0.8],
-                          colors: _backgroundColor)),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 5.0,
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          image: AssetImage('assets/images/cat-wallet.png'),
+                        ))),
+                    SizedBox(height: 10),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        color: Color(0xfff1f3f6),
                       ),
-                      Image.asset(
-                        logoImage,
-                        fit: BoxFit.contain,
-                        height: 100.0,
-                        width: 100.0,
-                      ),
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            'สวัสดี',
-                            style: TextStyle(fontSize: 18, color: Colors.black),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "ยอดเงินคงเหลือ",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                "0.00 ฿",
+                                style: TextStyle(
+                                    color: Color(0xffdd4b39),
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "ชื่อ-นามสกุล",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w400),
+                              )
+                            ],
                           ),
-                          Text(
-                            '${datawallet['fname_th']} ' +
-                                ' ${datawallet['lname_th']}',
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
+                          Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xffdd4b39)),
+                            child: Icon(
+                              
+                              Icons.add,
+                              color: Color(0xfff1f3f6),
+                              size: 30,
+                            ),
                           )
                         ],
                       ),
-                      Container(
-                        height: 400.0,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            color: _borderContainer,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(15),
-                                topRight: Radius.circular(15))),
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(15),
-                                    topRight: Radius.circular(15)),
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    stops: [0.2, 0.4, 0.6, 0.8],
-                                    colors: _actionContainerColor)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  height: height * 0.15,
-                                  width: width * 0.9,
-                                  child: Center(
-                                    child: ListView(
-                                      children: <Widget>[
-                                        Text(
-                                          'ยอดเงินคงเหลือ',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: _iconColor, fontSize: 16),
-                                        ),
-                                        Text(
-                                          '${wallet}',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: _textColor,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 30),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Divider(
-                                  height: 0.5,
-                                  color: Colors.grey,
-                                ),
-                                Table(
-                                  border: TableBorder.symmetric(
-                                    inside: BorderSide(
-                                        color: Colors.grey,
-                                        style: BorderStyle.solid,
-                                        width: 0.5),
-                                  ),
-                                  children: [
-                                    TableRow(children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          // Navigator.push(
-                                          //     context,
-                                          //     MaterialPageRoute(
-                                          //         builder: (context) =>
-                                          //             WalletDetail()));
-                                        },
-                                        child: _actionList(
-                                            'assets/images/ic_send.png',
-                                            'รายการเติมเงิน'),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          MyNavigator.goToChooseService(
-                                              context);
-                                        },
-                                        child: _actionList(
-                                            'assets/images/ic_money.png',
-                                            'เติมเงิน'),
-                                      ),
-                                    ]),
-                                    TableRow(children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          // Navigator.push(
-                                          //   context, MaterialPageRoute(builder: (context) => WalletDetail())
-                                          // );
-                                        },
-                                        child: _actionList(
-                                            'assets/images/ic_transact.png',
-                                            'ธุรกรรม'),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          // Navigator.push(
-                                          //   context, MaterialPageRoute(builder: (context) => WalletDetail())
-                                          // );
-                                        },
-                                        child: _actionList(
-                                            'assets/images/ic_reward.png',
-                                            'สะสมแต้ม'),
-                                      ),
-                                    ])
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
+                    ),
+                    SizedBox(height: 20),
+                  ],
+                ),
+                Text(
+                  "ประวัติการทำรายการ",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
+                SizedBox(height: 5),
+                 buildCard('assets/images/cat-wallet.png','เติมเงิน','ช่องทาง:','วันที่:','...',)
+                /* Container(
+                  padding: EdgeInsets.all(190),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: Color(0xfff1f3f6),
+                  ),
+                ),*/
+                
+                  /*ListView(
+                    children: [
+                      Card(
+                        color: Colors.orange[50],
+                        child: ListTile(
+                          title: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [],
+                          ),
+                          subtitle: Text("..."),
+                          trailing: IconButton(
+                              icon: Icon(
+                                Icons.edit,
+                                size: 25,
+                              ),
+                              onPressed: () {}),
+                        ),
+                      ),
+                    ],
+                  ),*/
+                
+              ],
+            ),
+          ],
         ),
       ),
-      bottomNavigationBar: NavigationBar(),
     );
   }
-
-  // custom action widget
-  Widget _actionList(String iconPath, String desc) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Image.asset(
-            iconPath,
-            fit: BoxFit.contain,
-            height: 45.0,
-            width: 45.0,
-            color: _iconColor,
+  Card buildCard(
+    String img,
+    String title,
+    String title2,
+    String title3,
+    String title4,
+  ) {
+    return Card(
+      //color: Color(0xfff1f3f6),
+      child: ListTile(
+          leading: Container(
+              width: 90,
+              height: 150,
+              child: Image.asset(
+                img,
+                fit: BoxFit.fitHeight,
+              )),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                title2,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                title3,
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                title4,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+            ],
           ),
-          SizedBox(
-            height: 8,
           ),
-          Text(
-            desc,
-            style: TextStyle(color: _iconColor),
-          )
-        ],
-      ),
     );
   }
 }

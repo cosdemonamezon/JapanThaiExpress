@@ -132,6 +132,8 @@ flutter:
     - assets/images/send_out.png
     - assets/images/in.png
     - assets/images/out.png
+    - assets/images/line.png
+    - assets/images/cat-wallet.png
   fonts:
     - family: Prompt
       fonts:
