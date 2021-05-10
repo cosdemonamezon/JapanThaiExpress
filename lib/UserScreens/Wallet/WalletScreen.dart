@@ -3,6 +3,7 @@ import 'package:JapanThaiExpress/UserScreens/Wallet/WalletDetail.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
@@ -81,35 +82,39 @@ class _WalletScreenState extends State<WalletScreen> {
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Column(
+          
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              
               children: [
-                SizedBox(height: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                SizedBox(height: 20),
+              
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  
+                  
                   children: [
                     Container(
-                        width: 100,
-                        height: 100,
+                        width: 130,
+                        height: 130,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                           image: AssetImage('assets/images/cat-wallet.png'),
                         ))),
                     SizedBox(height: 10),
                     Container(
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        color: Color(0xfff1f3f6),
-                      ),
+                      
                       child: Row(
+                        
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        
                         children: [
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
                                 "ยอดเงินคงเหลือ",
@@ -126,31 +131,67 @@ class _WalletScreenState extends State<WalletScreen> {
                               SizedBox(
                                 height: 5,
                               ),
-                              Text(
+                             /* Text(
                                 "ชื่อ-นามสกุล",
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w400),
-                              )
-                            ],
-                          ),
-                          Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xffdd4b39)),
-                            child: Icon(
+                              ),*/
+                              SizedBox(
+                                height: 5,
+                              ),
+                               GestureDetector(
+                            onTap: () {
+                               MyNavigator.goToChooseService(context);
+                            },
+                               
+                              child:Container( 
                               
-                              Icons.add,
-                              color: Color(0xfff1f3f6),
-                              size: 30,
+                              width:100,
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                      color: Colors.grey.shade200,
+                                      offset: Offset(2, 4),
+                                      blurRadius: 5,
+                                      spreadRadius: 2)
+                                ],
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xffdd4b39),
+                                      Color(0xffdd4b39)
+                                    ]),
+                              ),
+                               child:Text(
+                                "เติมเงิน",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white),
+                              ),
+                              
                             ),
-                          )
+                               ),
+
+                              
+                             
+                            ],
+                            
+                            
+                          ),
+                          
                         ],
+                        
                       ),
+                      
                     ),
                     SizedBox(height: 20),
                   ],
+                  
                 ),
                 Text(
                   "ประวัติการทำรายการ",
@@ -159,8 +200,31 @@ class _WalletScreenState extends State<WalletScreen> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 5),
-                 buildCard('assets/images/cat-wallet.png','เติมเงิน','ช่องทาง:','วันที่:','...',)
+                SizedBox(height: 20),
+                Container(
+                  height: 400,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            physics: const ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: 5,
+                            itemBuilder: (BuildContext context, int index) {
+                              return buildCard(
+                                'assets/images/cat-wallet.png',
+                                'ช่องทาง:',
+                                'วันที่:',
+                                'เวลา:',
+                                'สถานะ:',
+                              );
+                            }),
+                      ],
+                    ),
+                  ),
+                ),
+                 //buildCard('assets/images/cat-wallet.png','ช่องทาง:','วันที่:','เวลา:','สถานะ:',)
                 /* Container(
                   padding: EdgeInsets.all(190),
                   decoration: BoxDecoration(
@@ -222,7 +286,7 @@ class _WalletScreenState extends State<WalletScreen> {
               Text(
                 title,
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w400,
                   color: Colors.black,
                   fontSize: 14,
                 ),
@@ -230,7 +294,7 @@ class _WalletScreenState extends State<WalletScreen> {
               Text(
                 title2,
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w400,
                   color: Colors.black,
                   fontSize: 14,
                 ),

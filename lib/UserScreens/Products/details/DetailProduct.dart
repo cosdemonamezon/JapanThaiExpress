@@ -51,7 +51,7 @@ class _DetailProductState extends State<DetailProduct> {
               child: Stack(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: size.height * 0.33),
+                    margin: EdgeInsets.only(top: size.height * 0.30),
                     padding: EdgeInsets.only(
                       top: size.height * 0.01,
                       left: kDefaultPaddin,
@@ -77,7 +77,7 @@ class _DetailProductState extends State<DetailProduct> {
                             style: TextStyle(height: 1.3),
                           ),
                         ),
-                        SizedBox(height: kDefaultPaddin),
+                        SizedBox(height: 10),
                         //CounterWithFavBtn(),
                         Column(
                           children: [
@@ -99,7 +99,7 @@ class _DetailProductState extends State<DetailProduct> {
                                     fontWeight: FontWeight.w400),
                               ),
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 15),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
@@ -217,8 +217,8 @@ class _DetailProductState extends State<DetailProduct> {
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultPaddin), //รูป
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -282,8 +282,8 @@ class _DetailProductState extends State<DetailProduct> {
       elevation: 0,
       title: Text("สินค้า"),
       leading: IconButton(
-        icon: SvgPicture.asset(
-          "assets/icons/back.svg",
+        icon: Icon(
+          Icons.arrow_back_ios_rounded,
           color: Colors.white,
         ),
         onPressed: () => Navigator.pop(context),
