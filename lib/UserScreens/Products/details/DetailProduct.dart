@@ -99,7 +99,7 @@ class _DetailProductState extends State<DetailProduct> {
                                     fontWeight: FontWeight.w400),
                               ),
                             ),
-                            SizedBox(height:15),
+                            SizedBox(height: 15),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
@@ -140,18 +140,6 @@ class _DetailProductState extends State<DetailProduct> {
                                     ),
                                   ],
                                 ),
-
-                               /* Container(
-                                  padding: EdgeInsets.all(8),
-                                  height: 32,
-                                  width: 32,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFFF6464),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: SvgPicture.asset(
-                                      "assets/icons/heart.svg"),
-                                ),*/
                               ],
                             ),
                           ],
@@ -162,21 +150,6 @@ class _DetailProductState extends State<DetailProduct> {
                               vertical: kDefaultPaddin),
                           child: Row(
                             children: <Widget>[
-                              /*Container(
-                                margin: EdgeInsets.only(right: kDefaultPaddin),
-                                height: 50,
-                                width: 58,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(18),
-                                    border: Border.all(color: kPrimaryColor)),
-                                child: IconButton(
-                                  icon: SvgPicture.asset(
-                                    "assets/icons/add_to_cart.svg",
-                                    color: kPrimaryColor,
-                                  ),
-                                  onPressed: () {},
-                                ),
-                              ),*/
                               Expanded(
                                 child: SizedBox(
                                   height: 45,
@@ -244,8 +217,8 @@ class _DetailProductState extends State<DetailProduct> {
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kDefaultPaddin), //รูป
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultPaddin), //รูป
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -310,7 +283,7 @@ class _DetailProductState extends State<DetailProduct> {
       title: Text("สินค้า"),
       leading: IconButton(
         icon: Icon(
-           Icons.arrow_back_ios_rounded,
+          Icons.arrow_back_ios_rounded,
           color: Colors.white,
         ),
         onPressed: () => Navigator.pop(context),

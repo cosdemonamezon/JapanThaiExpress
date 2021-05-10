@@ -52,9 +52,7 @@ class _NewsScreenState extends State<NewsScreen> {
           isLoading = false;
           news = newsdata['data'];
         });
-      } else {
-
-      }
+      } else {}
     } else {}
   }
 
@@ -128,7 +126,6 @@ class _NewsScreenState extends State<NewsScreen> {
         onTap: () {
           var arg = {"title": title, "subtitle": subtitle, "img": img};
           MyNavigator.goToNewsDetial(context, arg);
-          
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
