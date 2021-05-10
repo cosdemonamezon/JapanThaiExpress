@@ -1,6 +1,8 @@
 import 'dart:io' as Io;
 import 'dart:convert';
 import 'package:JapanThaiExpress/UserScreens/Service/DetailStep.dart';
+import 'package:JapanThaiExpress/UserScreens/Messageuser/Messagesend.dart';
+
 import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/alert.dart';
@@ -54,6 +56,8 @@ class _MessageScreenState extends State<MessageScreen> {
   int pageSize = 10;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+
+  get index => null;
   //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
 
   @override
@@ -329,10 +333,11 @@ class _MessageScreenState extends State<MessageScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return DefaultTabController(
-        length: 2,
+     
+        return DefaultTabController(length: 1, 
         child: Scaffold(
           appBar: AppBar(
+            
               elevation: 0,
               centerTitle: true,
               title: Text("กล่องข้อความ"),
@@ -341,34 +346,14 @@ class _MessageScreenState extends State<MessageScreen> {
                   onPressed: () {
                     MyNavigator.goToMember(context);
                   }),
-              bottom: TabBar(
-                  labelColor: Colors.redAccent,
-                  unselectedLabelColor: Colors.white,
-                  indicatorSize: TabBarIndicatorSize.label,
-                  indicator: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)),
-                      color: Colors.white),
-                  tabs: [
-                    Tab(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text("รายการใหม่"),
-                      ),
-                    ),
-                    Tab(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text("ประวัติ"),
-                      ),
-                    ),
-                  ])),
+              ),
+        
           body: TabBarView(
             children: [
+              
               Container(
                 height: height,
-                color: Colors.grey[300],
+                color: Colors.white,
                 child: isLoading == true
                     ? Center(
                         child: CircularProgressIndicator(),
@@ -435,12 +420,25 @@ class _MessageScreenState extends State<MessageScreen> {
                             }),
                       ),
               ),
+               
+             
               //tab 2
-              Icon(Icons.movie),
+              
             ],
           ),
-          bottomNavigationBar: NavigationBar(),
-        ));
+    
+      floatingActionButton: FloatingActionButton.extended(
+      onPressed: () {
+     
+         MyNavigator.goTomessagesend(context);
+      },
+       label: Text('ข้อความใหม่'),
+      icon: Icon(Icons.add),
+      backgroundColor: Color(0xffdd4b39),
+    ),
+          
+        ),);
+        
   }
 
   Card messageCard(String title, IconData icon, String subtitle, String date) {

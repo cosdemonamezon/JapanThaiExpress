@@ -20,6 +20,7 @@ import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePurchaseScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/Messageuser/Messagesend.dart';
 import 'package:JapanThaiExpress/UserScreens/MyOders/OdersScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/News/DetailNews.dart';
 import 'package:JapanThaiExpress/UserScreens/News/NewsScreen.dart';
@@ -163,6 +164,8 @@ var routes = <String, WidgetBuilder>{
   
   "/messageuser": (BuildContext context) => MessageScreen(),
   "/settingadmin": (BuildContext context) => SettingScreen(),
+  "/messagesend": (BuildContext context) => Messagesend(),
+
 };
 
 class MyApp extends StatelessWidget {
