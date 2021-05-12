@@ -244,4 +244,12 @@ class MyNavigator {
   static void goToSettingAdmin(BuildContext context) {
     Navigator.pushNamed(context, '/settingadmin');
   }
+
+  static void goToAuctionadmin(BuildContext context) {
+    Navigator.pushNamed(context, '/auctionadmin');
+  }
+
+  static void goToTimelineauction(BuildContext context) {
+    Navigator.pushNamed(context, '/timelineauction');
+  }
 }
