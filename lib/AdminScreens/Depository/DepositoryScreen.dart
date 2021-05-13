@@ -468,7 +468,7 @@ class _DepositoryScreenState extends State<DepositoryScreen> {
                                                     ),
                                                     RichText(
                                                       text: TextSpan(
-                                                        text: "เบอร์ติดต่อ :" +
+                                                        text: "เบอร์โทร :" +
                                                             DepositoryScreendata[
                                                                     index]
                                                                 ['ship_tel'],

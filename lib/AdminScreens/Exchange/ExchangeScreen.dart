@@ -59,7 +59,7 @@ class _ExchangeScreenState extends State<ExchangeScreen> {
     _getExchangeScreenory();
     _addressMem();
     _ExchangeScreenoryType();
-    _shippingOption();
+    // _shippingOption();
   }
 
   void _onRefresh() async {

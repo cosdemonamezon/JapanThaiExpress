@@ -57,9 +57,7 @@ class _PreoderScreenState extends State<PreoderScreen> {
   void initState() {
     super.initState();
     _getPreoderScreenory();
-    _addressMem();
     _PreoderScreenoryType();
-    _shippingOption();
   }
 
   void _onRefresh() async {
@@ -176,71 +174,6 @@ class _PreoderScreenState extends State<PreoderScreen> {
         //print(dataValue[0]['name']);
       } else {}
     } else {}
-  }
-
-  _shippingOption() async {
-    prefs = await SharedPreferences.getInstance();
-    var tokenString = prefs.getString('token');
-    var token = convert.jsonDecode(tokenString);
-    setState(() {
-      //isLoading = true;
-    });
-
-    var url = Uri.parse(pathAPI + 'api/shipping_option');
-    var response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token['data']['token']
-      },
-    );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> dataship = convert.jsonDecode(response.body);
-      if (dataship['code'] == 200) {
-        print(dataship['message']);
-        setState(() {
-          dropdownShip = dataship['data'];
-          _transport = dropdownShip[0]['name'];
-          costth = dropdownShip[0]['price'];
-        });
-        print(dropdownShip);
-      } else {}
-    } else {}
-  }
-
-  _addressMem() async {
-    prefs = await SharedPreferences.getInstance();
-    var tokenString = prefs.getString('token');
-    var token = convert.jsonDecode(tokenString);
-
-    //print(token);
-    setState(() {
-      //isLoading = true;
-      // tokendata = token['data']['token'];
-    });
-    //print(tokendata);
-
-    var url = Uri.parse(pathAPI + 'api/address_mem');
-    var response = await http.get(url, headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token['data']['token'],
-    });
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> addressdata =
-          convert.jsonDecode(response.body);
-      //print(addressdata);
-      setState(() {
-        address = addressdata['data'];
-        id = address[0]['id'];
-        name = address[0]['name'];
-        add = address[0]['address'];
-        tel = address[0]['tel'];
-      });
-    } else {
-      final Map<String, dynamic> addressdata =
-          convert.jsonDecode(response.body);
-      print(addressdata['message']);
-    }
   }
 
   _createPreoderScreenory(Map<String, dynamic> values) async {
@@ -419,104 +352,119 @@ class _PreoderScreenState extends State<PreoderScreen> {
                                       decoration:
                                           BoxDecoration(color: Colors.white),
                                       child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20.0, vertical: 10.0),
-                                        leading: Container(
-                                          padding: EdgeInsets.only(right: 14.0),
-                                          decoration: BoxDecoration(
-                                              border: Border(
-                                                  right: BorderSide(
-                                                      width: 2.0,
-                                                      color: primaryColor))),
-                                          child: Image.network(
-                                            PreoderScreendata[index]['image'] ==
-                                                    null
-                                                ? 'https://picsum.photos/200/300'
-                                                : PreoderScreendata[index]
-                                                    ['image'],
-                                            width: 70,
-                                          ),
-                                        ),
-                                        title: Text(
-                                          PreoderScreendata[index]['name'],
-                                          style: TextStyle(
-                                              color: kTextButtonColor,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        subtitle: Row(
-                                          children: <Widget>[
-                                            Flexible(
-                                                child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "ชื่อลูกค้า :" +
-                                                          PreoderScreendata[
-                                                                      index]
-                                                                  ['ship_name']
-                                                              .toString(),
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
-                                                    ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "เบอร์ติดต่อ :" +
-                                                          PreoderScreendata[
-                                                                      index]
-                                                                  ['ship_tel']
-                                                              .toString(),
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
-                                                    ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "วันที่บันทึก :" +
-                                                          PreoderScreendata[
-                                                                      index]
-                                                                  ['created_at']
-                                                              .split("T")[0],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
-                                                    ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                ]))
-                                          ],
-                                        ),
-                                        trailing: MaterialButton(
-                                          onPressed: () {
-                                            // var arg = {
-                                            //   "id": PreoderScreendata[index]['id'],
-                                            // };
-                                            MyNavigator.goToTimelinePreorder(
-                                                context,
-                                                PreoderScreendata[index]['id']);
-                                          },
-                                          color: Color(0xffdd4b39),
-                                          child: Text(
-                                            "ดูเพิ่ม",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: 12,
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 20.0, vertical: 10.0),
+                                          leading: Container(
+                                            padding:
+                                                EdgeInsets.only(right: 14.0),
+                                            decoration: BoxDecoration(
+                                                border: Border(
+                                                    right: BorderSide(
+                                                        width: 2.0,
+                                                        color: primaryColor))),
+                                            child: Image.network(
+                                              PreoderScreendata[index]
+                                                          ['image'] ==
+                                                      null
+                                                  ? 'https://picsum.photos/200/300'
+                                                  : PreoderScreendata[index]
+                                                      ['image'],
+                                              width: 70,
                                             ),
                                           ),
-                                        ),
-                                        onTap: () {},
-                                      ),
+                                          title: Text(
+                                            PreoderScreendata[index]['name'],
+                                            style: TextStyle(
+                                                color: kTextButtonColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          subtitle: Row(
+                                            children: <Widget>[
+                                              Flexible(
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "ชื่อลูกค้า :" +
+                                                            PreoderScreendata[
+                                                                        index][
+                                                                    'ship_name']
+                                                                .toString(),
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
+                                                    ),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "เบอร์ติดต่อ :" +
+                                                            PreoderScreendata[
+                                                                        index]
+                                                                    ['ship_tel']
+                                                                .toString(),
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
+                                                    ),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "วันที่บันทึก :" +
+                                                            PreoderScreendata[
+                                                                        index][
+                                                                    'created_at']
+                                                                .split("T")[0],
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
+                                                    ),
+                                                  ]))
+                                            ],
+                                          ),
+                                          trailing: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                icon: const Icon(Icons
+                                                    .keyboard_arrow_right_outlined),
+                                                color: Colors.orange[900],
+                                                iconSize: 30,
+                                                onPressed: () {
+                                                  var arg = PreoderScreendata[index]['id'];
+                                                  MyNavigator.goToTimelinePreorder(context, arg);
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                          // trailing: MaterialButton(
+                                          //   onPressed: () {
+                                          //      var arg = {"id": PreoderScreendata[index]['id']};
+                                          //     MyNavigator.goToTimelinePreorder(
+                                          //         context,
+                                          //         PreoderScreendata[index]['id']);
+                                          //   },
+                                          //   color: Color(0xffdd4b39),
+                                          //   child: Text(
+                                          //     "ดูเพิ่ม",
+                                          //     style: TextStyle(
+                                          //       fontWeight: FontWeight.bold,
+                                          //       color: Colors.white,
+                                          //       fontSize: 12,
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                          ),
                                     ),
                                   ),
                                 ),
