@@ -117,7 +117,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                     fontSize: 16, fontWeight: FontWeight.w500),
                               ),
                               Text(
-                                "0.00 ฿",
+                                //"0.00 ฿",
+                                '${wallet}'+' ฿',
                                 style: TextStyle(
                                     color: Color(0xffdd4b39),
                                     fontSize: 24,
@@ -127,7 +128,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                 height: 5,
                               ),
                               Text(
-                                "ชื่อ-นามสกุล",
+                                "ชื่อ-นามสกุล : "+'${datawallet['fname_th']} '+' ${datawallet['lname_th']}',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w400),
                               )

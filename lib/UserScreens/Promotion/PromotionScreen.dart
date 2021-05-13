@@ -17,6 +17,7 @@ class PromotionScreen extends StatefulWidget {
 
 class _PromotionScreenState extends State<PromotionScreen> {
   bool isLoading = false;
+  bool btnClick = true;
   SharedPreferences prefs;
   List<dynamic> promotion = []; //ประกาศตัวแปร อาร์เรย์ ไว้
   int totalResults = 0;
@@ -185,6 +186,8 @@ class _PromotionScreenState extends State<PromotionScreen> {
     String title2,
     String type,
   ) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Card(
       child: ListTile(
         title: Row(
@@ -226,7 +229,17 @@ class _PromotionScreenState extends State<PromotionScreen> {
               onPressed: () {
                 Clipboard.setData(new ClipboardData(text: title));
                 final snackBar = SnackBar(
-                  content: Text('คัดลอกข้อความสำเร็จ !'),
+                  content: Container(
+                    height: height * 0.05,
+                    child: Text(
+                      'คัดลอกข้อความสำเร็จ !',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
                   action: SnackBarAction(
                     label: 'ตกลง',
                     onPressed: () {

@@ -75,7 +75,7 @@ class _NewsScreenState extends State<NewsScreen> {
             )),
       ),
       body: Container(
-        height: height,
+        //height: height,
         padding: EdgeInsets.symmetric(horizontal: 5),
         color: Colors.grey[200],
         child: isLoading == true
@@ -113,8 +113,10 @@ class _NewsScreenState extends State<NewsScreen> {
   }
 
   Container newsCard(String img, String title, String subtitle) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Container(
-      height: 160,
+      height: height*0.22,
       decoration: BoxDecoration(
         color: kFontPrimaryColor,
         borderRadius: BorderRadius.only(
@@ -127,16 +129,15 @@ class _NewsScreenState extends State<NewsScreen> {
       child: GestureDetector(
         onTap: () {
           var arg = {"title": title, "subtitle": subtitle, "img": img};
-          MyNavigator.goToNewsDetial(context, arg);
-          
+          MyNavigator.goToNewsDetial(context, arg);          
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
               Container(
-                height: 120,
-                width: 100,
+                height: height*0.18,
+                width: width*0.26,
                 decoration: BoxDecoration(
                   //color: Colors.red,
                   borderRadius: BorderRadius.only(

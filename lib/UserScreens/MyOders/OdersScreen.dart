@@ -127,7 +127,7 @@ class _OdersScreenState extends State<OdersScreen> {
       appBar: AppBar(
         elevation: 0,
         //centerTitle: true,
-        title: Text("รายการสินค้า"),
+        title: Text("รายการซื้อสินค้า"),
         leading: IconButton(
             onPressed: () {
               MyNavigator.goBackUserHome(context);
@@ -199,12 +199,14 @@ class _OdersScreenState extends State<OdersScreen> {
     String subtitle2,
     String subtitle3,
   ) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Card(
       child: ListTile(
         title: Row(
           children: [
             Container(
-              width: 80,
+              width: width*0.20,
               //color: Colors.blue,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,7 +256,7 @@ class _OdersScreenState extends State<OdersScreen> {
               ),
             ),
             Container(
-              width: 270,
+              width: width*0.65,
               //color: Colors.red,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
