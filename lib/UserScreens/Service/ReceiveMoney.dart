@@ -866,6 +866,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
               Container(
                 //color: Colors.blueAccent,
                 width: 100,
+                
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -923,7 +924,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
               ),
               Container(
                 //color: Colors.blueAccent,
-                width: 270,
+                width: 200,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -991,7 +992,34 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
               ),
             ],
           ),
-          subtitle: Row(
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            
+            children: [
+              IconButton(
+                icon: const Icon(Icons.keyboard_arrow_right_outlined),
+                color: Colors.orange[900],
+                iconSize: 30,
+                onPressed: () {
+                   var arg = {
+                    "id": id,
+                    "code": title,
+                    "bank": title2,
+                    "total": title3,
+                    "description": title4,
+                    "date": date,
+                    "fee": fee,
+                    "name": name,
+                    "account": account,
+                    "status": status,
+                    "img": img,
+                  //MyNavigator.goToTimelineOrders(context);
+                };
+                MyNavigator.goToReceiveDetail(context, arg);
+                },
+              ),]
+          ),
+          /*subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               MaterialButton(
@@ -1028,7 +1056,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                 ),
               )
             ],
-          )),
+          )*/),
     );
   }
 

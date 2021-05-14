@@ -194,7 +194,7 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
                                               children: <Widget>[
                                             RichText(
                                               text: TextSpan(
-                                                text: "Qty :" +
+                                                text: "จำนวน :" +
                                                     notidata[index]['qty'],
                                                 style: TextStyle(
                                                     color: kTextButtonColor),
@@ -204,7 +204,7 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
                                             ),
                                             RichText(
                                               text: TextSpan(
-                                                text: "Create At :" +
+                                                text: "วันที่บันทึก :" +
                                                     notidata[index]
                                                             ['created_at']
                                                         .split("T")[0],
@@ -217,21 +217,24 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
                                           ]))
                                     ],
                                   ),
-                                  trailing: MaterialButton(
-                                    onPressed: () {
-                                      MyNavigator.goToTimelinepurchaseOrders(
+                                  trailing: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                          
+                                          IconButton(
+                                            icon: const Icon(Icons
+                                                  .keyboard_arrow_right_outlined),
+                                          color: Color(0xffdd4b39),
+                                          onPressed: () {
+                                            MyNavigator.goToTimelinepurchaseOrders(
                                           context);
-                                    },
-                                    color: Color(0xffdd4b39),
-                                    child: Text(
-                                      "Details",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ),
+                                            
+                                            
+                                          },
+                                         ), 
+                                        ],),
+                                  
                                   onTap: () {},
                                 ),
                               ),

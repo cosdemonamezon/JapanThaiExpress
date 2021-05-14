@@ -15,6 +15,9 @@ class MyNavigator {
   static void goToHome(BuildContext context) {
     Navigator.pushNamed(context, "/home");
   }
+  static void goToHomeScreen(BuildContext context) {
+    Navigator.pushNamed(context, "/homescreen");
+  }
 
   static void goToLogin(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(

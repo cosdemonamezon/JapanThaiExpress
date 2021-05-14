@@ -447,7 +447,7 @@ class _AuctionadminState extends State<Auctionadmin> {
                                         ),
                                         subtitle: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                              MainAxisAlignment.start,
                                           children: <Widget>[
                                             Flexible(
                                                 child: Column(
@@ -506,7 +506,7 @@ class _AuctionadminState extends State<Auctionadmin> {
                                               color: Colors.orange[900],
                                               iconSize: 30,
                                               onPressed: () {
-                                                // MyNavigator.goToTimelineauction(context);
+                                                MyNavigator.goToTimelineauction(context);
                                               },
                                             ),
                                           ],
@@ -632,75 +632,6 @@ class _AuctionadminState extends State<Auctionadmin> {
       ),
     );
   }
-
-  Card buildCard(
-    String title,
-    String title2,
-    String title3,
-    String title4,
-  ) {
-    return Card(
-      child: ListTile(
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
-              ),
-              Text(
-                title2,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
-              ),
-              Text(
-                title3,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
-              ),
-              Text(
-                title4,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-          subtitle: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              MaterialButton(
-                onPressed: () {
-                  //MyNavigator.goToTimelineOrders(context);
-                },
-                color: Colors.green,
-                child: Text(
-                  "Details",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ],
-          )),
-    );
-  }
-
   selectdialog(context) {
     return Dialog(
       shape: RoundedRectangleBorder(

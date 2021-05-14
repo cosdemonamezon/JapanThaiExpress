@@ -985,7 +985,20 @@ class _DepositState extends State<Deposit> {
               ),
             ],
           ),
-          subtitle: Row(
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.keyboard_arrow_right_outlined),
+                color: Colors.orange[900],
+                iconSize: 30,
+                onPressed: () {
+                  //MyNavigator.goToTimelineOrders(context);
+                },
+              ),
+            ],
+          ),
+          /*subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               MaterialButton(
@@ -1003,7 +1016,7 @@ class _DepositState extends State<Deposit> {
                 ),
               ),
             ],
-          )),
+          )*/),
     );
   }
 

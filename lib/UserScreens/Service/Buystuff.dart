@@ -418,7 +418,7 @@ class _BuystuffState extends State<Buystuff> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Description",
+                                "รายละเอียด",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 15),
                               ),
@@ -828,7 +828,20 @@ class _BuystuffState extends State<Buystuff> {
               )
             ],
           ),
-          subtitle: Row(
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.keyboard_arrow_right_outlined),
+                color: Colors.orange[900],
+                iconSize: 30,
+                onPressed: () {
+                  //MyNavigator.goToTimelineOrders(context);
+                },
+              ),
+            ],
+          ),
+          /*subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               MaterialButton(
@@ -846,7 +859,7 @@ class _BuystuffState extends State<Buystuff> {
                 ),
               ),
             ],
-          )),
+          )*/),
     );
   }
 }

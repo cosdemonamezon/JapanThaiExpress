@@ -443,7 +443,6 @@ class _AuctionState extends State<Auction> {
                             ]),
                             onChanged: (text) {
                               if (text.isEmpty || text == null) {
-                               
                                 setState(() {
                                   budget = '0';
                                   total = '0';
@@ -702,7 +701,20 @@ class _AuctionState extends State<Auction> {
               )
             ],
           ),
-          subtitle: Row(
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.keyboard_arrow_right_outlined),
+                color: Colors.orange[900],
+                iconSize: 30,
+                onPressed: () {
+                  
+                },
+              ),
+            ],
+          ),
+          /*subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               MaterialButton(
@@ -720,7 +732,7 @@ class _AuctionState extends State<Auction> {
                 ),
               ),
             ],
-          )),
+          )*/),
     );
   }
 }

@@ -10,6 +10,7 @@ import 'package:JapanThaiExpress/AdminScreens/PreOders/PreoderScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/PurchaseOrders/PrechaseScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
 import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRView.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -34,7 +35,7 @@ class _HomeServicesState extends State<HomeServices> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context, true);
+              MyNavigator.goToHomeScreen(context);
             }),
       ),
       body: Container(

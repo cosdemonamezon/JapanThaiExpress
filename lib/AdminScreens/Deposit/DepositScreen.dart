@@ -488,7 +488,15 @@ class _DepositScreenState extends State<DepositScreen> {
                                                 ]))
                                           ],
                                         ),
-                                        trailing: MaterialButton(
+                                        trailing: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                          
+                                          IconButton(
+                                            icon: const Icon(Icons
+                                                  .keyboard_arrow_right_outlined),
+                                          color: Color(0xffdd4b39),
                                           onPressed: () {
                                             var arg = {
                                               "account_name":
@@ -505,16 +513,8 @@ class _DepositScreenState extends State<DepositScreen> {
                                             MyNavigator.goToDepositDetail(
                                                 context, arg);
                                           },
-                                          color: Color(0xffdd4b39),
-                                          child: Text(
-                                            "ดูเพิ่ม",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ),
+                                         ), 
+                                        ],),
                                         onTap: () {},
                                       ),
                                     ),
