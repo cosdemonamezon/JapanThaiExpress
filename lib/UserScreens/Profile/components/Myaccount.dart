@@ -112,8 +112,38 @@ class _MyaccountState extends State<Myaccount> {
           _email = TextEditingController(text: profilelist['email']);
         });
         print(profile);
-      } else {}
-    } else {}
+      } else {
+        var feedback = convert.jsonDecode(response.body);
+
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+      }
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+      print("${feedback['message']}");
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
   }
 
   _editProfile() async {
@@ -208,7 +238,7 @@ class _MyaccountState extends State<Myaccount> {
       print("${feedback['message']}");
       Flushbar(
         title: '${feedback['message']}',
-        message: 'เกิดข้อผิดพลาดจากระบบ : ${feedback['code']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
         backgroundColor: Colors.redAccent,
         icon: Icon(
           Icons.error,
@@ -463,7 +493,7 @@ class _MyaccountState extends State<Myaccount> {
                                 fillColor: Color(0xfff3f3f4),
                                 filled: true,
                               ),
-                              
+
                               // validator: FormBuilderValidators.compose([
                               //   FormBuilderValidators.required(context,
                               //       errorText: 'กรุณากรอกอีเมล'),

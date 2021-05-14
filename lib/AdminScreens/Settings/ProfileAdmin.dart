@@ -99,7 +99,7 @@ class _ProfileAdminState extends State<ProfileAdmin> {
                       width: 22,
                     ),
                     SizedBox(width: 20),
-                    Expanded(child: Text('ตั่งค่าพื้นฐาน')),
+                    Expanded(child: Text('ตั่งค่าข้อมูล')),
                     Icon(Icons.arrow_forward_ios),
                   ],
                 ),

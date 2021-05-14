@@ -2,6 +2,7 @@ import 'package:JapanThaiExpress/UserScreens/News/DetailNews.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -53,9 +54,37 @@ class _NewsScreenState extends State<NewsScreen> {
           news = newsdata['data'];
         });
       } else {
-
+        var feedback = convert.jsonDecode(response.body);
+        print("${feedback['message']}");
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
       }
-    } else {}
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+      print("${feedback['message']}");
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
   }
 
   @override
@@ -116,7 +145,7 @@ class _NewsScreenState extends State<NewsScreen> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Container(
-      height: height*0.22,
+      height: height * 0.22,
       decoration: BoxDecoration(
         color: kFontPrimaryColor,
         borderRadius: BorderRadius.only(
@@ -129,15 +158,15 @@ class _NewsScreenState extends State<NewsScreen> {
       child: GestureDetector(
         onTap: () {
           var arg = {"title": title, "subtitle": subtitle, "img": img};
-          MyNavigator.goToNewsDetial(context, arg);          
+          MyNavigator.goToNewsDetial(context, arg);
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
               Container(
-                height: height*0.18,
-                width: width*0.26,
+                height: height * 0.18,
+                width: width * 0.26,
                 decoration: BoxDecoration(
                   //color: Colors.red,
                   borderRadius: BorderRadius.only(

@@ -14,15 +14,16 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:JapanThaiExpress/AdminScreens/Auction/Auctionadmin.dart';
 
-class DepositScreen extends StatefulWidget {
-  DepositScreen({Key key}) : super(key: key);
+class Auctionadmin extends StatefulWidget {
+  Auctionadmin({Key key}) : super(key: key);
 
   @override
-  _DepositScreenState createState() => _DepositScreenState();
+  _AuctionadminState createState() => _AuctionadminState();
 }
 
-class _DepositScreenState extends State<DepositScreen> {
+class _AuctionadminState extends State<Auctionadmin> {
   List<bool> checked = [false, true, false, false, true];
   String valueChoose;
   bool isLoading = false;
@@ -45,7 +46,7 @@ class _DepositScreenState extends State<DepositScreen> {
   final _formKey1 = GlobalKey<FormBuilderState>();
   SharedPreferences prefs;
   String tokendata = "";
-  List<dynamic> DepositScreendata = []; //ประกาศตัวแปร อาร์เรย์ ไว้
+  List<dynamic> Auctionadmindata = []; //ประกาศตัวแปร อาร์เรย์ ไว้
   int totalResults = 0;
   int page = 1;
   int pageSize = 10;
@@ -56,10 +57,10 @@ class _DepositScreenState extends State<DepositScreen> {
   @override
   void initState() {
     super.initState();
-    _getDepositScreenory();
-    _addressMem();
-    _DepositScreenoryType();
-    _shippingOption();
+    _getauctionadmin();
+    // _addressMem();
+    // _DepositoryScreenoryType();
+    // _shippingOption();
   }
 
   void _onRefresh() async {
@@ -68,10 +69,10 @@ class _DepositScreenState extends State<DepositScreen> {
     // if failed,use refreshFailed()
     //ทุกครั้งที่รีเฟรชจะเคียร์อาร์เรย์และ set page เป็น 1
     setState(() {
-      DepositScreendata.clear();
+      Auctionadmindata.clear();
       page = 1;
     });
-    _getDepositScreenory(); //ทุกครั้งที่ทำการรีเฟรช จะดึงข้อมูลใหม่
+    _getauctionadmin(); //ทุกครั้งที่ทำการรีเฟรช จะดึงข้อมูลใหม่
     _refreshController.refreshCompleted();
   }
 
@@ -86,7 +87,7 @@ class _DepositScreenState extends State<DepositScreen> {
         setState(() {
           page = ++page;
         });
-        _getDepositScreenory();
+        _getauctionadmin();
         _refreshController.loadComplete();
       } else {
         print("unmounted");
@@ -98,7 +99,7 @@ class _DepositScreenState extends State<DepositScreen> {
     }
   }
 
-  _getDepositScreenory() async {
+  _getauctionadmin() async {
     try {
       setState(() {
         page == 1 ? isLoading = true : isLoading = false;
@@ -106,8 +107,8 @@ class _DepositScreenState extends State<DepositScreen> {
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
-      var url = Uri.parse(pathAPI +
-          'api/app/transaction_page?status=&page=$page&page_size=$pageSize');
+      var url = Uri.parse(
+          pathAPI + 'api/get_auction?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {
@@ -122,15 +123,16 @@ class _DepositScreenState extends State<DepositScreen> {
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> depdata = convert.jsonDecode(response.body);
+        print(depdata);
         setState(() {
           totalResults = depdata['data']['total'];
-          DepositScreendata.addAll(depdata['data']['data']);
+          Auctionadmindata.addAll(depdata['data']['data']);
           isLoading = false;
           // print(depdata['message']);
           // print(totalResults);
           // print("test");
-          // print(DepositScreendata.length);
-          // print(DepositScreendata[1]['description']);
+          // print(DepositoryScreendata.length);
+          // print(DepositoryScreendata[1]['description']);
         });
       } else {
         setState(() {
@@ -145,7 +147,7 @@ class _DepositScreenState extends State<DepositScreen> {
     }
   }
 
-  _DepositScreenoryType() async {
+  _DepositoryScreenoryType() async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -153,7 +155,7 @@ class _DepositScreenState extends State<DepositScreen> {
       //isLoading = true;
     });
 
-    var url = Uri.parse(pathAPI + 'api/DepositScreenory_type');
+    var url = Uri.parse(pathAPI + 'api/get_auction');
     var response = await http.get(
       url,
       headers: {
@@ -162,12 +164,12 @@ class _DepositScreenState extends State<DepositScreen> {
       },
     );
     if (response.statusCode == 200) {
-      final Map<String, dynamic> dataDepositScreen =
+      final Map<String, dynamic> dataDepositoryScreen =
           convert.jsonDecode(response.body);
-      if (dataDepositScreen['code'] == 200) {
-        //print(dataDepositScreen['message']);
+      if (dataDepositoryScreen['code'] == 200) {
+        //print(dataDepositoryScreen['message']);
         setState(() {
-          dropdownValue = dataDepositScreen['data'];
+          dropdownValue = dataDepositoryScreen['data'];
         });
         // for (var i = 0; i < dataValue.length; i++) {
         //   dropdownValue += dataValue[i]['name'];
@@ -243,7 +245,7 @@ class _DepositScreenState extends State<DepositScreen> {
     }
   }
 
-  _createDepositScreenory(Map<String, dynamic> values) async {
+  _Auctionadmin(Map<String, dynamic> values) async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -255,7 +257,7 @@ class _DepositScreenState extends State<DepositScreen> {
     setState(() {
       isLoading = true;
     });
-    var url = Uri.parse(pathAPI + 'api/create_DepositScreenory');
+    var url = Uri.parse(pathAPI + 'api/create_DepositoryScreenory'); //
     var response = await http.post(url,
         headers: {
           //'Content-Type': 'application/json',
@@ -268,20 +270,20 @@ class _DepositScreenState extends State<DepositScreen> {
           'cost_th': costth,
         }));
     if (response.statusCode == 201) {
-      final Map<String, dynamic> DepositScreendata =
+      final Map<String, dynamic> Auctionadmindata =
           convert.jsonDecode(response.body);
-      print(DepositScreendata);
-      if (DepositScreendata['code'] == 201) {
-        print(DepositScreendata['message']);
-        //MyNavigator.goToDepositScreen(context);
+      print(Auctionadmindata);
+      if (Auctionadmindata['code'] == 201) {
+        print(Auctionadmindata['message']);
+        //MyNavigator.goToDepositoryScreen(context);
         // Navigator.push(
-        //   context, MaterialPageRoute(builder: (context) => DepositScreen()));
+        //   context, MaterialPageRoute(builder: (context) => DepositoryScreen()));
         // String picSuccess = "assets/success.png";
         // showDialog(
         //   barrierDismissible: false,
         //   context: context,
-        //   builder: (context) => alertDepositScreen(
-        //     DepositScreendata['message'],
+        //   builder: (context) => alertDepositoryScreen(
+        //     DepositoryScreendata['message'],
         //     picSuccess,
         //     context,
         //   ),
@@ -332,11 +334,11 @@ class _DepositScreenState extends State<DepositScreen> {
           appBar: AppBar(
               elevation: 0,
               centerTitle: true,
-              title: Text("รายการเติมเงิน"),
+              title: Text("รายการประมูล"),
               leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.pop(context, true);
+                    MyNavigator.goToHomeServices(context);
                   }),
               bottom: TabBar(
                   labelColor: Colors.redAccent,
@@ -404,7 +406,7 @@ class _DepositScreenState extends State<DepositScreen> {
                         onLoading: _onLoading,
                         child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: DepositScreendata.length,
+                            itemCount: Auctionadmindata.length,
                             padding: EdgeInsets.only(left: 5.0, right: 5.0),
                             itemBuilder: (BuildContext context, int index) {
                               return Padding(
@@ -428,17 +430,24 @@ class _DepositScreenState extends State<DepositScreen> {
                                                   right: BorderSide(
                                                       width: 2.0,
                                                       color: primaryColor))),
-                                          child: Icon(Icons.payment),
+                                          child: Image.network(
+                                              Auctionadmindata[index]
+                                                          ['image'] ==
+                                                      null
+                                                  ? 'https://picsum.photos/200/300'
+                                                  : Auctionadmindata[index]
+                                                      ['image'],
+                                              width: 70),
                                         ),
                                         title: Text(
-                                          "ยอดเงิน : " +
-                                              DepositScreendata[index]
-                                                  ['amount'],
+                                          Auctionadmindata[index]['name'],
                                           style: TextStyle(
                                               color: kTextButtonColor,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         subtitle: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: <Widget>[
                                             Flexible(
                                                 child: Column(
@@ -448,10 +457,9 @@ class _DepositScreenState extends State<DepositScreen> {
                                                     children: <Widget>[
                                                   RichText(
                                                     text: TextSpan(
-                                                      text: "ประเภทเติมเงิน :" +
-                                                          DepositScreendata[
-                                                                  index]
-                                                              ['payment_type'],
+                                                      text: "ชื่อลูกค้า :" +
+                                                          Auctionadmindata[
+                                                              index]['code'],
                                                       style: TextStyle(
                                                           color:
                                                               kTextButtonColor),
@@ -461,9 +469,9 @@ class _DepositScreenState extends State<DepositScreen> {
                                                   ),
                                                   RichText(
                                                     text: TextSpan(
-                                                      text: "สถานะ :" +
-                                                          DepositScreendata[
-                                                              index]['status'],
+                                                      text: "เบอร์ติดต่อ :" +
+                                                          Auctionadmindata[
+                                                              index]['code'],
                                                       style: TextStyle(
                                                           color:
                                                               kTextButtonColor),
@@ -474,7 +482,7 @@ class _DepositScreenState extends State<DepositScreen> {
                                                   RichText(
                                                     text: TextSpan(
                                                       text: "วันที่บันทึก :" +
-                                                          DepositScreendata[
+                                                          Auctionadmindata[
                                                                       index]
                                                                   ['created_at']
                                                               .split("T")[0],
@@ -488,34 +496,21 @@ class _DepositScreenState extends State<DepositScreen> {
                                                 ]))
                                           ],
                                         ),
-                                        trailing: MaterialButton(
-                                          onPressed: () {
-                                            var arg = {
-                                              "account_name":
-                                                  DepositScreendata[index]
-                                                          ['account_name']
-                                                      .toString(),
-                                              "amount": DepositScreendata[index]
-                                                      ['amount']
-                                                  .toString(),
-                                              "slip": DepositScreendata[index]
-                                                      ["slip"]
-                                                  .toString(),
-                                            };
-                                            MyNavigator.goToDepositDetail(
-                                                context, arg);
-                                          },
-                                          color: Color(0xffdd4b39),
-                                          child: Text(
-                                            "ดูเพิ่ม",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: 12,
+                                        trailing: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(Icons
+                                                  .keyboard_arrow_right_outlined),
+                                              color: Colors.orange[900],
+                                              iconSize: 30,
+                                              onPressed: () {
+                                                // MyNavigator.goToTimelineauction(context);
+                                              },
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                        onTap: () {},
                                       ),
                                     ),
                                   ),

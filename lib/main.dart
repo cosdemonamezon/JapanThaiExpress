@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:JapanThaiExpress/AdminScreens/Settings/SettingScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/SplashScreen.dart';
@@ -43,6 +44,8 @@ import 'package:JapanThaiExpress/UserScreens/Service/Auction.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
+import 'package:JapanThaiExpress/AdminScreens/Auction/Auctionadmin.dart';
+import 'package:JapanThaiExpress/AdminScreens/Auction/TimeLineAuction.Dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -160,9 +163,10 @@ var routes = <String, WidgetBuilder>{
   "/myorder": (BuildContext context) => OdersScreen(),
   "/otpscreen": (BuildContext context) => OtpScreen(),
   "/receivedetail": (BuildContext context) => ReceiveDetail(),
-  
+  "/auctionadmin": (BuildContext context) => Auctionadmin(),
   "/messageuser": (BuildContext context) => MessageScreen(),
   "/settingadmin": (BuildContext context) => SettingScreen(),
+  "/timelineauction": (BuildContext context) => Timelineauction(),
 };
 
 class MyApp extends StatelessWidget {

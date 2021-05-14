@@ -2,6 +2,7 @@ import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:image_picker/image_picker.dart';
@@ -124,7 +125,20 @@ class _BuystuffState extends State<Buystuff> {
           isLoading = false;
         });
         final Map<String, dynamic> order = convert.jsonDecode(response.body);
-        print(order['message']);
+
+        print("${order['message']}");
+        Flushbar(
+          title: '${order['message']}',
+          message: 'รหัสข้อผิดพลาด : ${order['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
       }
     } catch (e) {
       setState(() {
@@ -361,7 +375,8 @@ class _BuystuffState extends State<Buystuff> {
                                     fillColor: Color(0xfff3f3f4),
                                     filled: true),
                                 validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(context, errorText: 'กรุณาใส่ url สินค้า'),
+                                  FormBuilderValidators.required(context,
+                                      errorText: 'กรุณาใส่ url สินค้า'),
                                   // FormBuilderValidators.numeric(context),
                                   // FormBuilderValidators.max(context, 70),
                                 ]),
@@ -388,7 +403,8 @@ class _BuystuffState extends State<Buystuff> {
                                     fillColor: Color(0xfff3f3f4),
                                     filled: true),
                                 validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(context, errorText: 'กรุณาใส่ชื่อสินค้า'),
+                                  FormBuilderValidators.required(context,
+                                      errorText: 'กรุณาใส่ชื่อสินค้า'),
                                   // FormBuilderValidators.numeric(context),
                                   // FormBuilderValidators.max(context, 70),
                                 ]),
@@ -439,7 +455,8 @@ class _BuystuffState extends State<Buystuff> {
                                     fillColor: Color(0xfff3f3f4),
                                     filled: true),
                                 validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(context, errorText: 'กรุณาใส่จำนวนสินค้า'),
+                                  FormBuilderValidators.required(context,
+                                      errorText: 'กรุณาใส่จำนวนสินค้า'),
                                   // FormBuilderValidators.numeric(context),
                                   // FormBuilderValidators.max(context, 70),
                                 ]),

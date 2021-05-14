@@ -58,7 +58,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
       isLoading = true;
     });
     // var url = pathAPI + 'api/preorder/' + id;
-    var url = Uri.parse(pathAPI + 'api/preorder/' + id);
+    var url = Uri.parse(pathAPI + 'api/get_auction/' + id);
     var response = await http.get(
       url,
       headers: {

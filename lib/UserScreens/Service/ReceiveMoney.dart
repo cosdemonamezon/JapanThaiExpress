@@ -1,6 +1,7 @@
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'dart:convert' as convert;
@@ -119,11 +120,23 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           // print(exchangedata[1]['description']);
         });
       } else {
-        final Map<String, dynamic> exchange = convert.jsonDecode(response.body);
+        
         setState(() {
           isLoading = false;
         });
-        print('error from backend ${exchange['message']}');
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
       }
     } catch (e) {
       setState(() {
@@ -146,7 +159,21 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         _rate = TextEditingController(text: ratedata.toString());
         rate = _rate.text;
       });
-    } else {}
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+    }
   }
 
   _settingApp() async {
@@ -182,10 +209,34 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         // print(_rate);
         // print(_fee);
       } else {
-        print("error");
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
       }
     } else {
-      print("error");
+      var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
     }
   }
 
@@ -241,7 +292,19 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           ),
         );
       } else {
-        print("error");
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
       }
     } else if (response.statusCode == 402) {
       final Map<String, dynamic> trandata = convert.jsonDecode(response.body);
@@ -259,7 +322,21 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         ),
       );
       print(trandata['message']);
-    } else {}
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+    }
   }
 
   @override
