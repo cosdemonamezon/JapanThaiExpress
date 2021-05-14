@@ -163,7 +163,7 @@ class _MyaccountState extends State<Myaccount> {
 
     if (profile != null) {
       setState(() {
-        profile_img = null;
+        profile_img = "";
         //isLoading = true;
       });
     } else {
