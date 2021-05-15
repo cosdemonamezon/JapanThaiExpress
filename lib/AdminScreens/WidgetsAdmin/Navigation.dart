@@ -8,12 +8,18 @@ import 'package:flutter/material.dart';
 
 class Navigation extends StatefulWidget {
   Navigation({Key key}) : super(key: key);
+  
 
   @override
   _NavigationState createState() => _NavigationState();
 }
 
 class _NavigationState extends State<Navigation> {
+  bool nbtn1 = false;
+  bool nbtn2 = false;
+  bool nbtn3 = false;
+  bool nbtn4 = false;
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,10 +45,12 @@ class _NavigationState extends State<Navigation> {
                         color: Colors.white,
                         icon: Icon(Icons.home),
                         onPressed: () {
+                          
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => HomeScreen()));
+                          
                         }),
                   ),
                   Text(
@@ -67,7 +75,7 @@ class _NavigationState extends State<Navigation> {
                           color: Colors.white,
                           icon: Icon(Icons.notifications),
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>

@@ -491,10 +491,10 @@ class _DepositState extends State<Deposit> {
               title: Text("รับฝากส่ง"),
               leading: IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    //Navigator.pop(context);
                     //MyNavigator.goToService(context);
-                    // Navigator.push(
-                    //   context, MaterialPageRoute(builder: (context) => Service()));
+                    Navigator.pushReplacement(
+                      context, MaterialPageRoute(builder: (context) => Service()));
                   },
                   icon: Icon(
                     Icons.arrow_back_ios_rounded,

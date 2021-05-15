@@ -1,3 +1,4 @@
+import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/constants.dart';
@@ -245,10 +246,10 @@ class _BuystuffState extends State<Buystuff> {
               title: Text("รับฝากซื้อสินค้า"),
               leading: IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    //Navigator.pop(context);
                     //MyNavigator.goToService(context);
-                    // Navigator.push(
-                    //   context, MaterialPageRoute(builder: (context) => Service()));
+                    Navigator.pushReplacement(
+                      context, MaterialPageRoute(builder: (context) => Service()));
                   },
                   icon: Icon(
                     Icons.arrow_back_ios_rounded,
