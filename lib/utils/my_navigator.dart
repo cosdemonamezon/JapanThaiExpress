@@ -1,7 +1,7 @@
 import 'package:JapanThaiExpress/AdminScreens/Depository/TimeLineDepository.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageRoom.dart';
 import 'package:flutter/material.dart';
-import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePreorders.dart';
 
 class MyNavigator {
   static void goToMain(BuildContext context) {
@@ -48,12 +48,12 @@ class MyNavigator {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TimeLineScreen(),
+        builder: (context) => TimeLinePreorders(),
         // Pass the arguments as part of the RouteSettings. The
         // ExtractArgumentScreen reads the arguments from these
         // settings.
         settings: RouteSettings(
-          arguments: {"id": id},
+          arguments: {"id": id.toString()},
         ),
       ),
     );
@@ -80,7 +80,7 @@ class MyNavigator {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TimeLineScreen(),
+        builder: (context) => TimeLineDepository(),
         // Pass the arguments as part of the RouteSettings. The
         // ExtractArgumentScreen reads the arguments from these
         // settings.

@@ -43,14 +43,14 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   void initState() {
     super.initState();
-    _getDepositoryScreenory();
+    _getSetting();
   }
 
-  _getDepositoryScreenory() async {
+  _getSetting() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
-      setState(() {
-        page == 1 ? isLoading = true : isLoading = false;
-      });
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
@@ -93,6 +93,30 @@ class _SettingScreenState extends State<SettingScreen> {
     }
   }
 
+  // _setSetting() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+
+  //   var url = Uri.parse(pathAPI + 'api/login_pin_mobile');
+  //   var response = await http.post(url,
+  //       headers: {'Content-Type': 'application/json'},
+  //       // body: convert.jsonEncode({
+  //       //   'pin': number,
+  //       //   'device': identifier,
+  //       // }));
+  //   if (response.statusCode == 200) {
+  //     final Map<String, dynamic> body = convert.jsonDecode(response.body);
+  //     if (body['code'] == 200) {
+  //       return false;
+  //     } else {
+  //       var feedback = convert.jsonDecode(response.body);
+  //     }
+  //   } else {
+  //     var feedback = convert.jsonDecode(response.body);
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,160 +129,174 @@ class _SettingScreenState extends State<SettingScreen> {
               MyNavigator.goToAdmin(context);
             }),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+      body: isLoading == true
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Container(
+                width: double.infinity,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    _divider("ข้อมูลบริษัท"),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text("ที่อยู่ไทย"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: address_thai,
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText: 'Error message',
-                        hintText: "",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("ที่อยู่ญี่ปุ่น"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: address_japan,
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText: 'Error message',
-                        hintText: "",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    _divider("บัญชีบริษัท"),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text("ชื่อบัญชีบริษัท"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: jt_account,
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText: 'Error message',
-                        hintText: "",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    Text("เลขที่บัญชี"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: jt_number,
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText: 'Error message',
-                        hintText: "",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    Text("ธนาคาร"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: jt_bank,
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText: 'Error message',
-                        hintText: "",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    Text("สาขา"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: jt_branch,
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText: 'Error message',
-                        hintText: "",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    Text("พร้อมเพล"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: jt_promptpay,
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText: 'Error message',
-                        hintText: "",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: Colors.grey.shade200,
-                              offset: Offset(2, 4),
-                              blurRadius: 5,
-                              spreadRadius: 2)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 40),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          _divider("ข้อมูลบริษัท"),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text("ที่อยู่ไทย"),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            controller: address_thai,
+                            decoration: InputDecoration(
+                              //labelText: 'Label text',
+                              //errorText: 'Error message',
+                              hintText: "",
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text("ที่อยู่ญี่ปุ่น"),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            controller: address_japan,
+                            decoration: InputDecoration(
+                              //labelText: 'Label text',
+                              //errorText: 'Error message',
+                              hintText: "",
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          _divider("บัญชีบริษัท"),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text("ชื่อบัญชีบริษัท"),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            controller: jt_account,
+                            decoration: InputDecoration(
+                              //labelText: 'Label text',
+                              //errorText: 'Error message',
+                              hintText: "",
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          Text("เลขที่บัญชี"),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            controller: jt_number,
+                            decoration: InputDecoration(
+                              //labelText: 'Label text',
+                              //errorText: 'Error message',
+                              hintText: "",
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          Text("ธนาคาร"),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            controller: jt_bank,
+                            decoration: InputDecoration(
+                              //labelText: 'Label text',
+                              //errorText: 'Error message',
+                              hintText: "",
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          Text("สาขา"),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            controller: jt_branch,
+                            decoration: InputDecoration(
+                              //labelText: 'Label text',
+                              //errorText: 'Error message',
+                              hintText: "",
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          Text("พร้อมเพล"),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            controller: jt_promptpay,
+                            decoration: InputDecoration(
+                              //labelText: 'Label text',
+                              //errorText: 'Error message',
+                              hintText: "",
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                    color: Colors.grey.shade200,
+                                    offset: Offset(2, 4),
+                                    blurRadius: 5,
+                                    spreadRadius: 2)
+                              ],
+                              gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Color(0xffdd4b39),
+                                    Color(0xffdd4b39)
+                                  ]),
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                print('1234');
+                              },
+                              child: Text(
+                                "บันทึก",
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              ),
+                            ),
+                          ),
                         ],
-                        gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
                       ),
-                      child: Text(
-                        "บันทึก",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                    ),
+                    )
                   ],
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
+              ),
+            ),
       bottomNavigationBar: Navigation(),
     );
   }
