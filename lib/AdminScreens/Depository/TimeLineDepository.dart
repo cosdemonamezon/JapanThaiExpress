@@ -97,15 +97,18 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
         index = 6;
       }
       var familyMembers = Data["data"]["list"][index]["field"];
+      var showField = Data["data"]["list"][index]["show"];
       for (var familyMember in familyMembers) {
         if (familyMember["name"] != 'status') {
-          setState(() {
-            familyMemberLabel.add(familyMember["label"]);
-            // var textEditingController = TextEditingController();
-            familyMemberName.add(familyMember["name"]);
-            familyMemberField.add(familyMember["name"]);
-          });
-          print(familyMemberName);
+          if (showField == true) {
+            setState(() {
+              familyMemberLabel.add(familyMember["label"]);
+              // var textEditingController = TextEditingController();
+              familyMemberName.add(familyMember["name"]);
+              familyMemberField.add(familyMember["name"]);
+            });
+            print(familyMemberName);
+          }
         }
       }
       if (data['code'] == 200) {
@@ -368,7 +371,7 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                       height: 20,
                     ),
                     Container(
-                      height: 110,
+                      // height: 150,
                       width: MediaQuery.of(context).size.width - 20,
                       //color: Colors.red,
                       decoration: BoxDecoration(
@@ -385,23 +388,30 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                           SizedBox(
                             height: 20,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "ฝากส่งสินค้า" + " No.",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14,
-                                      color: kFontPrimaryColor),
-                                ),
-                              ],
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5),
+                                    child: Text(
+                                      " เลขที่ :" +
+                                          dataTimeline['data']['code'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                          color: kFontPrimaryColor),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -429,9 +439,54 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Text(
                                       "1 รายการ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                          color: kFontPrimaryColor),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          _divider2(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      dataTimeline.length > 0
+                                          ? "ชื่อลูกค้า :" +
+                                              dataTimeline['data']['ship_name']
+                                          : " - ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: kFontPrimaryColor),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "โทร :" +
+                                          dataTimeline['data']['ship_tel'],
                                       style: TextStyle(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 15,
@@ -576,9 +631,8 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                                           // draw a red marble
                                           top: 10.0,
                                           right: 10.0,
-                                          child: Icon(Icons.touch_app,
-                                              size: 25.0,
-                                              color: Colors.yellowAccent),
+                                          child: Icon(Icons.no_encryption,
+                                              size: 25.0, color: Colors.red),
                                         )
                                       : SizedBox(
                                           height: 0,
@@ -640,9 +694,7 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "new" &&
-                                dataTimeline['data']['list'][0]['show'] ==
-                                    true) {
+                                dataTimeline['data']['step'] == "new") {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -750,30 +802,28 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         indicatorY: 0.2,
                         padding: EdgeInsets.all(8),
                       ),
-                      leftChild: Container(
+                      rightChild: Container(
                         child: GestureDetector(
                           onTap: () {
-                            if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "order" &&
-                                dataTimeline['data']['list'][1]['show'] ==
-                                    true) {
-                              String title = "";
-                              showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (context) => dialogTimeline(
-                                    title,
-                                    picDenied,
-                                    context,
-                                    familyMemberLabel,
-                                    familyMemberName,
-                                    dataTimeline['data']['id'],
-                                    dataTimeline.length > 0
-                                        ? dataTimeline['data']['step']
-                                        : 'track',
-                                    familyMemberField),
-                              );
-                            }
+                            // if (dataTimeline.length > 0 &&
+                            //     dataTimeline['data']['step'] == "order") {
+                            //   String title = "";
+                            //   showDialog(
+                            //     barrierDismissible: false,
+                            //     context: context,
+                            //     builder: (context) => dialogTimeline(
+                            //         title,
+                            //         picDenied,
+                            //         context,
+                            //         familyMemberLabel,
+                            //         familyMemberName,
+                            //         dataTimeline['data']['id'],
+                            //         dataTimeline.length > 0
+                            //             ? dataTimeline['data']['step']
+                            //             : 'track',
+                            //         familyMemberField),
+                            //   );
+                            // }
                           },
                           child: Column(
                             children: [
@@ -802,9 +852,8 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                                             // draw a red marble
                                             top: 10.0,
                                             right: 10.0,
-                                            child: Icon(Icons.touch_app,
-                                                size: 25.0,
-                                                color: Colors.yellowAccent),
+                                            child: Icon(Icons.no_encryption,
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -857,13 +906,11 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         indicatorY: 0.2,
                         padding: EdgeInsets.all(8),
                       ),
-                      rightChild: Container(
+                      leftChild: Container(
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "transport" &&
-                                dataTimeline['data']['list'][3]['show'] ==
-                                    true) {
+                                dataTimeline['data']['step'] == "track") {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -962,9 +1009,7 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "transport" &&
-                                dataTimeline['data']['list'][3]['show'] ==
-                                    true) {
+                                dataTimeline['data']['step'] == "transport") {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -1061,27 +1106,25 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                       rightChild: Container(
                         child: GestureDetector(
                           onTap: () {
-                            if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "store_thai" &&
-                                dataTimeline['data']['list'][4]['show'] ==
-                                    true) {
-                              String title = "";
-                              showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (context) => dialogTimeline(
-                                    title,
-                                    picDenied,
-                                    context,
-                                    familyMemberLabel,
-                                    familyMemberName,
-                                    dataTimeline['data']['id'],
-                                    dataTimeline.length > 0
-                                        ? dataTimeline['data']['step']
-                                        : 'store_thai',
-                                    familyMemberField),
-                              );
-                            }
+                            // if (dataTimeline.length > 0 &&
+                            //     dataTimeline['data']['step'] == "store_thai") {
+                            //   String title = "";
+                            //   showDialog(
+                            //     barrierDismissible: false,
+                            //     context: context,
+                            //     builder: (context) => dialogTimeline(
+                            //         title,
+                            //         picDenied,
+                            //         context,
+                            //         familyMemberLabel,
+                            //         familyMemberName,
+                            //         dataTimeline['data']['id'],
+                            //         dataTimeline.length > 0
+                            //             ? dataTimeline['data']['step']
+                            //             : 'store_thai',
+                            //         familyMemberField),
+                            //   );
+                            // }
                           },
                           child: Column(
                             children: [
@@ -1105,9 +1148,8 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                                             // draw a red marble
                                             top: 10.0,
                                             right: 10.0,
-                                            child: Icon(Icons.touch_app,
-                                                size: 25.0,
-                                                color: Colors.yellowAccent),
+                                            child: Icon(Icons.no_encryption,
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1156,9 +1198,7 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "overdue" &&
-                                dataTimeline['data']['list'][5]['show'] ==
-                                    true) {
+                                dataTimeline['data']['step'] == "overdue") {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -1295,18 +1335,27 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
               ),
             ),
           ),
-          // Text('or'),
-          // Expanded(
-          //   child: Padding(
-          //     padding: EdgeInsets.symmetric(horizontal: 10),
-          //     child: Divider(
-          //       thickness: 1,
-          //       color: primaryColor,
-          //     ),
-          //   ),
-          // ),
           SizedBox(
             width: 20,
+          ),
+        ],
+      ),
+    );
+  }
+
+  _divider2() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Divider(
+                thickness: 1,
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),

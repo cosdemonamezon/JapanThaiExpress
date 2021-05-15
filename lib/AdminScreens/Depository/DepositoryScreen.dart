@@ -411,7 +411,10 @@ class _DepositoryScreenState extends State<DepositoryScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    MyNavigator.goToTimelineDepository(context,
+                                        DepositoryScreendata[index]['id']);
+                                  },
                                   child: Card(
                                     color: Colors.white,
                                     elevation: 4.0,

@@ -441,8 +441,12 @@ class _PreoderScreenState extends State<PreoderScreen> {
                                                 color: Colors.orange[900],
                                                 iconSize: 30,
                                                 onPressed: () {
-                                                  var arg = PreoderScreendata[index]['id'];
-                                                  MyNavigator.goToTimelinePreorder(context, arg);
+                                                  var arg =
+                                                      PreoderScreendata[index]
+                                                          ['id'];
+                                                  MyNavigator
+                                                      .goToTimelinePreorder(
+                                                          context, arg);
                                                 },
                                               ),
                                             ],

@@ -53,7 +53,6 @@ class _DepositState extends State<Deposit> {
       RefreshController(initialRefresh: false);
   List<dynamic> DepositoryScreendata = [];
 
-  
   @override
   void initState() {
     super.initState();
@@ -942,85 +941,89 @@ class _DepositState extends State<Deposit> {
     int id,
   ) {
     return Card(
-      child: ListTile(
-        leading: Container(
-            width: 90,
-            height: 150,
-            child: Image.network(
-              img,
-              fit: BoxFit.cover,
-            )),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 14,
-              ),
-            ),
-            Text(
-              title2,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 14,
-              ),
-            ),
-            Text(
-              title3,
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
-                fontSize: 14,
-              ),
-            ),
-            Text(
-              title4,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.keyboard_arrow_right_outlined),
-              color: Colors.orange[900],
-              iconSize: 30,
-              onPressed: () {
-                MyNavigator.goToTimelineDeposit(
-                    context, id);
-              },
-            ),
-          ],
-        ),
-        /*subtitle: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+      child: GestureDetector(
+        onTap: () {
+          MyNavigator.goToTimelineDeposit(context, id);
+        },
+        child: ListTile(
+          leading: Container(
+              width: 90,
+              height: 150,
+              child: Image.network(
+                img,
+                fit: BoxFit.cover,
+              )),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              MaterialButton(
-                onPressed: () {
-                  //MyNavigator.goToTimelineOrders(context);
-                },
-                color: primaryColor,
-                child: Text(
-                  "ดูเพิ่ม",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
+              Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                title2,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                title3,
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                title4,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
                 ),
               ),
             ],
-          )*/
+          ),
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.keyboard_arrow_right_outlined),
+                color: Colors.orange[900],
+                iconSize: 30,
+                onPressed: () {
+                  MyNavigator.goToTimelineDeposit(context, id);
+                },
+              ),
+            ],
+          ),
+          /*subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                MaterialButton(
+                  onPressed: () {
+                    //MyNavigator.goToTimelineOrders(context);
+                  },
+                  color: primaryColor,
+                  child: Text(
+                    "ดูเพิ่ม",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
+            )*/
+        ),
       ),
     );
   }

@@ -30,6 +30,7 @@ import 'package:JapanThaiExpress/UserScreens/Products/details/OrderProduct.dart'
 import 'package:JapanThaiExpress/UserScreens/Profile/ProfileScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/HelpCenter.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/HelpDetail.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/Buystuff.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveDetail.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
@@ -168,6 +169,7 @@ var routes = <String, WidgetBuilder>{
   "/messageuser": (BuildContext context) => MessageScreen(),
   "/settingadmin": (BuildContext context) => SettingScreen(),
   "/timelineauction": (BuildContext context) => Timelineauction(),
+  "/buystuff":(BuildContext context) => Buystuff(),
   "/homescreen":(BuildContext context) => HomeScreen(),
 };
 

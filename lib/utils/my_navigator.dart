@@ -1,6 +1,7 @@
 import 'package:JapanThaiExpress/AdminScreens/Depository/TimeLineDepository.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageRoom.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/TimeLineDeposit.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/TimeLineMemberPreorders.dart';
 import 'package:flutter/material.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePreorders.dart';
 
@@ -41,10 +42,6 @@ class MyNavigator {
     Navigator.pushNamed(context, '/depositdetail', arguments: arg);
   }
 
-  static void goToQRCodePreview(BuildContext context, arg) {
-    Navigator.pushNamed(context, '/qrcodepreview', arguments: arg);
-  }
-
   static void goTomessageuser(BuildContext context) {
     Navigator.pushNamed(context, '/messageuser');
   }
@@ -54,6 +51,22 @@ class MyNavigator {
       context,
       MaterialPageRoute(
         builder: (context) => TimeLinePreorders(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {"id": id.toString()},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
+  }
+
+  static void goToTimeLineMemberPreorders(BuildContext context, int id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TimeLineMemberPreorders(),
         // Pass the arguments as part of the RouteSettings. The
         // ExtractArgumentScreen reads the arguments from these
         // settings.
