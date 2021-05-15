@@ -1,5 +1,6 @@
 import 'package:JapanThaiExpress/AdminScreens/Depository/TimeLineDepository.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageRoom.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/TimeLineDeposit.dart';
 import 'package:flutter/material.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePreorders.dart';
 
@@ -69,6 +70,22 @@ class MyNavigator {
       context,
       MaterialPageRoute(
         builder: (context) => TimeLineDepository(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {"id": id.toString()},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
+  }
+
+  static void goToTimelineDeposit(BuildContext context, int id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TimeLineDeposit(),
         // Pass the arguments as part of the RouteSettings. The
         // ExtractArgumentScreen reads the arguments from these
         // settings.

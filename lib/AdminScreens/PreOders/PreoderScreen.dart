@@ -428,39 +428,6 @@ class _PreoderScreenState extends State<PreoderScreen> {
                                                       maxLines: 3,
                                                       softWrap: true,
                                                     ),
-<<<<<<< HEAD
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                ]))
-                                          ],
-                                        ),
-                                        // trailing: MaterialButton(
-                                        //   onPressed: () {
-                                        //     // var arg = {
-                                        //     //   "id": PreoderScreendata[index]['id'],
-                                        //     // };
-                                        //     MyNavigator.goToTimelinePreorder(
-                                        //         context,
-                                        //         PreoderScreendata[index]['id']);
-                                        //   },
-                                        //   color: Color(0xffdd4b39),
-                                        //   child: Text(
-                                        //     "ดูเพิ่ม",
-                                        //     style: TextStyle(
-                                        //       fontWeight: FontWeight.bold,
-                                        //       color: Colors.white,
-                                        //       fontSize: 12,
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                        onTap: () {
-                                          MyNavigator.goToTimelinePreorder(
-                                              context,
-                                              PreoderScreendata[index]['id']);
-                                        },
-                                      ),
-=======
                                                   ]))
                                             ],
                                           ),
@@ -498,7 +465,6 @@ class _PreoderScreenState extends State<PreoderScreen> {
                                           //   ),
                                           // ),
                                           ),
->>>>>>> 5e5db32ee32439cc60da4b12f5ef0f9625d1153e
                                     ),
                                   ),
                                 ),

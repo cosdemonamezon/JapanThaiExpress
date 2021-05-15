@@ -601,3 +601,153 @@ dialogAlert(String title, String img, context) {
     ),
   );
 }
+
+dialogTimeline(String title, String img, context, List label, List name, int id,
+    String step, List field) {
+  String stepUp;
+  if (step == 'new') {
+    stepUp = 'order';
+  } else if (step == 'order') {
+    stepUp = 'track';
+  } else if (step == 'track') {
+    stepUp = 'transport';
+  } else if (step == 'transport') {
+    stepUp = 'store_thai';
+  } else if (step == 'store_thai') {
+    stepUp = 'overdue';
+  } else if (step == 'overdue') {
+    stepUp = 'delivery';
+  }
+  // List<int> text = [1, 2, 3, 4];
+  final _formKey = GlobalKey<FormBuilderState>();
+  return AlertDialog(
+      content: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: FormBuilder(
+            key: _formKey,
+            child: Column(children: <Widget>[
+              Text("อัพเดทสถานะรายการ"),
+              SizedBox(height: 7),
+              for (var i = 0; i <= label.length - 1; i++)
+                Column(
+                  children: [
+                    FormBuilderTextField(
+                      name: name[i],
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                          hintText: label[i].toString(),
+                          //border: InputBorder.none,
+                          border: OutlineInputBorder(),
+                          fillColor: Color(0xfff3f3f4),
+                          filled: true),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(context,
+                            errorText: 'กรุณากรอกข้อมูล'),
+                        // FormBuilderValidators.numeric(context),
+                        // FormBuilderValidators.max(context, 70),
+                      ]),
+                    ),
+                    // TextFormField(
+                    //   autofocus: true,
+                    //   decoration: InputDecoration(
+                    //       //border: InputBorder.none,
+                    //       hintText: label[i].toString(),
+                    //       border: OutlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(10.0)),
+                    //       fillColor: Color(0xfff3f3f4),
+                    //       filled: true),
+                    // ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                  ],
+                ),
+              SizedBox(
+                height: 15,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+                          setStep(_formKey.currentState.value, name, id,
+                              context, stepUp, 'pending', field);
+                        } else {
+                          print("no data");
+                        }
+                      },
+                      padding: EdgeInsets.all(7),
+                      color: Colors.red,
+                      child: Text('อนุมัติรายการ',
+                          style: TextStyle(color: Colors.white, fontSize: 13)),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      onPressed: () {
+                        if (stepUp != 'order') {
+                          Navigator.pop(context);
+                        } else {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            setStep(_formKey.currentState.value, name, id,
+                                context, stepUp, 'rejected', field);
+                          } else {
+                            print("no data");
+                          }
+                        }
+                      },
+                      padding: EdgeInsets.all(7),
+                      color: Colors.black54,
+                      child: Text(
+                          stepUp != 'order' ? 'ปิดหน้านี้' : 'ยกเลิกรายการ',
+                          style: TextStyle(color: Colors.white, fontSize: 13)),
+                    ),
+                  ),
+                ],
+              ),
+            ]),
+          )));
+}
+
+setStep(Map<String, dynamic> values, List name, int id, context, String setStep,
+    String status, List field) async {
+  //print(values);
+  SharedPreferences prefs;
+  prefs = await SharedPreferences.getInstance();
+  var tokenString = prefs.getString('token');
+  var token = convert.jsonDecode(tokenString);
+  var url = Uri.parse(pathAPI + 'api/appove_depository/' + id.toString());
+  var response = await http.put(url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token['data']['token']
+      },
+      body: convert.jsonEncode({
+        for (var i = 0; i <= name.length - 1; i++)
+          field[i]: values[field[i]].toString(),
+        'status': status,
+        'step': setStep,
+      }));
+  if (response.statusCode == 201) {
+    Navigator.pop(context);
+
+    MyNavigator.goToTimelineDepository(context, id);
+  } else {
+    Navigator.pop(context);
+
+    MyNavigator.goToTimelineDepository(context, id);
+  }
+}
+

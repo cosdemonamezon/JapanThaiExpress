@@ -51,8 +51,9 @@ class _DepositState extends State<Deposit> {
   int pageSize = 10;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
+  List<dynamic> DepositoryScreendata = [];
 
+  
   @override
   void initState() {
     super.initState();
@@ -203,18 +204,18 @@ class _DepositState extends State<Deposit> {
       }
     } else {
       var feedback = convert.jsonDecode(response.body);
-        Flushbar(
-          title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
-          backgroundColor: Colors.redAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          duration: Duration(seconds: 3),
-          leftBarIndicatorColor: Colors.blue[300],
-        )..show(context);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
     }
   }
 
@@ -261,18 +262,18 @@ class _DepositState extends State<Deposit> {
       }
     } else {
       var feedback = convert.jsonDecode(response.body);
-        Flushbar(
-          title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
-          backgroundColor: Colors.redAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          duration: Duration(seconds: 3),
-          leftBarIndicatorColor: Colors.blue[300],
-        )..show(context);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
     }
   }
 
@@ -306,18 +307,18 @@ class _DepositState extends State<Deposit> {
       });
     } else {
       var feedback = convert.jsonDecode(response.body);
-        Flushbar(
-          title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
-          backgroundColor: Colors.redAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          duration: Duration(seconds: 3),
-          leftBarIndicatorColor: Colors.blue[300],
-        )..show(context);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
     }
   }
 
@@ -447,18 +448,18 @@ class _DepositState extends State<Deposit> {
       }
     } else {
       var feedback = convert.jsonDecode(response.body);
-        Flushbar(
-          title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
-          backgroundColor: Colors.redAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          duration: Duration(seconds: 3),
-          leftBarIndicatorColor: Colors.blue[300],
-        )..show(context);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
     }
   }
 
@@ -493,8 +494,8 @@ class _DepositState extends State<Deposit> {
                   onPressed: () {
                     //Navigator.pop(context);
                     //MyNavigator.goToService(context);
-                    Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => Service()));
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => Service()));
                   },
                   icon: Icon(
                     Icons.arrow_back_ios_rounded,
@@ -574,6 +575,7 @@ class _DepositState extends State<Deposit> {
                                 depositdata[index]['description'] == null
                                     ? 'ไม่มีข้อมูล'
                                     : depositdata[index]['description'],
+                                depositdata[index]['id'],
                               );
                             }),
                       ),
@@ -937,68 +939,70 @@ class _DepositState extends State<Deposit> {
     String title2,
     String title3,
     String title4,
+    int id,
   ) {
     return Card(
       child: ListTile(
-          leading: Container(
-              width: 90,
-              height: 150,
-              child: Image.network(
-                img,
-                fit: BoxFit.cover,
-              )),
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
+        leading: Container(
+            width: 90,
+            height: 150,
+            child: Image.network(
+              img,
+              fit: BoxFit.cover,
+            )),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 14,
               ),
-              Text(
-                title2,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
+            ),
+            Text(
+              title2,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 14,
               ),
-              Text(
-                title3,
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
+            ),
+            Text(
+              title3,
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                color: Colors.black,
+                fontSize: 14,
               ),
-              Text(
-                title4,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
+            ),
+            Text(
+              title4,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 14,
               ),
-            ],
-          ),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.keyboard_arrow_right_outlined),
-                color: Colors.orange[900],
-                iconSize: 30,
-                onPressed: () {
-                  //MyNavigator.goToTimelineOrders(context);
-                },
-              ),
-            ],
-          ),
-          /*subtitle: Row(
+            ),
+          ],
+        ),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.keyboard_arrow_right_outlined),
+              color: Colors.orange[900],
+              iconSize: 30,
+              onPressed: () {
+                MyNavigator.goToTimelineDeposit(
+                    context, id);
+              },
+            ),
+          ],
+        ),
+        /*subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               MaterialButton(
@@ -1016,7 +1020,8 @@ class _DepositState extends State<Deposit> {
                 ),
               ),
             ],
-          )*/),
+          )*/
+      ),
     );
   }
 
