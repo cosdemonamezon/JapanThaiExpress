@@ -67,7 +67,7 @@ class _NavigationState extends State<Navigation> {
                           color: Colors.white,
                           icon: Icon(Icons.notifications),
                           onPressed: () {
-                            Navigator.pushReplacement(
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
