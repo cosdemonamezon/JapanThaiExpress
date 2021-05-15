@@ -496,26 +496,30 @@ class _PreoderScreenState extends State<PreoderScreen> {
                                                 ]))
                                           ],
                                         ),
-                                        trailing: MaterialButton(
-                                          onPressed: () {
-                                            // var arg = {
-                                            //   "id": PreoderScreendata[index]['id'],
-                                            // };
-                                            MyNavigator.goToTimelinePreorder(
-                                                context,
-                                                PreoderScreendata[index]['id']);
-                                          },
-                                          color: Color(0xffdd4b39),
-                                          child: Text(
-                                            "ดูเพิ่ม",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ),
-                                        onTap: () {},
+                                        // trailing: MaterialButton(
+                                        //   onPressed: () {
+                                        //     // var arg = {
+                                        //     //   "id": PreoderScreendata[index]['id'],
+                                        //     // };
+                                        //     MyNavigator.goToTimelinePreorder(
+                                        //         context,
+                                        //         PreoderScreendata[index]['id']);
+                                        //   },
+                                        //   color: Color(0xffdd4b39),
+                                        //   child: Text(
+                                        //     "ดูเพิ่ม",
+                                        //     style: TextStyle(
+                                        //       fontWeight: FontWeight.bold,
+                                        //       color: Colors.white,
+                                        //       fontSize: 12,
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        onTap: () {
+                                          MyNavigator.goToTimelinePreorder(
+                                              context,
+                                              PreoderScreendata[index]['id']);
+                                        },
                                       ),
                                     ),
                                   ),
