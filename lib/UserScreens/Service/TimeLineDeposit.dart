@@ -1,6 +1,7 @@
 
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
+import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -1262,7 +1263,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                 ),
               ),
             ),
-      bottomNavigationBar: Navigation(),
+      bottomNavigationBar: NavigationBar(),
     );
   }
 
