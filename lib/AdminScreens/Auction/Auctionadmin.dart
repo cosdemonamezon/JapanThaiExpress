@@ -112,27 +112,16 @@ class _AuctionadminState extends State<Auctionadmin> {
       var response = await http.get(
         url,
         headers: {
-          //'Content-Type': 'application/json',
           'Authorization': token['data']['token']
         },
-        // body: ({
-        //   'status': '',
-        //   'page': page.toString(),
-        //   'page_size': pageSize.toString(),
-        // })
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> depdata = convert.jsonDecode(response.body);
-        print(depdata);
+        print(response.body);
         setState(() {
           totalResults = depdata['data']['total'];
           Auctionadmindata.addAll(depdata['data']['data']);
           isLoading = false;
-          // print(depdata['message']);
-          // print(totalResults);
-          // print("test");
-          // print(DepositoryScreendata.length);
-          // print(DepositoryScreendata[1]['description']);
         });
       } else {
         setState(() {
@@ -178,71 +167,6 @@ class _AuctionadminState extends State<Auctionadmin> {
         //print(dataValue[0]['name']);
       } else {}
     } else {}
-  }
-
-  _shippingOption() async {
-    prefs = await SharedPreferences.getInstance();
-    var tokenString = prefs.getString('token');
-    var token = convert.jsonDecode(tokenString);
-    setState(() {
-      //isLoading = true;
-    });
-
-    var url = Uri.parse(pathAPI + 'api/shipping_option');
-    var response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token['data']['token']
-      },
-    );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> dataship = convert.jsonDecode(response.body);
-      if (dataship['code'] == 200) {
-        print(dataship['message']);
-        setState(() {
-          dropdownShip = dataship['data'];
-          _transport = dropdownShip[0]['name'];
-          costth = dropdownShip[0]['price'];
-        });
-        print(dropdownShip);
-      } else {}
-    } else {}
-  }
-
-  _addressMem() async {
-    prefs = await SharedPreferences.getInstance();
-    var tokenString = prefs.getString('token');
-    var token = convert.jsonDecode(tokenString);
-
-    //print(token);
-    setState(() {
-      //isLoading = true;
-      // tokendata = token['data']['token'];
-    });
-    //print(tokendata);
-
-    var url = Uri.parse(pathAPI + 'api/address_mem');
-    var response = await http.get(url, headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token['data']['token'],
-    });
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> addressdata =
-          convert.jsonDecode(response.body);
-      //print(addressdata);
-      setState(() {
-        address = addressdata['data'];
-        id = address[0]['id'];
-        name = address[0]['name'];
-        add = address[0]['address'];
-        tel = address[0]['tel'];
-      });
-    } else {
-      final Map<String, dynamic> addressdata =
-          convert.jsonDecode(response.body);
-      print(addressdata['message']);
-    }
   }
 
   _Auctionadmin(Map<String, dynamic> values) async {
