@@ -1,5 +1,8 @@
+import 'package:JapanThaiExpress/AdminScreens/Depository/DepositoryScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
+// import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -9,6 +12,8 @@ import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../utils/my_navigator.dart';
+
 const order_processed = "assets/images/order_processed.svg";
 const order_confirmed = "assets/images/order_confirmed.svg";
 const order_shipped = "assets/images/order_shipped.svg";
@@ -16,7 +21,7 @@ const order_onTheWay = "assets/images/on_the_way.svg";
 const order_delivered = "assets/images/delivered.svg";
 
 class TimeLineScreen extends StatefulWidget {
-  // TimeLineScreen({Key key, Object argument}) : super(key: key);
+  // TimeLineDepository({Key key, Object argument}) : super(key: key);
 
   @override
   _TimeLineScreenState createState() => _TimeLineScreenState();
@@ -58,28 +63,47 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
       isLoading = true;
     });
     // var url = pathAPI + 'api/preorder/' + id;
-    var url = Uri.parse(pathAPI + 'api/preorder/' + id);
-    var response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token['data']['token']
-      },
-    );
+    var url = Uri.parse(pathAPI + 'api/get_detail_depository');
+    var response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        body: convert.jsonEncode({
+          'depository_id': id,
+        }));
     if (response.statusCode == 200) {
       //print(response.statusCode);
       final Map<String, dynamic> data = convert.jsonDecode(response.body);
-      //print(notinumber);
+      // print(notinumber);
       var Data = convert.jsonDecode(response.body);
-      var familyMembers = Data["field"];
+      int index = 0;
+      if (Data["data"]["step"] == 'new') {
+        index = 0;
+      } else if (Data["data"]["step"] == 'order') {
+        index = 1;
+      } else if (Data["data"]["step"] == 'track') {
+        index = 2;
+      } else if (Data["data"]["step"] == 'transport') {
+        index = 3;
+      } else if (Data["data"]["step"] == 'store_thai') {
+        index = 4;
+      } else if (Data["data"]["step"] == 'overdue') {
+        index = 5;
+      } else if (Data["data"]["step"] == 'delivery') {
+        index = 6;
+      }
+      var familyMembers = Data["data"]["list"][index]["field"];
       for (var familyMember in familyMembers) {
-        setState(() {
-          familyMemberLabel.add(familyMember["label"]);
-          // var textEditingController = TextEditingController();
-          familyMemberName.add(familyMember["name"]);
-          familyMemberField.add(familyMember["name"]);
-        });
-        print(familyMemberName);
+        if (familyMember["name"] != 'status') {
+          setState(() {
+            familyMemberLabel.add(familyMember["label"]);
+            // var textEditingController = TextEditingController();
+            familyMemberName.add(familyMember["name"]);
+            familyMemberField.add(familyMember["name"]);
+          });
+          print(familyMemberName);
+        }
       }
       if (data['code'] == 200) {
         setState(() {
@@ -117,6 +141,164 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
     }
   }
 
+  dialogTimeline(String title, String img, context, List label, List name,
+      int id, String step, List field) {
+    String stepUp;
+    if (step == 'new') {
+      stepUp = 'order';
+    } else if (step == 'order') {
+      stepUp = 'track';
+    } else if (step == 'track') {
+      stepUp = 'transport';
+    } else if (step == 'transport') {
+      stepUp = 'store_thai';
+    } else if (step == 'store_thai') {
+      stepUp = 'overdue';
+    } else if (step == 'overdue') {
+      stepUp = 'delivery';
+    }
+    // List<int> text = [1, 2, 3, 4];
+    final _formKey = GlobalKey<FormBuilderState>();
+    return AlertDialog(
+        content: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: FormBuilder(
+              key: _formKey,
+              child: Column(children: <Widget>[
+                Text("อัพเดทสถานะรายการ"),
+                SizedBox(height: 7),
+                for (var i = 0; i <= label.length - 1; i++)
+                  Column(
+                    children: [
+                      FormBuilderTextField(
+                        name: name[i],
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            hintText: label[i].toString(),
+                            //border: InputBorder.none,
+                            border: OutlineInputBorder(),
+                            fillColor: Color(0xfff3f3f4),
+                            filled: true),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(context,
+                              errorText: 'กรุณากรอกข้อมูล'),
+                          // FormBuilderValidators.numeric(context),
+                          // FormBuilderValidators.max(context, 70),
+                        ]),
+                      ),
+                      // TextFormField(
+                      //   autofocus: true,
+                      //   decoration: InputDecoration(
+                      //       //border: InputBorder.none,
+                      //       hintText: label[i].toString(),
+                      //       border: OutlineInputBorder(
+                      //           borderRadius: BorderRadius.circular(10.0)),
+                      //       fillColor: Color(0xfff3f3f4),
+                      //       filled: true),
+                      // ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                    ],
+                  ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            setStep(_formKey.currentState.value, name, id,
+                                context, stepUp, 'pending', field);
+                          } else {
+                            print("no data");
+                          }
+                        },
+                        padding: EdgeInsets.all(7),
+                        color: Colors.red,
+                        child: Text('อนุมัติรายการ',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 13)),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        onPressed: () {
+                          if (stepUp != 'order') {
+                            Navigator.pop(context);
+                          } else {
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+                              setStep(_formKey.currentState.value, name, id,
+                                  context, stepUp, 'rejected', field);
+                            } else {
+                              print("no data");
+                            }
+                          }
+                        },
+                        padding: EdgeInsets.all(7),
+                        color: Colors.black54,
+                        child: Text(
+                            stepUp != 'order' ? 'ปิดหน้านี้' : 'ยกเลิกรายการ',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 13)),
+                      ),
+                    ),
+                  ],
+                ),
+              ]),
+            )));
+  }
+
+  setStep(Map<String, dynamic> values, List name, int id, context,
+      String setStep, String status, List field) async {
+    //print(values);
+    SharedPreferences prefs;
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    var url = Uri.parse(pathAPI + 'api/appove_depository/' + id.toString());
+    var response = await http.put(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        body: convert.jsonEncode({
+          for (var i = 0; i <= name.length - 1; i++)
+            field[i]: values[field[i]].toString(),
+          'status': status,
+          'step': setStep,
+        }));
+    if (response.statusCode == 201) {
+      setState(() {
+        isLoading = true;
+      });
+      // Navigator.pop(context);
+      _gettimeline(id.toString());
+      // MyNavigator.goToTimelineDepository(context, id);
+    } else {
+      setState(() {
+        isLoading = true;
+      });
+      // Navigator.pop(context);
+      _gettimeline(id.toString());
+      // MyNavigator.goToTimelineDepository(context, id);
+    }
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,333 +306,295 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
         elevation: 0,
         centerTitle: true,
         title: Text("สถานะรายการ"),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => DepositoryScreen()));
+            }),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              height: 110,
-              width: MediaQuery.of(context).size.width - 20,
-              //color: Colors.red,
-              decoration: BoxDecoration(
-                color: primaryColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8),
-                  topRight: Radius.circular(8),
-                  bottomLeft: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
-                ),
-              ),
+      body: isLoading == true
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
               child: Column(
-                children: [
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Row(
+                  Container(
+                    height: 110,
+                    width: MediaQuery.of(context).size.width - 20,
+                    //color: Colors.red,
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
+                        bottomLeft: Radius.circular(8),
+                        bottomRight: Radius.circular(8),
+                      ),
+                    ),
+                    child: Column(
                       children: [
-                        Text(
-                          "ฝากซื้อสินค้า" +
-                              " No." +
-                              dataTimeline['data']['code'],
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                              color: kFontPrimaryColor),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Row(
+                            children: [
+                              Text(
+                                "ฝากซื้อสินค้า" + " No.",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                    color: kFontPrimaryColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    dataTimeline.length > 0
+                                        ? dataTimeline['data']['description']
+                                        : " - ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22,
+                                        color: kFontPrimaryColor),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 0),
+                                  child: Text(
+                                    "1 รายการ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 15,
+                                        color: kFontPrimaryColor),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Text(
-                              dataTimeline.length > 0
-                                  ? dataTimeline['data']['name']
-                                  : " - ",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22,
-                                  color: kFontPrimaryColor),
+                      Expanded(
+                        child: Center(
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.support_agent,
+                                  color: primaryColor,
+                                  size: 45,
+                                ),
+                                Text(
+                                  "ร้านค้า",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: Colors.black),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Text(
-                              dataTimeline.length > 0
-                                  ? dataTimeline['data']['qty'] + " รายการ"
-                                  : "0",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 15,
-                                  color: kFontPrimaryColor),
+                      Expanded(
+                        child: Center(
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.supervised_user_circle,
+                                  color: primaryColor,
+                                  size: 45,
+                                ),
+                                Text(
+                                  "ลูกค้า",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: Colors.black),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () {},
+                  SizedBox(
+                    height: 20,
+                  ),
+                  _divider(),
+                  TimelineTile(
+                    topLineStyle: LineStyle(color: Colors.red),
+                    bottomLineStyle: LineStyle(
+                        color: dataTimeline.length > 0
+                            ? dataTimeline['data']['step'] == "new" ||
+                                    dataTimeline['data']['step'] == "order" ||
+                                    dataTimeline['data']['step'] == "track" ||
+                                    dataTimeline['data']['step'] ==
+                                        "transport" ||
+                                    dataTimeline['data']['step'] ==
+                                        "store_thai" ||
+                                    dataTimeline['data']['step'] == "overdue" ||
+                                    dataTimeline['data']['step'] == "delivery"
+                                ? Colors.red
+                                : Colors.black54
+                            : Colors.black54),
+                    alignment: TimelineAlign.center,
+                    isFirst: true,
+                    indicatorStyle: IndicatorStyle(
+                      width: 20,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "new" ||
+                                  dataTimeline['data']['step'] == "order" ||
+                                  dataTimeline['data']['step'] == "track" ||
+                                  dataTimeline['data']['step'] == "transport" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_thai" ||
+                                  dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? Colors.red
+                              : Colors.black54
+                          : Colors.black54,
+                      indicatorY: 0.2,
+                      padding: EdgeInsets.all(8),
+                    ),
+                    rightChild: Container(
                       child: Column(
                         children: [
-                          Icon(
-                            Icons.support_agent,
-                            color: primaryColor,
-                            size: 45,
-                          ),
-                          Text(
-                            "ร้านค้า",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.black),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.supervised_user_circle,
-                            color: primaryColor,
-                            size: 45,
-                          ),
-                          Text(
-                            "ลูกค้า",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.black),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            _divider(),
-            TimelineTile(
-              topLineStyle: LineStyle(color: Colors.red),
-              bottomLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "order" ||
-                              dataTimeline['data']['step'] == "new" ||
-                              dataTimeline['data']['step'] == "payment" ||
-                              dataTimeline['data']['step'] == "buy" ||
-                              dataTimeline['data']['step'] == "shipping" ||
-                              dataTimeline['data']['step'] == "store_japan" ||
-                              dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              alignment: TimelineAlign.center,
-              isFirst: true,
-              indicatorStyle: IndicatorStyle(
-                width: 20,
-                color: dataTimeline.length > 0
-                    ? dataTimeline['data']['step'] == "new" ||
-                            dataTimeline['data']['step'] == "order" ||
-                            dataTimeline['data']['step'] == "payment" ||
-                            dataTimeline['data']['step'] == "buy" ||
-                            dataTimeline['data']['step'] == "shipping" ||
-                            dataTimeline['data']['step'] == "store_japan" ||
-                            dataTimeline['data']['step'] == "transport" ||
-                            dataTimeline['data']['step'] == "store_thai" ||
-                            dataTimeline['data']['step'] == "overdue" ||
-                            dataTimeline['data']['step'] == "delivery"
-                        ? Colors.red
-                        : Colors.black54
-                    : Colors.black54,
-                indicatorY: 0.2,
-                padding: EdgeInsets.all(8),
-              ),
-              rightChild: Container(
-                child: Column(
-                  children: [
-                    Stack(children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          // if (dataTimeline.length > 0 &&
-                          //     dataTimeline['data']['step'] == "new") {
-                          //   String title = "";
-                          //   showDialog(
-                          //     barrierDismissible: false,
-                          //     context: context,
-                          //     builder: (context) => dialogTimeline(
-                          //         title,
-                          //         picDenied,
-                          //         context,
-                          //         familyMemberLabel,
-                          //         familyMemberName,
-                          //         dataTimeline['data']['id'],
-                          //         dataTimeline.length > 0
-                          //             ? dataTimeline['data']['step']
-                          //             : 'new',
-                          //         familyMemberField),
-                          //   );
-                          // }
-                        },
-                        child: Icon(
-                          Icons.directions_boat,
-                          color: dataTimeline.length > 0
-                              ? dataTimeline['data']['step'] == "new" ||
-                                      dataTimeline['data']['step'] == "order" ||
-                                      dataTimeline['data']['step'] ==
-                                          "payment" ||
-                                      dataTimeline['data']['step'] == "buy" ||
-                                      dataTimeline['data']['step'] ==
-                                          "shipping" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_japan" ||
-                                      dataTimeline['data']['step'] ==
-                                          "transport" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_thai" ||
-                                      dataTimeline['data']['step'] ==
-                                          "overdue" ||
-                                      dataTimeline['data']['step'] == "delivery"
-                                  ? primaryColor
-                                  : Colors.black54
-                              : Colors.black54,
-                          size: 45,
-                        ),
-                      ),
-                      dataTimeline.length > 0
-                          ? dataTimeline['data']['step'] == ""
-                              ? Positioned(
-                                  // draw a red marble
-                                  top: 10.0,
-                                  right: 10.0,
-                                  child: Icon(Icons.touch_app,
-                                      size: 25.0, color: Colors.yellowAccent),
-                                )
-                              : SizedBox(
-                                  height: 0,
-                                )
-                          : SizedBox(
-                              height: 0,
+                          Stack(children: <Widget>[
+                            GestureDetector(
+                              onTap: () {},
+                              child: Icon(
+                                Icons.directions_boat,
+                                color: dataTimeline.length > 0
+                                    ? dataTimeline['data']['step'] == "new" ||
+                                            dataTimeline['data']['step'] ==
+                                                "order" ||
+                                            dataTimeline['data']['step'] ==
+                                                "track" ||
+                                            dataTimeline['data']['step'] ==
+                                                "transport" ||
+                                            dataTimeline['data']['step'] ==
+                                                "store_thai" ||
+                                            dataTimeline['data']['step'] ==
+                                                "overdue" ||
+                                            dataTimeline['data']['step'] ==
+                                                "delivery"
+                                        ? primaryColor
+                                        : Colors.black54
+                                    : Colors.black54,
+                                size: 45,
+                              ),
                             ),
-                    ]),
-                    SizedBox(
-                      height: 5,
+                            dataTimeline.length > 0
+                                ? dataTimeline['data']['step'] == ""
+                                    ? Positioned(
+                                        // draw a red marble
+                                        top: 10.0,
+                                        right: 10.0,
+                                        child: Icon(Icons.touch_app,
+                                            size: 25.0,
+                                            color: Colors.yellowAccent),
+                                      )
+                                    : SizedBox(
+                                        height: 0,
+                                      )
+                                : SizedBox(
+                                    height: 0,
+                                  ),
+                          ]),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "สร้างรายการ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
                     ),
-                    Text(
-                      "สร้างรายการ",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
+                  ),
+                  TimelineTile(
+                    topLineStyle: LineStyle(color: Colors.red),
+                    bottomLineStyle: LineStyle(
+                        color: dataTimeline.length > 0
+                            ? dataTimeline['data']['step'] == "order" ||
+                                    dataTimeline['data']['step'] == "track" ||
+                                    dataTimeline['data']['step'] ==
+                                        "transport" ||
+                                    dataTimeline['data']['step'] ==
+                                        "store_thai" ||
+                                    dataTimeline['data']['step'] == "overdue" ||
+                                    dataTimeline['data']['step'] == "delivery"
+                                ? Colors.red
+                                : Colors.black54
+                            : Colors.black54),
+                    alignment: TimelineAlign.center,
+                    isFirst: true,
+                    indicatorStyle: IndicatorStyle(
+                      width: 20,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "order" ||
+                                  dataTimeline['data']['step'] == "track" ||
+                                  dataTimeline['data']['step'] == "transport" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_thai" ||
+                                  dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? Colors.red
+                              : Colors.black54
+                          : Colors.black54,
+                      indicatorY: 0.2,
+                      padding: EdgeInsets.all(8),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            TimelineTile(
-              topLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "order" ||
-                              dataTimeline['data']['step'] == "new" ||
-                              dataTimeline['data']['step'] == "payment" ||
-                              dataTimeline['data']['step'] == "buy" ||
-                              dataTimeline['data']['step'] == "shipping" ||
-                              dataTimeline['data']['step'] == "store_japan" ||
-                              dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              bottomLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "payment" ||
-                              dataTimeline['data']['step'] == "order" ||
-                              dataTimeline['data']['step'] == "buy" ||
-                              dataTimeline['data']['step'] == "shipping" ||
-                              dataTimeline['data']['step'] == "store_japan" ||
-                              dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              alignment: TimelineAlign.center,
-              indicatorStyle: IndicatorStyle(
-                width: 20,
-                color: dataTimeline.length > 0
-                    ? dataTimeline['data']['step'] == "order" ||
-                            dataTimeline['data']['step'] == "new" ||
-                            dataTimeline['data']['step'] == "payment" ||
-                            dataTimeline['data']['step'] == "buy" ||
-                            dataTimeline['data']['step'] == "shipping" ||
-                            dataTimeline['data']['step'] == "store_japan" ||
-                            dataTimeline['data']['step'] == "transport" ||
-                            dataTimeline['data']['step'] == "store_thai" ||
-                            dataTimeline['data']['step'] == "overdue" ||
-                            dataTimeline['data']['step'] == "delivery"
-                        ? Colors.red
-                        : Colors.black54
-                    : Colors.black54,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
-              leftChild: Container(
-                child: Column(
-                  children: [
-                    Stack(children: <Widget>[
-                      GestureDetector(
+                    leftChild: Container(
+                      child: GestureDetector(
                         onTap: () {
                           if (dataTimeline.length > 0 &&
-                              dataTimeline['data']['step'] == "new") {
+                              dataTimeline['data']['step'] == "new" &&
+                              dataTimeline['data']['list'][0]['show'] == true) {
                             String title = "";
                             showDialog(
                               barrierDismissible: false,
@@ -469,815 +613,603 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
                             );
                           }
                         },
-                        child: Icon(
-                          Icons.directions_boat,
-                          color: dataTimeline.length > 0
-                              ? dataTimeline['data']['step'] == "order" ||
-                                      dataTimeline['data']['step'] ==
-                                          "payment" ||
-                                      dataTimeline['data']['step'] == "buy" ||
-                                      dataTimeline['data']['step'] ==
-                                          "shipping" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_japan" ||
-                                      dataTimeline['data']['step'] ==
-                                          "transport" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_thai" ||
-                                      dataTimeline['data']['step'] ==
-                                          "overdue" ||
-                                      dataTimeline['data']['step'] == "delivery"
-                                  ? primaryColor
-                                  : Colors.black54
-                              : Colors.black54,
-                          size: 45,
+                        child: Column(
+                          children: [
+                            Stack(children: <Widget>[
+                              Icon(
+                                Icons.directions_boat,
+                                color: dataTimeline.length > 0
+                                    ? dataTimeline['data']['step'] == "order" ||
+                                            dataTimeline['data']['step'] ==
+                                                "track" ||
+                                            dataTimeline['data']['step'] ==
+                                                "transport" ||
+                                            dataTimeline['data']['step'] ==
+                                                "store_thai" ||
+                                            dataTimeline['data']['step'] ==
+                                                "overdue" ||
+                                            dataTimeline['data']['step'] ==
+                                                "delivery"
+                                        ? primaryColor
+                                        : Colors.black54
+                                    : Colors.black54,
+                                size: 45,
+                              ),
+                              dataTimeline.length > 0
+                                  ? dataTimeline['data']['step'] == "new"
+                                      ? Positioned(
+                                          // draw a red marble
+                                          top: 10.0,
+                                          right: 10.0,
+                                          child: Icon(Icons.touch_app,
+                                              size: 25.0,
+                                              color: Colors.yellowAccent),
+                                        )
+                                      : SizedBox(
+                                          height: 0,
+                                        )
+                                  : SizedBox(
+                                      height: 0,
+                                    ),
+                            ]),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "ยืนยันรายการ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                          ],
                         ),
                       ),
-                      dataTimeline.length > 0
-                          ? dataTimeline['data']['step'] == "new"
-                              ? Positioned(
-                                  // draw a red marble
-                                  top: 10.0,
-                                  right: 10.0,
-                                  child: Icon(Icons.touch_app,
-                                      size: 25.0, color: Colors.yellowAccent),
-                                )
-                              : SizedBox(
-                                  height: 0,
-                                )
-                          : SizedBox(
-                              height: 0,
-                            ),
-                    ]),
-                    SizedBox(
-                      height: 5,
                     ),
-                    Text(
-                      "ยืนยันสั่งซื้อ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
+                  ),
+                  TimelineTile(
+                    topLineStyle: LineStyle(color: Colors.red),
+                    bottomLineStyle: LineStyle(
+                        color: dataTimeline.length > 0
+                            ? dataTimeline['data']['step'] == "track" ||
+                                    dataTimeline['data']['step'] ==
+                                        "transport" ||
+                                    dataTimeline['data']['step'] ==
+                                        "store_thai" ||
+                                    dataTimeline['data']['step'] == "overdue" ||
+                                    dataTimeline['data']['step'] == "delivery"
+                                ? Colors.red
+                                : Colors.black54
+                            : Colors.black54),
+                    alignment: TimelineAlign.center,
+                    isFirst: true,
+                    indicatorStyle: IndicatorStyle(
+                      width: 20,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "order" ||
+                                  dataTimeline['data']['step'] == "track" ||
+                                  dataTimeline['data']['step'] == "transport" ||
+                                  dataTimeline['data']['step'] ==
+                                      "store_thai" ||
+                                  dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? Colors.red
+                              : Colors.black54
+                          : Colors.black54,
+                      indicatorY: 0.2,
+                      padding: EdgeInsets.all(8),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            TimelineTile(
-              topLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "payment" ||
-                              dataTimeline['data']['step'] == "order" ||
-                              dataTimeline['data']['step'] == "buy" ||
-                              dataTimeline['data']['step'] == "shipping" ||
-                              dataTimeline['data']['step'] == "store_japan" ||
-                              dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              bottomLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "buy" ||
-                              dataTimeline['data']['step'] == "payment" ||
-                              dataTimeline['data']['step'] == "shipping" ||
-                              dataTimeline['data']['step'] == "store_japan" ||
-                              dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              alignment: TimelineAlign.center,
-              indicatorStyle: IndicatorStyle(
-                width: 20,
-                color: dataTimeline.length > 0
-                    ? dataTimeline['data']['step'] == "payment" ||
-                            dataTimeline['data']['step'] == "order" ||
-                            dataTimeline['data']['step'] == "buy" ||
-                            dataTimeline['data']['step'] == "shipping" ||
-                            dataTimeline['data']['step'] == "store_japan" ||
-                            dataTimeline['data']['step'] == "transport" ||
-                            dataTimeline['data']['step'] == "store_thai" ||
-                            dataTimeline['data']['step'] == "overdue" ||
-                            dataTimeline['data']['step'] == "delivery"
-                        ? Colors.red
-                        : Colors.black54
-                    : Colors.black54,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
-              rightChild: Container(
-                child: Column(
-                  children: [
-                    Stack(children: <Widget>[
-                      GestureDetector(
+                    leftChild: Container(
+                      child: GestureDetector(
                         onTap: () {
                           if (dataTimeline.length > 0 &&
-                              dataTimeline['data']['step'] == "order") {
-                            if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['field'].lenght > 0) {
-                              String title = "";
-                              showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (context) => dialogTimeline(
-                                    title,
-                                    picDenied,
-                                    context,
-                                    familyMemberLabel,
-                                    familyMemberName,
-                                    dataTimeline['data']['id'],
-                                    'order',
-                                    familyMemberField),
-                              );
-                            }
+                              dataTimeline['data']['step'] == "order" &&
+                              dataTimeline['data']['list'][1]['show'] == true) {
+                            String title = "";
+                            showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context) => dialogTimeline(
+                                  title,
+                                  picDenied,
+                                  context,
+                                  familyMemberLabel,
+                                  familyMemberName,
+                                  dataTimeline['data']['id'],
+                                  dataTimeline.length > 0
+                                      ? dataTimeline['data']['step']
+                                      : 'track',
+                                  familyMemberField),
+                            );
                           }
                         },
-                        child: Icon(
-                          Icons.directions_boat,
-                          color: dataTimeline.length > 0
-                              ? dataTimeline['data']['step'] == "payment" ||
-                                      dataTimeline['data']['step'] == "buy" ||
-                                      dataTimeline['data']['step'] ==
-                                          "shipping" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_japan" ||
-                                      dataTimeline['data']['step'] ==
-                                          "transport" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_thai" ||
-                                      dataTimeline['data']['step'] ==
-                                          "overdue" ||
-                                      dataTimeline['data']['step'] == "delivery"
-                                  ? primaryColor
-                                  : Colors.black54
-                              : Colors.black54,
-                          size: 45,
+                        child: Column(
+                          children: [
+                            Stack(children: <Widget>[
+                              Icon(
+                                Icons.directions_boat,
+                                color: dataTimeline.length > 0
+                                    ? dataTimeline['data']['step'] == "track" ||
+                                            dataTimeline['data']['step'] ==
+                                                "transport" ||
+                                            dataTimeline['data']['step'] ==
+                                                "store_thai" ||
+                                            dataTimeline['data']['step'] ==
+                                                "overdue" ||
+                                            dataTimeline['data']['step'] ==
+                                                "delivery"
+                                        ? primaryColor
+                                        : Colors.black54
+                                    : Colors.black54,
+                                size: 45,
+                              ),
+                              dataTimeline.length > 0
+                                  ? dataTimeline['data']['step'] == "order"
+                                      ? Positioned(
+                                          // draw a red marble
+                                          top: 10.0,
+                                          right: 10.0,
+                                          child: Icon(Icons.touch_app,
+                                              size: 25.0,
+                                              color: Colors.yellowAccent),
+                                        )
+                                      : SizedBox(
+                                          height: 0,
+                                        )
+                                  : SizedBox(
+                                      height: 0,
+                                    ),
+                            ]),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "รอจัดส่ง",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                          ],
                         ),
                       ),
-                      dataTimeline.length > 0
-                          ? dataTimeline['data']['step'] == "order"
-                              ? Positioned(
-                                  // draw a red marble
-                                  top: 10.0,
-                                  right: 10.0,
-                                  child: Icon(Icons.touch_app,
-                                      size: 25.0, color: Colors.yellowAccent),
-                                )
-                              : SizedBox(
-                                  height: 0,
-                                )
-                          : SizedBox(
-                              height: 0,
-                            ),
-                    ]),
-                    SizedBox(
-                      height: 5,
                     ),
-                    Text(
-                      "ชำระเงิน",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
+                  ),
+                  TimelineTile(
+                    topLineStyle: LineStyle(color: Colors.red),
+                    bottomLineStyle: LineStyle(
+                        color: dataTimeline.length > 0
+                            ? dataTimeline['data']['step'] == "transport" ||
+                                    dataTimeline['data']['step'] ==
+                                        "store_thai" ||
+                                    dataTimeline['data']['step'] == "overdue" ||
+                                    dataTimeline['data']['step'] == "delivery"
+                                ? Colors.red
+                                : Colors.black54
+                            : Colors.black54),
+                    alignment: TimelineAlign.center,
+                    isFirst: true,
+                    indicatorStyle: IndicatorStyle(
+                      width: 20,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "store_thai" ||
+                                  dataTimeline['data']['step'] == "transport" ||
+                                  dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? Colors.red
+                              : Colors.black54
+                          : Colors.black54,
+                      indicatorY: 0.2,
+                      padding: EdgeInsets.all(8),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            TimelineTile(
-              topLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "buy" ||
-                              dataTimeline['data']['step'] == "payment" ||
-                              dataTimeline['data']['step'] == "shipping" ||
-                              dataTimeline['data']['step'] == "store_japan" ||
-                              dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              bottomLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "shipping" ||
-                              dataTimeline['data']['step'] == "buy" ||
-                              dataTimeline['data']['step'] == "store_japan" ||
-                              dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              alignment: TimelineAlign.center,
-              indicatorStyle: IndicatorStyle(
-                width: 20,
-                color: dataTimeline.length > 0
-                    ? dataTimeline['data']['step'] == "buy" ||
-                            dataTimeline['data']['step'] == "payment" ||
-                            dataTimeline['data']['step'] == "shipping" ||
-                            dataTimeline['data']['step'] == "store_japan" ||
-                            dataTimeline['data']['step'] == "transport" ||
-                            dataTimeline['data']['step'] == "store_thai" ||
-                            dataTimeline['data']['step'] == "overdue" ||
-                            dataTimeline['data']['step'] == "delivery"
-                        ? Colors.red
-                        : Colors.black54
-                    : Colors.black54,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
-              leftChild: Container(
-                child: Column(
-                  children: [
-                    Stack(children: <Widget>[
-                      GestureDetector(
+                    rightChild: Container(
+                      child: GestureDetector(
                         onTap: () {
-                          print('buy');
+                          if (dataTimeline.length > 0 &&
+                              dataTimeline['data']['step'] == "transport" &&
+                              dataTimeline['data']['list'][3]['show'] == true) {
+                            String title = "";
+                            showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context) => dialogTimeline(
+                                  title,
+                                  picDenied,
+                                  context,
+                                  familyMemberLabel,
+                                  familyMemberName,
+                                  dataTimeline['data']['id'],
+                                  dataTimeline.length > 0
+                                      ? dataTimeline['data']['step']
+                                      : 'transport',
+                                  familyMemberField),
+                            );
+                          }
                         },
-                        child: Icon(
-                          Icons.directions_boat,
-                          color: dataTimeline.length > 0
-                              ? dataTimeline['data']['step'] == "buy" ||
-                                      dataTimeline['data']['step'] ==
-                                          "shipping" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_japan" ||
-                                      dataTimeline['data']['step'] ==
-                                          "transport" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_thai" ||
-                                      dataTimeline['data']['step'] ==
-                                          "overdue" ||
-                                      dataTimeline['data']['step'] == "delivery"
-                                  ? primaryColor
-                                  : Colors.black54
-                              : Colors.black54,
-                          size: 45,
+                        child: Column(
+                          children: [
+                            Stack(children: <Widget>[
+                              Icon(
+                                Icons.directions_boat,
+                                color: dataTimeline.length > 0
+                                    ? dataTimeline['data']['step'] ==
+                                                "transport" ||
+                                            dataTimeline['data']['step'] ==
+                                                "store_thai" ||
+                                            dataTimeline['data']['step'] ==
+                                                "overdue" ||
+                                            dataTimeline['data']['step'] ==
+                                                "delivery"
+                                        ? primaryColor
+                                        : Colors.black54
+                                    : Colors.black54,
+                                size: 45,
+                              ),
+                              dataTimeline.length > 0
+                                  ? dataTimeline['data']['step'] == "track"
+                                      ? Positioned(
+                                          // draw a red marble
+                                          top: 10.0,
+                                          right: 10.0,
+                                          child: Icon(Icons.touch_app,
+                                              size: 25.0,
+                                              color: Colors.yellowAccent),
+                                        )
+                                      : SizedBox(
+                                          height: 0,
+                                        )
+                                  : SizedBox(
+                                      height: 0,
+                                    ),
+                            ]),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "จัดส่งสินค้า",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                          ],
                         ),
                       ),
-                      dataTimeline.length > 0
-                          ? dataTimeline['data']['step'] == "payment"
-                              ? Positioned(
-                                  // draw a red marble
-                                  top: 10.0,
-                                  right: 10.0,
-                                  child: Icon(Icons.touch_app,
-                                      size: 25.0, color: Colors.yellowAccent),
-                                )
-                              : SizedBox(
-                                  height: 0,
-                                )
-                          : SizedBox(
-                              height: 0,
-                            ),
-                    ]),
-                    SizedBox(
-                      height: 5,
                     ),
-                    Text(
-                      "สั่งผลิต",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
+                  ),
+                  TimelineTile(
+                    topLineStyle: LineStyle(color: Colors.red),
+                    bottomLineStyle: LineStyle(
+                        color: dataTimeline.length > 0
+                            ? dataTimeline['data']['step'] == "store_thai" ||
+                                    dataTimeline['data']['step'] == "overdue" ||
+                                    dataTimeline['data']['step'] == "delivery"
+                                ? Colors.red
+                                : Colors.black54
+                            : Colors.black54),
+                    alignment: TimelineAlign.center,
+                    isFirst: true,
+                    indicatorStyle: IndicatorStyle(
+                      width: 20,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "store_thai" ||
+                                  dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? Colors.red
+                              : Colors.black54
+                          : Colors.black54,
+                      indicatorY: 0.2,
+                      padding: EdgeInsets.all(8),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            TimelineTile(
-              topLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "shipping" ||
-                              dataTimeline['data']['step'] == "buy" ||
-                              dataTimeline['data']['step'] == "store_japan" ||
-                              dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              bottomLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "store_japan" ||
-                              dataTimeline['data']['step'] == "shipping" ||
-                              dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              alignment: TimelineAlign.center,
-              indicatorStyle: IndicatorStyle(
-                width: 20,
-                color: dataTimeline.length > 0
-                    ? dataTimeline['data']['step'] == "shipping" ||
-                            dataTimeline['data']['step'] == "buy" ||
-                            dataTimeline['data']['step'] == "store_japan" ||
-                            dataTimeline['data']['step'] == "transport" ||
-                            dataTimeline['data']['step'] == "store_thai" ||
-                            dataTimeline['data']['step'] == "overdue" ||
-                            dataTimeline['data']['step'] == "delivery"
-                        ? Colors.red
-                        : Colors.black54
-                    : Colors.black54,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
-              leftChild: Container(
-                child: Column(
-                  children: [
-                    Stack(children: <Widget>[
-                      GestureDetector(
+                    leftChild: Container(
+                      child: GestureDetector(
                         onTap: () {
-                          print('shipping');
+                          if (dataTimeline.length > 0 &&
+                              dataTimeline['data']['step'] == "transport" &&
+                              dataTimeline['data']['list'][3]['show'] == true) {
+                            String title = "";
+                            showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context) => dialogTimeline(
+                                  title,
+                                  picDenied,
+                                  context,
+                                  familyMemberLabel,
+                                  familyMemberName,
+                                  dataTimeline['data']['id'],
+                                  dataTimeline.length > 0
+                                      ? dataTimeline['data']['step']
+                                      : 'transport',
+                                  familyMemberField),
+                            );
+                          }
                         },
-                        child: Icon(
-                          Icons.directions_boat,
-                          color: dataTimeline.length > 0
-                              ? dataTimeline['data']['step'] == "shipping" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_japan" ||
-                                      dataTimeline['data']['step'] ==
-                                          "transport" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_thai" ||
-                                      dataTimeline['data']['step'] ==
-                                          "overdue" ||
-                                      dataTimeline['data']['step'] == "delivery"
-                                  ? primaryColor
-                                  : Colors.black54
-                              : Colors.black54,
-                          size: 45,
+                        child: Column(
+                          children: [
+                            Stack(children: <Widget>[
+                              GestureDetector(
+                                onTap: () {},
+                                child: Icon(
+                                  Icons.directions_boat,
+                                  color: dataTimeline.length > 0
+                                      ? dataTimeline['data']['step'] ==
+                                                  "store_thai" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "overdue" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "delivery"
+                                          ? primaryColor
+                                          : Colors.black54
+                                      : Colors.black54,
+                                  size: 45,
+                                ),
+                              ),
+                              dataTimeline.length > 0
+                                  ? dataTimeline['data']['step'] == "transport"
+                                      ? Positioned(
+                                          // draw a red marble
+                                          top: 10.0,
+                                          right: 10.0,
+                                          child: Icon(Icons.touch_app,
+                                              size: 25.0,
+                                              color: Colors.yellowAccent),
+                                        )
+                                      : SizedBox(
+                                          height: 0,
+                                        )
+                                  : SizedBox(
+                                      height: 0,
+                                    ),
+                            ]),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "เข้าคลังไทย",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                          ],
                         ),
                       ),
-                      dataTimeline.length > 0
-                          ? dataTimeline['data']['step'] == "buy"
-                              ? Positioned(
-                                  // draw a red marble
-                                  top: 10.0,
-                                  right: 10.0,
-                                  child: Icon(Icons.touch_app,
-                                      size: 25.0, color: Colors.yellowAccent),
-                                )
-                              : SizedBox(
-                                  height: 0,
-                                )
-                          : SizedBox(
-                              height: 0,
-                            ),
-                    ]),
-                    SizedBox(
-                      height: 5,
                     ),
-                    Text(
-                      "จัดส่ง",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
+                  ),
+                  TimelineTile(
+                    topLineStyle: LineStyle(color: Colors.red),
+                    bottomLineStyle: LineStyle(
+                        color: dataTimeline.length > 0
+                            ? dataTimeline['data']['step'] == "overdue" ||
+                                    dataTimeline['data']['step'] == "delivery"
+                                ? Colors.red
+                                : Colors.black54
+                            : Colors.black54),
+                    alignment: TimelineAlign.center,
+                    isFirst: true,
+                    indicatorStyle: IndicatorStyle(
+                      width: 20,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? Colors.red
+                              : Colors.black54
+                          : Colors.black54,
+                      indicatorY: 0.2,
+                      padding: EdgeInsets.all(8),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            TimelineTile(
-              topLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "store_japan" ||
-                              dataTimeline['data']['step'] == "shipping" ||
-                              dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              bottomLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "store_japan" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              alignment: TimelineAlign.center,
-              indicatorStyle: IndicatorStyle(
-                width: 20,
-                color: dataTimeline.length > 0
-                    ? dataTimeline['data']['step'] == "store_japan" ||
-                            dataTimeline['data']['step'] == "shipping" ||
-                            dataTimeline['data']['step'] == "transport" ||
-                            dataTimeline['data']['step'] == "store_thai" ||
-                            dataTimeline['data']['step'] == "overdue" ||
-                            dataTimeline['data']['step'] == "delivery"
-                        ? Colors.red
-                        : Colors.black54
-                    : Colors.black54,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
-              leftChild: Container(
-                child: Column(
-                  children: [
-                    Stack(children: <Widget>[
-                      GestureDetector(
+                    rightChild: Container(
+                      child: GestureDetector(
                         onTap: () {
-                          print('store_japan');
+                          if (dataTimeline.length > 0 &&
+                              dataTimeline['data']['step'] == "store_thai" &&
+                              dataTimeline['data']['list'][4]['show'] == true) {
+                            String title = "";
+                            showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context) => dialogTimeline(
+                                  title,
+                                  picDenied,
+                                  context,
+                                  familyMemberLabel,
+                                  familyMemberName,
+                                  dataTimeline['data']['id'],
+                                  dataTimeline.length > 0
+                                      ? dataTimeline['data']['step']
+                                      : 'store_thai',
+                                  familyMemberField),
+                            );
+                          }
                         },
-                        child: Icon(
-                          Icons.directions_boat,
-                          color: dataTimeline.length > 0
-                              ? dataTimeline['data']['step'] == "store_japan" ||
-                                      dataTimeline['data']['step'] ==
-                                          "transport" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_thai" ||
-                                      dataTimeline['data']['step'] ==
-                                          "overdue" ||
-                                      dataTimeline['data']['step'] == "delivery"
-                                  ? primaryColor
-                                  : Colors.black54
-                              : Colors.black54,
-                          size: 45,
+                        child: Column(
+                          children: [
+                            Stack(children: <Widget>[
+                              Icon(
+                                Icons.directions_boat,
+                                color: dataTimeline.length > 0
+                                    ? dataTimeline['data']['step'] ==
+                                                "overdue" ||
+                                            dataTimeline['data']['step'] ==
+                                                "delivery"
+                                        ? primaryColor
+                                        : Colors.black54
+                                    : Colors.black54,
+                                size: 45,
+                              ),
+                              dataTimeline.length > 0
+                                  ? dataTimeline['data']['step'] == "store_thai"
+                                      ? Positioned(
+                                          // draw a red marble
+                                          top: 10.0,
+                                          right: 10.0,
+                                          child: Icon(Icons.touch_app,
+                                              size: 25.0,
+                                              color: Colors.yellowAccent),
+                                        )
+                                      : SizedBox(
+                                          height: 0,
+                                        )
+                                  : SizedBox(
+                                      height: 0,
+                                    ),
+                            ]),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "รอชำระค่าส่ง",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                          ],
                         ),
                       ),
-                      dataTimeline.length > 0
-                          ? dataTimeline['data']['step'] == "shipping"
-                              ? Positioned(
-                                  // draw a red marble
-                                  top: 10.0,
-                                  right: 10.0,
-                                  child: Icon(Icons.touch_app,
-                                      size: 25.0, color: Colors.yellowAccent),
-                                )
-                              : SizedBox(
-                                  height: 0,
-                                )
-                          : SizedBox(
-                              height: 0,
-                            ),
-                    ]),
-                    SizedBox(
-                      height: 5,
                     ),
-                    Text(
-                      "เข้าคลังญี่ปุ่น",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
+                  ),
+                  TimelineTile(
+                    topLineStyle: LineStyle(color: Colors.red),
+                    bottomLineStyle: LineStyle(
+                        color: dataTimeline.length > 0
+                            ? dataTimeline['data']['step'] == "delivery"
+                                ? Colors.red
+                                : Colors.black54
+                            : Colors.black54),
+                    alignment: TimelineAlign.center,
+                    isFirst: true,
+                    indicatorStyle: IndicatorStyle(
+                      width: 20,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "overdue" ||
+                                  dataTimeline['data']['step'] == "delivery"
+                              ? Colors.red
+                              : Colors.black54
+                          : Colors.black54,
+                      indicatorY: 0.2,
+                      padding: EdgeInsets.all(8),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            TimelineTile(
-              topLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "store_japan" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              bottomLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              alignment: TimelineAlign.center,
-              indicatorStyle: IndicatorStyle(
-                width: 20,
-                color: dataTimeline.length > 0
-                    ? dataTimeline['data']['step'] == "transport" ||
-                            dataTimeline['data']['step'] == "store_japan" ||
-                            dataTimeline['data']['step'] == "store_thai" ||
-                            dataTimeline['data']['step'] == "overdue" ||
-                            dataTimeline['data']['step'] == "delivery"
-                        ? Colors.red
-                        : Colors.black54
-                    : Colors.black54,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
-              leftChild: Container(
-                child: Column(
-                  children: [
-                    Stack(children: <Widget>[
-                      GestureDetector(
+                    leftChild: Container(
+                      child: GestureDetector(
                         onTap: () {
-                          print('transport');
+                          if (dataTimeline.length > 0 &&
+                              dataTimeline['data']['step'] == "overdue" &&
+                              dataTimeline['data']['list'][5]['show'] == true) {
+                            String title = "";
+                            showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context) => dialogTimeline(
+                                  title,
+                                  picDenied,
+                                  context,
+                                  familyMemberLabel,
+                                  familyMemberName,
+                                  dataTimeline['data']['id'],
+                                  dataTimeline.length > 0
+                                      ? dataTimeline['data']['step']
+                                      : 'overdue',
+                                  familyMemberField),
+                            );
+                          }
                         },
-                        child: Icon(
-                          Icons.directions_boat,
-                          color: dataTimeline.length > 0
-                              ? dataTimeline['data']['step'] == "transport" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_thai" ||
-                                      dataTimeline['data']['step'] ==
-                                          "overdue" ||
-                                      dataTimeline['data']['step'] == "delivery"
-                                  ? primaryColor
-                                  : Colors.black54
-                              : Colors.black54,
-                          size: 45,
+                        child: Column(
+                          children: [
+                            Stack(children: <Widget>[
+                              Icon(
+                                Icons.directions_boat,
+                                color: dataTimeline.length > 0
+                                    ? dataTimeline['data']['step'] == "delivery"
+                                        ? primaryColor
+                                        : Colors.black54
+                                    : Colors.black54,
+                                size: 45,
+                              ),
+                              dataTimeline.length > 0
+                                  ? dataTimeline['data']['step'] == "overdue"
+                                      ? Positioned(
+                                          // draw a red marble
+                                          top: 10.0,
+                                          right: 10.0,
+                                          child: Icon(Icons.touch_app,
+                                              size: 25.0,
+                                              color: Colors.yellowAccent),
+                                        )
+                                      : SizedBox(
+                                          height: 0,
+                                        )
+                                  : SizedBox(
+                                      height: 0,
+                                    ),
+                            ]),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "จัดส่งเสร็จสิ้น",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                          ],
                         ),
                       ),
-                      dataTimeline.length > 0
-                          ? dataTimeline['data']['step'] == "store_japan"
-                              ? Positioned(
-                                  // draw a red marble
-                                  top: 10.0,
-                                  right: 10.0,
-                                  child: Icon(Icons.touch_app,
-                                      size: 25.0, color: Colors.yellowAccent),
-                                )
-                              : SizedBox(
-                                  height: 0,
-                                )
-                          : SizedBox(
-                              height: 0,
+                    ),
+                  ),
+                  TimelineTile(
+                    topLineStyle: LineStyle(color: Colors.red),
+                    bottomLineStyle: LineStyle(
+                        color: dataTimeline.length > 0
+                            ? dataTimeline['data']['step'] == "delivery"
+                                ? Colors.red
+                                : Colors.black54
+                            : Colors.black54),
+                    alignment: TimelineAlign.center,
+                    isLast: true,
+                    indicatorStyle: IndicatorStyle(
+                      width: 20,
+                      color: dataTimeline.length > 0
+                          ? dataTimeline['data']['step'] == "delivery"
+                              ? Colors.red
+                              : Colors.black54
+                          : Colors.black54,
+                      indicatorY: 0.2,
+                      padding: EdgeInsets.all(8),
+                    ),
+                    leftChild: Container(
+                      child: Column(
+                        children: [
+                          Stack(children: <Widget>[
+                            Icon(
+                              Icons.check_circle,
+                              color: dataTimeline.length > 0
+                                  ? dataTimeline['data']['step'] == "delivery"
+                                      ? primaryColor
+                                      : Colors.black54
+                                  : Colors.black54,
+                              size: 45,
                             ),
-                    ]),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "จัดส่งไทย",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            TimelineTile(
-              topLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "transport" ||
-                              dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              bottomLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              alignment: TimelineAlign.center,
-              indicatorStyle: IndicatorStyle(
-                width: 20,
-                color: dataTimeline.length > 0
-                    ? dataTimeline['data']['step'] == "store_thai" ||
-                            dataTimeline['data']['step'] == "transport" ||
-                            dataTimeline['data']['step'] == "overdue" ||
-                            dataTimeline['data']['step'] == "delivery"
-                        ? Colors.red
-                        : Colors.black54
-                    : Colors.black54,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
-              leftChild: Container(
-                child: Column(
-                  children: [
-                    Stack(children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          print('store_thai');
-                        },
-                        child: Icon(
-                          Icons.directions_boat,
-                          color: dataTimeline.length > 0
-                              ? dataTimeline['data']['step'] == "store_thai" ||
-                                      dataTimeline['data']['step'] ==
-                                          "overdue" ||
-                                      dataTimeline['data']['step'] == "delivery"
-                                  ? primaryColor
-                                  : Colors.black54
-                              : Colors.black54,
-                          size: 45,
-                        ),
+                          ]),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "จัดส่งเสร็จสิ้น",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: Colors.black),
+                          ),
+                        ],
                       ),
-                      dataTimeline.length > 0
-                          ? dataTimeline['data']['step'] == "transport"
-                              ? Positioned(
-                                  // draw a red marble
-                                  top: 10.0,
-                                  right: 10.0,
-                                  child: Icon(Icons.touch_app,
-                                      size: 25.0, color: Colors.yellowAccent),
-                                )
-                              : SizedBox(
-                                  height: 0,
-                                )
-                          : SizedBox(
-                              height: 0,
-                            ),
-                    ]),
-                    SizedBox(
-                      height: 5,
                     ),
-                    Text(
-                      "เข้าคลังไทย",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-            TimelineTile(
-              topLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "overdue" ||
-                              dataTimeline['data']['step'] == "store_thai" ||
-                              dataTimeline['data']['step'] == "delivery"
-                          ? primaryColor
-                          : Colors.black54
-                      : Colors.black54),
-              bottomLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "delivery" ||
-                              dataTimeline['data']['step'] == "overdue"
-                          ? primaryColor
-                          : Colors.black54
-                      : Colors.black54),
-              alignment: TimelineAlign.center,
-              indicatorStyle: IndicatorStyle(
-                width: 20,
-                color: dataTimeline.length > 0
-                    ? dataTimeline['data']['step'] == "overdue" ||
-                            dataTimeline['data']['step'] == "store_thai" ||
-                            dataTimeline['data']['step'] == "delivery"
-                        ? Colors.red
-                        : Colors.black54
-                    : Colors.black54,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
-              rightChild: Container(
-                child: Column(
-                  children: [
-                    Stack(children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          print('overdue');
-                        },
-                        child: Icon(
-                          Icons.directions_boat,
-                          color: dataTimeline.length > 0
-                              ? dataTimeline['data']['step'] == "overdue" ||
-                                      dataTimeline['data']['step'] == "delivery"
-                                  ? primaryColor
-                                  : Colors.black54
-                              : Colors.black54,
-                          size: 45,
-                        ),
-                      ),
-                      dataTimeline.length > 0
-                          ? dataTimeline['data']['step'] == "store_thai"
-                              ? Positioned(
-                                  // draw a red marble
-                                  top: 10.0,
-                                  right: 10.0,
-                                  child: Icon(Icons.touch_app,
-                                      size: 25.0, color: Colors.yellowAccent),
-                                )
-                              : SizedBox(
-                                  height: 0,
-                                )
-                          : SizedBox(
-                              height: 0,
-                            ),
-                    ]),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "รอชำระค่าส่ง",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            TimelineTile(
-              topLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "delivery" ||
-                              dataTimeline['data']['step'] == "overdue"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              bottomLineStyle: LineStyle(
-                  color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "delivery"
-                          ? Colors.red
-                          : Colors.black54
-                      : Colors.black54),
-              alignment: TimelineAlign.center,
-              indicatorStyle: IndicatorStyle(
-                width: 20,
-                color: dataTimeline.length > 0
-                    ? dataTimeline['data']['step'] == "delivery" ||
-                            dataTimeline['data']['step'] == "overdue"
-                        ? Colors.red
-                        : Colors.black54
-                    : Colors.black54,
-                padding: EdgeInsets.all(8),
-                indicatorY: 0.3,
-              ),
-              leftChild: Container(
-                child: Column(
-                  children: [
-                    Stack(children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          print('overdue');
-                        },
-                        child: Icon(
-                          Icons.directions_boat,
-                          color: dataTimeline.length > 0
-                              ? dataTimeline['data']['step'] == "delivery"
-                                  ? primaryColor
-                                  : Colors.black54
-                              : Colors.black54,
-                          size: 45,
-                        ),
-                      ),
-                      dataTimeline.length > 0
-                          ? dataTimeline['data']['step'] == "overdue"
-                              ? Positioned(
-                                  // draw a red marble
-                                  top: 10.0,
-                                  right: 10.0,
-                                  child: Icon(Icons.touch_app,
-                                      size: 25.0, color: Colors.yellowAccent),
-                                )
-                              : SizedBox(
-                                  height: 0,
-                                )
-                          : SizedBox(
-                              height: 0,
-                            ),
-                    ]),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "จัดส่งเสร็จสิ้น",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
       bottomNavigationBar: Navigation(),
     );
   }

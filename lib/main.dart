@@ -17,7 +17,7 @@ import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/HomeServices/HomeServices.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRCodePreview.dart';
-import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePreorders.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePurchaseScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
@@ -55,6 +55,7 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'AdminScreens/Depository/DepositoryScreen.dart';
 import 'AdminScreens/Home/HomeScreen.dart';
 import 'AdminScreens/Home/HomeScreen.dart';
 import 'Screens/Login/ForgotScreen.dart';
@@ -137,7 +138,7 @@ var routes = <String, WidgetBuilder>{
   "/register": (BuildContext context) => Registration(),
   "/depositdetail": (BuildContext context) => DepositDetailScreen(),
   "/qrcodepreview": (BuildContext context) => QRCodePreview(),
-  "/timelineorders": (BuildContext context) => TimeLineScreen(),
+  "/timelineorders": (BuildContext context) => TimeLinePreorders(),
   "/timelineorderspurchase": (BuildContext context) => TimeLinePurchaseScreen(),
   "/deposit": (BuildContext context) => Deposit(),
   "/news": (BuildContext context) => NewsScreen(),
