@@ -344,7 +344,11 @@ class _PreoderScreenState extends State<PreoderScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    var arg = PreoderScreendata[index]['id'];
+                                    MyNavigator.goToTimelinePreorder(
+                                        context, arg);
+                                  },
                                   child: Card(
                                     color: Colors.white,
                                     elevation: 4.0,
@@ -390,8 +394,9 @@ class _PreoderScreenState extends State<PreoderScreen> {
                                                       text: TextSpan(
                                                         text: "ชื่อลูกค้า :" +
                                                             PreoderScreendata[
-                                                                        index][
-                                                                    'ship_name']
+                                                                            index]
+                                                                        ['user']
+                                                                    ['fname_th']
                                                                 .toString(),
                                                         style: TextStyle(
                                                             color:
@@ -404,8 +409,9 @@ class _PreoderScreenState extends State<PreoderScreen> {
                                                       text: TextSpan(
                                                         text: "เบอร์ติดต่อ :" +
                                                             PreoderScreendata[
-                                                                        index]
-                                                                    ['ship_tel']
+                                                                            index]
+                                                                        ['user']
+                                                                    ['tel']
                                                                 .toString(),
                                                         style: TextStyle(
                                                             color:

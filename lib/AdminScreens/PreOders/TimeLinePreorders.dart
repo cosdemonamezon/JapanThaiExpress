@@ -103,15 +103,18 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
         index = 8;
       }
       var familyMembers = Data["data"]["list"][index]["field"];
+      var showField = Data["data"]["list"][index]["show"];
       for (var familyMember in familyMembers) {
         if (familyMember["name"] != 'status') {
-          setState(() {
-            familyMemberLabel.add(familyMember["label"]);
-            // var textEditingController = TextEditingController();
-            familyMemberName.add(familyMember["name"]);
-            familyMemberField.add(familyMember["name"]);
-          });
-          print(familyMemberName);
+          if (showField == true) {
+            setState(() {
+              familyMemberLabel.add(familyMember["label"]);
+              // var textEditingController = TextEditingController();
+              familyMemberName.add(familyMember["name"]);
+              familyMemberField.add(familyMember["name"]);
+            });
+            print(familyMemberName);
+          }
         }
       }
       if (data['code'] == 200) {
@@ -157,7 +160,11 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
       stepUp = 'order';
     } else if (step == 'order') {
       stepUp = 'track';
-    } else if (step == 'track') {
+    } else if (step == 'payment') {
+      stepUp = 'buy';
+    } else if (step == 'buy') {
+      stepUp = 'shipping';
+    } else if (step == 'shipping') {
       stepUp = 'transport';
     } else if (step == 'transport') {
       stepUp = 'store_thai';
@@ -226,7 +233,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             setStep(_formKey.currentState.value, name, id,
-                                context, stepUp, 'pending', field);
+                                context, stepUp, 'approved', field);
                           } else {
                             print("no data");
                           }
@@ -278,7 +285,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
-    var url = Uri.parse(pathAPI + 'api/appove_depository/' + id.toString());
+    var url = Uri.parse(pathAPI + 'api/appove_preorder_admin/' + id.toString());
     var response = await http.put(url,
         headers: {
           'Content-Type': 'application/json',
@@ -290,7 +297,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
           'status': status,
           'step': setStep,
         }));
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       setState(() {
         isLoading = true;
       });
@@ -374,7 +381,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                       height: 20,
                     ),
                     Container(
-                      height: 110,
+                      // height: 110,
                       width: MediaQuery.of(context).size.width - 20,
                       //color: Colors.red,
                       decoration: BoxDecoration(
@@ -391,23 +398,30 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                           SizedBox(
                             height: 20,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "ฝากซื้อสินค้า" + " No.",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14,
-                                      color: kFontPrimaryColor),
-                                ),
-                              ],
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5),
+                                    child: Text(
+                                      " เลขที่ :" +
+                                          dataTimeline['data']['code'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                          color: kFontPrimaryColor),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -435,9 +449,56 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      "1 รายการ",
+                                      dataTimeline['data']['qty'] + " รายการ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                          color: kFontPrimaryColor),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          _divider2(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      dataTimeline.length > 0
+                                          ? "ชื่อลูกค้า :" +
+                                              dataTimeline['data']['ship_name']
+                                                  .toString()
+                                          : " - ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: kFontPrimaryColor),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "โทร :" +
+                                          dataTimeline['data']['ship_tel']
+                                              .toString(),
                                       style: TextStyle(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 15,
@@ -674,9 +735,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "new" &&
-                                dataTimeline['data']['list'][0]['show'] ==
-                                    true) {
+                                dataTimeline['data']['step'] == "new") {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -803,27 +862,27 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                       rightChild: Container(
                         child: GestureDetector(
                           onTap: () {
-                            if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "order" &&
-                                dataTimeline['data']['list'][1]['show'] ==
-                                    true) {
-                              String title = "";
-                              showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (context) => dialogTimeline(
-                                    title,
-                                    picDenied,
-                                    context,
-                                    familyMemberLabel,
-                                    familyMemberName,
-                                    dataTimeline['data']['id'],
-                                    dataTimeline.length > 0
-                                        ? dataTimeline['data']['step']
-                                        : 'payment',
-                                    familyMemberField),
-                              );
-                            }
+                            // if (dataTimeline.length > 0 &&
+                            //     dataTimeline['data']['step'] == "order" &&
+                            //     dataTimeline['data']['list'][1]['show'] ==
+                            //         true) {
+                            //   String title = "";
+                            //   showDialog(
+                            //     barrierDismissible: false,
+                            //     context: context,
+                            //     builder: (context) => dialogTimeline(
+                            //         title,
+                            //         picDenied,
+                            //         context,
+                            //         familyMemberLabel,
+                            //         familyMemberName,
+                            //         dataTimeline['data']['id'],
+                            //         dataTimeline.length > 0
+                            //             ? dataTimeline['data']['step']
+                            //             : 'payment',
+                            //         familyMemberField),
+                            //   );
+                            // }
                           },
                           child: Column(
                             children: [
@@ -858,9 +917,8 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                             // draw a red marble
                                             top: 10.0,
                                             right: 10.0,
-                                            child: Icon(Icons.touch_app,
-                                                size: 25.0,
-                                                color: Colors.yellowAccent),
+                                            child: Icon(Icons.no_encryption,
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -928,9 +986,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "payment" &&
-                                dataTimeline['data']['list'][2]['show'] ==
-                                    true) {
+                                dataTimeline['data']['step'] == "payment") {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -1046,9 +1102,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "shipping" &&
-                                dataTimeline['data']['list'][3]['show'] ==
-                                    true) {
+                                dataTimeline['data']['step'] == "buy") {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -1270,9 +1324,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "shipping" &&
-                                dataTimeline['data']['list'][5]['show'] ==
-                                    true) {
+                                dataTimeline['data']['step'] == "shipping") {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -1360,9 +1412,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                       indicatorStyle: IndicatorStyle(
                         width: 20,
                         color: dataTimeline.length > 0
-                            ? dataTimeline['data']['step'] == "shipping" ||
-                                    dataTimeline['data']['step'] ==
-                                        "store_japan" ||
+                            ? dataTimeline['data']['step'] == "store_japan" ||
                                     dataTimeline['data']['step'] ==
                                         "transport" ||
                                     dataTimeline['data']['step'] ==
@@ -1379,10 +1429,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "store_thai" &&
-                                dataTimeline['data']['step'] == "overdue" &&
-                                dataTimeline['data']['list'][5]['show'] ==
-                                    true) {
+                                (dataTimeline['data']['step'] == "transport")) {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -1396,7 +1443,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline['data']['id'],
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
-                                        : 'overdue',
+                                        : 'store_thai',
                                     familyMemberField),
                               );
                             }
@@ -1477,27 +1524,27 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                       rightChild: Container(
                         child: GestureDetector(
                           onTap: () {
-                            if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "overdue" &&
-                                dataTimeline['data']['list'][6]['show'] ==
-                                    true) {
-                              String title = "";
-                              showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (context) => dialogTimeline(
-                                    title,
-                                    picDenied,
-                                    context,
-                                    familyMemberLabel,
-                                    familyMemberName,
-                                    dataTimeline['data']['id'],
-                                    dataTimeline.length > 0
-                                        ? dataTimeline['data']['step']
-                                        : 'overdue',
-                                    familyMemberField),
-                              );
-                            }
+                            // if (dataTimeline.length > 0 &&
+                            //     dataTimeline['data']['step'] == "overdue" &&
+                            //     dataTimeline['data']['list'][6]['show'] ==
+                            //         true) {
+                            //   String title = "";
+                            //   showDialog(
+                            //     barrierDismissible: false,
+                            //     context: context,
+                            //     builder: (context) => dialogTimeline(
+                            //         title,
+                            //         picDenied,
+                            //         context,
+                            //         familyMemberLabel,
+                            //         familyMemberName,
+                            //         dataTimeline['data']['id'],
+                            //         dataTimeline.length > 0
+                            //             ? dataTimeline['data']['step']
+                            //             : 'overdue',
+                            //         familyMemberField),
+                            //   );
+                            // }
                           },
                           child: Column(
                             children: [
@@ -1521,9 +1568,8 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                             // draw a red marble
                                             top: 10.0,
                                             right: 10.0,
-                                            child: Icon(Icons.touch_app,
-                                                size: 25.0,
-                                                color: Colors.yellowAccent),
+                                            child: Icon(Icons.no_encryption,
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1572,9 +1618,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "overdue" &&
-                                dataTimeline['data']['list'][7]['show'] ==
-                                    true) {
+                                dataTimeline['data']['step'] == "overdue") {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -1723,6 +1767,25 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
           // ),
           SizedBox(
             width: 20,
+          ),
+        ],
+      ),
+    );
+  }
+
+  _divider2() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Divider(
+                thickness: 1,
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),
