@@ -296,18 +296,9 @@ class _SettingScreenState extends State<SettingScreen> {
                     )
                   ],
                 ),
-<<<<<<< HEAD
               ),
             ),
       bottomNavigationBar: Navigation(),
-=======
-              )
-            ],
-          ),
-        ),
-      ),
-      // bottomNavigationBar: Navigation(),
->>>>>>> 5e5db32ee32439cc60da4b12f5ef0f9625d1153e
     );
   }
 

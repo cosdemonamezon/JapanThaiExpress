@@ -750,7 +750,7 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         indicatorY: 0.2,
                         padding: EdgeInsets.all(8),
                       ),
-                      leftChild: Container(
+                      rightChild: Container(
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
@@ -857,12 +857,12 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         indicatorY: 0.2,
                         padding: EdgeInsets.all(8),
                       ),
-                      rightChild: Container(
+                      leftChild: Container(
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "transport" &&
-                                dataTimeline['data']['list'][3]['show'] ==
+                                dataTimeline['data']['step'] == "track" &&
+                                dataTimeline['data']['list'][2]['show'] ==
                                     true) {
                               String title = "";
                               showDialog(

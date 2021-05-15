@@ -411,7 +411,10 @@ class _DepositoryScreenState extends State<DepositoryScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    MyNavigator.goToTimelineDepository(context,
+                                        DepositoryScreendata[index]['id']);
+                                  },
                                   child: Card(
                                     color: Colors.white,
                                     elevation: 4.0,
@@ -493,38 +496,6 @@ class _DepositoryScreenState extends State<DepositoryScreen> {
                                                       maxLines: 3,
                                                       softWrap: true,
                                                     ),
-<<<<<<< HEAD
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                ]))
-                                          ],
-                                        ),
-                                        // trailing: MaterialButton(
-                                        //   onPressed: () {
-                                        //     MyNavigator.goToTimelineDepository(
-                                        //         context,
-                                        //         DepositoryScreendata[index]
-                                        //             ['id']);
-                                        //   },
-                                        //   color: Color(0xffdd4b39),
-                                        //   child: Text(
-                                        //     "ดูเพิ่ม",
-                                        //     style: TextStyle(
-                                        //       fontWeight: FontWeight.bold,
-                                        //       color: Colors.white,
-                                        //       fontSize: 12,
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                        onTap: () {
-                                          MyNavigator.goToTimelineDepository(
-                                              context,
-                                              DepositoryScreendata[index]
-                                                  ['id']);
-                                        },
-                                      ),
-=======
                                                   ]))
                                             ],
                                           ),
@@ -566,7 +537,6 @@ class _DepositoryScreenState extends State<DepositoryScreen> {
                                         ),*/
                                           //onTap: () {},
                                           ),
->>>>>>> 5e5db32ee32439cc60da4b12f5ef0f9625d1153e
                                     ),
                                   ),
                                 ),
