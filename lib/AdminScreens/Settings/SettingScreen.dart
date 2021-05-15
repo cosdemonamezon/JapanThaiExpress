@@ -126,7 +126,8 @@ class _SettingScreenState extends State<SettingScreen> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              MyNavigator.goToAdmin(context);
+              // MyNavigator.goToAdmin(context);
+              Navigator.pop(context);
             }),
       ),
       body: isLoading == true
@@ -295,9 +296,18 @@ class _SettingScreenState extends State<SettingScreen> {
                     )
                   ],
                 ),
+<<<<<<< HEAD
               ),
             ),
       bottomNavigationBar: Navigation(),
+=======
+              )
+            ],
+          ),
+        ),
+      ),
+      // bottomNavigationBar: Navigation(),
+>>>>>>> 5e5db32ee32439cc60da4b12f5ef0f9625d1153e
     );
   }
 

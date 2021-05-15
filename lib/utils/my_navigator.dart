@@ -15,9 +15,13 @@ class MyNavigator {
   static void goToHome(BuildContext context) {
     Navigator.pushNamed(context, "/home");
   }
+  static void goToHomeScreen(BuildContext context) {
+    Navigator.pushNamed(context, "/homescreen");
+  }
 
   static void goToLogin(BuildContext context) {
-    Navigator.pushNamed(context, "/login");
+    Navigator.pushNamedAndRemoveUntil(
+        context, "/login", (Route<dynamic> route) => false);
   }
 
   static void goToLoginByPin(BuildContext context) {
@@ -116,11 +120,13 @@ class MyNavigator {
   // }
 
   static void goToAdmin(BuildContext context) {
-    Navigator.pushNamed(context, "/adminhome");
+    Navigator.pushNamedAndRemoveUntil(
+        context, "/adminhome", (Route<dynamic> route) => false);
   }
 
   static void goToMember(BuildContext context) {
-    Navigator.pushNamed(context, "/memberhome");
+    Navigator.pushNamedAndRemoveUntil(
+        context, "/memberhome", (Route<dynamic> route) => false);
   }
 
   static void goToUser(BuildContext context) {
@@ -236,5 +242,17 @@ class MyNavigator {
 
   static void goToOtpScreen(BuildContext context, arg) {
     Navigator.pushNamed(context, '/otpscreen', arguments: arg);
+  }
+
+  static void goToSettingAdmin(BuildContext context) {
+    Navigator.pushNamed(context, '/settingadmin');
+  }
+
+  static void goToAuctionadmin(BuildContext context) {
+    Navigator.pushNamed(context, '/auctionadmin');
+  }
+
+  static void goToTimelineauction(BuildContext context) {
+    Navigator.pushNamed(context, '/timelineauction');
   }
 }

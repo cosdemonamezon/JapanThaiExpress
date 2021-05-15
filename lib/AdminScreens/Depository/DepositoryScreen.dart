@@ -6,7 +6,7 @@ import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert' as convert;
@@ -336,7 +336,7 @@ class _DepositoryScreenState extends State<DepositoryScreen> {
               leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.pop(context, true);
+                    MyNavigator.goToHomeServices(context);
                   }),
               bottom: TabBar(
                   labelColor: Colors.redAccent,
@@ -419,76 +419,81 @@ class _DepositoryScreenState extends State<DepositoryScreen> {
                                       decoration:
                                           BoxDecoration(color: Colors.white),
                                       child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20.0, vertical: 10.0),
-                                        leading: Container(
-                                          padding: EdgeInsets.only(right: 14.0),
-                                          decoration: BoxDecoration(
-                                              border: Border(
-                                                  right: BorderSide(
-                                                      width: 2.0,
-                                                      color: primaryColor))),
-                                          child: Image.network(
-                                              DepositoryScreendata[index]
-                                                          ['image'] ==
-                                                      null
-                                                  ? 'https://picsum.photos/200/300'
-                                                  : DepositoryScreendata[index]
-                                                      ['image'],
-                                              width: 70),
-                                        ),
-                                        title: Text(
-                                          DepositoryScreendata[index]
-                                              ['description'],
-                                          style: TextStyle(
-                                              color: kTextButtonColor,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        subtitle: Row(
-                                          children: <Widget>[
-                                            Flexible(
-                                                child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "ชื่อลูกค้า :" +
-                                                          DepositoryScreendata[
-                                                                  index]
-                                                              ['ship_name'],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 20.0, vertical: 10.0),
+                                          leading: Container(
+                                            padding:
+                                                EdgeInsets.only(right: 14.0),
+                                            decoration: BoxDecoration(
+                                                border: Border(
+                                                    right: BorderSide(
+                                                        width: 2.0,
+                                                        color: primaryColor))),
+                                            child: Image.network(
+                                                DepositoryScreendata[index]
+                                                            ['image'] ==
+                                                        null
+                                                    ? 'https://picsum.photos/200/300'
+                                                    : DepositoryScreendata[
+                                                        index]['image'],
+                                                width: 70),
+                                          ),
+                                          title: Text(
+                                            DepositoryScreendata[index]
+                                                ['description'],
+                                            style: TextStyle(
+                                                color: kTextButtonColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          subtitle: Row(
+                                            children: <Widget>[
+                                              Flexible(
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "ชื่อลูกค้า :" +
+                                                            DepositoryScreendata[
+                                                                    index]
+                                                                ['ship_name'],
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
                                                     ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "เบอร์ติดต่อ :" +
-                                                          DepositoryScreendata[
-                                                                  index]
-                                                              ['ship_tel'],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "เบอร์โทร :" +
+                                                            DepositoryScreendata[
+                                                                    index]
+                                                                ['ship_tel'],
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
                                                     ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "วันที่บันทึก :" +
-                                                          DepositoryScreendata[
-                                                                      index]
-                                                                  ['created_at']
-                                                              .split("T")[0],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "วันที่บันทึก :" +
+                                                            DepositoryScreendata[
+                                                                        index][
+                                                                    'created_at']
+                                                                .split("T")[0],
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
                                                     ),
+<<<<<<< HEAD
                                                     maxLines: 3,
                                                     softWrap: true,
                                                   ),
@@ -519,6 +524,49 @@ class _DepositoryScreenState extends State<DepositoryScreen> {
                                                   ['id']);
                                         },
                                       ),
+=======
+                                                  ]))
+                                            ],
+                                          ),
+                                          trailing: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                icon: const Icon(Icons
+                                                    .keyboard_arrow_right_outlined),
+                                                color: Colors.orange[900],
+                                                iconSize: 30,
+                                                onPressed: () {
+                                                  MyNavigator
+                                                      .goToTimelineDepository(
+                                                          context,
+                                                          DepositoryScreendata[
+                                                              index]['id']);
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                          /*trailing: MaterialButton(
+                                          onPressed: () {
+                                            MyNavigator.goToTimelineDepository(
+                                                context,
+                                                DepositoryScreendata[index]
+                                                    ['id']);
+                                          },
+                                          color: Color(0xffdd4b39),
+                                          child: Text(
+                                            "ดูเพิ่ม",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),*/
+                                          //onTap: () {},
+                                          ),
+>>>>>>> 5e5db32ee32439cc60da4b12f5ef0f9625d1153e
                                     ),
                                   ),
                                 ),

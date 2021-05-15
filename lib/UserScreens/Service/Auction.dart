@@ -442,20 +442,20 @@ class _AuctionState extends State<Auction> {
                               FormBuilderValidators.required(context),
                             ]),
                             onChanged: (text) {
-                              var c;
-                              var x = double.parse('$text');
-                              var a = double.parse('$rate');
-                              var b = double.parse('$service');
-                              if (text.isEmpty) {
-                                print('ว่าง');
+                              if (text.isEmpty || text == null) {
                                 setState(() {
-                                  budget = text.toString();
-                                  total = c.toString();
+                                  budget = '0';
+                                  total = '0';
                                 });
                               } else {
+                                var c;
+                                var x = double.parse('$text');
+                                var a = double.parse('$rate');
+                                var b = double.parse('$service');
                                 c = (x + b) * a;
+
                                 setState(() {
-                                  budget = text.toString();
+                                  budget = text;
                                   total = c.toString();
                                 });
                               }
@@ -701,7 +701,20 @@ class _AuctionState extends State<Auction> {
               )
             ],
           ),
-          subtitle: Row(
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.keyboard_arrow_right_outlined),
+                color: Colors.orange[900],
+                iconSize: 30,
+                onPressed: () {
+                  
+                },
+              ),
+            ],
+          ),
+          /*subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               MaterialButton(
@@ -719,7 +732,7 @@ class _AuctionState extends State<Auction> {
                 ),
               ),
             ],
-          )),
+          )*/),
     );
   }
 }

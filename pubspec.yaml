@@ -45,7 +45,7 @@ dependencies:
   flutter_form_builder: ^6.0.0
   #image_picker: ^0.6.7+22
   image_picker: ^0.7.4
-  flushbar: ^1.10.4
+  #flushbar: ^1.10.4
   qr_code_scanner: ^0.3.5
   timeline_tile: ^0.1.0
   flutter_facebook_auth: ^3.3.1
@@ -59,7 +59,7 @@ dependencies:
   webview_flutter: ^2.0.4
   url_launcher: ^6.0.3
   fluttertoast: ^8.0.6
-  material_design_icons_flutter: ^3.2.3895
+  another_flushbar: ^1.10.20
 
 dependency_overrides:
   intl: 0.17.0-nullsafety.2
@@ -132,6 +132,8 @@ flutter:
     - assets/images/send_out.png
     - assets/images/in.png
     - assets/images/out.png
+    - assets/images/line.png
+    - assets/images/cat-wallet.png
   fonts:
     - family: Prompt
       fonts:

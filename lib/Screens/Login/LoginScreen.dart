@@ -16,7 +16,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/utils/japanexpress.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:JapanThaiExpress/widgets/SocialIcon.dart';
 import 'package:JapanThaiExpress/widgets/CustomIcons.dart';
 
@@ -169,23 +169,6 @@ class _LoginScreenState extends State<LoginScreen> {
   _initPrefs() async {
     prefs = await SharedPreferences.getInstance();
   }
-
-  Widget radioButton(bool isSelected) => Container(
-        width: 16.0,
-        height: 16.0,
-        padding: EdgeInsets.all(2.0),
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(width: 2.0, color: Colors.black)),
-        child: isSelected
-            ? Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration:
-                    BoxDecoration(shape: BoxShape.circle, color: Colors.black),
-              )
-            : Container(),
-      );
 
   Future<void> _handleSubmitted() async {
     final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
@@ -401,9 +384,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: 10),
                         FormBuilderTextField(
                           name: 'phone',
-                          maxLength: 10,
                           decoration: InputDecoration(
                               //border: InputBorder.none,
+                              labelText: 'เบอร์โทร',
                               border: OutlineInputBorder(),
                               fillColor: Color(0xfff3f3f4),
                               filled: true),
@@ -436,6 +419,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           obscureText: true,
                           decoration: InputDecoration(
                               //border: InputBorder.none,
+                              labelText: 'รหัสผ่าน',
                               border: OutlineInputBorder(),
                               fillColor: Color(0xfff3f3f4),
                               filled: false),
@@ -443,15 +427,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context,
                                 errorText: 'กรุณากรอกรหัสผ่าน'),
-                            FormBuilderValidators.minLength(context, 6,
-                                errorText: 'รหัสผ่านอย่างน้อย 6 ตัว'),
+                            FormBuilderValidators.minLength(context, 8,
+                                errorText: 'รหัสผ่านอย่างน้อย 8 ตัว'),
                           ]),
                           keyboardType: TextInputType.visiblePassword,
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 35),
                   GestureDetector(
                     onTap: () {
                       if (_formKey.currentState.saveAndValidate()) {

@@ -7,6 +7,8 @@ import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/japanexpress.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 
+import '../../utils/my_navigator.dart';
+
 class NotificationScreen extends StatefulWidget {
   NotificationScreen({Key key}) : super(key: key);
 
@@ -92,9 +94,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.chevron_left),
+        leading: 
+        IconButton(icon: Icon(Icons.chevron_left), onPressed: () { MyNavigator.goToAdmin(context);}),        
         centerTitle: true,
-        title: Text("Notification"),
+        title: Text("แจ้งเตือน"),
       ),
       body: isLoading == true
           ? Center(

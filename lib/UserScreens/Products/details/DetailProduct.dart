@@ -51,7 +51,7 @@ class _DetailProductState extends State<DetailProduct> {
               child: Stack(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: size.height * 0.33),
+                    margin: EdgeInsets.only(top: size.height * 0.30),
                     padding: EdgeInsets.only(
                       top: size.height * 0.01,
                       left: kDefaultPaddin,
@@ -77,7 +77,7 @@ class _DetailProductState extends State<DetailProduct> {
                             style: TextStyle(height: 1.3),
                           ),
                         ),
-                        SizedBox(height: kDefaultPaddin),
+                        SizedBox(height: 10),
                         //CounterWithFavBtn(),
                         Column(
                           children: [
@@ -99,8 +99,9 @@ class _DetailProductState extends State<DetailProduct> {
                                     fontWeight: FontWeight.w400),
                               ),
                             ),
+                            SizedBox(height: 15),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 //CartCounter(),
                                 Row(
@@ -139,18 +140,6 @@ class _DetailProductState extends State<DetailProduct> {
                                     ),
                                   ],
                                 ),
-
-                                Container(
-                                  padding: EdgeInsets.all(8),
-                                  height: 32,
-                                  width: 32,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFFF6464),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: SvgPicture.asset(
-                                      "assets/icons/heart.svg"),
-                                ),
                               ],
                             ),
                           ],
@@ -161,21 +150,6 @@ class _DetailProductState extends State<DetailProduct> {
                               vertical: kDefaultPaddin),
                           child: Row(
                             children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.only(right: kDefaultPaddin),
-                                height: 50,
-                                width: 58,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(18),
-                                    border: Border.all(color: kPrimaryColor)),
-                                child: IconButton(
-                                  icon: SvgPicture.asset(
-                                    "assets/icons/add_to_cart.svg",
-                                    color: kPrimaryColor,
-                                  ),
-                                  onPressed: () {},
-                                ),
-                              ),
                               Expanded(
                                 child: SizedBox(
                                   height: 45,
@@ -243,8 +217,8 @@ class _DetailProductState extends State<DetailProduct> {
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultPaddin), //รูป
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -308,8 +282,8 @@ class _DetailProductState extends State<DetailProduct> {
       elevation: 0,
       title: Text("สินค้า"),
       leading: IconButton(
-        icon: SvgPicture.asset(
-          "assets/icons/back.svg",
+        icon: Icon(
+          Icons.arrow_back_ios_rounded,
           color: Colors.white,
         ),
         onPressed: () => Navigator.pop(context),

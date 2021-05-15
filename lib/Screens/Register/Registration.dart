@@ -7,6 +7,7 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:JapanThaiExpress/constants.dart';
+import 'dart:async';
 
 // ignore: must_be_immutable
 class Registration extends StatefulWidget {
@@ -19,11 +20,13 @@ class Registration extends StatefulWidget {
 class _RegistrationState extends State<Registration> {
   final _formKey = GlobalKey<FormBuilderState>();
   SharedPreferences prefs;
-  String fname_th;
-  String lname_th;
   String email;
   String tel;
   String password;
+  String confirmpassword;
+  String otp_ref;
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -45,7 +48,7 @@ class _RegistrationState extends State<Registration> {
                 FormBuilder(
                   key: _formKey,
                   initialValue: {
-                    'name': '',
+                    'fname': '',
                     'lname': '',
                     'email': '',
                     'tel': '',
@@ -64,7 +67,7 @@ class _RegistrationState extends State<Registration> {
                         ),
                         SizedBox(height: 10),
                         FormBuilderTextField(
-                            name: 'name',
+                            name: 'fname',
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person),
                                 labelText: 'ชื่อ(ภาษาไทย)',
@@ -116,6 +119,8 @@ class _RegistrationState extends State<Registration> {
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context,
                                   errorText: 'กรุณากรอกอีเมล'),
+                              FormBuilderValidators.email(context,
+                                  errorText: 'กรุณากรอกอีเมลให้ถูกต้อง'),
                             ])),
                         SizedBox(height: 10),
                         Text(
@@ -137,6 +142,9 @@ class _RegistrationState extends State<Registration> {
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context,
                                   errorText: 'กรุณากรอกหมายเลขโทรศัพท์'),
+                              FormBuilderValidators.minLength(context, 10,
+                                  errorText:
+                                      'กรุณากรอกหมา่ยเลขโทรศัพท์ให้ครบถ้วน'),
                             ])),
                         SizedBox(height: 10),
                         Text(
@@ -156,14 +164,16 @@ class _RegistrationState extends State<Registration> {
                                 border: OutlineInputBorder(),
                                 fillColor: Color(0xfff3f3f4),
                                 filled: true),
+                            onChanged: (val) {
+                              setState(() {
+                                password = val;
+                              });
+                            },
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context,
                                   errorText: 'กรุณากรอกรหัสผ่าน'),
-                              // FormBuilderValidators.equal(
-                              //     context,
-                              //     _formKey.currentState
-                              //         .fields['confirmpassword'].value,
-                              //     errorText: 'รหัสผ่านไม่ตรงกัน'),
+                              FormBuilderValidators.minLength(context, 8,
+                                  errorText: 'กรุณากรอกรหัสอย่างน้อย 8 ตัว')
                             ])),
                         SizedBox(height: 10),
                         Text(
@@ -185,12 +195,14 @@ class _RegistrationState extends State<Registration> {
                                 filled: true),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context,
-                                  errorText: 'กรุณากรอกยืนยันรหัสผ่าน'),
-                              // FormBuilderValidators.equal(
-                              //     context,
-                              //     _formKey
-                              //         .currentState.fields['password'].value,
-                              //     errorText: 'รหัสผ่านไม่ตรงกัน'),
+                                  errorText: 'กรุณากรอกรหัสผ่าน'),
+                              (val) {
+                                if (val != password) {
+                                  return 'รหัสผ่านไม่ตรงกัน';
+                                } else {
+                                  return null;
+                                }
+                              }
                             ])),
                       ],
                     ),
@@ -199,20 +211,10 @@ class _RegistrationState extends State<Registration> {
                 SizedBox(height: 20),
                 GestureDetector(
                   onTap: () {
-                    _formKey.currentState.save();
-                    // var arg = {'tel': '0859908017'};
-
-                    print(_formKey.currentState.value);
-                    // MyNavigator.goToOtpScreen(context, arg);
-                    // print(arg);
-                    // final isValid = _formKey.currentState.saveAndValidate();
-                    // if (isValid) {
-                    //   var arg = _formKey.currentState.value;
-                    //   // Navigator.push(context,
-                    //   //     MaterialPageRoute(builder: (context) {
-                    //   //   return OtpScreen();
-                    //   // }));
-                    // }
+                    final isValid = _formKey.currentState.saveAndValidate();
+                    if (isValid) {
+                      _sendOtp(_formKey.currentState.fields['tel'].value);
+                    }
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -281,5 +283,31 @@ class _RegistrationState extends State<Registration> {
           convert.jsonDecode(response.body);
       print(addressdata['message']);
     }
+  }
+
+  _sendOtp(String tel) async {
+    var url = Uri.parse(pathAPI + 'api/sendOTP');
+    var response = await http.post(
+      url,
+      headers: {},
+      body: ({
+        'tel': tel,
+      }),
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> res = convert.jsonDecode(response.body);
+      setState(() {
+        otp_ref = res['data']['otp_ref'];
+      });
+      var arg = {
+        'tel': _formKey.currentState.fields['tel'].value,
+        'password': _formKey.currentState.fields['password'].value,
+        'fname_th': _formKey.currentState.fields['fname'].value,
+        'lname_th': _formKey.currentState.fields['lname'].value,
+        'email': _formKey.currentState.fields['email'].value,
+        'otp_ref': otp_ref,
+      };
+      MyNavigator.goToOtpScreen(context, arg);
+    } else {}
   }
 }

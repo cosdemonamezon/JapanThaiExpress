@@ -9,7 +9,6 @@ import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DashbordScreen extends StatefulWidget {
   DashbordScreen({Key key}) : super(key: key);
@@ -29,18 +28,17 @@ class _DashbordScreenState extends State<DashbordScreen> {
     "assets/o7.jpg",
   ];
 
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(   
-        centerTitle: true,  
-        automaticallyImplyLeading: false,   
+      appBar: AppBar(
+        centerTitle: true,
+        automaticallyImplyLeading: false,
         title: Text("JapanThaiExpress"),
         // actions: [
         //   IconButton(
-        //     icon: Icon(Icons.account_circle, size: 40, color: Colors.white,), 
+        //     icon: Icon(Icons.account_circle, size: 40, color: Colors.white,),
         //     onPressed: (){
         //       // Navigator.push(
         //       //   context, MaterialPageRoute(builder: (context) => ProfileScreen())
@@ -55,7 +53,9 @@ class _DashbordScreenState extends State<DashbordScreen> {
         width: double.infinity,
         child: Column(
           children: [
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             // Container(
             //   width: double.infinity,
             //   child: CarouselSlider.builder(
@@ -84,10 +84,13 @@ class _DashbordScreenState extends State<DashbordScreen> {
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(3.0),
                 children: [
-                  dashboardItem("รายการซื้อสินค้า", Icons.add_shopping_cart, 1, context),
-                  dashboardItem("บริการของเรา", Icons.local_shipping_outlined, 2, context),
+                  dashboardItem(
+                      "รายการซื้อสินค้า", Icons.add_shopping_cart, 1, context),
+                  dashboardItem("บริการของเรา", Icons.local_shipping_outlined,
+                      2, context),
                   dashboardItem("สินค้า", Icons.store_outlined, 3, context),
-                  dashboardItem("กระเป๋าสตางค์", Icons.account_balance_wallet_outlined, 4, context),
+                  dashboardItem("กระเป๋าสตางค์",
+                      Icons.account_balance_wallet_outlined, 4, context),
                   dashboardItem("ข่าว", Icons.web_outlined, 5, context),
                   dashboardItem("โปรโมชั่น", Icons.redeem, 6, context),
                 ],
@@ -115,7 +118,6 @@ Card dashboardItem(String title, IconData icon, int page, context) {
           color: Color(0xFFfafafa),
           //color: Color(0xFF343434),
           //color: Color(0xFFd73925),
-          
         ),
         color: Color(0xFFfafafa),
         //color: Color(0xFFd73925),
@@ -136,9 +138,9 @@ Card dashboardItem(String title, IconData icon, int page, context) {
             // Navigator.push(
             //     context, MaterialPageRoute(builder: (context) => NewsScreen()));
           } else if (page == 6) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => PromotionScreen()));
-          } 
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PromotionScreen()));
+          }
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -159,7 +161,8 @@ Card dashboardItem(String title, IconData icon, int page, context) {
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
                   title,
-                  style: new TextStyle(fontSize: 20.0, color: Color(0xFFd73925)),
+                  style:
+                      new TextStyle(fontSize: 20.0, color: Color(0xFFd73925)),
                 ),
               ),
             ),

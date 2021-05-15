@@ -1,6 +1,7 @@
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
@@ -49,10 +50,34 @@ class _HelpCenterState extends State<HelpCenter> {
           isLoading = false;
         });
       } else {
-        print(helpdata['message']);
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
       }
     } else {
-      print(response.statusCode);
+      var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
     }
   }
 
@@ -62,11 +87,11 @@ class _HelpCenterState extends State<HelpCenter> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("ช่วยแนะนำ"),
+        title: Text("ศูนย์ช่วยเหลือ"),
         leading: IconButton(
             onPressed: () {
-              MyNavigator.goToProfileScreen(context);
-              
+              // MyNavigator.goToProfileScreen(context);
+              Navigator.pop(context);
             },
             icon: Icon(
               Icons.arrow_back_ios_rounded,
@@ -75,7 +100,7 @@ class _HelpCenterState extends State<HelpCenter> {
       body: Container(
         height: height,
         padding: EdgeInsets.symmetric(horizontal: 5),
-        color: Colors.grey[200],
+        // color: Colors.grey[200],
         child: isLoading == true
             ? Center(
                 child: CircularProgressIndicator(),
@@ -111,7 +136,7 @@ class _HelpCenterState extends State<HelpCenter> {
     return Container(
       //height: 100,
       decoration: BoxDecoration(
-        color: Colors.blue[50],
+        color: Color(0xFFF5F6F9),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(18),
           topRight: Radius.circular(18),
@@ -130,7 +155,7 @@ class _HelpCenterState extends State<HelpCenter> {
         child: ListTile(
           title: Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            style: TextStyle(fontSize: 14),
           ),
           trailing: Icon(Icons.arrow_forward_ios),
         ),

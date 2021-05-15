@@ -14,18 +14,16 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:JapanThaiExpress/AdminScreens/Auction/Auctionadmin.dart';
 
-import '../../utils/my_navigator.dart';
-import '../../utils/my_navigator.dart';
-
-class MessageScreen extends StatefulWidget {
-  MessageScreen({Key key}) : super(key: key);
+class Auctionadmin extends StatefulWidget {
+  Auctionadmin({Key key}) : super(key: key);
 
   @override
-  _MessageScreenState createState() => _MessageScreenState();
+  _AuctionadminState createState() => _AuctionadminState();
 }
 
-class _MessageScreenState extends State<MessageScreen> {
+class _AuctionadminState extends State<Auctionadmin> {
   List<bool> checked = [false, true, false, false, true];
   String valueChoose;
   bool isLoading = false;
@@ -48,7 +46,7 @@ class _MessageScreenState extends State<MessageScreen> {
   final _formKey1 = GlobalKey<FormBuilderState>();
   SharedPreferences prefs;
   String tokendata = "";
-  List<dynamic> MessageScreendata = []; //ประกาศตัวแปร อาร์เรย์ ไว้
+  List<dynamic> Auctionadmindata = []; //ประกาศตัวแปร อาร์เรย์ ไว้
   int totalResults = 0;
   int page = 1;
   int pageSize = 10;
@@ -59,10 +57,10 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   void initState() {
     super.initState();
-    _getMessageScreenory();
-    _addressMem();
-    _MessageScreenoryType();
-    _shippingOption();
+    _getauctionadmin();
+    // _addressMem();
+    // _DepositoryScreenoryType();
+    // _shippingOption();
   }
 
   void _onRefresh() async {
@@ -71,10 +69,10 @@ class _MessageScreenState extends State<MessageScreen> {
     // if failed,use refreshFailed()
     //ทุกครั้งที่รีเฟรชจะเคียร์อาร์เรย์และ set page เป็น 1
     setState(() {
-      MessageScreendata.clear();
+      Auctionadmindata.clear();
       page = 1;
     });
-    _getMessageScreenory(); //ทุกครั้งที่ทำการรีเฟรช จะดึงข้อมูลใหม่
+    _getauctionadmin(); //ทุกครั้งที่ทำการรีเฟรช จะดึงข้อมูลใหม่
     _refreshController.refreshCompleted();
   }
 
@@ -89,7 +87,7 @@ class _MessageScreenState extends State<MessageScreen> {
         setState(() {
           page = ++page;
         });
-        _getMessageScreenory();
+        _getauctionadmin();
         _refreshController.loadComplete();
       } else {
         print("unmounted");
@@ -101,7 +99,7 @@ class _MessageScreenState extends State<MessageScreen> {
     }
   }
 
-  _getMessageScreenory() async {
+  _getauctionadmin() async {
     try {
       setState(() {
         page == 1 ? isLoading = true : isLoading = false;
@@ -110,7 +108,7 @@ class _MessageScreenState extends State<MessageScreen> {
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
       var url = Uri.parse(
-          pathAPI + 'api/get_topic?status=&page=$page&page_size=$pageSize');
+          pathAPI + 'api/get_auction?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {
@@ -125,15 +123,16 @@ class _MessageScreenState extends State<MessageScreen> {
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> depdata = convert.jsonDecode(response.body);
+        print(depdata);
         setState(() {
           totalResults = depdata['data']['total'];
-          MessageScreendata.addAll(depdata['data']['data']);
+          Auctionadmindata.addAll(depdata['data']['data']);
           isLoading = false;
           // print(depdata['message']);
           // print(totalResults);
           // print("test");
-          // print(MessageScreendata.length);
-          // print(MessageScreendata[1]['description']);
+          // print(DepositoryScreendata.length);
+          // print(DepositoryScreendata[1]['description']);
         });
       } else {
         setState(() {
@@ -148,7 +147,7 @@ class _MessageScreenState extends State<MessageScreen> {
     }
   }
 
-  _MessageScreenoryType() async {
+  _DepositoryScreenoryType() async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -156,7 +155,7 @@ class _MessageScreenState extends State<MessageScreen> {
       //isLoading = true;
     });
 
-    var url = Uri.parse(pathAPI + 'api/MessageScreenory_type');
+    var url = Uri.parse(pathAPI + 'api/get_auction');
     var response = await http.get(
       url,
       headers: {
@@ -165,12 +164,12 @@ class _MessageScreenState extends State<MessageScreen> {
       },
     );
     if (response.statusCode == 200) {
-      final Map<String, dynamic> dataMessageScreen =
+      final Map<String, dynamic> dataDepositoryScreen =
           convert.jsonDecode(response.body);
-      if (dataMessageScreen['code'] == 200) {
-        //print(dataMessageScreen['message']);
+      if (dataDepositoryScreen['code'] == 200) {
+        //print(dataDepositoryScreen['message']);
         setState(() {
-          dropdownValue = dataMessageScreen['data'];
+          dropdownValue = dataDepositoryScreen['data'];
         });
         // for (var i = 0; i < dataValue.length; i++) {
         //   dropdownValue += dataValue[i]['name'];
@@ -246,7 +245,7 @@ class _MessageScreenState extends State<MessageScreen> {
     }
   }
 
-  _createMessageScreenory(Map<String, dynamic> values) async {
+  _Auctionadmin(Map<String, dynamic> values) async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -258,7 +257,7 @@ class _MessageScreenState extends State<MessageScreen> {
     setState(() {
       isLoading = true;
     });
-    var url = Uri.parse(pathAPI + 'api/create_MessageScreenory');
+    var url = Uri.parse(pathAPI + 'api/create_DepositoryScreenory'); //
     var response = await http.post(url,
         headers: {
           //'Content-Type': 'application/json',
@@ -271,20 +270,20 @@ class _MessageScreenState extends State<MessageScreen> {
           'cost_th': costth,
         }));
     if (response.statusCode == 201) {
-      final Map<String, dynamic> MessageScreendata =
+      final Map<String, dynamic> Auctionadmindata =
           convert.jsonDecode(response.body);
-      print(MessageScreendata);
-      if (MessageScreendata['code'] == 201) {
-        print(MessageScreendata['message']);
-        //MyNavigator.goToMessageScreen(context);
+      print(Auctionadmindata);
+      if (Auctionadmindata['code'] == 201) {
+        print(Auctionadmindata['message']);
+        //MyNavigator.goToDepositoryScreen(context);
         // Navigator.push(
-        //   context, MaterialPageRoute(builder: (context) => MessageScreen()));
+        //   context, MaterialPageRoute(builder: (context) => DepositoryScreen()));
         // String picSuccess = "assets/success.png";
         // showDialog(
         //   barrierDismissible: false,
         //   context: context,
-        //   builder: (context) => alertMessageScreen(
-        //     MessageScreendata['message'],
+        //   builder: (context) => alertDepositoryScreen(
+        //     DepositoryScreendata['message'],
         //     picSuccess,
         //     context,
         //   ),
@@ -335,11 +334,11 @@ class _MessageScreenState extends State<MessageScreen> {
           appBar: AppBar(
               elevation: 0,
               centerTitle: true,
-              title: Text("กล่องข้อความ"),
+              title: Text("รายการประมูล"),
               leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    MyNavigator.goToAdmin(context);
+                    MyNavigator.goToHomeServices(context);
                   }),
               bottom: TabBar(
                   labelColor: Colors.redAccent,
@@ -407,29 +406,114 @@ class _MessageScreenState extends State<MessageScreen> {
                         onLoading: _onLoading,
                         child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: MessageScreendata.length,
+                            itemCount: Auctionadmindata.length,
                             padding: EdgeInsets.only(left: 5.0, right: 5.0),
                             itemBuilder: (BuildContext context, int index) {
                               return Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
-                                  onTap: () {
-                                    MyNavigator.goToMessageRoom(context,
-                                        MessageScreendata[index]['id']);
-                                  },
-                                  child: messageCard(
-                                      MessageScreendata[index]['title'],
-                                      Icons.message_outlined,
-                                      MessageScreendata[index]['user']
-                                                  ['fname_th']
-                                              .toString() +
-                                          ' ' +
-                                          MessageScreendata[index]['user']
-                                                  ['lname_th']
-                                              .toString(),
-                                      MessageScreendata[index]['send_at']
-                                          .toString()),
+                                  onTap: () {},
+                                  child: Card(
+                                    color: Colors.white,
+                                    elevation: 4.0,
+                                    child: Container(
+                                      decoration:
+                                          BoxDecoration(color: Colors.white),
+                                      child: ListTile(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 20.0, vertical: 10.0),
+                                        leading: Container(
+                                          padding: EdgeInsets.only(right: 14.0),
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  right: BorderSide(
+                                                      width: 2.0,
+                                                      color: primaryColor))),
+                                          child: Image.network(
+                                              Auctionadmindata[index]
+                                                          ['image'] ==
+                                                      null
+                                                  ? 'https://picsum.photos/200/300'
+                                                  : Auctionadmindata[index]
+                                                      ['image'],
+                                              width: 70),
+                                        ),
+                                        title: Text(
+                                          Auctionadmindata[index]['name'],
+                                          style: TextStyle(
+                                              color: kTextButtonColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        subtitle: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            Flexible(
+                                                child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "ชื่อลูกค้า :" +
+                                                          Auctionadmindata[
+                                                              index]['code'],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
+                                                    ),
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "เบอร์ติดต่อ :" +
+                                                          Auctionadmindata[
+                                                              index]['code'],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
+                                                    ),
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "วันที่บันทึก :" +
+                                                          Auctionadmindata[
+                                                                      index]
+                                                                  ['created_at']
+                                                              .split("T")[0],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
+                                                    ),
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                ]))
+                                          ],
+                                        ),
+                                        trailing: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(Icons
+                                                  .keyboard_arrow_right_outlined),
+                                              color: Colors.orange[900],
+                                              iconSize: 30,
+                                              onPressed: () {
+                                                MyNavigator.goToTimelineauction(context);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               );
                             }),
@@ -443,19 +527,179 @@ class _MessageScreenState extends State<MessageScreen> {
         ));
   }
 
-  Card messageCard(String title, IconData icon, String subtitle, String date) {
+  Card addressCard(String title, String title1, String subtitle) {
     return Card(
+      color: Colors.orange[50],
       child: ListTile(
-        leading: Icon(
-          icon,
-          color: Color(0xffdd4b39),
-          size: 40.0,
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            title == null
+                ? Text("...")
+                : Text(
+                    title,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: kTextButtonColor),
+                  ),
+            title1 == null
+                ? Text("...")
+                : Text(
+                    title1,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        color: kTextButtonColor),
+                  ),
+          ],
         ),
-        title: Text(
-          title,
-          style: TextStyle(fontWeight: FontWeight.w400),
+        subtitle: subtitle == null
+            ? Text("...")
+            : Text(
+                subtitle,
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: kTextButtonColor),
+              ),
+        trailing: IconButton(
+            icon: Icon(
+              Icons.edit,
+              size: 25,
+            ),
+            onPressed: () {
+              showDialog(
+                //barrierDismissible: false,
+                context: context,
+                builder: (context) => selectdialog(
+                  context,
+                ),
+              );
+              //selectdialog();
+            }),
+      ),
+    );
+  }
+
+  Card selectCard(String title, String title1, String subtitle, int index) {
+    return Card(
+      color: kFontPrimaryColor,
+      child: ListTile(
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                  color: kTextButtonColor),
+            ),
+            Text(
+              title1,
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  color: kTextButtonColor),
+            ),
+          ],
         ),
-        subtitle: Text(subtitle + '\nวันที่ : ' + date),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+              color: kTextButtonColor),
+        ),
+        trailing: IconButton(
+            icon: Icon(
+              Icons.edit,
+              size: 25,
+            ),
+            onPressed: () {
+              setState(() {
+                id = address[index]['id'];
+                name = title;
+                add = title1;
+                tel = subtitle;
+              });
+              Navigator.pop(context);
+              //selectdialog();
+            }),
+      ),
+    );
+  }
+  selectdialog(context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Constants.padding),
+      ),
+      elevation: 1,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.only(
+            left: Constants.padding,
+            top: Constants.avatarRadius - Constants.padding,
+            right: Constants.padding,
+            bottom: Constants.padding),
+        margin: EdgeInsets.only(top: Constants.avatarRadius),
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: kFontPrimaryColor,
+            borderRadius: BorderRadius.circular(Constants.padding),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black, offset: Offset(0, 2), blurRadius: 2),
+            ]),
+        child: Container(
+          height: 350,
+          child: Column(
+            children: [
+              Text("เลือกที่อยู่",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 18,
+                  )),
+              Container(
+                height: 300,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          physics: const ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: address.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return selectCard(
+                              address[index]['name'],
+                              address[index]['address'],
+                              address[index]['tel'],
+                              index,
+                            );
+                          }),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      //barrierDismissible: false,
+                      context: context,
+                      builder: (context) => addDialog(
+                        context,
+                      ),
+                    );
+                  },
+                  child: Text("เพิ่มที่อยู่")),
+            ],
+          ),
+        ),
       ),
     );
   }

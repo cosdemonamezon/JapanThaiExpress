@@ -1,6 +1,6 @@
 import 'package:JapanThaiExpress/AdminScreens/Depository/DepositoryScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;

@@ -6,7 +6,7 @@ import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert' as convert;
@@ -332,7 +332,7 @@ class _DepositScreenState extends State<DepositScreen> {
           appBar: AppBar(
               elevation: 0,
               centerTitle: true,
-              title: Text("รายการแจ้งเติมเงิน"),
+              title: Text("รายการเติมเงิน"),
               leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
@@ -488,7 +488,15 @@ class _DepositScreenState extends State<DepositScreen> {
                                                 ]))
                                           ],
                                         ),
-                                        trailing: MaterialButton(
+                                        trailing: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                          
+                                          IconButton(
+                                            icon: const Icon(Icons
+                                                  .keyboard_arrow_right_outlined),
+                                          color: Color(0xffdd4b39),
                                           onPressed: () {
                                             var arg = {
                                               "account_name":
@@ -505,16 +513,8 @@ class _DepositScreenState extends State<DepositScreen> {
                                             MyNavigator.goToDepositDetail(
                                                 context, arg);
                                           },
-                                          color: Color(0xffdd4b39),
-                                          child: Text(
-                                            "ดูเพิ่ม",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ),
+                                         ), 
+                                        ],),
                                         onTap: () {},
                                       ),
                                     ),

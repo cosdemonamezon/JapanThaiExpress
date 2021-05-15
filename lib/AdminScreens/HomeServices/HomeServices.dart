@@ -1,3 +1,4 @@
+import 'package:JapanThaiExpress/AdminScreens/Auction/Auctionadmin.dart';
 import 'package:JapanThaiExpress/AdminScreens/Customer/CustomerScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositScreen.dart';
@@ -9,6 +10,7 @@ import 'package:JapanThaiExpress/AdminScreens/PreOders/PreoderScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/PurchaseOrders/PrechaseScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
 import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRView.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -33,7 +35,7 @@ class _HomeServicesState extends State<HomeServices> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context, true);
+              MyNavigator.goToHomeScreen(context);
             }),
       ),
       body: Container(
@@ -46,11 +48,14 @@ class _HomeServicesState extends State<HomeServices> {
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(3.0),
                 children: [
+                  dashboardItem("รายการฝากซื้อ", Icons.shopping_cart_outlined,
+                      1, context),
+                  dashboardItem("รายการฝากส่ง", Icons.local_shipping_outlined,
+                      2, context),
                   dashboardItem(
-                      "รายการฝากซื้อ", Icons.list_alt_outlined, 1, context),
-                  dashboardItem("รายการฝากส่ง", Icons.list_alt, 2, context),
-                  dashboardItem("รายการฝากโอน", Icons.money, 3, context),
-                  dashboardItem("รายการประมูล", Icons.transform, 4, context),
+                      "รายการฝากโอน", Icons.local_atm_outlined, 3, context),
+                  dashboardItem("รายการประมูล", Icons.monetization_on_outlined,
+                      4, context),
                 ],
               ),
             ),
@@ -94,7 +99,7 @@ Card dashboardItem(String title, IconData icon, int page, context) {
                 MaterialPageRoute(builder: (context) => ExchangeScreen()));
           } else if (page == 4) {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => DepositScreen()));
+                MaterialPageRoute(builder: (context) => Auctionadmin()));
           }
         },
         child: Column(

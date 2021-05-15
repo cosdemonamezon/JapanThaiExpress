@@ -14,7 +14,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/utils/japanexpress.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 import '../../utils/my_navigator.dart';
 import 'Numberpad.dart';

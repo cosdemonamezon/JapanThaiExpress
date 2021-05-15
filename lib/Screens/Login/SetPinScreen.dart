@@ -14,7 +14,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/utils/japanexpress.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 import '../../utils/my_navigator.dart';
 import 'Numberpad.dart';
@@ -64,12 +64,14 @@ class _SetPinState extends State<SetPinScreen> {
         var response = await http.post(url,
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': body['data']['token']
+              'Authorization': body['data']['token'],
             },
             body: convert.jsonEncode({
               'pin': number,
             }));
+
         if (response.statusCode == 200) {
+          final Map<String, dynamic> body = convert.jsonDecode(response.body);
           if (body['code'] == 200 || body['code'] == 999) {
             if (body['data']['type'] == "admin")
               MyNavigator.goToAdmin(context);
@@ -78,6 +80,7 @@ class _SetPinState extends State<SetPinScreen> {
             return false;
           } else {
             var feedback = convert.jsonDecode(response.body);
+            print(feedback);
             Flushbar(
               title: '${feedback['message']}',
               message: 'เกิดข้อผิดพลาดจากระบบ : ${feedback['code']}',
@@ -114,7 +117,6 @@ class _SetPinState extends State<SetPinScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _initPrefs();
   }
@@ -147,11 +149,14 @@ class _SetPinState extends State<SetPinScreen> {
                       image: DecorationImage(
                         fit: BoxFit.fitHeight,
                         image: AssetImage("assets/logo.png"),
+                        
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 50),
+                SizedBox(height: 20),
+                Text('กรุณาตั้งค่า PIN',style: TextStyle(fontSize: 20),),
+                SizedBox(height: 10),
                 Numberpadsetpin(
                   length: length,
                   onChange: onChange,
