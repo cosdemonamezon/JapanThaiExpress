@@ -40,10 +40,6 @@ class MyNavigator {
     Navigator.pushNamed(context, '/depositdetail', arguments: arg);
   }
 
-  static void goToQRCodePreview(BuildContext context, arg) {
-    Navigator.pushNamed(context, '/qrcodepreview', arguments: arg);
-  }
-
   static void goTomessageuser(BuildContext context) {
     Navigator.pushNamed(context, '/messageuser');
   }
