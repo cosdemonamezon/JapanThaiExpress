@@ -111,9 +111,7 @@ class _AuctionadminState extends State<Auctionadmin> {
           pathAPI + 'api/get_auction?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
-        headers: {
-          'Authorization': token['data']['token']
-        },
+        headers: {'Authorization': token['data']['token']},
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> depdata = convert.jsonDecode(response.body);
@@ -337,7 +335,10 @@ class _AuctionadminState extends State<Auctionadmin> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    MyNavigator.goToTimelineauction(
+                                        context, Auctionadmindata[index]['id']);
+                                  },
                                   child: Card(
                                     color: Colors.white,
                                     elevation: 4.0,
@@ -429,9 +430,7 @@ class _AuctionadminState extends State<Auctionadmin> {
                                                   .keyboard_arrow_right_outlined),
                                               color: Colors.orange[900],
                                               iconSize: 30,
-                                              onPressed: () {
-                                                MyNavigator.goToTimelineauction(context);
-                                              },
+                                              onPressed: () {},
                                             ),
                                           ],
                                         ),
@@ -556,6 +555,7 @@ class _AuctionadminState extends State<Auctionadmin> {
       ),
     );
   }
+
   selectdialog(context) {
     return Dialog(
       shape: RoundedRectangleBorder(

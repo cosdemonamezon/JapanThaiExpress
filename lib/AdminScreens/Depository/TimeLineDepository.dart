@@ -14,6 +14,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../utils/my_navigator.dart';
 
+import 'package:url_launcher/url_launcher.dart';
+
 const order_processed = "assets/images/order_processed.svg";
 const order_confirmed = "assets/images/order_confirmed.svg";
 const order_shipped = "assets/images/order_shipped.svg";
@@ -478,19 +480,30 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                               SizedBox(
                                 width: 20,
                               ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "โทร :" +
-                                          dataTimeline['data']['ship_tel'],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 15,
-                                          color: kFontPrimaryColor),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        launch("tel://" +
+                                            dataTimeline['data']['ship_tel']);
+                                      },
+                                      child: Text(
+                                        "โทร :" +
+                                            dataTimeline['data']['ship_tel'],
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 15,
+                                            color: kFontPrimaryColor),
+                                      ),
                                     ),
                                   ),
                                 ],
