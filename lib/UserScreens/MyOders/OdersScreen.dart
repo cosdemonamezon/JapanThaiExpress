@@ -294,7 +294,7 @@ class _OdersScreenState extends State<OdersScreen> {
                           ),
                         )
                       : Text(
-                          subtitle.substring(0, 40) + "...",
+                          subtitle.substring(0, 30) + "...",
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
