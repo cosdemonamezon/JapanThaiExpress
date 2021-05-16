@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:JapanThaiExpress/AdminScreens/Exchange/ExchangeDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Settings/SettingScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/SplashScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginPin.dart';
@@ -57,6 +58,7 @@ import 'package:http/http.dart' as http;
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'AdminScreens/Depository/DepositoryScreen.dart';
+import 'AdminScreens/Exchange/ExchangeScreen.dart';
 import 'AdminScreens/Home/HomeScreen.dart';
 import 'AdminScreens/Home/HomeScreen.dart';
 import 'Screens/Login/ForgotScreen.dart';
@@ -169,8 +171,9 @@ var routes = <String, WidgetBuilder>{
   "/messageuser": (BuildContext context) => MessageScreen(),
   "/settingadmin": (BuildContext context) => SettingScreen(),
   "/timelineauction": (BuildContext context) => Timelineauction(),
-  "/buystuff":(BuildContext context) => Buystuff(),
-  "/homescreen":(BuildContext context) => HomeScreen(),
+  "/homescreen": (BuildContext context) => HomeScreen(),
+  "/exchangedetail": (BuildContext context) => ExchangeDetailScreen(),
+  "/buystuff": (BuildContext context) => Buystuff(),
 };
 
 class MyApp extends StatelessWidget {
