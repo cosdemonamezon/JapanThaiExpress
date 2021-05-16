@@ -15,6 +15,7 @@ class MyNavigator {
   static void goToHome(BuildContext context) {
     Navigator.pushNamed(context, "/home");
   }
+
   static void goToHomeScreen(BuildContext context) {
     Navigator.pushNamed(context, "/homescreen");
   }
@@ -38,6 +39,10 @@ class MyNavigator {
 
   static void goToDepositDetail(BuildContext context, arg) {
     Navigator.pushNamed(context, '/depositdetail', arguments: arg);
+  }
+
+  static void goToExchangeDetail(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/exchangedetail', arguments: arg);
   }
 
   static void goTomessageuser(BuildContext context) {

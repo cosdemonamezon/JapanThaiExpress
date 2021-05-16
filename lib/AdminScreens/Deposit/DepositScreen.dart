@@ -411,7 +411,19 @@ class _DepositScreenState extends State<DepositScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    var arg = {
+                                      "account_name": DepositScreendata[index]
+                                              ['account_name']
+                                          .toString(),
+                                      "amount": DepositScreendata[index]
+                                              ['amount']
+                                          .toString(),
+                                      "slip": DepositScreendata[index]["slip"]
+                                          .toString(),
+                                    };
+                                    MyNavigator.goToDepositDetail(context, arg);
+                                  },
                                   child: Card(
                                     color: Colors.white,
                                     elevation: 4.0,
@@ -492,29 +504,13 @@ class _DepositScreenState extends State<DepositScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: [
-                                          
-                                          IconButton(
-                                            icon: const Icon(Icons
+                                            IconButton(
+                                              icon: const Icon(Icons
                                                   .keyboard_arrow_right_outlined),
-                                          color: Color(0xffdd4b39),
-                                          onPressed: () {
-                                            var arg = {
-                                              "account_name":
-                                                  DepositScreendata[index]
-                                                          ['account_name']
-                                                      .toString(),
-                                              "amount": DepositScreendata[index]
-                                                      ['amount']
-                                                  .toString(),
-                                              "slip": DepositScreendata[index]
-                                                      ["slip"]
-                                                  .toString(),
-                                            };
-                                            MyNavigator.goToDepositDetail(
-                                                context, arg);
-                                          },
-                                         ), 
-                                        ],),
+                                              color: Color(0xffdd4b39),
+                                            ),
+                                          ],
+                                        ),
                                         onTap: () {},
                                       ),
                                     ),
