@@ -568,6 +568,7 @@ class _AuctionState extends State<Auction> {
                           itemCount: auctiondata.length,
                           itemBuilder: (BuildContext context, int index) {
                             return buildCard(
+                              auctiondata[index]['image'],
                               auctiondata[index]['name'],
                               auctiondata[index]['code'] == null
                                   ? 'ไม่มีข้อมูล'
@@ -578,7 +579,7 @@ class _AuctionState extends State<Auction> {
                               auctiondata[index]['track_jp'] == null
                                   ? 'ไม่มีข้อมูล'
                                   : auctiondata[index]['track_jp'],
-                              auctiondata[index]['image'],
+                              
                             );
                           }
                           // buildCard(
@@ -954,15 +955,16 @@ class _AuctionState extends State<Auction> {
   }
 
   Card buildCard(
-      String title, String title2, String title3, String title4, String image) {
+      String image, String title, String title2, String title3, String title4, ) {
     return Card(
       child: ListTile(
-        leading: CircleAvatar(
-          radius: 25,
-          backgroundImage: image == null
-              ? NetworkImage(image)
-              : NetworkImage("https://picsum.photos/200/300"),
-        ),
+        leading: Container(
+              width: 90,
+              height: 150,
+              child: Image.network(
+                image,
+                fit: BoxFit.cover,
+              )),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,

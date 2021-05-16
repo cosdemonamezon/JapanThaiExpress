@@ -171,7 +171,7 @@ class _BuystuffState extends State<Buystuff> {
           // print(totalResults);
           // print("test");
           // print(listdata.length);
-          // print(listdata[0]['name']);
+           print(listdata[0]['status']);
         });
       } else {
         setState(() {
