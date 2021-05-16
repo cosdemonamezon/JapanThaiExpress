@@ -41,7 +41,7 @@ class _ServiceState extends State<Service> {
     _getBanners();
   }
 
-  _getBanners() async{
+  _getBanners() async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -51,16 +51,13 @@ class _ServiceState extends State<Service> {
     });
 
     var url = Uri.parse(pathAPI + 'api/banners');
-    var response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token['data']['token']
-      }
-    );
+    var response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token['data']['token']
+    });
     if (response.statusCode == 200) {
       final Map<String, dynamic> imgdata = convert.jsonDecode(response.body);
-      if (imgdata['code']==200) {
+      if (imgdata['code'] == 200) {
         setState(() {
           banner = imgdata['data'];
           // for (var i = 0; i < banner.length; i++) {
@@ -68,10 +65,8 @@ class _ServiceState extends State<Service> {
           // }
         });
         print(banner);
-      } else {
-      }
-    } else {
-    }
+      } else {}
+    } else {}
   }
 
   @override
@@ -83,13 +78,13 @@ class _ServiceState extends State<Service> {
         //centerTitle: true,
         title: Text("บริการของเรา"),
         leading: IconButton(
-          onPressed: () {
-            MyNavigator.goBackUserHome(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_ios_rounded,
-            color: Colors.white,
-          )),
+            onPressed: () {
+              MyNavigator.goBackUserHome(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: Colors.white,
+            )),
       ),
       body: Container(
         height: height,
@@ -97,38 +92,51 @@ class _ServiceState extends State<Service> {
         child: Column(
           children: [
             Container(
+              //height: height*0.2,
+              //color: Colors.amber,
               width: double.infinity,
               child: CarouselSlider.builder(
-                itemCount: banner.length,
-                options: CarouselOptions(
-                  autoPlay: true,
-                  aspectRatio: 2.0,
-                  viewportFraction: 0.75,
-                  enlargeCenterPage: true,
-                  initialPage: 9,
-                ),
-                itemBuilder: (context, index, realIdx){
-                  if (banner.length != 0) {
-                    return Container(
-                      child: Center(
-                        child: Image.network(banner[index]['path'], fit: BoxFit.cover,),
-                      ),
-                    );
-                  }
-                }
-              ),
+                  itemCount: banner.length,
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    aspectRatio: 2.1,
+                    viewportFraction: 0.85,
+                    enlargeCenterPage: true,
+                    initialPage: 9,
+                    scrollDirection: Axis.horizontal,
+                    autoPlayInterval: Duration(seconds: 5),
+                    autoPlayAnimationDuration: Duration(milliseconds: 3000),
+                  ),
+                  itemBuilder: (context, index, realIdx) {
+                    if (banner.length != 0) {
+                      return Container(
+                        height: height*0.55,
+                        child: Center(
+                          child: Image.network(
+                            banner[index]['path'],
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      );
+                    }
+                  }),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(3.0),
                 children: [
-                  dashboardItem("รับฝากส่ง", Icons.local_shipping_outlined, 1, context),
-                  dashboardItem("รับฝากซื้อ", Icons.shopping_cart_outlined, 2, context),
-                  dashboardItem("ประมูลสินค้า", Icons.monetization_on_outlined, 3, context),
-                  dashboardItem("รับโอนเงิน", Icons.local_atm_outlined, 4, context),
-                  
+                  dashboardItem(
+                      "รับฝากส่ง", Icons.local_shipping_outlined, 1, context),
+                  dashboardItem(
+                      "รับฝากซื้อ", Icons.shopping_cart_outlined, 2, context),
+                  dashboardItem("ประมูลสินค้า", Icons.monetization_on_outlined,
+                      3, context),
+                  dashboardItem(
+                      "รับโอนเงิน", Icons.local_atm_outlined, 4, context),
                 ],
               ),
             ),
@@ -154,7 +162,6 @@ Card dashboardItem(String title, IconData icon, int page, context) {
           color: Color(0xFFfafafa),
           //color: Color(0xFF343434),
           //color: Color(0xFFd73925),
-          
         ),
         color: Color(0xFFfafafa),
         //color: Color(0xFFd73925),
@@ -163,8 +170,8 @@ Card dashboardItem(String title, IconData icon, int page, context) {
       child: new InkWell(
         onTap: () {
           if (page == 1) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => Deposit()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Deposit()));
           } else if (page == 2) {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Buystuff()));
@@ -172,9 +179,9 @@ Card dashboardItem(String title, IconData icon, int page, context) {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Auction()));
           } else if (page == 4) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => ReceiveMoney()));
-          } 
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ReceiveMoney()));
+          }
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -195,7 +202,8 @@ Card dashboardItem(String title, IconData icon, int page, context) {
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
                   title,
-                  style: new TextStyle(fontSize: 16.0, color: Color(0xFFd73925)),
+                  style:
+                      new TextStyle(fontSize: 16.0, color: Color(0xFFd73925)),
                 ),
               ),
             ),

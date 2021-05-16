@@ -2,6 +2,7 @@ import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -101,18 +102,31 @@ class _OdersScreenState extends State<OdersScreen> {
         setState(() {
           isLoading = false;
         });
-        //print('error from backend ${response.statusCode}');
-        final Map<String, dynamic> orderdata =
-            convert.jsonDecode(response.body);
-        showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (context) => alert404(
-            orderdata['message'],
-            picWanning,
-            context,
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
           ),
-        );
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+        //print('error from backend ${response.statusCode}');
+        // final Map<String, dynamic> orderdata =
+        //     convert.jsonDecode(response.body);
+        // showDialog(
+        //   barrierDismissible: false,
+        //   context: context,
+        //   builder: (context) => alert404(
+        //     orderdata['message'],
+        //     picWanning,
+        //     context,
+        //   ),
+        // );
       }
     } catch (e) {
       setState(() {
@@ -206,7 +220,7 @@ class _OdersScreenState extends State<OdersScreen> {
         title: Row(
           children: [
             Container(
-              width: width*0.20,
+              width: width * 0.20,
               //color: Colors.blue,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,7 +270,7 @@ class _OdersScreenState extends State<OdersScreen> {
               ),
             ),
             Container(
-              width: width*0.65,
+              width: width * 0.65,
               //color: Colors.red,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

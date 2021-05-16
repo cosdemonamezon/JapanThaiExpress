@@ -1238,7 +1238,7 @@ class _BuystuffState extends State<Buystuff> {
         showDialog(
           barrierDismissible: false,
           context: context,
-          builder: (context) => alertAddmember(
+          builder: (context) => alertAddmember2(
             creatdata['message'],
             picSuccess,
             context,
