@@ -33,7 +33,7 @@ class _DepositDetailScreenState extends State<DepositDetailScreen> {
               ),
               Center(
                 child: Container(
-                  height: 200,
+                  height: 0,
                   decoration: BoxDecoration(),
                   child: Image.network(
                     data['slip'],

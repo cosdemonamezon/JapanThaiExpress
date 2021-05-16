@@ -31,6 +31,7 @@ import 'package:JapanThaiExpress/UserScreens/Products/details/OrderProduct.dart'
 import 'package:JapanThaiExpress/UserScreens/Profile/ProfileScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/HelpCenter.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/HelpDetail.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/Buystuff.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveDetail.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
@@ -172,6 +173,7 @@ var routes = <String, WidgetBuilder>{
   "/timelineauction": (BuildContext context) => Timelineauction(),
   "/homescreen": (BuildContext context) => HomeScreen(),
   "/exchangedetail": (BuildContext context) => ExchangeDetailScreen(),
+  "/buystuff": (BuildContext context) => Buystuff(),
 };
 
 class MyApp extends StatelessWidget {

@@ -24,8 +24,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
   int pageSize = 10;
   bool isLoading = false;
   SharedPreferences prefs;
-  List<dynamic> data = [];
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  List<dynamic> members = [];
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -61,56 +62,57 @@ class _CustomerScreenState extends State<CustomerScreen> {
             Container(
               color: Colors.grey[300],
               child: isLoading == true
-              ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-              : ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: data.length,
-                  padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Card(
-                          color: Colors.white,
-                          elevation: 4.0,
-                          child: Container(
-                            decoration: BoxDecoration(color: Colors.white),
-                            child: ListTile(
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 10.0),
-                              leading: Container(
-                                padding: EdgeInsets.only(right: 14.0),
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        right: BorderSide(
-                                            width: 2.0, color: primaryColor))),
-                                child: Image.network(
-                                    'https://picsum.photos/200/300',
-                                    width: 70),
-                              ),
-                              title: Text('Anon Thamcharoen'),
-                              subtitle: Text('0859908017'),
-                              trailing: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(
-                                        Icons.keyboard_arrow_right_outlined),
-                                    color: Colors.orange[900],
-                                    iconSize: 30,
-                                    onPressed: () {},
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: members.length,
+                      padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Card(
+                              color: Colors.white,
+                              elevation: 4.0,
+                              child: Container(
+                                decoration: BoxDecoration(color: Colors.white),
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 10.0),
+                                  leading: Container(
+                                    padding: EdgeInsets.only(right: 14.0),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            right: BorderSide(
+                                                width: 2.0,
+                                                color: primaryColor))),
+                                    child: Image.network(
+                                        'https://picsum.photos/200/300',
+                                        width: 70),
                                   ),
-                                ],
+                                  title: Text(members[index]['fname_th'] + ' ' + members[index]['lname_th']),
+                                  subtitle: Text(members[index]['tel']),
+                                  trailing: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons
+                                            .keyboard_arrow_right_outlined),
+                                        color: Colors.orange[900],
+                                        iconSize: 30,
+                                        onPressed: () {},
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    );
-                  }),
+                        );
+                      }),
             ),
           ],
         ),
@@ -136,9 +138,10 @@ class _CustomerScreenState extends State<CustomerScreen> {
       final Map<String, dynamic> depdata = jsonDecode(response.body);
       setState(() {
         totalResults = depdata['data']['total'];
-        data.addAll(depdata['data']['data']);
+        members.addAll(depdata['data']['data']);
         isLoading = false;
       });
+      print(members);
     } else {
       setState(() {
         isLoading = false;

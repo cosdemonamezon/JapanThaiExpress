@@ -120,7 +120,6 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           // print(exchangedata[1]['description']);
         });
       } else {
-        
         setState(() {
           isLoading = false;
         });
@@ -161,18 +160,18 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
       });
     } else {
       var feedback = convert.jsonDecode(response.body);
-        Flushbar(
-          title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
-          backgroundColor: Colors.redAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          duration: Duration(seconds: 3),
-          leftBarIndicatorColor: Colors.blue[300],
-        )..show(context);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
     }
   }
 
@@ -225,18 +224,18 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
       }
     } else {
       var feedback = convert.jsonDecode(response.body);
-        Flushbar(
-          title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
-          backgroundColor: Colors.redAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          duration: Duration(seconds: 3),
-          leftBarIndicatorColor: Colors.blue[300],
-        )..show(context);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
     }
   }
 
@@ -324,18 +323,18 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
       print(trandata['message']);
     } else {
       var feedback = convert.jsonDecode(response.body);
-        Flushbar(
-          title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
-          backgroundColor: Colors.redAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          duration: Duration(seconds: 3),
-          leftBarIndicatorColor: Colors.blue[300],
-        )..show(context);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
     }
   }
 
@@ -347,7 +346,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          centerTitle: true,
+            centerTitle: true,
             title: Text("รับโอนเงิน"),
             leading: IconButton(
                 onPressed: () {
@@ -860,13 +859,31 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
     String img,
   ) {
     return Card(
-      child: ListTile(
+      child: GestureDetector(
+        onTap: () {
+          var arg = {
+            "id": id,
+            "code": title,
+            "bank": title2,
+            "total": title3,
+            "description": title4,
+            "date": date,
+            "fee": fee,
+            "name": name,
+            "account": account,
+            "status": status,
+            "img": img,
+            //MyNavigator.goToTimelineOrders(context);
+          };
+          MyNavigator.goToReceiveDetail(context, arg);
+        },
+        child: ListTile(
           title: Row(
             children: [
               Container(
                 //color: Colors.blueAccent,
                 width: 100,
-                
+
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -992,71 +1009,70 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
               ),
             ],
           ),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            
-            children: [
-              IconButton(
-                icon: const Icon(Icons.keyboard_arrow_right_outlined),
-                color: Colors.orange[900],
-                iconSize: 30,
-                onPressed: () {
-                   var arg = {
-                    "id": id,
-                    "code": title,
-                    "bank": title2,
-                    "total": title3,
-                    "description": title4,
-                    "date": date,
-                    "fee": fee,
-                    "name": name,
-                    "account": account,
-                    "status": status,
-                    "img": img,
+          trailing: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+            IconButton(
+              icon: const Icon(Icons.keyboard_arrow_right_outlined),
+              color: Colors.orange[900],
+              iconSize: 30,
+              onPressed: () {
+                var arg = {
+                  "id": id,
+                  "code": title,
+                  "bank": title2,
+                  "total": title3,
+                  "description": title4,
+                  "date": date,
+                  "fee": fee,
+                  "name": name,
+                  "account": account,
+                  "status": status,
+                  "img": img,
                   //MyNavigator.goToTimelineOrders(context);
                 };
                 MyNavigator.goToReceiveDetail(context, arg);
-                },
-              ),]
-          ),
+              },
+            ),
+          ]),
           /*subtitle: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              MaterialButton(
-                onPressed: () {
-                  var arg = {
-                    "id": id,
-                    "code": title,
-                    "bank": title2,
-                    "total": title3,
-                    "description": title4,
-                    "date": date,
-                    "fee": fee,
-                    "name": name,
-                    "account": account,
-                    "status": status,
-                    "img": img,
-                  };
-                  MyNavigator.goToReceiveDetail(context, arg);
-                  //MyNavigator.goToTimelineOrders(context);
-                  //String id,
-                  // String title,
-                  // String title2,
-                  // String title3,
-                  // String title4,
-                },
-                color: primaryColor,
-                child: Text(
-                  "ดูเพิ่ม",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 12,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                MaterialButton(
+                  onPressed: () {
+                    var arg = {
+                      "id": id,
+                      "code": title,
+                      "bank": title2,
+                      "total": title3,
+                      "description": title4,
+                      "date": date,
+                      "fee": fee,
+                      "name": name,
+                      "account": account,
+                      "status": status,
+                      "img": img,
+                    };
+                    MyNavigator.goToReceiveDetail(context, arg);
+                    //MyNavigator.goToTimelineOrders(context);
+                    //String id,
+                    // String title,
+                    // String title2,
+                    // String title3,
+                    // String title4,
+                  },
+                  color: primaryColor,
+                  child: Text(
+                    "ดูเพิ่ม",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
                   ),
-                ),
-              )
-            ],
-          )*/),
+                )
+              ],
+            )*/
+        ),
+      ),
     );
   }
 

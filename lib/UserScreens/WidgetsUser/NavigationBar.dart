@@ -1,5 +1,6 @@
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/Profile/ProfileScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/Contact.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NotificationScreen.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
@@ -67,7 +68,7 @@ class _NavigationBarState extends State<NavigationBar> {
                           color: Colors.white,
                           icon: Icon(Icons.notifications),
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => NotificationScreen()));
@@ -122,11 +123,11 @@ class _NavigationBarState extends State<NavigationBar> {
                           color: Colors.white,
                           icon: Icon(Icons.settings),
                           onPressed: () {
-                            // Navigator.pushReplacement(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => SettingScreen()));
-                            MyNavigator.goToProfileScreen(context);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProfileScreen()));
+                            //MyNavigator.goToProfileScreen(context);
                           }),
                     ),
                     Text(
