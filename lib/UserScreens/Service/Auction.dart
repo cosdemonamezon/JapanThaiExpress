@@ -36,6 +36,7 @@ class _AuctionState extends State<Auction> {
   int totalResults = 0;
   List<dynamic> auctiondata = []; //ประกาศตัวแปร อาร์เรย์ ไว้
   final _formKey = GlobalKey<FormBuilderState>();
+  final _formKey1 = GlobalKey<FormBuilderState>();
   bool isLoading = false;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -45,6 +46,11 @@ class _AuctionState extends State<Auction> {
   Io.File _image;
   final picker = ImagePicker();
   String img64;
+  int id;
+  String name;
+  String add;
+  String tel;
+  List address = [];
 
   @override
   void initState() {
@@ -54,6 +60,52 @@ class _AuctionState extends State<Auction> {
     // _addressMem();
     _depositoryType();
     _settingApp();
+    _addressMem();
+  }
+
+  _addressMem() async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+
+    //print(token);
+    setState(() {
+      //isLoading = true;
+      // tokendata = token['data']['token'];
+    });
+    //print(tokendata);
+
+    var url = Uri.parse(pathAPI + 'api/address_mem');
+    var response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token['data']['token'],
+    });
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> addressdata =
+          convert.jsonDecode(response.body);
+      //print(addressdata);
+      setState(() {
+        address = addressdata['data'];
+        id = address[0]['id'];
+        name = address[0]['name'];
+        add = address[0]['address'];
+        tel = address[0]['tel'];
+      });
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
   }
 
   _shippingOption() async {
@@ -195,6 +247,7 @@ class _AuctionState extends State<Auction> {
         },
         body: ({
           //'amount': values['amount'],
+          'add_id': id.toString(),
           'url': values['url'],
           'name': values['name'],
           'budget': values['budget'],
@@ -235,6 +288,9 @@ class _AuctionState extends State<Auction> {
           duration: Duration(seconds: 3),
           leftBarIndicatorColor: Colors.blue[300],
         )..show(context);
+        setState(() {
+          isLoading = false;
+        });
       }
     } else {
       var feedback = convert.jsonDecode(response.body);
@@ -696,6 +752,30 @@ class _AuctionState extends State<Auction> {
                                       ))
                                   .toList(),
                             ),
+
+                            SizedBox(height: 10),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "ที่อยู่",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  ),
+                                  SizedBox(height: 10),
+                                  addressCard(
+                                    name == null ? "" : name,
+                                    add == null ? "" : add,
+                                    tel == null ? "" : tel,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 10),
+
                             Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Column(
@@ -954,4 +1034,450 @@ class _AuctionState extends State<Auction> {
       ),
     );
   }
+
+  Card addressCard(String title, String title1, String subtitle) {
+    return Card(
+      color: Colors.orange[50],
+      child: ListTile(
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            title == null
+                ? Text("...")
+                : Text(
+                    title,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: kTextButtonColor),
+                  ),
+            title1 == null
+                ? Text("...")
+                : Text(
+                    title1,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        color: kTextButtonColor),
+                  ),
+          ],
+        ),
+        subtitle: subtitle == null
+            ? Text("...")
+            : Text(
+                subtitle,
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: kTextButtonColor),
+              ),
+        trailing: IconButton(
+            icon: Icon(
+              Icons.edit,
+              size: 25,
+            ),
+            onPressed: () {
+              showDialog(
+                //barrierDismissible: false,
+                context: context,
+                builder: (context) => selectdialog(
+                  context,
+                ),
+              );
+              //selectdialog();
+            }),
+      ),
+    );
+  }
+
+  selectdialog(context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Constants.padding),
+      ),
+      elevation: 1,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.only(
+            left: Constants.padding,
+            top: Constants.avatarRadius - Constants.padding,
+            right: Constants.padding,
+            bottom: Constants.padding),
+        margin: EdgeInsets.only(top: Constants.avatarRadius),
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: kFontPrimaryColor,
+            borderRadius: BorderRadius.circular(Constants.padding),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black, offset: Offset(0, 2), blurRadius: 2),
+            ]),
+        child: Container(
+          height: 390,
+          child: Column(
+            children: [
+              Text("เลือกที่อยู่",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 18,
+                  )),
+              Container(
+                height: 300,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          physics: const ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: address.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return selectCard(
+                              address[index]['name'],
+                              address[index]['address'],
+                              address[index]['tel'],
+                              index,
+                            );
+                          }),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      //barrierDismissible: false,
+                      context: context,
+                      builder: (context) => addDialog(
+                        context,
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: 45,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                            color: Colors.grey.shade200,
+                            offset: Offset(2, 4),
+                            blurRadius: 5,
+                            spreadRadius: 2)
+                      ],
+                      gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
+                    ),
+                    child: Text("เพิ่มที่อยู่",
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Card selectCard(String title, String title1, String subtitle, int index) {
+    return Card(
+      color: kFontPrimaryColor,
+      child: ListTile(
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                  color: kTextButtonColor),
+            ),
+            Text(
+              title1,
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  color: kTextButtonColor),
+            ),
+          ],
+        ),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+              color: kTextButtonColor),
+        ),
+        trailing: IconButton(
+            icon: Icon(
+              Icons.edit,
+              size: 25,
+            ),
+            onPressed: () {
+              setState(() {
+                id = address[index]['id'];
+                name = title;
+                add = title1;
+                tel = subtitle;
+              });
+              Navigator.pop(context);
+              //selectdialog();
+            }),
+      ),
+    );
+  }
+
+  addDialog(context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Constants.padding),
+      ),
+      elevation: 1,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.only(
+            left: Constants.padding,
+            top: Constants.avatarRadius - Constants.padding,
+            right: Constants.padding,
+            bottom: Constants.padding),
+        margin: EdgeInsets.only(top: Constants.avatarRadius),
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: kFontPrimaryColor,
+            borderRadius: BorderRadius.circular(Constants.padding),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black, offset: Offset(0, 2), blurRadius: 2),
+            ]),
+        child: Container(
+          height: 390,
+          child: SingleChildScrollView(
+            child: FormBuilder(
+              key: _formKey1,
+              initialValue: {
+                'name': '',
+                'description': '',
+                'tel': '',
+              },
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Name",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: 'name',
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            // FormBuilderValidators.numeric(context),
+                            // FormBuilderValidators.max(context, 70),
+                          ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Description",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: 'description',
+                          maxLines: 2,
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            // FormBuilderValidators.numeric(context),
+                            // FormBuilderValidators.max(context, 70),
+                          ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Tel",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          keyboardType: TextInputType.number,
+                          name: 'tel',
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            // FormBuilderValidators.numeric(context),
+                            // FormBuilderValidators.max(context, 70),
+                          ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            if (_formKey1.currentState.validate()) {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              _formKey1.currentState.save();
+                              _createAddmem(_formKey1.currentState.value);
+                            } else {}
+                            // _formKey.currentState.save();
+                            // print(_formKey.currentState.value);
+                            // _preorderMem(
+                            //     _formKey.currentState.value);
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                    color: Colors.grey.shade200,
+                                    offset: Offset(2, 4),
+                                    blurRadius: 5,
+                                    spreadRadius: 2)
+                              ],
+                              gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Color(0xffdd4b39),
+                                    Color(0xffdd4b39)
+                                  ]),
+                            ),
+                            child: isLoading == true
+                                ? Center(child: CircularProgressIndicator())
+                                : Text(
+                                    "ยืนยัน",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ),
+                          ),
+                        ),
+                        SizedBox(height: 15),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _createAddmem(Map<String, dynamic> values) async {
+    print(values);
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    var url = Uri.parse(pathAPI + 'api/create_add_mem');
+    var response = await http.post(url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        body: ({
+          'name': values['name'],
+          'address': values['description'],
+          'tel': values['tel'],
+        }));
+    if (response.statusCode == 201) {
+      final Map<String, dynamic> creatdata = convert.jsonDecode(response.body);
+      if (creatdata['code'] == 201) {
+        setState(() {
+          isLoading = false;
+        });
+        String picSuccess = "assets/success.png";
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => alertAddmember(
+            creatdata['message'],
+            picSuccess,
+            context,
+          ),
+        );
+      } else {
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+      }
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
+  }
+
 }

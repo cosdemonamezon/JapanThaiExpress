@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:JapanThaiExpress/AdminScreens/Exchange/ExchangeDetailScreen.dart';
 
 class ExchangeScreen extends StatefulWidget {
   ExchangeScreen({Key key}) : super(key: key);
@@ -213,11 +214,16 @@ class _ExchangeScreenState extends State<ExchangeScreen> {
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
                                   onTap: () {
-                                    var arg = {
-                                      "id": ExchangeScreendata[index]['id'],
-                                    };
-                                    MyNavigator.goToExchangeDetail(
-                                        context, arg);
+                                    // var arg = {
+                                    //   "id": ExchangeScreendata[index]['id'],
+                                    // };
+                                    // MyNavigator.goToExchangeDetail(
+                                    //     context, arg);
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ExchangeDetailScreen()));
                                   },
                                   child: Card(
                                     color: Colors.white,
