@@ -396,6 +396,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                         ),
                       ),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
                             height: 20,
@@ -491,9 +492,12 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                               SizedBox(
                                 width: 20,
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                              
+                            ],
+                          ),
+                          Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -508,8 +512,6 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                     ),
                                   ),
                                 ],
-                              ),
-                            ],
                           ),
                         ],
                       ),

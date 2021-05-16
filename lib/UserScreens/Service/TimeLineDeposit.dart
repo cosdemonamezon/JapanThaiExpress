@@ -1,4 +1,3 @@
-
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
@@ -12,7 +11,6 @@ import 'package:JapanThaiExpress/constants.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 
 const order_processed = "assets/images/order_processed.svg";
 const order_confirmed = "assets/images/order_confirmed.svg";
@@ -320,8 +318,8 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Deposit()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Deposit()));
             }),
       ),
       body: isLoading == true
@@ -381,6 +379,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                         ),
                       ),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
                             height: 20,
@@ -390,8 +389,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                             child: Row(
                               children: [
                                 Text(
-                                  " เลขที่ : " +
-                                          dataTimeline['data']['code'],
+                                  " เลขที่ : " + dataTimeline['data']['code'],
                                   style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 14,
@@ -444,10 +442,9 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                                   ),
                                 ],
                               ),
-                             
                             ],
                           ),
-                           _divider2(),
+                          _divider2(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -474,23 +471,23 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                               SizedBox(
                                 width: 20,
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "โทร :" +
-                                          dataTimeline['data']['ship_tel']
-                                              .toString(),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 15,
-                                          color: kFontPrimaryColor),
-                                    ),
-                                  ),
-                                ],
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "โทร :" +
+                                      dataTimeline['data']['ship_tel']
+                                          .toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 15,
+                                      color: kFontPrimaryColor),
+                                ),
                               ),
                             ],
                           ),
@@ -551,7 +548,6 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                             ),
                           ),
                         ),
-                        
                       ],
                     ),
                     SizedBox(
@@ -742,8 +738,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -805,7 +800,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "order" ) {
+                                dataTimeline['data']['step'] == "order") {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -955,8 +950,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1056,8 +1050,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1107,7 +1100,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "store_thai" ) {
+                                dataTimeline['data']['step'] == "store_thai") {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -1238,8 +1231,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
