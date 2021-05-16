@@ -368,7 +368,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                       height: 20,
                     ),
                     Container(
-                      height: 110,
+                      //height: 110,
                       width: MediaQuery.of(context).size.width - 20,
                       //color: Colors.red,
                       decoration: BoxDecoration(
@@ -390,7 +390,8 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                             child: Row(
                               children: [
                                 Text(
-                                  "ฝากส่งสินค้า" + " No.",
+                                  " เลขที่ : " +
+                                          dataTimeline['data']['code'],
                                   style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 14,
@@ -413,9 +414,12 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                                       dataTimeline.length > 0
                                           ? dataTimeline['data']['description']
                                           : " - ",
+                                      // dataTimeline.length > 0
+                                      //     ? dataTimeline['data']['description']
+                                      //     : " - ",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 22,
+                                          fontSize: 18,
                                           color: kFontPrimaryColor),
                                     ),
                                   ),
@@ -435,6 +439,54 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 18,
+                                          color: kFontPrimaryColor),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                             
+                            ],
+                          ),
+                           _divider2(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      dataTimeline.length > 0
+                                          ? "ชื่อลูกค้า :" +
+                                              dataTimeline['data']['ship_name']
+                                                  .toString()
+                                          : " - ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: kFontPrimaryColor),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "โทร :" +
+                                          dataTimeline['data']['ship_tel']
+                                              .toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
                                           color: kFontPrimaryColor),
                                     ),
                                   ),
@@ -1264,6 +1316,25 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
               ),
             ),
       bottomNavigationBar: NavigationBar(),
+    );
+  }
+
+  _divider2() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Divider(
+                thickness: 1,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
