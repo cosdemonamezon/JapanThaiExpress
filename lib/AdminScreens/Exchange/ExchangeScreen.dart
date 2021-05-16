@@ -214,16 +214,16 @@ class _ExchangeScreenState extends State<ExchangeScreen> {
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
                                   onTap: () {
-                                    // var arg = {
-                                    //   "id": ExchangeScreendata[index]['id'],
-                                    // };
-                                    // MyNavigator.goToExchangeDetail(
-                                    //     context, arg);
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ExchangeDetailScreen()));
+                                    var arg = {
+                                      "id": ExchangeScreendata[index]['id'],
+                                    };
+                                    MyNavigator.goToExchangeDetail(
+                                        context, arg);
+                                    // Navigator.pushReplacement(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             ExchangeDetailScreen()));
                                   },
                                   child: Card(
                                     color: Colors.white,
