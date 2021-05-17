@@ -259,7 +259,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         },
         body: ({
           //'amount': values['amount'],
-          'amount': sum,
+          'amount': values['amount'],
           'account_no': values['account_no'],
           'account_name': values['account_name'],
           'bank': values['bank'],
@@ -277,13 +277,14 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         setState(() {
           isLoading = false;
         });
+        print(tranfer['data']['total']);
         String picSuccess = "assets/success.png";
         showDialog(
           barrierDismissible: false,
           context: context,
           builder: (context) => alertdialog(
             tranfer['message'],
-            tranfer['data']['total'].toString(),
+            tranfer['data']['total'].toStringAsFixed(2),
             tranfer['data']['code'],
             tranfer['data']['updated_at'],
             picSuccess,
@@ -588,7 +589,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                                 // print(c);
                                 setState(() {
                                   _sum =
-                                      TextEditingController(text: d.toString());
+                                      TextEditingController(text: d.toStringAsFixed(2));
                                   sum = d.toString();
                                 });
                                 // print(sum);
