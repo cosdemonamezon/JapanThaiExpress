@@ -1328,14 +1328,7 @@ class _BuystuffState extends State<Buystuff> {
                   fontSize: 14,
                 ),
               ),
-              Text(
-                "tag：" + title5,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
-              )
+              
             ],
           ),
           trailing: Column(
