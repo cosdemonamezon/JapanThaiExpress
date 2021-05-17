@@ -352,7 +352,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
             leading: IconButton(
                 onPressed: () {
                   //MyNavigator.goToService(context);
-                  Navigator.pop(context);
+                  MyNavigator.goToService(context);
                   // Navigator.push(
                   //   context, MaterialPageRoute(builder: (context) => Service()));
                 },
@@ -386,7 +386,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           children: [
             Container(
               height: height,
-              color: Colors.grey[300],
+              color: Colors.white,
               child: isLoading == true
                   ? Center(
                       child: CircularProgressIndicator(),
@@ -1137,7 +1137,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                   ),
                   child: FlatButton(
                     onPressed: () {
-                      MyNavigator.goToWallet(context);
+                      Navigator.pop(context);
                     },
                     child: Text(
                       "ตกลง",

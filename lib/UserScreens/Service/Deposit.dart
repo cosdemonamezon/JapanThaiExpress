@@ -526,7 +526,7 @@ class _DepositState extends State<Deposit> {
             children: [
               Container(
                 height: height,
-                color: Colors.grey[300],
+                color: Colors.white,
                 child: isLoading == true
                     ? Center(
                         child: CircularProgressIndicator(),
