@@ -273,7 +273,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 ),
                 SizedBox(height: 20),
                 Container(
-                  height: 350,
+                  height: 300,
                   child: SmartRefresher(
                     enablePullDown: true,
                     enablePullUp: true,

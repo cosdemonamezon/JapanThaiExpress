@@ -107,7 +107,7 @@ class _DepositState extends State<Deposit> {
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
       var url = Uri.parse(pathAPI +
-          'api/get_depository?status=&page=$page&page_size=$pageSize');
+          'api/add/depositorys?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {

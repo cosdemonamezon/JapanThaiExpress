@@ -527,7 +527,7 @@ class _AuctionState extends State<Auction> {
           body: TabBarView(children: [
             Container(
               height: height,
-              color: Colors.grey[300],
+              color: Colors.white,
               child: isLoading == true
                   ? Center(
                       child: CircularProgressIndicator(),
@@ -967,7 +967,7 @@ class _AuctionState extends State<Auction> {
               )),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               "ชื่อ：" + title,
@@ -993,18 +993,11 @@ class _AuctionState extends State<Auction> {
                 fontSize: 14,
               ),
             ),
-            Text(
-              "tag：" + title4,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 14,
-              ),
-            )
+            
           ],
         ),
         trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             IconButton(
               icon: const Icon(Icons.keyboard_arrow_right_outlined),
