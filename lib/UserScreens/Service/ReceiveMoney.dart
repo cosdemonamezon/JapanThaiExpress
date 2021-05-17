@@ -428,20 +428,20 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                           itemBuilder: (BuildContext context, int index) {
                             return buildCard(
                               exchangedata[index]['id'].toString(),
-                              exchangedata[index]['code'],
-                              exchangedata[index]['bank'],
-                              exchangedata[index]['total'],
+                              exchangedata[index]['code'].toString(),
+                              exchangedata[index]['bank'].toString(),
+                              exchangedata[index]['total'].toString(),
                               exchangedata[index]['description'] == null
                                   ? 'ไม่มีข้อมูล'
-                                  : exchangedata[index]['description'],
-                              exchangedata[index]['created_at'],
-                              exchangedata[index]['status'],
-                              exchangedata[index]['fee'],
-                              exchangedata[index]['account_name'],
-                              exchangedata[index]['account_no'],
+                                  : exchangedata[index]['description'].toString(),
+                              exchangedata[index]['created_at'].toString(),
+                              exchangedata[index]['status'].toString(),
+                              exchangedata[index]['fee'].toString(),
+                              exchangedata[index]['account_name'].toString(),
+                              exchangedata[index]['account_no'].toString(),
                               exchangedata[index]['slip'] == null
                                   ? 'ไม่มีข้อมูล'
-                                  : exchangedata[index]['slip'],
+                                  : exchangedata[index]['slip'].toString(),
                             );
                           }),
                     ),
