@@ -6,9 +6,14 @@ import 'package:JapanThaiExpress/UserScreens/Promotion/PromotionScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 import 'package:JapanThaiExpress/UserScreens/Wallet/WalletScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
+import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class DashbordScreen extends StatefulWidget {
   DashbordScreen({Key key}) : super(key: key);
@@ -18,15 +23,88 @@ class DashbordScreen extends StatefulWidget {
 }
 
 class _DashbordScreenState extends State<DashbordScreen> {
-  List<String> pathimg = [
-    "assets/o1.jpg",
-    "assets/o2.jpg",
-    "assets/o3.jpg",
-    "assets/o4.jpg",
-    "assets/o5.jpg",
-    "assets/o6.jpg",
-    "assets/o7.jpg",
-  ];
+  SharedPreferences prefs;
+  Map<String, dynamic> dashboard = {};
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _getDashboard();
+  }
+
+  _getDashboard() async {
+    try {
+      prefs = await SharedPreferences.getInstance();
+      var tokenString = prefs.getString('token');
+      var token = convert.jsonDecode(tokenString);
+      var url = Uri.parse(pathAPI + 'api/app/dashboard');
+      var response = await http.get(
+        url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> dashboarddata =
+            convert.jsonDecode(response.body);
+        if (dashboarddata['code'] == 200) {
+          setState(() {
+            dashboard = dashboarddata['data'];
+            isLoading = false;
+          });
+          print(dashboard);
+          Flushbar(
+            //title: '${feedback['message']}',
+            flushbarPosition: FlushbarPosition.TOP,
+            flushbarStyle: FlushbarStyle.FLOATING,
+            message: '${dashboarddata['message']}',
+            backgroundColor: Colors.greenAccent,
+            icon: Icon(
+              Icons.error,
+              size: 28.0,
+              color: Colors.white,
+            ),
+            duration: Duration(seconds: 3),
+            leftBarIndicatorColor: Colors.blue[300],
+          )..show(context);
+        } else {
+          Flushbar(
+            title: '${dashboarddata['message']}',
+            message: 'รหัสข้อผิดพลาด : ${dashboarddata['code']}',
+            backgroundColor: Colors.redAccent,
+            icon: Icon(
+              Icons.error,
+              size: 28.0,
+              color: Colors.white,
+            ),
+            duration: Duration(seconds: 3),
+            leftBarIndicatorColor: Colors.blue[300],
+          )..show(context);
+        }
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,41 +134,111 @@ class _DashbordScreenState extends State<DashbordScreen> {
             SizedBox(
               height: 10,
             ),
-            // Container(
-            //   width: double.infinity,
-            //   child: CarouselSlider.builder(
-            //     itemCount: pathimg.length,
-            //     options: CarouselOptions(
-            //       autoPlay: true,
-            //       aspectRatio: 2.0,
-            //       viewportFraction: 0.75,
-            //       enlargeCenterPage: true,
-            //       initialPage: 9,
-            //     ),
-            //     itemBuilder: (context, index, realIdx){
-            //       if (pathimg.length != 0) {
-            //         return Container(
-            //           child: Center(
-            //             child: Image.asset(pathimg[index], fit: BoxFit.cover,),
-            //           ),
-            //         );
-            //       }
-            //     }
-            //   ),
-            // ),
-            // SizedBox(height: 30,),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(3.0),
                 children: [
-                  dashboardItem(
-                      "รายการซื้อสินค้า", Icons.add_shopping_cart, 1, context),
-                  dashboardItem("บริการของเรา", Icons.local_shipping_outlined,
-                      2, context),
+                  Stack(
+                    children: [
+                      dashboardItem("รายการซื้อสินค้า", Icons.add_shopping_cart,
+                          1, context),
+                      Positioned(
+                        right: 70,
+                        left: 100,
+                        top: 0,
+                        bottom: 95,
+                        child: dashboard['order'] != 0
+                            ? Container(
+                                //color: Colors.red,
+                                // height: 60,
+                                // width: 60,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.red,
+                                  //color: Color(0xFFe0f2f1),
+                                ),
+                                child: Center(
+                                    child: Text(dashboard['order'].toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))),
+                              )
+                            : SizedBox(
+                                height: 2,
+                              ),
+                      ),
+                    ],
+                  ),
+                  Stack(
+                    children: [
+                      dashboardItem("บริการของเรา",
+                          Icons.local_shipping_outlined, 2, context),
+                      Positioned(
+                        right: 70,
+                        left: 100,
+                        top: 0,
+                        bottom: 95,
+                        child: dashboard['service'] != 0
+                            ? Container(
+                                //color: Colors.red,
+                                // height: 60,
+                                // width: 60,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.red,
+                                  //color: Color(0xFFe0f2f1),
+                                ),
+                                child: Center(
+                                    child: Text(dashboard['service'].toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))),
+                              )
+                            : SizedBox(
+                                height: 2,
+                              ),
+                      ),
+                    ],
+                  ),
                   dashboardItem("สินค้า", Icons.store_outlined, 3, context),
-                  dashboardItem("กระเป๋าสตางค์",
-                      Icons.account_balance_wallet_outlined, 4, context),
+                  Stack(
+                    children: [
+                      dashboardItem("กระเป๋าสตางค์",
+                          Icons.account_balance_wallet_outlined, 4, context),
+                      Positioned(
+                        right: 70,
+                        left: 100,
+                        top: 0,
+                        bottom: 95,
+                        child: dashboard['wallet'] != 0
+                            ? Container(
+                                //color: Colors.red,
+                                // height: 60,
+                                // width: 60,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.red,
+                                  //color: Color(0xFFe0f2f1),
+                                ),
+                                child: Center(
+                                    child: Text(dashboard['wallet'].toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))),
+                              )
+                            : SizedBox(
+                                height: 2,
+                              ),
+                      ),
+                    ],
+                  ),
                   dashboardItem("ข่าว", Icons.web_outlined, 5, context),
                   dashboardItem("โปรโมชั่น", Icons.redeem, 6, context),
                 ],
