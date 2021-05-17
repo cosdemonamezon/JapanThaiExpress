@@ -508,6 +508,7 @@ class _DepositScreenState extends State<DepositScreen> {
                                               icon: const Icon(Icons
                                                   .keyboard_arrow_right_outlined),
                                               color: Color(0xffdd4b39),
+                                              onPressed: () {},
                                             ),
                                           ],
                                         ),
