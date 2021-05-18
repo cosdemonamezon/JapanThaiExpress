@@ -56,20 +56,20 @@ class _HomeScreenState extends State<HomeScreen> {
             isLoading = false;
           });
           print(dashboard);
-          Flushbar(
-            //title: '${feedback['message']}',
-            flushbarPosition: FlushbarPosition.TOP,
-            flushbarStyle: FlushbarStyle.FLOATING,
-            message: '${dashboarddata['message']}',
-            backgroundColor: Colors.greenAccent,
-            icon: Icon(
-              Icons.error,
-              size: 28.0,
-              color: Colors.white,
-            ),
-            duration: Duration(seconds: 3),
-            leftBarIndicatorColor: Colors.blue[300],
-          )..show(context);
+          // Flushbar(
+          //   //title: '${feedback['message']}',
+          //   flushbarPosition: FlushbarPosition.TOP,
+          //   flushbarStyle: FlushbarStyle.FLOATING,
+          //   message: '${dashboarddata['message']}',
+          //   backgroundColor: Colors.greenAccent,
+          //   icon: Icon(
+          //     Icons.error,
+          //     size: 28.0,
+          //     color: Colors.white,
+          //   ),
+          //   duration: Duration(seconds: 3),
+          //   leftBarIndicatorColor: Colors.blue[300],
+          // )..show(context);
         } else {
           Flushbar(
             title: '${dashboarddata['message']}',

@@ -61,20 +61,20 @@ class _HomeServicesState extends State<HomeServices> {
             isLoading = false;
           });
           print(dashboard);
-          Flushbar(
-            //title: '${feedback['message']}',
-            flushbarPosition: FlushbarPosition.TOP,
-            flushbarStyle: FlushbarStyle.FLOATING,
-            message: '${dashboarddata['message']}',
-            backgroundColor: Colors.greenAccent,
-            icon: Icon(
-              Icons.error,
-              size: 28.0,
-              color: Colors.white,
-            ),
-            duration: Duration(seconds: 3),
-            leftBarIndicatorColor: Colors.blue[300],
-          )..show(context);
+          // Flushbar(
+          //   //title: '${feedback['message']}',
+          //   flushbarPosition: FlushbarPosition.TOP,
+          //   flushbarStyle: FlushbarStyle.FLOATING,
+          //   message: '${dashboarddata['message']}',
+          //   backgroundColor: Colors.greenAccent,
+          //   icon: Icon(
+          //     Icons.error,
+          //     size: 28.0,
+          //     color: Colors.white,
+          //   ),
+          //   duration: Duration(seconds: 3),
+          //   leftBarIndicatorColor: Colors.blue[300],
+          // )..show(context);
         } else {
           Flushbar(
             title: '${dashboarddata['message']}',
@@ -145,15 +145,9 @@ class _HomeServicesState extends State<HomeServices> {
                       top: 0,
                       bottom: 95,
                       child: dashboard['preorder'] != 0
-                          ? Container(
-                              //color: Colors.red,
-                              // height: 60,
-                              // width: 60,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.red,
-                                //color: Color(0xFFe0f2f1),
-                              ),
+                          ? CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.red,
                               child: Center(
                                   child: Text(dashboard['preorder'].toString(),
                                       style: TextStyle(
@@ -176,15 +170,9 @@ class _HomeServicesState extends State<HomeServices> {
                       top: 0,
                       bottom: 95,
                       child: dashboard['preorder'] != 0
-                          ? Container(
-                              //color: Colors.red,
-                              // height: 60,
-                              // width: 60,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.red,
-                                //color: Color(0xFFe0f2f1),
-                              ),
+                          ? CircleAvatar(
+                             radius: 20,
+                              backgroundColor: Colors.red,
                               child: Center(
                                   child:
                                       Text(dashboard['depository'].toString(),
@@ -208,15 +196,9 @@ class _HomeServicesState extends State<HomeServices> {
                       top: 0,
                       bottom: 95,
                       child: dashboard['exchange'] != 0
-                          ? Container(
-                              //color: Colors.red,
-                              // height: 60,
-                              // width: 60,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.red,
-                                //color: Color(0xFFe0f2f1),
-                              ),
+                          ? CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.red,
                               child: Center(
                                   child: Text(dashboard['exchange'].toString(),
                                       style: TextStyle(
@@ -239,15 +221,9 @@ class _HomeServicesState extends State<HomeServices> {
                       top: 0,
                       bottom: 95,
                       child: dashboard['auction'] != 0
-                          ? Container(
-                              //color: Colors.red,
-                              // height: 60,
-                              // width: 60,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.red,
-                                //color: Color(0xFFe0f2f1),
-                              ),
+                          ? CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.red,
                               child: Center(
                                   child: Text(dashboard['auction'].toString(),
                                       style: TextStyle(
