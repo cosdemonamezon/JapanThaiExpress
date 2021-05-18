@@ -114,17 +114,7 @@ class _DashbordScreenState extends State<DashbordScreen> {
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: Text("JapanThaiExpress"),
-        // actions: [
-        //   IconButton(
-        //     icon: Icon(Icons.account_circle, size: 40, color: Colors.white,),
-        //     onPressed: (){
-        //       // Navigator.push(
-        //       //   context, MaterialPageRoute(builder: (context) => ProfileScreen())
-        //       // );
-        //       MyNavigator.goToProfileScreen(context);
-        //     }
-        //   ),
-        // ],
+        
       ),
       body: Container(
         height: height,

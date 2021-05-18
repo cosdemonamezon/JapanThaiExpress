@@ -134,15 +134,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       top: 0,
                       bottom: 95,
                       child: dashboard['order'] != 0
-                          ? Container(
-                              //color: Colors.red,
-                              // height: 60,
-                              // width: 60,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.red,
-                                //color: Color(0xFFe0f2f1),
-                              ),
+                          ? CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.red,
                               child: Center(
                                   child: Text(dashboard['order'].toString(),
                                       style: TextStyle(
@@ -165,15 +159,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         top: 0,
                         bottom: 95,
                         child: dashboard['service'] != 0
-                            ? Container(
-                                //color: Colors.red,
-                                // height: 60,
-                                // width: 60,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.red,
-                                  //color: Color(0xFFe0f2f1),
-                                ),
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.red,
                                 child: Center(
                                     child: Text(dashboard['service'].toString(),
                                         style: TextStyle(
@@ -199,15 +187,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       top: 0,
                       bottom: 95,
                       child: dashboard['wallet'] != 0
-                          ? Container(
-                              //color: Colors.red,
-                              // height: 60,
-                              // width: 60,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.red,
-                                //color: Color(0xFFe0f2f1),
-                              ),
+                          ? CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.red,
                               child: Center(
                                   child: Text(dashboard['wallet'].toString(),
                                       style: TextStyle(
