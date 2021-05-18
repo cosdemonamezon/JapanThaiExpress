@@ -57,20 +57,20 @@ class _ServiceState extends State<Service> {
             isLoading = false;
           });
           print(dashboard);
-          Flushbar(
-            //title: '${feedback['message']}',
-            flushbarPosition: FlushbarPosition.TOP,
-            flushbarStyle: FlushbarStyle.FLOATING,
-            message: '${dashboarddata['message']}',
-            backgroundColor: Colors.greenAccent,
-            icon: Icon(
-              Icons.error,
-              size: 28.0,
-              color: Colors.white,
-            ),
-            duration: Duration(seconds: 3),
-            leftBarIndicatorColor: Colors.blue[300],
-          )..show(context);
+          // Flushbar(
+          //   //title: '${feedback['message']}',
+          //   flushbarPosition: FlushbarPosition.TOP,
+          //   flushbarStyle: FlushbarStyle.FLOATING,
+          //   message: '${dashboarddata['message']}',
+          //   backgroundColor: Colors.greenAccent,
+          //   icon: Icon(
+          //     Icons.error,
+          //     size: 28.0,
+          //     color: Colors.white,
+          //   ),
+          //   duration: Duration(seconds: 3),
+          //   leftBarIndicatorColor: Colors.blue[300],
+          // )..show(context);
         } else {
           Flushbar(
             title: '${dashboarddata['message']}',
@@ -205,26 +205,28 @@ class _ServiceState extends State<Service> {
                         left: 100,
                         top: 0,
                         bottom: 95,
-                        child: dashboard['preorder'] != 0
-                        ?Container(
-                          //color: Colors.red,
-                          // height: 60,
-                          // width: 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.red,
-                            //color: Color(0xFFe0f2f1),
-                          ),
-                          child: Center(
-                              child: Text(
-                            dashboard['depository'].toString(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15,
-                              color: Colors.white,
-                            )
-                          )),
-                        )
-                        :SizedBox(height: 2,),
+                        child: dashboard['depository'] != 0
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.red,
+                                child: Center(
+                                    child: dashboard['depository'] != null
+                                        ?Text(dashboard['depository'].toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))
+                                            :Text("0",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))),
+                              )
+                            : SizedBox(
+                                height: 2,
+                              ),
                       ),
                     ],
                   ),
@@ -238,25 +240,27 @@ class _ServiceState extends State<Service> {
                         top: 0,
                         bottom: 95,
                         child: dashboard['preorder'] != 0
-                        ?Container(
-                          //color: Colors.red,
-                          // height: 60,
-                          // width: 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.red,
-                            //color: Color(0xFFe0f2f1),
-                          ),
-                          child: Center(
-                              child: Text(
-                            dashboard['preorder'].toString(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15,
-                              color: Colors.white,
-                            )
-                          )),
-                        )
-                        :SizedBox(height: 2,),
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.red,
+                                child: Center(
+                                    child: dashboard['preorder'] != null
+                                        ?Text(dashboard['preorder'].toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))
+                                            :Text("0",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))),
+                              )
+                            : SizedBox(
+                                height: 2,
+                              ),
                       ),
                     ],
                   ),
@@ -270,25 +274,27 @@ class _ServiceState extends State<Service> {
                         top: 0,
                         bottom: 95,
                         child: dashboard['auction'] != 0
-                        ?Container(
-                          //color: Colors.red,
-                          // height: 60,
-                          // width: 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.red,
-                            //color: Color(0xFFe0f2f1),
-                          ),
-                          child: Center(
-                              child: Text(
-                            dashboard['auction'].toString(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15,
-                              color: Colors.white,
-                            )
-                          )),
-                        )
-                        :SizedBox(height: 2,),
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.red,
+                                child: Center(
+                                    child: dashboard['auction'] != null
+                                    ?Text(dashboard['auction'].toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))
+                                        :Text("0",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))),
+                              )
+                            : SizedBox(
+                                height: 2,
+                              ),
                       ),
                     ],
                   ),
@@ -302,25 +308,27 @@ class _ServiceState extends State<Service> {
                         top: 0,
                         bottom: 95,
                         child: dashboard['exchange'] != 0
-                        ?Container(
-                          //color: Colors.red,
-                          // height: 60,
-                          // width: 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.red,
-                            //color: Color(0xFFe0f2f1),
-                          ),
-                          child: Center(
-                              child: Text(
-                            dashboard['exchange'].toString(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15,
-                              color: Colors.white,
-                            )
-                          )),
-                        )
-                        :SizedBox(height: 2,),
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.red,
+                                child: Center(
+                                    child: dashboard['exchange'] != null
+                                        ?Text(dashboard['exchange'].toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))
+                                            :Text("0",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))),
+                              )
+                            : SizedBox(
+                                height: 2,
+                              ),
                       ),
                     ],
                   ),

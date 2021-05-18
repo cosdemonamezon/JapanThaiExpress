@@ -361,7 +361,7 @@ class _OrderProductState extends State<OrderProduct> {
                                         fontWeight: FontWeight.bold),
                                   )
                                 : Text(
-                                    data['name'].substring(0, 12) + "...",
+                                    data['name'].substring(0, 10) + "...",
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 16,

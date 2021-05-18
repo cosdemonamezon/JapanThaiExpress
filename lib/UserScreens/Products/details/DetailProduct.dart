@@ -246,7 +246,7 @@ class _DetailProductState extends State<DetailProduct> {
                         Center(
                           child: data['name'].length <= 10
                               ? Text(data['name'])
-                              : Text(data['name'].substring(0, 22) + "..."),
+                              : Text(data['name'].substring(0, 12) + "..."),
                         ),
                       ],
                     ),

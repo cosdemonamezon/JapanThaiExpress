@@ -55,20 +55,20 @@ class _DashbordScreenState extends State<DashbordScreen> {
             isLoading = false;
           });
           print(dashboard);
-          Flushbar(
-            //title: '${feedback['message']}',
-            flushbarPosition: FlushbarPosition.TOP,
-            flushbarStyle: FlushbarStyle.FLOATING,
-            message: '${dashboarddata['message']}',
-            backgroundColor: Colors.greenAccent,
-            icon: Icon(
-              Icons.error,
-              size: 28.0,
-              color: Colors.white,
-            ),
-            duration: Duration(seconds: 3),
-            leftBarIndicatorColor: Colors.blue[300],
-          )..show(context);
+          // Flushbar(
+          //   //title: '${feedback['message']}',
+          //   flushbarPosition: FlushbarPosition.TOP,
+          //   flushbarStyle: FlushbarStyle.FLOATING,
+          //   message: '${dashboarddata['message']}',
+          //   backgroundColor: Colors.greenAccent,
+          //   icon: Icon(
+          //     Icons.error,
+          //     size: 28.0,
+          //     color: Colors.white,
+          //   ),
+          //   duration: Duration(seconds: 3),
+          //   leftBarIndicatorColor: Colors.blue[300],
+          // )..show(context);
         } else {
           Flushbar(
             title: '${dashboarddata['message']}',
@@ -139,17 +139,18 @@ class _DashbordScreenState extends State<DashbordScreen> {
                         top: 0,
                         bottom: 95,
                         child: dashboard['order'] != 0
-                            ? Container(
-                                //color: Colors.red,
-                                // height: 60,
-                                // width: 60,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.red,
-                                  //color: Color(0xFFe0f2f1),
-                                ),
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.red,
                                 child: Center(
-                                    child: Text(dashboard['order'].toString(),
+                                    child: dashboard['order'] != null
+                                    ?Text(dashboard['order'].toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))
+                                        :Text("0",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15,
@@ -172,17 +173,18 @@ class _DashbordScreenState extends State<DashbordScreen> {
                         top: 0,
                         bottom: 95,
                         child: dashboard['service'] != 0
-                            ? Container(
-                                //color: Colors.red,
-                                // height: 60,
-                                // width: 60,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.red,
-                                  //color: Color(0xFFe0f2f1),
-                                ),
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.red,
                                 child: Center(
-                                    child: Text(dashboard['service'].toString(),
+                                    child: dashboard['service'] != null
+                                    ?Text(dashboard['service'].toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))
+                                        :Text("0",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15,
@@ -206,17 +208,18 @@ class _DashbordScreenState extends State<DashbordScreen> {
                         top: 0,
                         bottom: 95,
                         child: dashboard['wallet'] != 0
-                            ? Container(
-                                //color: Colors.red,
-                                // height: 60,
-                                // width: 60,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.red,
-                                  //color: Color(0xFFe0f2f1),
-                                ),
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.red,
                                 child: Center(
-                                    child: Text(dashboard['wallet'].toString(),
+                                    child: dashboard['wallet'] != null
+                                    ?Text(dashboard['wallet'].toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))
+                                        :Text("0",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15,
