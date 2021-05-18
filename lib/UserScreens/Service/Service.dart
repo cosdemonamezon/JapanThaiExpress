@@ -56,7 +56,7 @@ class _ServiceState extends State<Service> {
             dashboard = dashboarddata['data'];
             isLoading = false;
           });
-          print(dashboard);
+          //print(dashboard);
           // Flushbar(
           //   //title: '${feedback['message']}',
           //   flushbarPosition: FlushbarPosition.TOP,
@@ -131,7 +131,7 @@ class _ServiceState extends State<Service> {
           //   imgPath = banner[i]['path'];
           // }
         });
-        print(banner);
+        //print(banner);
       } else {}
     } else {}
   }
