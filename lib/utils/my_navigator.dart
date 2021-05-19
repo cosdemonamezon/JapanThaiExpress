@@ -1,10 +1,10 @@
+import 'package:JapanThaiExpress/AdminScreens/Auction/TimeLineAuctions.dart';
 import 'package:JapanThaiExpress/AdminScreens/Depository/TimeLineDepository.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageRoom.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/TimeLineDeposit.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/TimeLineMemberPreorders.dart';
 import 'package:flutter/material.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePreorders.dart';
-import 'package:JapanThaiExpress/AdminScreens/Auction/Timelineauction.dart';
 
 class MyNavigator {
   static void goToMain(BuildContext context) {
@@ -292,7 +292,7 @@ class MyNavigator {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Timelineauction(),
+        builder: (context) => TimelineAuctions(),
         // Pass the arguments as part of the RouteSettings. The
         // ExtractArgumentScreen reads the arguments from these
         // settings.
