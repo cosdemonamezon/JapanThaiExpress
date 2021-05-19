@@ -70,7 +70,6 @@ import 'package:JapanThaiExpress/LoginGoogle.dart';
 
 import 'UserScreens/Messageuser/MessageScreen.dart';
 
-
 String token;
 var tokenObj;
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

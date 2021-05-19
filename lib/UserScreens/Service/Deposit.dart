@@ -497,6 +497,7 @@ class _DepositState extends State<Deposit> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    Size size = MediaQuery.of(context).size;
     return DefaultTabController(
         length: 2,
         child: Scaffold(
