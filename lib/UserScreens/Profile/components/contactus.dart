@@ -32,7 +32,7 @@ class _ContactUsState extends State<ContactUs> {
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
     var url = Uri.parse(pathAPI +
-        'api/app/help_center_page?status=&page=$page&page_size=$pageSize');
+        'api/app/contact_page?status=&page=$page&page_size=$pageSize');
     var response = await http.get(url, headers: {
       //'Content-Type': 'application/json',
       'Authorization': token['data']['token']
@@ -119,7 +119,7 @@ class _ContactUsState extends State<ContactUs> {
                                 vertical: 5.0, horizontal: 5.0),
                             child: helpCard(
                               help[index]['title'],
-                              help[index]['description'],
+                              help[index]['icon'],
                             ),
                           );
                         }),
@@ -149,7 +149,7 @@ class _ContactUsState extends State<ContactUs> {
          
         },
         child: ListTile(
-          leading: Image.network('https://i.pinimg.com/originals/61/9e/6b/619e6bbe255cda842f0a7ee2adcb7ca0.png'),
+          leading: Image.network(subtitle),
           title: Text(
             title,
             style: TextStyle(fontSize: 14),
