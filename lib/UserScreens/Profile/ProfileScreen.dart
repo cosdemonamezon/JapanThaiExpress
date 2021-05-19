@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/Myaccount.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/Bank.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/body.dart';
+import 'package:JapanThaiExpress/UserScreens/Profile/components/contactus.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/editpassword.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/privacy.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/profile_menu.dart';
@@ -196,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icon(Icons.phone_in_talk_outlined),
               press: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Contact()));
+                    MaterialPageRoute(builder: (context) => ContactUs()));
               },
             ),
             // ProfileMenu(

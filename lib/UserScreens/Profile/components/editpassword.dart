@@ -110,7 +110,8 @@ class _EditpasswordState extends State<Editpassword> {
                   key: _formKey,
                   initialValue: {
                     
-                    'password': '',
+                    'oldpassword': '',
+                    'newpassword': '',
                     'confirmpassword': '',
                   },
               
