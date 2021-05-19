@@ -106,8 +106,7 @@ class _DepositState extends State<Deposit> {
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
-      var url = Uri.parse(pathAPI +
-          'api/get_depository?status=&page=$page&page_size=$pageSize');
+      var url = Uri.parse(pathAPI +'api/app/depositorys?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {
@@ -122,16 +121,31 @@ class _DepositState extends State<Deposit> {
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> depdata = convert.jsonDecode(response.body);
-        setState(() {
-          totalResults = depdata['data']['total'];
-          depositdata.addAll(depdata['data']['data']);
-          isLoading = false;
-          // print(depdata['message']);
-          // print(totalResults);
-          // print("test");
-          // print(depositdata.length);
-          // print(depositdata[1]['description']);
-        });
+        if (depdata['code'] == 200) {
+          setState(() {
+            totalResults = depdata['data']['total'];
+            depositdata.addAll(depdata['data']['data']);
+            isLoading = false;
+            // print(depdata['message']);
+            // print(totalResults);
+            // print("test");
+            // print(depositdata.length);
+            // print(depositdata[1]['description']);
+          });
+        } else {
+          Flushbar(
+            title: '${depdata['message']}',
+            message: 'รหัสข้อผิดพลาด : ${depdata['code']}',
+            backgroundColor: Colors.redAccent,
+            icon: Icon(
+              Icons.error,
+              size: 28.0,
+              color: Colors.white,
+            ),
+            duration: Duration(seconds: 3),
+            leftBarIndicatorColor: Colors.blue[300],
+          )..show(context);
+        }
       } else {
         setState(() {
           isLoading = false;
@@ -154,6 +168,7 @@ class _DepositState extends State<Deposit> {
       setState(() {
         isLoading = false;
       });
+      print(e);
     }
   }
 
@@ -237,13 +252,13 @@ class _DepositState extends State<Deposit> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> dataship = convert.jsonDecode(response.body);
       if (dataship['code'] == 200) {
-        print(dataship['message']);
+        //print(dataship['message']);
         setState(() {
           dropdownShip = dataship['data'];
           _transport = dropdownShip[0]['name'];
           costth = dropdownShip[0]['price'];
         });
-        print(dropdownShip);
+        //print(dropdownShip);
       } else {
         var feedback = convert.jsonDecode(response.body);
         Flushbar(
@@ -348,9 +363,9 @@ class _DepositState extends State<Deposit> {
     if (response.statusCode == 201) {
       final Map<String, dynamic> depositdata =
           convert.jsonDecode(response.body);
-      print(depositdata);
+      //print(depositdata);
       if (depositdata['code'] == 201) {
-        print(depositdata['message']);
+        //print(depositdata['message']);
         //MyNavigator.goToDeposit(context);
         // Navigator.push(
         //   context, MaterialPageRoute(builder: (context) => Deposit()));
@@ -526,7 +541,7 @@ class _DepositState extends State<Deposit> {
             children: [
               Container(
                 height: height,
-                color: Colors.grey[300],
+                color: Colors.white,
                 child: isLoading == true
                     ? Center(
                         child: CircularProgressIndicator(),

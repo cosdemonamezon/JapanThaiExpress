@@ -39,6 +39,12 @@ class _MyaccountState extends State<Myaccount> {
   TextEditingController _lname_en;
   TextEditingController _email;
 
+  bool _validate_nameth = false;
+  bool _validate_lnameth = false;
+  bool _validate_nameen = false;
+  bool _validate_lnameen = false;
+  bool _validate_email = false;
+
   @override
   void initState() {
     super.initState();
@@ -146,13 +152,15 @@ class _MyaccountState extends State<Myaccount> {
     }
   }
 
-  _editProfile() async {
+  _editProfile(Map<String, dynamic> values) async {
     String fname_th = _fname_th.text;
     String lname_th = _lname_th.text;
     String fname_en = _fname_en.text;
     String lname_en = _lname_en.text;
     String email = _email.text;
     String profile_img;
+
+    //print(values);
     // print(fname_th);
     // print(lname_th);
     // print(fname_en);
@@ -391,12 +399,16 @@ class _MyaccountState extends State<Myaccount> {
                               name: 'fname_th',
                               controller: _fname_th,
                               decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.person),
-                                  labelText: 'ชื่อ(ภาษาไทย)',
-                                  //border: InputBorder.none,
-                                  border: OutlineInputBorder(),
-                                  fillColor: Color(0xfff3f3f4),
-                                  filled: true),
+                                prefixIcon: Icon(Icons.person),
+                                labelText: 'ชื่อ(ภาษาไทย)',
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true,
+                                errorText:
+                                    _validate_nameth ? '*กรุณากรอกชื่อ*' : null,
+                              ),
+
                               // validator: FormBuilderValidators.compose([
                               //   FormBuilderValidators.required(context,
                               //       errorText: 'กรุณากรอกชื่อ'),
@@ -415,12 +427,16 @@ class _MyaccountState extends State<Myaccount> {
                               name: 'lname_th',
                               controller: _lname_th,
                               decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.person),
-                                  labelText: 'นามสกุล(ภาษาไทย)',
-                                  //border: InputBorder.none,
-                                  border: OutlineInputBorder(),
-                                  fillColor: Color(0xfff3f3f4),
-                                  filled: true),
+                                prefixIcon: Icon(Icons.person),
+                                labelText: 'นามสกุล(ภาษาไทย)',
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true,
+                                errorText: _validate_lnameth
+                                    ? '*กรุณากรอกนามสกุล*'
+                                    : null,
+                              ),
                               // validator: FormBuilderValidators.compose([
                               //   FormBuilderValidators.required(context,
                               //       errorText: 'กรุณากรอกนามสกุล'),
@@ -439,12 +455,15 @@ class _MyaccountState extends State<Myaccount> {
                               name: 'fname_en',
                               controller: _fname_en,
                               decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.person),
-                                  labelText: 'ชื่อ(ภาษาอังกฤษ)',
-                                  //border: InputBorder.none,
-                                  border: OutlineInputBorder(),
-                                  fillColor: Color(0xfff3f3f4),
-                                  filled: true),
+                                prefixIcon: Icon(Icons.person),
+                                labelText: 'ชื่อ(ภาษาอังกฤษ)',
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true,
+                                errorText:
+                                    _validate_nameen ? '*กรุณากรอกชื่อ*' : null,
+                              ),
                               // validator: FormBuilderValidators.compose([
                               //   FormBuilderValidators.required(context,
                               //       errorText: 'กรุณากรอกชื่อ'),
@@ -463,12 +482,16 @@ class _MyaccountState extends State<Myaccount> {
                               name: 'lname_en',
                               controller: _lname_en,
                               decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.person),
-                                  labelText: 'นามสกุล(ภาษาอังกฤษ)',
-                                  //border: InputBorder.none,
-                                  border: OutlineInputBorder(),
-                                  fillColor: Color(0xfff3f3f4),
-                                  filled: true),
+                                prefixIcon: Icon(Icons.person),
+                                labelText: 'นามสกุล(ภาษาอังกฤษ)',
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true,
+                                errorText: _validate_lnameen
+                                    ? '*กรุณากรอกนามสกุล*'
+                                    : null,
+                              ),
                               // validator: FormBuilderValidators.compose([
                               //   FormBuilderValidators.required(context,
                               //       errorText: 'กรุณากรอกนามสกุล'),
@@ -492,6 +515,9 @@ class _MyaccountState extends State<Myaccount> {
                                 border: OutlineInputBorder(),
                                 fillColor: Color(0xfff3f3f4),
                                 filled: true,
+                                errorText: _validate_email
+                                    ? '*กรุณากรอกที่อยู่อีเมล*'
+                                    : null,
                               ),
 
                               // validator: FormBuilderValidators.compose([
@@ -516,9 +542,34 @@ class _MyaccountState extends State<Myaccount> {
 
                         _formKey.currentState.save();
                         setState(() {
-                          isLoading = true;
+                          _fname_th.text.isEmpty
+                              ? _validate_nameth = true
+                              : _validate_nameth = false;
+                          _lname_th.text.isEmpty
+                              ? _validate_lnameth = true
+                              : _validate_lnameth = false;
+                          _fname_en.text.isEmpty
+                              ? _validate_nameen = true
+                              : _validate_nameen = false;
+                          _lname_en.text.isEmpty
+                              ? _validate_lnameen = true
+                              : _validate_lnameen = false;
+                          _email.text.isEmpty
+                              ? _validate_email = true
+                              : _validate_email = false;
                         });
-                        _editProfile();
+                        if (_validate_nameth != true &&
+                            _validate_lnameth != true &&
+                            _validate_nameen != true &&
+                            _validate_lnameen != true &&
+                            _validate_email != true) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          _editProfile(_formKey.currentState.value);
+                        } else {
+                          print("5555");
+                        }
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,

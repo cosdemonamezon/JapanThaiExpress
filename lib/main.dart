@@ -23,6 +23,7 @@ import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePreorders.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePurchaseScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/Messageuser/Messagesend.dart';
 import 'package:JapanThaiExpress/UserScreens/MyOders/OdersScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/News/DetailNews.dart';
 import 'package:JapanThaiExpress/UserScreens/News/NewsScreen.dart';
@@ -171,6 +172,7 @@ var routes = <String, WidgetBuilder>{
   "/messageuser": (BuildContext context) => MessageScreen(),
   "/settingadmin": (BuildContext context) => SettingScreen(),
   "/timelineauction": (BuildContext context) => TimelineAuctions(),
+  "/messagesend": (BuildContext context) => Messagesend(),
   "/homescreen": (BuildContext context) => HomeScreen(),
   "/exchangedetail": (BuildContext context) => ExchangeDetailScreen(),
   "/buystuff": (BuildContext context) => Buystuff(),

@@ -25,7 +25,6 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
   String fee = "";
   String com = "";
   String sum = "";
-  //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcyNTk5NSwiZXhwIjoxNjE1ODEyMzk1fQ.-x9FnNRM-KmnA8pd2cWJhk_ebIwYFtCwwUX31MeJ3TI";
   //final _formKey = GlobalKey<FormState>();
   final _formKey = GlobalKey<FormBuilderState>();
   TextEditingController _rate;
@@ -119,6 +118,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           // print(exchangedata.length);
           // print(exchangedata[1]['description']);
         });
+        print(exchangedata);
       } else {
         setState(() {
           isLoading = false;
@@ -259,7 +259,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         },
         body: ({
           //'amount': values['amount'],
-          'amount': sum,
+          'amount': values['amount'],
           'account_no': values['account_no'],
           'account_name': values['account_name'],
           'bank': values['bank'],
@@ -277,13 +277,14 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         setState(() {
           isLoading = false;
         });
+        print(tranfer['data']['total']);
         String picSuccess = "assets/success.png";
         showDialog(
           barrierDismissible: false,
           context: context,
           builder: (context) => alertdialog(
             tranfer['message'],
-            tranfer['data']['total'].toString(),
+            tranfer['data']['total'].toStringAsFixed(2),
             tranfer['data']['code'],
             tranfer['data']['updated_at'],
             picSuccess,
@@ -351,7 +352,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
             leading: IconButton(
                 onPressed: () {
                   //MyNavigator.goToService(context);
-                  Navigator.pop(context);
+                  MyNavigator.goToService(context);
                   // Navigator.push(
                   //   context, MaterialPageRoute(builder: (context) => Service()));
                 },
@@ -385,7 +386,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           children: [
             Container(
               height: height,
-              color: Colors.grey[300],
+              color: Colors.white,
               child: isLoading == true
                   ? Center(
                       child: CircularProgressIndicator(),
@@ -427,20 +428,20 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                           itemBuilder: (BuildContext context, int index) {
                             return buildCard(
                               exchangedata[index]['id'].toString(),
-                              exchangedata[index]['code'],
-                              exchangedata[index]['bank'],
-                              exchangedata[index]['total'],
+                              exchangedata[index]['code'].toString(),
+                              exchangedata[index]['bank'].toString(),
+                              exchangedata[index]['total'].toString(),
                               exchangedata[index]['description'] == null
                                   ? 'ไม่มีข้อมูล'
-                                  : exchangedata[index]['description'],
-                              exchangedata[index]['created_at'],
-                              exchangedata[index]['status'],
-                              exchangedata[index]['fee'],
-                              exchangedata[index]['account_name'],
-                              exchangedata[index]['account_no'],
+                                  : exchangedata[index]['description'].toString(),
+                              exchangedata[index]['created_at'].toString(),
+                              exchangedata[index]['status'].toString(),
+                              exchangedata[index]['fee'].toString(),
+                              exchangedata[index]['account_name'].toString(),
+                              exchangedata[index]['account_no'].toString(),
                               exchangedata[index]['slip'] == null
                                   ? 'ไม่มีข้อมูล'
-                                  : exchangedata[index]['slip'],
+                                  : exchangedata[index]['slip'].toString(),
                             );
                           }),
                     ),
@@ -588,7 +589,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                                 // print(c);
                                 setState(() {
                                   _sum =
-                                      TextEditingController(text: d.toString());
+                                      TextEditingController(text: d.toStringAsFixed(2));
                                   sum = d.toString();
                                 });
                                 // print(sum);
@@ -878,6 +879,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           MyNavigator.goToReceiveDetail(context, arg);
         },
         child: ListTile(
+          
           title: Row(
             children: [
               Container(
@@ -1136,7 +1138,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                   ),
                   child: FlatButton(
                     onPressed: () {
-                      MyNavigator.goToWallet(context);
+                      Navigator.pop(context);
                     },
                     child: Text(
                       "ตกลง",

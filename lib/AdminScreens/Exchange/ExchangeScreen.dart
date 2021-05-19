@@ -336,6 +336,7 @@ class _ExchangeScreenState extends State<ExchangeScreen> {
                                                     .keyboard_arrow_right_outlined),
                                                 color: Colors.orange[900],
                                                 iconSize: 30,
+                                                onPressed: () {},
                                               ),
                                             ],
                                           )),

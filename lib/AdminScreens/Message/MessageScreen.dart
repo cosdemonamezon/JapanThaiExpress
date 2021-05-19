@@ -339,31 +339,9 @@ class _MessageScreenState extends State<MessageScreen> {
               leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    MyNavigator.goToAdmin(context);
+                    MyNavigator.goToUser(context);
                   }),
-              bottom: TabBar(
-                  labelColor: Colors.redAccent,
-                  unselectedLabelColor: Colors.white,
-                  indicatorSize: TabBarIndicatorSize.label,
-                  indicator: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)),
-                      color: Colors.white),
-                  tabs: [
-                    Tab(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text("รายการใหม่"),
-                      ),
-                    ),
-                    Tab(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text("ประวัติ"),
-                      ),
-                    ),
-                  ])),
+              ),
           body: TabBarView(
             children: [
               Container(
@@ -436,7 +414,7 @@ class _MessageScreenState extends State<MessageScreen> {
                       ),
               ),
               //tab 2
-              Icon(Icons.movie),
+            
             ],
           ),
           bottomNavigationBar: Navigation(),
