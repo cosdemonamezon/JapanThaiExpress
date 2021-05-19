@@ -4,13 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
-import 'package:JapanThaiExpress/constants.dart';
-import 'package:JapanThaiExpress/utils/japanexpress.dart';
-import 'package:JapanThaiExpress/utils/my_navigator.dart';
 
 void main() => runApp(MaterialApp(home: QRViewExample()));
 
@@ -44,88 +38,18 @@ class _QRViewExampleState extends State<QRViewExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.chevron_left),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
+        centerTitle: true,
+        title: Text("แสกนพัสดุ"),
+      ),
       body: Column(
         children: <Widget>[
           Expanded(flex: 4, child: _buildQrView(context)),
-          Expanded(
-            flex: 1,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  if (result != null)
-                    Text(
-                        'Barcode Type: ${describeEnum(result.format)}   Data: ${result.code}')
-                  else
-                    Text('Scan a code'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await controller?.toggleFlash();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getFlashStatus(),
-                              builder: (context, snapshot) {
-                                return Text('Flash: ${snapshot.data}');
-                              },
-                            )),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await controller?.flipCamera();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getCameraInfo(),
-                              builder: (context, snapshot) {
-                                if (snapshot.data != null) {
-                                  return Text(
-                                      'Camera facing ${describeEnum(snapshot.data)}');
-                                } else {
-                                  return Text('loading');
-                                }
-                              },
-                            )),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.pauseCamera();
-                          },
-                          child: Text('pause', style: TextStyle(fontSize: 20)),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.resumeCamera();
-                          },
-                          child: Text('resume', style: TextStyle(fontSize: 20)),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          )
         ],
       ),
     );
@@ -135,7 +59,7 @@ class _QRViewExampleState extends State<QRViewExample> {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
-        ? 150.0
+        ? 200.0
         : 300.0;
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
@@ -155,66 +79,78 @@ class _QRViewExampleState extends State<QRViewExample> {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) async {
-      setState(() {
-        result = scanData;
-      });
+    // controller.scannedDataStream.listen((scanData) async {
+    //   setState(() {
+    //     result = scanData;
+    //   });
+      // prefs = await SharedPreferences.getInstance();
+      // var tokenString = prefs.getString('token');
+      // var token = convert.jsonDecode(tokenString);
 
-      prefs = await SharedPreferences.getInstance();
-      var tokenString = prefs.getString('token');
-      var token = convert.jsonDecode(tokenString);
+      // var url = Uri.parse(pathAPI + 'api/scan_track');
+      // var response = await http.post(url,
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'Authorization': token['data']['token']
+      //     },
+      //     body: convert.jsonEncode({
+      //       'track_jp': this.result.code
+      //       //'token': token['token']
+      //     }));
+      // if (response.statusCode == 200) {
+      //   final Map<String, dynamic> mac = convert.jsonDecode(response.body);
+      //   if (mac['code'] == 200) {
+      //     var arg = {
+      //       "code": mac['data']['code'].toString(),
+      //       "url": mac['data']['url'].toString(),
+      //       "name": mac['data']["name"].toString(),
+      //       "description": mac['data']["description"].toString(),
+      //       "image": mac['data']["image"].toString(),
+      //       "qty": mac['data']["qty"].toString(),
+      //       "rate": mac['data']["rate"].toString(),
+      //       "price": mac['data']["price"].toString(),
+      //       "fee": mac['data']["fee"].toString(),
+      //       "order_jp": mac['data']["order_jp"].toString(),
+      //       "track_jp": mac['data']["track_jp"].toString(),
+      //       "cost_jp": mac['data']["cost_jp"].toString(),
+      //       "japan_to_thai": mac['data']["japan_to_thai"].toString(),
+      //       "track_th": mac['data']["track_th"].toString(),
+      //       "cost_th": mac['data']["cost_th"].toString(),
+      //       "weight": mac['data']["weight"].toString(),
+      //       "total": mac['data']["total"].toString(),
+      //       "overdue": mac['data']["overdue"].toString(),
+      //       "ship_name": mac['data']["ship_name"].toString(),
+      //       "ship_address": mac['data']["ship_address"].toString(),
+      //       "ship_tel": mac['data']["ship_tel"].toString(),
+      //       "type": mac['data']["type"].toString(),
+      //       "step": mac['data']["step"].toString(),
+      //       "status": mac['data']["status"].toString(),
+      //       "note": mac['data']["note"].toString(),
+      //       "created_at": mac['data']["created_at"].toString(),
+      //       "updated_at": mac['data']["updated_at"].toString(),
+      //       "deleted_at": mac['data']["deleted_at"].toString(),
+      //       "service_name": mac['data']["service_name"].toString(),
+      //     };
+      //     Navigator.pushNamed(context, '/qrcodepreview', arguments: arg);
+      //   }
+      // } else if (response.statusCode == 404) {
+      //   Flushbar(
+      //       title: 'ไม่พบข้อมูล',
+      //       message: 'ไม่พบหมายเลขพัสดุ',
+      //       backgroundColor: Colors.redAccent,
+      //       icon: Icon(
+      //         Icons.error,
+      //         size: 28.0,
+      //         color: Colors.white,
+      //       ),
+      //       duration: Duration(seconds: 3),
+      //       leftBarIndicatorColor: Colors.blue[300],
+      //     )..show(context);
+      //   // MyNavigator.goToMain(context);
+      // } else if (response.statusCode == 500) {
 
-      var url = Uri.parse(pathAPI + 'api/scan_track');
-      var response = await http.post(url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token['data']['token']
-          },
-          body: convert.jsonEncode({
-            'track_jp': this.result.code
-            //'token': token['token']
-          }));
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> mac = convert.jsonDecode(response.body);
-        if (mac['code'] == 200) {
-          var arg = {
-            "code": mac['data']['code'].toString(),
-            "url": mac['data']['url'].toString(),
-            "name": mac['data']["name"].toString(),
-            "description": mac['data']["description"].toString(),
-            "image": mac['data']["image"].toString(),
-            "qty": mac['data']["qty"].toString(),
-            "rate": mac['data']["rate"].toString(),
-            "price": mac['data']["price"].toString(),
-            "fee": mac['data']["fee"].toString(),
-            "order_jp": mac['data']["order_jp"].toString(),
-            "track_jp": mac['data']["track_jp"].toString(),
-            "cost_jp": mac['data']["cost_jp"].toString(),
-            "japan_to_thai": mac['data']["japan_to_thai"].toString(),
-            "track_th": mac['data']["track_th"].toString(),
-            "cost_th": mac['data']["cost_th"].toString(),
-            "weight": mac['data']["weight"].toString(),
-            "total": mac['data']["total"].toString(),
-            "overdue": mac['data']["overdue"].toString(),
-            "ship_name": mac['data']["ship_name"].toString(),
-            "ship_address": mac['data']["ship_address"].toString(),
-            "ship_tel": mac['data']["ship_tel"].toString(),
-            "type": mac['data']["type"].toString(),
-            "step": mac['data']["step"].toString(),
-            "status": mac['data']["status"].toString(),
-            "note": mac['data']["note"].toString(),
-            "created_at": mac['data']["created_at"].toString(),
-            "updated_at": mac['data']["updated_at"].toString(),
-            "deleted_at": mac['data']["deleted_at"].toString(),
-            "service_name": mac['data']["service_name"].toString(),
-          };
-
-          MyNavigator.goToQRCodePreview(context, arg);
-        }
-      } else {
-        MyNavigator.goToMain(context);
-      }
-    });
+      // }
+    // });
   }
 
   @override

@@ -1,7 +1,10 @@
 import 'package:JapanThaiExpress/AdminScreens/Depository/TimeLineDepository.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageRoom.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/TimeLineDeposit.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/TimeLineMemberPreorders.dart';
 import 'package:flutter/material.dart';
-import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePreorders.dart';
+import 'package:JapanThaiExpress/AdminScreens/Auction/Timelineauction.dart';
 
 class MyNavigator {
   static void goToMain(BuildContext context) {
@@ -14,6 +17,10 @@ class MyNavigator {
 
   static void goToHome(BuildContext context) {
     Navigator.pushNamed(context, "/home");
+  }
+
+  static void goToHomeScreen(BuildContext context) {
+    Navigator.pushNamed(context, "/homescreen");
   }
 
   static void goToLogin(BuildContext context) {
@@ -37,8 +44,8 @@ class MyNavigator {
     Navigator.pushNamed(context, '/depositdetail', arguments: arg);
   }
 
-  static void goToQRCodePreview(BuildContext context, arg) {
-    Navigator.pushNamed(context, '/qrcodepreview', arguments: arg);
+  static void goToExchangeDetail(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/exchangedetail', arguments: arg);
   }
 
   static void goTomessageuser(BuildContext context) {
@@ -52,12 +59,28 @@ class MyNavigator {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TimeLineScreen(),
+        builder: (context) => TimeLinePreorders(),
         // Pass the arguments as part of the RouteSettings. The
         // ExtractArgumentScreen reads the arguments from these
         // settings.
         settings: RouteSettings(
-          arguments: {"id": id},
+          arguments: {"id": id.toString()},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
+  }
+
+  static void goToTimeLineMemberPreorders(BuildContext context, int id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TimeLineMemberPreorders(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {"id": id.toString()},
         ),
       ),
     );
@@ -80,11 +103,27 @@ class MyNavigator {
     // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
   }
 
+  static void goToTimelineDeposit(BuildContext context, int id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TimeLineDeposit(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {"id": id.toString()},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
+  }
+
   static void goToTimelineExchange(BuildContext context, arg) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TimeLineScreen(),
+        builder: (context) => TimeLineDepository(),
         // Pass the arguments as part of the RouteSettings. The
         // ExtractArgumentScreen reads the arguments from these
         // settings.
@@ -252,7 +291,19 @@ class MyNavigator {
     Navigator.pushNamed(context, '/auctionadmin');
   }
 
-  static void goToTimelineauction(BuildContext context) {
-    Navigator.pushNamed(context, '/timelineauction');
+  static void goToTimelineauction(BuildContext context, int id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Timelineauction(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {"id": id.toString()},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
   }
 }

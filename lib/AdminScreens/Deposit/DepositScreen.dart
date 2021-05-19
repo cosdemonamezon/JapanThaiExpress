@@ -411,7 +411,19 @@ class _DepositScreenState extends State<DepositScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    var arg = {
+                                      "account_name": DepositScreendata[index]
+                                              ['account_name']
+                                          .toString(),
+                                      "amount": DepositScreendata[index]
+                                              ['amount']
+                                          .toString(),
+                                      "slip": DepositScreendata[index]["slip"]
+                                          .toString(),
+                                    };
+                                    MyNavigator.goToDepositDetail(context, arg);
+                                  },
                                   child: Card(
                                     color: Colors.white,
                                     elevation: 4.0,
@@ -488,32 +500,17 @@ class _DepositScreenState extends State<DepositScreen> {
                                                 ]))
                                           ],
                                         ),
-                                        trailing: MaterialButton(
-                                          onPressed: () {
-                                            var arg = {
-                                              "account_name":
-                                                  DepositScreendata[index]
-                                                          ['account_name']
-                                                      .toString(),
-                                              "amount": DepositScreendata[index]
-                                                      ['amount']
-                                                  .toString(),
-                                              "slip": DepositScreendata[index]
-                                                      ["slip"]
-                                                  .toString(),
-                                            };
-                                            MyNavigator.goToDepositDetail(
-                                                context, arg);
-                                          },
-                                          color: Color(0xffdd4b39),
-                                          child: Text(
-                                            "ดูเพิ่ม",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: 12,
+                                        trailing: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(Icons
+                                                  .keyboard_arrow_right_outlined),
+                                              color: Color(0xffdd4b39),
+                                              onPressed: () {},
                                             ),
-                                          ),
+                                          ],
                                         ),
                                         onTap: () {},
                                       ),

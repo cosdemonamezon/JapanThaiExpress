@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:JapanThaiExpress/AdminScreens/Exchange/ExchangeDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Settings/SettingScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/SplashScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginPin.dart';
@@ -17,7 +18,7 @@ import 'package:JapanThaiExpress/AdminScreens/Home/HomeScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/HomeServices/HomeServices.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRCodePreview.dart';
-import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLineScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePreorders.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePurchaseScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
@@ -31,6 +32,7 @@ import 'package:JapanThaiExpress/UserScreens/Products/details/OrderProduct.dart'
 import 'package:JapanThaiExpress/UserScreens/Profile/ProfileScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/HelpCenter.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/HelpDetail.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/Buystuff.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveDetail.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
@@ -56,6 +58,8 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'AdminScreens/Depository/DepositoryScreen.dart';
+import 'AdminScreens/Exchange/ExchangeScreen.dart';
 import 'AdminScreens/Home/HomeScreen.dart';
 import 'AdminScreens/Home/HomeScreen.dart';
 import 'Screens/Login/ForgotScreen.dart';
@@ -138,7 +142,7 @@ var routes = <String, WidgetBuilder>{
   "/register": (BuildContext context) => Registration(),
   "/depositdetail": (BuildContext context) => DepositDetailScreen(),
   "/qrcodepreview": (BuildContext context) => QRCodePreview(),
-  "/timelineorders": (BuildContext context) => TimeLineScreen(),
+  "/timelineorders": (BuildContext context) => TimeLinePreorders(),
   "/timelineorderspurchase": (BuildContext context) => TimeLinePurchaseScreen(),
   "/deposit": (BuildContext context) => Deposit(),
   "/news": (BuildContext context) => NewsScreen(),
@@ -170,6 +174,9 @@ var routes = <String, WidgetBuilder>{
   "/messagesend": (BuildContext context) => Messagesend(),
 
   "/timelineauction": (BuildContext context) => Timelineauction(),
+  "/homescreen": (BuildContext context) => HomeScreen(),
+  "/exchangedetail": (BuildContext context) => ExchangeDetailScreen(),
+  "/buystuff": (BuildContext context) => Buystuff(),
 };
 
 class MyApp extends StatelessWidget {

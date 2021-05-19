@@ -43,7 +43,7 @@ class _TimeLinePurchaseScreenState extends State<TimeLinePurchaseScreen> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Text("Purchase Order"),
+        title: Text("รายการสินค้า"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -75,7 +75,7 @@ class _TimeLinePurchaseScreenState extends State<TimeLinePurchaseScreen> {
                     child: Row(
                       children: [
                         Text(
-                          "Purchase Orders",
+                          "รายการสินค้า",
                           style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
@@ -114,7 +114,7 @@ class _TimeLinePurchaseScreenState extends State<TimeLinePurchaseScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Text(
-                              "2 Item",
+                              "2 ชิ้น",
                               style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18,

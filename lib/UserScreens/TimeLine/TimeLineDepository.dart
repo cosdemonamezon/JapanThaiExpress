@@ -423,21 +423,21 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         dataTimeline['data']['step'] == "new" &&
                         dataTimeline['data']['list'][0]['show'] == true) {
                       String title = "";
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (context) => dialogTimeline(
-                            title,
-                            picDenied,
-                            context,
-                            familyMemberLabel,
-                            familyMemberName,
-                            dataTimeline['data']['id'],
-                            dataTimeline.length > 0
-                                ? dataTimeline['data']['step']
-                                : 'new',
-                            familyMemberField),
-                      );
+                      // showDialog(
+                      //   barrierDismissible: false,
+                      //   context: context,
+                      //   builder: (context) => dialogTimeline(
+                      //       title,
+                      //       picDenied,
+                      //       context,
+                      //       familyMemberLabel,
+                      //       familyMemberName,
+                      //       dataTimeline['data']['id'],
+                      //       dataTimeline.length > 0
+                      //           ? dataTimeline['data']['step']
+                      //           : 'new',
+                      //       familyMemberField),
+                      // );
                     }
                   },
                   child: Column(
@@ -527,21 +527,21 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         dataTimeline['data']['step'] == "order" &&
                         dataTimeline['data']['list'][1]['show'] == true) {
                       String title = "";
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (context) => dialogTimeline(
-                            title,
-                            picDenied,
-                            context,
-                            familyMemberLabel,
-                            familyMemberName,
-                            dataTimeline['data']['id'],
-                            dataTimeline.length > 0
-                                ? dataTimeline['data']['step']
-                                : 'track',
-                            familyMemberField),
-                      );
+                      // showDialog(
+                      //   barrierDismissible: false,
+                      //   context: context,
+                      //   builder: (context) => dialogTimeline(
+                      //       title,
+                      //       picDenied,
+                      //       context,
+                      //       familyMemberLabel,
+                      //       familyMemberName,
+                      //       dataTimeline['data']['id'],
+                      //       dataTimeline.length > 0
+                      //           ? dataTimeline['data']['step']
+                      //           : 'track',
+                      //       familyMemberField),
+                      // );
                     }
                   },
                   child: Column(
@@ -627,21 +627,21 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         dataTimeline['data']['step'] == "transport" &&
                         dataTimeline['data']['list'][3]['show'] == true) {
                       String title = "";
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (context) => dialogTimeline(
-                            title,
-                            picDenied,
-                            context,
-                            familyMemberLabel,
-                            familyMemberName,
-                            dataTimeline['data']['id'],
-                            dataTimeline.length > 0
-                                ? dataTimeline['data']['step']
-                                : 'transport',
-                            familyMemberField),
-                      );
+                      // showDialog(
+                      //   barrierDismissible: false,
+                      //   context: context,
+                      //   builder: (context) => dialogTimeline(
+                      //       title,
+                      //       picDenied,
+                      //       context,
+                      //       familyMemberLabel,
+                      //       familyMemberName,
+                      //       dataTimeline['data']['id'],
+                      //       dataTimeline.length > 0
+                      //           ? dataTimeline['data']['step']
+                      //           : 'transport',
+                      //       familyMemberField),
+                      // );
                     }
                   },
                   child: Column(
@@ -723,21 +723,21 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         dataTimeline['data']['step'] == "transport" &&
                         dataTimeline['data']['list'][3]['show'] == true) {
                       String title = "";
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (context) => dialogTimeline(
-                            title,
-                            picDenied,
-                            context,
-                            familyMemberLabel,
-                            familyMemberName,
-                            dataTimeline['data']['id'],
-                            dataTimeline.length > 0
-                                ? dataTimeline['data']['step']
-                                : 'transport',
-                            familyMemberField),
-                      );
+                      // showDialog(
+                      //   barrierDismissible: false,
+                      //   context: context,
+                      //   builder: (context) => dialogTimeline(
+                      //       title,
+                      //       picDenied,
+                      //       context,
+                      //       familyMemberLabel,
+                      //       familyMemberName,
+                      //       dataTimeline['data']['id'],
+                      //       dataTimeline.length > 0
+                      //           ? dataTimeline['data']['step']
+                      //           : 'transport',
+                      //       familyMemberField),
+                      // );
                     }
                   },
                   child: Column(
@@ -820,21 +820,21 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         dataTimeline['data']['step'] == "store_thai" &&
                         dataTimeline['data']['list'][4]['show'] == true) {
                       String title = "";
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (context) => dialogTimeline(
-                            title,
-                            picDenied,
-                            context,
-                            familyMemberLabel,
-                            familyMemberName,
-                            dataTimeline['data']['id'],
-                            dataTimeline.length > 0
-                                ? dataTimeline['data']['step']
-                                : 'store_thai',
-                            familyMemberField),
-                      );
+                      // showDialog(
+                      //   barrierDismissible: false,
+                      //   context: context,
+                      //   builder: (context) => dialogTimeline(
+                      //       title,
+                      //       picDenied,
+                      //       context,
+                      //       familyMemberLabel,
+                      //       familyMemberName,
+                      //       dataTimeline['data']['id'],
+                      //       dataTimeline.length > 0
+                      //           ? dataTimeline['data']['step']
+                      //           : 'store_thai',
+                      //       familyMemberField),
+                      // );
                     }
                   },
                   child: Column(
@@ -909,21 +909,21 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         dataTimeline['data']['step'] == "overdue" &&
                         dataTimeline['data']['list'][5]['show'] == true) {
                       String title = "";
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (context) => dialogTimeline(
-                            title,
-                            picDenied,
-                            context,
-                            familyMemberLabel,
-                            familyMemberName,
-                            dataTimeline['data']['id'],
-                            dataTimeline.length > 0
-                                ? dataTimeline['data']['step']
-                                : 'overdue',
-                            familyMemberField),
-                      );
+                      // showDialog(
+                      //   barrierDismissible: false,
+                      //   context: context,
+                      //   builder: (context) => dialogTimeline(
+                      //       title,
+                      //       picDenied,
+                      //       context,
+                      //       familyMemberLabel,
+                      //       familyMemberName,
+                      //       dataTimeline['data']['id'],
+                      //       dataTimeline.length > 0
+                      //           ? dataTimeline['data']['step']
+                      //           : 'overdue',
+                      //       familyMemberField),
+                      // );
                     }
                   },
                   child: Column(

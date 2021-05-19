@@ -1,8 +1,8 @@
 import 'package:JapanThaiExpress/AdminScreens/Auction/Auctionadmin.dart';
 import 'package:JapanThaiExpress/AdminScreens/Depository/DepositoryScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -11,7 +11,7 @@ import 'package:JapanThaiExpress/utils/japanexpress.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../utils/my_navigator.dart';
 
 const order_processed = "assets/images/order_processed.svg";
@@ -45,6 +45,8 @@ class _TimelineauctionState extends State<Timelineauction> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    // id = "1";
+    // _gettimeline(id);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final routeArgs1 =
           ModalRoute.of(context).settings.arguments as Map<String, String>;
@@ -70,7 +72,7 @@ class _TimelineauctionState extends State<Timelineauction> {
           'Authorization': token['data']['token']
         },
         body: convert.jsonEncode({
-          'depository_id': id,
+          'auction_id': id,
         }));
     if (response.statusCode == 200) {
       //print(response.statusCode);
@@ -82,11 +84,11 @@ class _TimelineauctionState extends State<Timelineauction> {
         index = 0;
       } else if (Data["data"]["step"] == 'order') {
         index = 1;
-      } else if (Data["data"]["step"] == 'auction') {
+      } else if (Data["data"]["step"] == 'buy') {
         index = 2;
-      } else if (Data["data"]["step"] == 'successauction') {
+      } else if (Data["data"]["step"] == 'wait') {
         index = 3;
-      } else if (Data["data"]["step"] == 'store_japan') {
+      } else if (Data["data"]["step"] == 'shipping') {
         index = 4;
       } else if (Data["data"]["step"] == 'store_thai') {
         index = 5;
@@ -141,6 +143,166 @@ class _TimelineauctionState extends State<Timelineauction> {
         ),
       );
     }
+  }
+
+  dialogTimeline(String title, String img, context, List label, List name,
+      int id, String step, List field) {
+    String stepUp;
+    if (step == 'new') {
+      stepUp = 'order';
+    } else if (step == 'order') {
+      stepUp = 'buy';
+    } else if (step == 'buy') {
+      stepUp = 'wait';
+    } else if (step == 'wait') {
+      stepUp = 'shipping';
+    } else if (step == 'shipping') {
+      stepUp = 'store_thai';
+    } else if (step == 'store_thai') {
+      stepUp = 'overdue';
+    } else if (step == 'overdue') {
+      stepUp = 'delivery';
+    }
+    // List<int> text = [1, 2, 3, 4];
+    final _formKey = GlobalKey<FormBuilderState>();
+    return AlertDialog(
+        content: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: FormBuilder(
+              key: _formKey,
+              child: Column(children: <Widget>[
+                Text("อัพเดทสถานะรายการ"),
+                SizedBox(height: 7),
+                for (var i = 0; i <= label.length - 1; i++)
+                  Column(
+                    children: [
+                      FormBuilderTextField(
+                        name: name[i],
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            hintText: label[i].toString(),
+                            //border: InputBorder.none,
+                            border: OutlineInputBorder(),
+                            fillColor: Color(0xfff3f3f4),
+                            filled: true),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(context,
+                              errorText: 'กรุณากรอกข้อมูล'),
+                          // FormBuilderValidators.numeric(context),
+                          // FormBuilderValidators.max(context, 70),
+                        ]),
+                      ),
+                      // TextFormField(
+                      //   autofocus: true,
+                      //   decoration: InputDecoration(
+                      //       //border: InputBorder.none,
+                      //       hintText: label[i].toString(),
+                      //       border: OutlineInputBorder(
+                      //           borderRadius: BorderRadius.circular(10.0)),
+                      //       fillColor: Color(0xfff3f3f4),
+                      //       filled: true),
+                      // ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                    ],
+                  ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            setStep(_formKey.currentState.value, name, id,
+                                context, stepUp, 'approved', field);
+                          } else {
+                            print("no data");
+                          }
+                        },
+                        padding: EdgeInsets.all(7),
+                        color: Colors.red,
+                        child: Text('อนุมัติรายการ',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 13)),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        onPressed: () {
+                          if (stepUp != 'order') {
+                            Navigator.pop(context);
+                          } else {
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+                              setStep(_formKey.currentState.value, name, id,
+                                  context, stepUp, 'rejected', field);
+                            } else {
+                              print("no data");
+                            }
+                          }
+                        },
+                        padding: EdgeInsets.all(7),
+                        color: Colors.black54,
+                        child: Text(
+                            stepUp != 'order' ? 'ปิดหน้านี้' : 'ยกเลิกรายการ',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 13)),
+                      ),
+                    ),
+                  ],
+                ),
+              ]),
+            )));
+  }
+
+  setStep(Map<String, dynamic> values, List name, int id, context,
+      String setStep, String status, List field) async {
+    //print(values);
+    SharedPreferences prefs;
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    var url = Uri.parse(pathAPI + 'api/app/auction/' + id.toString());
+    var response = await http.put(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        body: convert.jsonEncode({
+          for (var i = 0; i <= name.length - 1; i++)
+            field[i]: values[field[i]].toString(),
+          'status': status,
+          'step': setStep,
+        }));
+    if (response.statusCode == 200) {
+      setState(() {
+        isLoading = true;
+      });
+      // Navigator.pop(context);
+      _gettimeline(id.toString());
+      // MyNavigator.goToTimelineDepository(context, id);
+    } else {
+      setState(() {
+        isLoading = true;
+      });
+      // Navigator.pop(context);
+      _gettimeline(id.toString());
+      // MyNavigator.goToTimelineDepository(context, id);
+    }
+    Navigator.pop(context);
   }
 
   @override
@@ -207,7 +369,7 @@ class _TimelineauctionState extends State<Timelineauction> {
                             padding: EdgeInsets.only(left: 10),
                             child: Text(
                               dataTimeline.length > 0
-                                  ? dataTimeline['data']['description']
+                                  ? dataTimeline['data']['name']
                                   : " - ",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -306,11 +468,10 @@ class _TimelineauctionState extends State<Timelineauction> {
               bottomLineStyle: LineStyle(
                   color: dataTimeline.length > 0
                       ? dataTimeline['data']['step'] == "new" ||
+                              dataTimeline['data']['step'] == "wait" ||
                               dataTimeline['data']['step'] == "order" ||
-                              dataTimeline['data']['step'] == "action" ||
-                              dataTimeline['data']['step'] ==
-                                  "successauction" ||
-                              dataTimeline['data']['step'] == "store_japan" ||
+                              dataTimeline['data']['step'] == "buy" ||
+                              dataTimeline['data']['step'] == "shipping" ||
                               dataTimeline['data']['step'] == "store_thai" ||
                               dataTimeline['data']['step'] == "overdue" ||
                               dataTimeline['data']['step'] == "delivery"
@@ -323,10 +484,10 @@ class _TimelineauctionState extends State<Timelineauction> {
                 width: 20,
                 color: dataTimeline.length > 0
                     ? dataTimeline['data']['step'] == "new" ||
+                            dataTimeline['data']['step'] == "wait" ||
                             dataTimeline['data']['step'] == "order" ||
-                            dataTimeline['data']['step'] == "action" ||
-                            dataTimeline['data']['step'] == "successauction" ||
-                            dataTimeline['data']['step'] == "store_japan" ||
+                            dataTimeline['data']['step'] == "buy" ||
+                            dataTimeline['data']['step'] == "shipping" ||
                             dataTimeline['data']['step'] == "store_thai" ||
                             dataTimeline['data']['step'] == "overdue" ||
                             dataTimeline['data']['step'] == "delivery"
@@ -346,13 +507,11 @@ class _TimelineauctionState extends State<Timelineauction> {
                           Icons.directions_boat,
                           color: dataTimeline.length > 0
                               ? dataTimeline['data']['step'] == "new" ||
+                                      dataTimeline['data']['step'] == "wait" ||
                                       dataTimeline['data']['step'] == "order" ||
+                                      dataTimeline['data']['step'] == "buy" ||
                                       dataTimeline['data']['step'] ==
-                                          "action" ||
-                                      dataTimeline['data']['step'] ==
-                                          "successauction" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_japan" ||
+                                          "shipping" ||
                                       dataTimeline['data']['step'] ==
                                           "store_thai" ||
                                       dataTimeline['data']['step'] ==
@@ -398,11 +557,10 @@ class _TimelineauctionState extends State<Timelineauction> {
               topLineStyle: LineStyle(color: Colors.red),
               bottomLineStyle: LineStyle(
                   color: dataTimeline.length > 0
-                      ? dataTimeline['data']['step'] == "order" ||
-                              dataTimeline['data']['step'] == "action" ||
-                              dataTimeline['data']['step'] ==
-                                  "successauction" ||
-                              dataTimeline['data']['step'] == "store_japan" ||
+                      ? dataTimeline['data']['step'] == "wait" ||
+                              dataTimeline['data']['step'] == "order" ||
+                              dataTimeline['data']['step'] == "buy" ||
+                              dataTimeline['data']['step'] == "shipping" ||
                               dataTimeline['data']['step'] == "store_thai" ||
                               dataTimeline['data']['step'] == "overdue" ||
                               dataTimeline['data']['step'] == "delivery"
@@ -414,10 +572,10 @@ class _TimelineauctionState extends State<Timelineauction> {
               indicatorStyle: IndicatorStyle(
                 width: 20,
                 color: dataTimeline.length > 0
-                    ? dataTimeline['data']['step'] == "order" ||
-                            dataTimeline['data']['step'] == "action" ||
-                            dataTimeline['data']['step'] == "successauction" ||
-                            dataTimeline['data']['step'] == "store_japan" ||
+                    ? dataTimeline['data']['step'] == "wait" ||
+                            dataTimeline['data']['step'] == "order" ||
+                            dataTimeline['data']['step'] == "buy" ||
+                            dataTimeline['data']['step'] == "shipping" ||
                             dataTimeline['data']['step'] == "store_thai" ||
                             dataTimeline['data']['step'] == "overdue" ||
                             dataTimeline['data']['step'] == "delivery"
@@ -431,8 +589,7 @@ class _TimelineauctionState extends State<Timelineauction> {
                 child: GestureDetector(
                   onTap: () {
                     if (dataTimeline.length > 0 &&
-                        dataTimeline['data']['step'] == "new" &&
-                        dataTimeline['data']['list'][0]['show'] == true) {
+                        dataTimeline['data']['step'] == "new") {
                       String title = "";
                       showDialog(
                         barrierDismissible: false,
@@ -457,13 +614,11 @@ class _TimelineauctionState extends State<Timelineauction> {
                         Icon(
                           Icons.directions_boat,
                           color: dataTimeline.length > 0
-                              ? dataTimeline['data']['step'] == "order" ||
+                              ? dataTimeline['data']['step'] == "wait" ||
+                                      dataTimeline['data']['step'] == "order" ||
+                                      dataTimeline['data']['step'] == "buy" ||
                                       dataTimeline['data']['step'] ==
-                                          "action" ||
-                                      dataTimeline['data']['step'] ==
-                                          "successauction" ||
-                                      dataTimeline['data']['step'] ==
-                                          "store_japan" ||
+                                          "shipping" ||
                                       dataTimeline['data']['step'] ==
                                           "store_thai" ||
                                       dataTimeline['data']['step'] ==
@@ -540,8 +695,7 @@ class _TimelineauctionState extends State<Timelineauction> {
                 child: GestureDetector(
                   onTap: () {
                     if (dataTimeline.length > 0 &&
-                        dataTimeline['data']['step'] == "order" &&
-                        dataTimeline['data']['list'][1]['show'] == true) {
+                        dataTimeline['data']['step'] == "order") {
                       String title = "";
                       showDialog(
                         barrierDismissible: false,
@@ -644,8 +798,7 @@ class _TimelineauctionState extends State<Timelineauction> {
                 child: GestureDetector(
                   onTap: () {
                     if (dataTimeline.length > 0 &&
-                        dataTimeline['data']['step'] == "auction" &&
-                        dataTimeline['data']['list'][3]['show'] == true) {
+                        dataTimeline['data']['step'] == "auction") {
                       String title = "";
                       showDialog(
                         barrierDismissible: false,
@@ -745,8 +898,7 @@ class _TimelineauctionState extends State<Timelineauction> {
                 child: GestureDetector(
                   onTap: () {
                     if (dataTimeline.length > 0 &&
-                        dataTimeline['data']['step'] == "successauction" &&
-                        dataTimeline['data']['list'][3]['show'] == true) {
+                        dataTimeline['data']['step'] == "successauction") {
                       String title = "";
                       showDialog(
                         barrierDismissible: false,
@@ -846,8 +998,7 @@ class _TimelineauctionState extends State<Timelineauction> {
                 child: GestureDetector(
                   onTap: () {
                     if (dataTimeline.length > 0 &&
-                        dataTimeline['data']['step'] == "store_japan" &&
-                        dataTimeline['data']['list'][4]['show'] == true) {
+                        dataTimeline['data']['step'] == "store_japan") {
                       String title = "";
                       showDialog(
                         barrierDismissible: false,
@@ -936,8 +1087,7 @@ class _TimelineauctionState extends State<Timelineauction> {
                 child: GestureDetector(
                   onTap: () {
                     if (dataTimeline.length > 0 &&
-                        dataTimeline['data']['step'] == "store_thai" &&
-                        dataTimeline['data']['list'][5]['show'] == true) {
+                        dataTimeline['data']['step'] == "store_thai") {
                       String title = "";
                       showDialog(
                         barrierDismissible: false,

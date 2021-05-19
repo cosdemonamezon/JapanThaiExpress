@@ -33,7 +33,7 @@ class _DepositDetailScreenState extends State<DepositDetailScreen> {
               ),
               Center(
                 child: Container(
-                  height: 200,
+                  height: 0,
                   decoration: BoxDecoration(),
                   child: Image.network(
                     data['slip'],
@@ -100,34 +100,11 @@ class _DepositDetailScreenState extends State<DepositDetailScreen> {
                     ),
                     for (var i = 0; i < 1; i += 1)
                       Row(
-                        children: [
-                          Checkbox(
-                            activeColor: Color(0xffdd4b39),
-                            checkColor: Colors.white,
-                            onChanged: i == 4
-                                ? null
-                                : (bool value) {
-                                    setState(() {
-                                      checked[i] = value;
-                                    });
-                                  },
-                            tristate: i == 1,
-                            value: checked[i],
-                          ),
-                          Text(
-                            'ยืนยันรายการ',
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle1
-                                .copyWith(
-                                    color:
-                                        i == 4 ? Colors.black38 : Colors.black),
-                          ),
-                        ],
+                        
                         mainAxisAlignment: MainAxisAlignment.start,
                       ),
                     SizedBox(
-                      height: 40,
+                      height: 15,
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,
@@ -152,7 +129,7 @@ class _DepositDetailScreenState extends State<DepositDetailScreen> {
                           MyNavigator.goToAdmin(context);
                         },
                         child: Text(
-                          "Confirm",
+                          "ยืนยันรายการ",
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ),

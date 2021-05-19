@@ -1,6 +1,7 @@
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -17,6 +18,7 @@ class PromotionScreen extends StatefulWidget {
 
 class _PromotionScreenState extends State<PromotionScreen> {
   bool isLoading = false;
+  bool btnClick = true;
   SharedPreferences prefs;
   List<dynamic> promotion = []; //ประกาศตัวแปร อาร์เรย์ ไว้
   int totalResults = 0;
@@ -97,7 +99,19 @@ class _PromotionScreenState extends State<PromotionScreen> {
         setState(() {
           isLoading = false;
         });
-        print('error from backend ${response.statusCode}');
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
       }
     } catch (e) {
       setState(() {
@@ -185,6 +199,8 @@ class _PromotionScreenState extends State<PromotionScreen> {
     String title2,
     String type,
   ) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Card(
       child: ListTile(
         title: Row(
@@ -226,7 +242,17 @@ class _PromotionScreenState extends State<PromotionScreen> {
               onPressed: () {
                 Clipboard.setData(new ClipboardData(text: title));
                 final snackBar = SnackBar(
-                  content: Text('คัดลอกข้อความสำเร็จ !'),
+                  content: Container(
+                    height: height * 0.05,
+                    child: Text(
+                      'คัดลอกข้อความสำเร็จ !',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
                   action: SnackBarAction(
                     label: 'ตกลง',
                     onPressed: () {

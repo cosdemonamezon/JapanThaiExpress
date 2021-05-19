@@ -1,6 +1,14 @@
-import 'package:JapanThaiExpress/AdminScreens/Customer/Person.dart';
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:another_flushbar/flushbar.dart';
+import 'package:http/http.dart' as http;
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../constants.dart';
 
 class CustomerScreen extends StatefulWidget {
   CustomerScreen({Key key}) : super(key: key);
@@ -11,34 +19,20 @@ class CustomerScreen extends StatefulWidget {
 
 class _CustomerScreenState extends State<CustomerScreen> {
   TextEditingController editingController = TextEditingController();
+  int totalResults = 0;
+  int page = 1;
+  int pageSize = 10;
+  bool isLoading = false;
+  SharedPreferences prefs;
+  List<dynamic> members = [];
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
-  List<Person> persons = [
-    Person(
-        name: 'ธวัชชัย มุ้งภูเขียว',
-        profileImg:
-            'https://scontent.fbkk22-6.fna.fbcdn.net/v/t31.18172-8/170037_103317113078424_7910952_o.jpg?_nc_cat=102&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=jq4Aka_E47kAX8bzhi5&_nc_ht=scontent.fbkk22-6.fna&oh=15ce27b68da3a41ea3d1d0c0ac8135dc&oe=60935BE0',
-        bio: "Tel : 094826462"),
-    Person(
-        name: 'ผาณิต ปิ่นทอง',
-        profileImg:
-            'https://scontent.fbkk22-3.fna.fbcdn.net/v/t1.6435-9/164603254_10208575861031918_4402544809188298525_n.jpg?_nc_cat=111&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=HUUbZKro7ZUAX9BWCDU&_nc_ht=scontent.fbkk22-3.fna&oh=dd2b97db7f33e16ce484f72d3415d321&oe=60924092',
-        bio: "Tel : 094725253"),
-    Person(
-        name: 'นิวัฒน์ พุ่มกลิ่น',
-        profileImg:
-            'https://scontent.fbkk22-3.fna.fbcdn.net/v/t1.18169-1/p200x200/14670814_1160375137357037_2111500651625118280_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=7206a8&_nc_ohc=TReZBgAN8IkAX_nzeuq&_nc_ht=scontent.fbkk22-3.fna&tp=6&oh=b6e7314bf199e781176e2063d3581593&oe=60947C7A',
-        bio: "Tel : 094725111"),
-    Person(
-        name: 'ภานุวัฒน์ ชุรี',
-        profileImg:
-            'https://scontent.fbkk22-1.fna.fbcdn.net/v/t1.6435-9/84330606_3054240611293119_7461998935083581440_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=qAPgv2YrfHwAX_92UC5&_nc_oc=AQmlnEcvgiyqDULnLG_G0v3_MLAzRtbGRj1QEofqJCb8flFDhc6Nf3zoaA0DCXUwqiWiR9tAzGtmKzX0xu5yI1pm&_nc_ht=scontent.fbkk22-1.fna&oh=a083379341a5cc85e1c52637b81deb56&oe=609398CB',
-        bio: "Tel : 094725054"),
-    Person(
-        name: 'พงศกร วิชัยยุทธ',
-        profileImg:
-            'https://scontent.fbkk22-1.fna.fbcdn.net/v/t1.6435-9/86350932_2807434042637336_6205288068300144640_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=-IU3JNbbmi4AX8LNhk8&_nc_ht=scontent.fbkk22-1.fna&oh=72f398cd426e78eabbaceaf3b224b2b7&oe=609261FC',
-        bio: "Tel : 094725302"),
-  ];
+  @override
+  void initState() {
+    _memberList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +43,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
+          children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: TextField(
@@ -65,15 +59,60 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(15.0)))),
               ),
             ),
-            ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.only(left: 20.0, right: 20.0),
-              children: [
-                Column(
-                    children: persons.map((p) {
-                  return personDetailCard(p);
-                }).toList())
-              ],
+            Container(
+              color: Colors.grey[300],
+              child: isLoading == true
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: members.length,
+                      padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Card(
+                              color: Colors.white,
+                              elevation: 4.0,
+                              child: Container(
+                                decoration: BoxDecoration(color: Colors.white),
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 10.0),
+                                  leading: Container(
+                                    padding: EdgeInsets.only(right: 14.0),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            right: BorderSide(
+                                                width: 2.0,
+                                                color: primaryColor))),
+                                    child: Image.network(
+                                        'https://picsum.photos/200/300',
+                                        width: 70),
+                                  ),
+                                  title: Text(members[index]['fname_th'] + ' ' + members[index]['lname_th']),
+                                  subtitle: Text(members[index]['tel']),
+                                  trailing: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons
+                                            .keyboard_arrow_right_outlined),
+                                        color: Colors.orange[900],
+                                        iconSize: 30,
+                                        onPressed: () {},
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
             ),
           ],
         ),
@@ -81,9 +120,50 @@ class _CustomerScreenState extends State<CustomerScreen> {
       bottomNavigationBar: Navigation(),
     );
   }
+
+  Future<void> _memberList() async {
+    setState(() {
+      page == 1 ? isLoading = true : isLoading = false;
+    });
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = jsonDecode(tokenString);
+    var url = Uri.parse(
+        pathAPI + 'api/app/members?status=&page=$page&page_size=$pageSize');
+    var response = await http.get(
+      url,
+      headers: {'Authorization': token['data']['token']},
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> depdata = jsonDecode(response.body);
+      setState(() {
+        totalResults = depdata['data']['total'];
+        members.addAll(depdata['data']['data']);
+        isLoading = false;
+      });
+      print(members);
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      var feedback = jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
+  }
 }
 
-Widget personDetailCard(Person) {
+Widget personDetailCard(person) {
   return Padding(
     padding: const EdgeInsets.all(5.0),
     child: Card(
@@ -101,17 +181,18 @@ Widget personDetailCard(Person) {
                       shape: BoxShape.circle,
                       image: new DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage(Person.profileImg)))),
+                          image: NetworkImage(
+                              'https://homepages.cae.wisc.edu/~ece533/images/cat.png')))),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  Person.name,
+                  person['fname_th'],
                   style: TextStyle(color: Color(0xffdd4b39), fontSize: 18),
                 ),
                 Text(
-                  Person.bio,
+                  person['tel'],
                   style: TextStyle(color: Color(0xffdd4b39), fontSize: 12),
                 )
               ],

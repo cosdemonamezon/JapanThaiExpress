@@ -8,6 +8,7 @@ import 'package:JapanThaiExpress/UserScreens/Profile/components/profile_pic.dart
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -65,9 +66,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (bodydata['code'] == 200) {
         MyNavigator.goToLogin(context);
       } else {
-        print(bodydata['code']);
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
       }
-    } else {}
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+    }
   }
 
   _loadData() async {
@@ -87,7 +114,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         profile = data['data']['profile'];
       });
-    } else {}
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+    }
   }
 
   @override
@@ -132,14 +173,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     MaterialPageRoute(builder: (context) => Myaccount()));
               },
             ),
-            ProfileMenu(
-              text: "จัดการที่อยู่",
-              icon: "assets/icons/User Icon.svg",
-              press: () {
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => Myaccount()));
-              },
-            ),
+            // ProfileMenu(
+            //   text: "จัดการที่อยู่",
+            //   icon: "assets/icons/User Icon.svg",
+            //   press: () {
+            //     // Navigator.push(context,
+            //     //     MaterialPageRoute(builder: (context) => Myaccount()));
+            //   },
+            // ),
             // ProfileMenu(
             //   text: "จัดการบัญชี",
             //   icon: "assets/icons/coins.svg",

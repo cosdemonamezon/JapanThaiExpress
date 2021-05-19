@@ -1,6 +1,7 @@
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'dart:convert' as convert;
@@ -24,7 +25,6 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
   String fee = "";
   String com = "";
   String sum = "";
-  //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcyNTk5NSwiZXhwIjoxNjE1ODEyMzk1fQ.-x9FnNRM-KmnA8pd2cWJhk_ebIwYFtCwwUX31MeJ3TI";
   //final _formKey = GlobalKey<FormState>();
   final _formKey = GlobalKey<FormBuilderState>();
   TextEditingController _rate;
@@ -118,12 +118,24 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           // print(exchangedata.length);
           // print(exchangedata[1]['description']);
         });
+        print(exchangedata);
       } else {
-        final Map<String, dynamic> exchange = convert.jsonDecode(response.body);
         setState(() {
           isLoading = false;
         });
-        print('error from backend ${exchange['message']}');
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
       }
     } catch (e) {
       setState(() {
@@ -146,7 +158,21 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         _rate = TextEditingController(text: ratedata.toString());
         rate = _rate.text;
       });
-    } else {}
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
   }
 
   _settingApp() async {
@@ -182,10 +208,34 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         // print(_rate);
         // print(_fee);
       } else {
-        print("error");
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
       }
     } else {
-      print("error");
+      var feedback = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
     }
   }
 
@@ -209,7 +259,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         },
         body: ({
           //'amount': values['amount'],
-          'amount': sum,
+          'amount': values['amount'],
           'account_no': values['account_no'],
           'account_name': values['account_name'],
           'bank': values['bank'],
@@ -227,13 +277,14 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         setState(() {
           isLoading = false;
         });
+        print(tranfer['data']['total']);
         String picSuccess = "assets/success.png";
         showDialog(
           barrierDismissible: false,
           context: context,
           builder: (context) => alertdialog(
             tranfer['message'],
-            tranfer['data']['total'].toString(),
+            tranfer['data']['total'].toStringAsFixed(2),
             tranfer['data']['code'],
             tranfer['data']['updated_at'],
             picSuccess,
@@ -241,7 +292,19 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           ),
         );
       } else {
-        print("error");
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
       }
     } else if (response.statusCode == 402) {
       final Map<String, dynamic> trandata = convert.jsonDecode(response.body);
@@ -259,7 +322,21 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         ),
       );
       print(trandata['message']);
-    } else {}
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
   }
 
   @override
@@ -270,12 +347,12 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          centerTitle: true,
+            centerTitle: true,
             title: Text("รับโอนเงิน"),
             leading: IconButton(
                 onPressed: () {
                   //MyNavigator.goToService(context);
-                  Navigator.pop(context);
+                  MyNavigator.goToService(context);
                   // Navigator.push(
                   //   context, MaterialPageRoute(builder: (context) => Service()));
                 },
@@ -309,7 +386,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           children: [
             Container(
               height: height,
-              color: Colors.grey[300],
+              color: Colors.white,
               child: isLoading == true
                   ? Center(
                       child: CircularProgressIndicator(),
@@ -351,20 +428,20 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                           itemBuilder: (BuildContext context, int index) {
                             return buildCard(
                               exchangedata[index]['id'].toString(),
-                              exchangedata[index]['code'],
-                              exchangedata[index]['bank'],
-                              exchangedata[index]['total'],
+                              exchangedata[index]['code'].toString(),
+                              exchangedata[index]['bank'].toString(),
+                              exchangedata[index]['total'].toString(),
                               exchangedata[index]['description'] == null
                                   ? 'ไม่มีข้อมูล'
-                                  : exchangedata[index]['description'],
-                              exchangedata[index]['created_at'],
-                              exchangedata[index]['status'],
-                              exchangedata[index]['fee'],
-                              exchangedata[index]['account_name'],
-                              exchangedata[index]['account_no'],
+                                  : exchangedata[index]['description'].toString(),
+                              exchangedata[index]['created_at'].toString(),
+                              exchangedata[index]['status'].toString(),
+                              exchangedata[index]['fee'].toString(),
+                              exchangedata[index]['account_name'].toString(),
+                              exchangedata[index]['account_no'].toString(),
                               exchangedata[index]['slip'] == null
                                   ? 'ไม่มีข้อมูล'
-                                  : exchangedata[index]['slip'],
+                                  : exchangedata[index]['slip'].toString(),
                             );
                           }),
                     ),
@@ -512,7 +589,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                                 // print(c);
                                 setState(() {
                                   _sum =
-                                      TextEditingController(text: d.toString());
+                                      TextEditingController(text: d.toStringAsFixed(2));
                                   sum = d.toString();
                                 });
                                 // print(sum);
@@ -783,12 +860,32 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
     String img,
   ) {
     return Card(
-      child: ListTile(
+      child: GestureDetector(
+        onTap: () {
+          var arg = {
+            "id": id,
+            "code": title,
+            "bank": title2,
+            "total": title3,
+            "description": title4,
+            "date": date,
+            "fee": fee,
+            "name": name,
+            "account": account,
+            "status": status,
+            "img": img,
+            //MyNavigator.goToTimelineOrders(context);
+          };
+          MyNavigator.goToReceiveDetail(context, arg);
+        },
+        child: ListTile(
+          
           title: Row(
             children: [
               Container(
                 //color: Colors.blueAccent,
                 width: 100,
+
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -846,7 +943,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
               ),
               Container(
                 //color: Colors.blueAccent,
-                width: 270,
+                width: 200,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -914,44 +1011,70 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
               ),
             ],
           ),
-          subtitle: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              MaterialButton(
-                onPressed: () {
-                  var arg = {
-                    "id": id,
-                    "code": title,
-                    "bank": title2,
-                    "total": title3,
-                    "description": title4,
-                    "date": date,
-                    "fee": fee,
-                    "name": name,
-                    "account": account,
-                    "status": status,
-                    "img": img,
-                  };
-                  MyNavigator.goToReceiveDetail(context, arg);
+          trailing: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+            IconButton(
+              icon: const Icon(Icons.keyboard_arrow_right_outlined),
+              color: Colors.orange[900],
+              iconSize: 30,
+              onPressed: () {
+                var arg = {
+                  "id": id,
+                  "code": title,
+                  "bank": title2,
+                  "total": title3,
+                  "description": title4,
+                  "date": date,
+                  "fee": fee,
+                  "name": name,
+                  "account": account,
+                  "status": status,
+                  "img": img,
                   //MyNavigator.goToTimelineOrders(context);
-                  //String id,
-                  // String title,
-                  // String title2,
-                  // String title3,
-                  // String title4,
-                },
-                color: primaryColor,
-                child: Text(
-                  "ดูเพิ่ม",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 12,
+                };
+                MyNavigator.goToReceiveDetail(context, arg);
+              },
+            ),
+          ]),
+          /*subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                MaterialButton(
+                  onPressed: () {
+                    var arg = {
+                      "id": id,
+                      "code": title,
+                      "bank": title2,
+                      "total": title3,
+                      "description": title4,
+                      "date": date,
+                      "fee": fee,
+                      "name": name,
+                      "account": account,
+                      "status": status,
+                      "img": img,
+                    };
+                    MyNavigator.goToReceiveDetail(context, arg);
+                    //MyNavigator.goToTimelineOrders(context);
+                    //String id,
+                    // String title,
+                    // String title2,
+                    // String title3,
+                    // String title4,
+                  },
+                  color: primaryColor,
+                  child: Text(
+                    "ดูเพิ่ม",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
                   ),
-                ),
-              )
-            ],
-          )),
+                )
+              ],
+            )*/
+        ),
+      ),
     );
   }
 
@@ -1015,7 +1138,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                   ),
                   child: FlatButton(
                     onPressed: () {
-                      MyNavigator.goToWallet(context);
+                      Navigator.pop(context);
                     },
                     child: Text(
                       "ตกลง",

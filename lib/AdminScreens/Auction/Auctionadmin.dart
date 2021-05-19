@@ -58,9 +58,9 @@ class _AuctionadminState extends State<Auctionadmin> {
   void initState() {
     super.initState();
     _getauctionadmin();
-    _addressMem();
-    _DepositoryScreenoryType();
-    _shippingOption();
+    // _addressMem();
+    // _DepositoryScreenoryType();
+    // _shippingOption();
   }
 
   void _onRefresh() async {
@@ -111,28 +111,15 @@ class _AuctionadminState extends State<Auctionadmin> {
           pathAPI + 'api/get_auction?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
-        headers: {
-          //'Content-Type': 'application/json',
-          'Authorization': token['data']['token']
-        },
-        // body: ({
-        //   'status': '',
-        //   'page': page.toString(),
-        //   'page_size': pageSize.toString(),
-        // })
+        headers: {'Authorization': token['data']['token']},
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> depdata = convert.jsonDecode(response.body);
-        print([depdata]);
+        print(response.body);
         setState(() {
           totalResults = depdata['data']['total'];
           Auctionadmindata.addAll(depdata['data']['data']);
           isLoading = false;
-          // print(depdata['message']);
-          // print(totalResults);
-          // print("test");
-          // print(DepositoryScreendata.length);
-          // print(DepositoryScreendata[1]['description']);
         });
       } else {
         setState(() {
@@ -178,71 +165,6 @@ class _AuctionadminState extends State<Auctionadmin> {
         //print(dataValue[0]['name']);
       } else {}
     } else {}
-  }
-
-  _shippingOption() async {
-    prefs = await SharedPreferences.getInstance();
-    var tokenString = prefs.getString('token');
-    var token = convert.jsonDecode(tokenString);
-    setState(() {
-      //isLoading = true;
-    });
-
-    var url = Uri.parse(pathAPI + 'api/shipping_option');
-    var response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token['data']['token']
-      },
-    );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> dataship = convert.jsonDecode(response.body);
-      if (dataship['code'] == 200) {
-        print(dataship['message']);
-        setState(() {
-          dropdownShip = dataship['data'];
-          _transport = dropdownShip[0]['name'];
-          costth = dropdownShip[0]['price'];
-        });
-        print(dropdownShip);
-      } else {}
-    } else {}
-  }
-
-  _addressMem() async {
-    prefs = await SharedPreferences.getInstance();
-    var tokenString = prefs.getString('token');
-    var token = convert.jsonDecode(tokenString);
-
-    //print(token);
-    setState(() {
-      //isLoading = true;
-      // tokendata = token['data']['token'];
-    });
-    //print(tokendata);
-
-    var url = Uri.parse(pathAPI + 'api/address_mem');
-    var response = await http.get(url, headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token['data']['token'],
-    });
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> addressdata =
-          convert.jsonDecode(response.body);
-      //print(addressdata);
-      setState(() {
-        address = addressdata['data'];
-        id = address[0]['id'];
-        name = address[0]['name'];
-        add = address[0]['address'];
-        tel = address[0]['tel'];
-      });
-    } else {
-      final Map<String, dynamic> addressdata =
-          convert.jsonDecode(response.body);
-      print(addressdata['message']);
-    }
   }
 
   _Auctionadmin(Map<String, dynamic> values) async {
@@ -413,7 +335,10 @@ class _AuctionadminState extends State<Auctionadmin> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    MyNavigator.goToTimelineauction(
+                                        context, Auctionadmindata[index]['id']);
+                                  },
                                   child: Card(
                                     color: Colors.white,
                                     elevation: 4.0,
@@ -421,104 +346,95 @@ class _AuctionadminState extends State<Auctionadmin> {
                                       decoration:
                                           BoxDecoration(color: Colors.white),
                                       child: ListTile(
-                                          contentPadding: EdgeInsets.symmetric(
-                                              horizontal: 20.0, vertical: 10.0),
-                                          leading: Container(
-                                            padding:
-                                                EdgeInsets.only(right: 14.0),
-                                            decoration: BoxDecoration(
-                                                border: Border(
-                                                    right: BorderSide(
-                                                        width: 2.0,
-                                                        color: primaryColor))),
-                                            child: Image.network(
-                                                Auctionadmindata[index]
-                                                            ['image'] ==
-                                                        null
-                                                    ? 'https://picsum.photos/200/300'
-                                                    : Auctionadmindata[index]
-                                                        ['image'],
-                                                width: 70),
-                                          ),
-                                          title: Text(
-                                            Auctionadmindata[index]
-                                                ['description'],
-                                            style: TextStyle(
-                                                color: kTextButtonColor,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          subtitle: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Flexible(
-                                                  child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: <Widget>[
-                                                    RichText(
-                                                      text: TextSpan(
-                                                        text: "ชื่อลูกค้า :" +
-                                                            Auctionadmindata[
-                                                                    index]
-                                                                ['ship_name'],
-                                                        style: TextStyle(
-                                                            color:
-                                                                kTextButtonColor),
-                                                      ),
-                                                      maxLines: 3,
-                                                      softWrap: true,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 20.0, vertical: 10.0),
+                                        leading: Container(
+                                          padding: EdgeInsets.only(right: 14.0),
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  right: BorderSide(
+                                                      width: 2.0,
+                                                      color: primaryColor))),
+                                          child: Image.network(
+                                              Auctionadmindata[index]
+                                                          ['image'] ==
+                                                      null
+                                                  ? 'https://picsum.photos/200/300'
+                                                  : Auctionadmindata[index]
+                                                      ['image'],
+                                              width: 70),
+                                        ),
+                                        title: Text(
+                                          Auctionadmindata[index]['name'],
+                                          style: TextStyle(
+                                              color: kTextButtonColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        subtitle: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            Flexible(
+                                                child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "ชื่อลูกค้า :" +
+                                                          Auctionadmindata[
+                                                              index]['code'],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
                                                     ),
-                                                    RichText(
-                                                      text: TextSpan(
-                                                        text: "เบอร์ติดต่อ :" +
-                                                            Auctionadmindata[
-                                                                    index]
-                                                                ['ship_tel'],
-                                                        style: TextStyle(
-                                                            color:
-                                                                kTextButtonColor),
-                                                      ),
-                                                      maxLines: 3,
-                                                      softWrap: true,
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "เบอร์ติดต่อ :" +
+                                                          Auctionadmindata[
+                                                              index]['code'],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
                                                     ),
-                                                    RichText(
-                                                      text: TextSpan(
-                                                        text: "วันที่บันทึก :" +
-                                                            Auctionadmindata[
-                                                                        index][
-                                                                    'created_at']
-                                                                .split("T")[0],
-                                                        style: TextStyle(
-                                                            color:
-                                                                kTextButtonColor),
-                                                      ),
-                                                      maxLines: 3,
-                                                      softWrap: true,
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "วันที่บันทึก :" +
+                                                          Auctionadmindata[
+                                                                      index]
+                                                                  ['created_at']
+                                                              .split("T")[0],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
                                                     ),
-                                                  ]))
-                                            ],
-                                          ),
-                                          trailing: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              IconButton(
-                                                icon: const Icon(Icons
-                                                    .keyboard_arrow_right_outlined),
-                                                color: Colors.orange[900],
-                                                iconSize: 30,
-                                                onPressed: () {
-                                                  MyNavigator
-                                                      .goToTimelineauction(
-                                                          context);
-                                                },
-                                              ),
-                                            ],
-                                          ) //onTap: () {},
-
-                                          ),
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                ]))
+                                          ],
+                                        ),
+                                        trailing: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(Icons
+                                                  .keyboard_arrow_right_outlined),
+                                              color: Colors.orange[900],
+                                              iconSize: 30,
+                                              onPressed: () {},
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -637,74 +553,6 @@ class _AuctionadminState extends State<Auctionadmin> {
               //selectdialog();
             }),
       ),
-    );
-  }
-
-  Card buildCard(
-    String title,
-    String title2,
-    String title3,
-    String title4,
-  ) {
-    return Card(
-      child: ListTile(
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
-              ),
-              Text(
-                title2,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
-              ),
-              Text(
-                title3,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
-              ),
-              Text(
-                title4,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-          subtitle: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              MaterialButton(
-                onPressed: () {
-                  //MyNavigator.goToTimelineOrders(context);
-                },
-                color: Colors.green,
-                child: Text(
-                  "Details",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ],
-          )),
     );
   }
 

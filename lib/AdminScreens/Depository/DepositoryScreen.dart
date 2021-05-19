@@ -59,7 +59,6 @@ class _DepositoryScreenState extends State<DepositoryScreen> {
     _getDepositoryScreenory();
     _addressMem();
     _DepositoryScreenoryType();
-    _shippingOption();
   }
 
   void _onRefresh() async {
@@ -174,36 +173,6 @@ class _DepositoryScreenState extends State<DepositoryScreen> {
         //   //print(dataValue[i]['name']);
         // }
         //print(dataValue[0]['name']);
-      } else {}
-    } else {}
-  }
-
-  _shippingOption() async {
-    prefs = await SharedPreferences.getInstance();
-    var tokenString = prefs.getString('token');
-    var token = convert.jsonDecode(tokenString);
-    setState(() {
-      //isLoading = true;
-    });
-
-    var url = Uri.parse(pathAPI + 'api/shipping_option');
-    var response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token['data']['token']
-      },
-    );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> dataship = convert.jsonDecode(response.body);
-      if (dataship['code'] == 200) {
-        print(dataship['message']);
-        setState(() {
-          dropdownShip = dataship['data'];
-          _transport = dropdownShip[0]['name'];
-          costth = dropdownShip[0]['price'];
-        });
-        print(dropdownShip);
       } else {}
     } else {}
   }
@@ -411,7 +380,10 @@ class _DepositoryScreenState extends State<DepositoryScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    MyNavigator.goToTimelineDepository(context,
+                                        DepositoryScreendata[index]['id']);
+                                  },
                                   child: Card(
                                     color: Colors.white,
                                     elevation: 4.0,
@@ -468,7 +440,7 @@ class _DepositoryScreenState extends State<DepositoryScreen> {
                                                     ),
                                                     RichText(
                                                       text: TextSpan(
-                                                        text: "เบอร์ติดต่อ :" +
+                                                        text: "เบอร์โทร :" +
                                                             DepositoryScreendata[
                                                                     index]
                                                                 ['ship_tel'],

@@ -2,6 +2,7 @@ import 'package:JapanThaiExpress/UserScreens/News/DetailNews.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -52,8 +53,38 @@ class _NewsScreenState extends State<NewsScreen> {
           isLoading = false;
           news = newsdata['data'];
         });
-      } else {}
-    } else {}
+      } else {
+        var feedback = convert.jsonDecode(response.body);
+        print("${feedback['message']}");
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+      }
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+      print("${feedback['message']}");
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
   }
 
   @override
@@ -73,37 +104,28 @@ class _NewsScreenState extends State<NewsScreen> {
             )),
       ),
       body: Container(
-        height: height,
-        padding: EdgeInsets.symmetric(horizontal: 5),
-        color: Colors.grey[200],
+        //height: height,
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        //color: Colors.grey[200],
         child: isLoading == true
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : Column(
-                children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: news.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 5.0),
-                          child: newsCard(
-                              news[index]['photo'] == null
-                                  ? 'https://picsum.photos/200/300'
-                                  : news[index]['photo'],
-                              news[index]['title'],
-                              news[index]['detail']),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+            : ListView.builder(
+                shrinkWrap: true,
+                itemCount: news.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
+                    child: newsCard(
+                        news[index]['photo'] == null
+                            ? 'https://picsum.photos/200/300'
+                            : news[index]['photo'],
+                        news[index]['title'],
+                        news[index]['detail']),
+                  );
+                },
               ),
       ),
       bottomNavigationBar: NavigationBar(),
@@ -111,10 +133,13 @@ class _NewsScreenState extends State<NewsScreen> {
   }
 
   Container newsCard(String img, String title, String subtitle) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Container(
-      height: 160,
+      height: height * 0.24,
       decoration: BoxDecoration(
-        color: kFontPrimaryColor,
+        //color: kFontPrimaryColor,
+        color: Colors.grey[200],
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(18),
           topRight: Radius.circular(18),
@@ -132,8 +157,8 @@ class _NewsScreenState extends State<NewsScreen> {
           child: Row(
             children: [
               Container(
-                height: 120,
-                width: 100,
+                height: height * 0.18,
+                width: width * 0.26,
                 decoration: BoxDecoration(
                   //color: Colors.red,
                   borderRadius: BorderRadius.only(
@@ -169,7 +194,7 @@ class _NewsScreenState extends State<NewsScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: subtitle.length <= 100
+                      child: subtitle.length <= 95
                           ? Text(
                               subtitle,
                               style: TextStyle(
@@ -178,7 +203,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                   color: kFontSecondTextColor),
                             )
                           : Text(
-                              subtitle.substring(0, 100) + "...",
+                              subtitle.substring(0, 98) + "...",
                               style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
