@@ -579,7 +579,7 @@ class _AuctionState extends State<Auction> {
                               auctiondata[index]['track_jp'] == null
                                   ? 'ไม่มีข้อมูล'
                                   : auctiondata[index]['track_jp'],
-                              
+                              auctiondata[index]['id'],
                             );
                           }
                           // buildCard(
@@ -753,7 +753,6 @@ class _AuctionState extends State<Auction> {
                                       ))
                                   .toList(),
                             ),
-
                             SizedBox(height: 10),
                             Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
@@ -776,7 +775,6 @@ class _AuctionState extends State<Auction> {
                               ),
                             ),
                             SizedBox(height: 10),
-
                             Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Column(
@@ -955,77 +953,87 @@ class _AuctionState extends State<Auction> {
   }
 
   Card buildCard(
-      String image, String title, String title2, String title3, String title4, ) {
+    String image,
+    String title,
+    String title2,
+    String title3,
+    String title4,
+    int id,
+  ) {
     return Card(
-      child: ListTile(
-        leading: Container(
+      child: GestureDetector(
+        onTap: () {
+          MyNavigator.goToTimelineauctionMember(context, id);
+        },
+        child: ListTile(
+          leading: Container(
               width: 90,
               height: 150,
               child: Image.network(
                 image,
                 fit: BoxFit.cover,
               )),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "ชื่อ：" + title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 14,
-              ),
-            ),
-            Text(
-              "โค้ด：" + title2,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 14,
-              ),
-            ),
-            Text(
-              "ราคา：" + title3,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 14,
-              ),
-            ),
-            
-          ],
-        ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.keyboard_arrow_right_outlined),
-              color: Colors.orange[900],
-              iconSize: 30,
-              onPressed: () {},
-            ),
-          ],
-        ),
-        /*subtitle: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              MaterialButton(
-                onPressed: () {
-                  //MyNavigator.goToTimelineOrders(context);
-                },
-                color: Colors.green,
-                child: Text(
-                  "Details",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
+              Text(
+                "ชื่อ：" + title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                "โค้ด：" + title2,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                "ราคา：" + title3,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
                 ),
               ),
             ],
-          )*/
+          ),
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.keyboard_arrow_right_outlined),
+                color: Colors.orange[900],
+                iconSize: 30,
+                onPressed: () {},
+              ),
+            ],
+          ),
+          /*subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                MaterialButton(
+                  onPressed: () {
+                    //MyNavigator.goToTimelineOrders(context);
+                  },
+                  color: Colors.green,
+                  child: Text(
+                    "Details",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
+            )*/
+        ),
       ),
     );
   }
@@ -1474,5 +1482,4 @@ class _AuctionState extends State<Auction> {
       )..show(context);
     }
   }
-
 }

@@ -69,7 +69,7 @@ import 'package:JapanThaiExpress/LoginFB.dart';
 import 'package:JapanThaiExpress/LoginGoogle.dart';
 
 import 'UserScreens/Messageuser/MessageScreen.dart';
-import 'UserScreens/Profile/components/Agreement.dart';
+//import 'UserScreens/Profile/components/Agreement.dart';
 
 String token;
 var tokenObj;
