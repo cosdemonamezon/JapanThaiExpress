@@ -176,6 +176,7 @@ var routes = <String, WidgetBuilder>{
   "/homescreen": (BuildContext context) => HomeScreen(),
   "/exchangedetail": (BuildContext context) => ExchangeDetailScreen(),
   "/buystuff": (BuildContext context) => Buystuff(),
+  
 };
 
 class MyApp extends StatelessWidget {

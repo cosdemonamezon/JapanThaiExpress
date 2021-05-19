@@ -135,6 +135,7 @@ class _NewsScreenState extends State<NewsScreen> {
   Container newsCard(String img, String title, String subtitle) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    Size size = MediaQuery.of(context).size;
     return Container(
       height: height * 0.24,
       decoration: BoxDecoration(

@@ -140,6 +140,7 @@ class _ServiceState extends State<Service> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         //centerTitle: true,
