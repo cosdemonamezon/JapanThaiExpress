@@ -22,6 +22,7 @@ class _NavigationBarState extends State<NavigationBar> {
   bool isLoading = false;
   SharedPreferences prefs;
   Map<String, dynamic> homedata = {};
+  String noti;
 
   @override
   void initState() {
@@ -47,6 +48,7 @@ class _NavigationBarState extends State<NavigationBar> {
         if (homebody['code'] == 200) {
           setState(() {
             homedata = homebody['data'];
+            noti = homedata['total_noti'].toString();
             isLoading = false;
           });
           print(homedata);
@@ -177,31 +179,35 @@ class _NavigationBarState extends State<NavigationBar> {
                   //left: 0,
                   top: 0,
                   //bottom: 0,
-                  child: homedata['total_noti'] != 0
-                      ? CircleAvatar(
-                          radius: 12,
-                          backgroundColor: Colors.red,
-                          child: Center(
-                            child: homedata['total_noti'] != null
-                                ? Text(homedata['total_noti'].toString(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                      color: Colors.white,
-                                    ))
-                                : Text("0",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                      color: Colors.white,
-                                    )),
-                          ),
-                        )
-                      : SizedBox(
-                          height: 2,
-                        ),
+                  child: CircleAvatar(
+                    radius: 12,
+                    backgroundColor: Colors.red,
+                    child: Center(
+                      child: homedata['total_noti'] != null && noti.length == 2
+                          ? Text(homedata['total_noti'].toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: Colors.white,
+                              ))
+                          : homedata['total_noti'] != null && noti.length == 3
+                              ? Text(homedata['total_noti'].toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                    color: Colors.white,
+                                  ))
+                              : Text("0",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                  )),
+                    ),
+                  ),
                 ),
               ]),
+              ////
               Stack(
                 children: [
                   Padding(
