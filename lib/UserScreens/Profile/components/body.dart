@@ -1,6 +1,8 @@
 import 'dart:io';
 
+
 import 'package:JapanThaiExpress/UserScreens/Profile/components/Bank.dart';
+import 'package:JapanThaiExpress/UserScreens/Profile/components/privacy.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:device_info/device_info.dart';
@@ -67,7 +69,7 @@ class Body extends StatelessWidget {
           SizedBox(height: 20),
           ProfileMenu(
             text: "My Account",
-            icon: "assets/icons/User Icon.svg",
+            icon: Icon(Icons.account_circle_outlined),
             press: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => Myaccount()));
@@ -75,10 +77,18 @@ class Body extends StatelessWidget {
           ),
           ProfileMenu(
             text: "จัดการบัญชี",
-            icon: "assets/icons/coins.svg",
+            icon: Icon(Icons.account_circle_outlined),
             press: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Bank()));
+            },
+          ),
+          ProfileMenu(
+            text: "ข้อตกลงการใช้งาน",
+            icon: Icon(Icons.account_circle_outlined),
+            press: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => PrivacyPolicy()));
             },
           ),
           // ProfileMenu(
@@ -88,12 +98,12 @@ class Body extends StatelessWidget {
           // ),
           ProfileMenu(
             text: "Help Center",
-            icon: "assets/icons/Question mark.svg",
+            icon: Icon(Icons.account_circle_outlined),
             press: () {},
           ),
           ProfileMenu(
             text: "Log Out",
-            icon: "assets/icons/Log out.svg",
+            icon: Icon(Icons.account_circle_outlined),
             press: () {},
           ),
         ],

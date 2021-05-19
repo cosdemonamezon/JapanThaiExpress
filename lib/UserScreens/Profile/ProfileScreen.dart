@@ -1,10 +1,12 @@
 import 'dart:io';
-
 import 'package:JapanThaiExpress/UserScreens/Profile/components/Myaccount.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/Bank.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/body.dart';
+import 'package:JapanThaiExpress/UserScreens/Profile/components/editpassword.dart';
+import 'package:JapanThaiExpress/UserScreens/Profile/components/privacy.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/profile_menu.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/profile_pic.dart';
+import 'package:JapanThaiExpress/UserScreens/WidgetsUser/Contact.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
@@ -167,10 +169,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(height: 20),
             ProfileMenu(
               text: "แก้ไขโปรไฟล์",
-              icon: "assets/icons/User Icon.svg",
+              icon: Icon(Icons.account_circle_outlined),
               press: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Myaccount()));
+              },
+            ),
+            ProfileMenu(
+              text: "แก้ไขรหัสผ่าน",
+              icon: Icon(Icons.lock_outline_rounded),
+              press: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Editpassword()));
+              },
+            ),
+            ProfileMenu(
+              text: "นโยบายความเป็นส่วนตัว",
+              icon: Icon(Icons.visibility_outlined),
+              press: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PrivacyPolicy()));
+              },
+            ),
+            ProfileMenu(
+              text: "ช่องทางการติดต่อ",
+              icon: Icon(Icons.phone_in_talk_outlined),
+              press: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Contact()));
               },
             ),
             // ProfileMenu(
@@ -196,14 +222,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // ),
             ProfileMenu(
               text: "ศูนย์ช่วยเหลือ",
-              icon: "assets/icons/Question mark.svg",
+              icon: Icon(Icons.help_outline),
               press: () {
                 MyNavigator.goToHelp(context);
               },
             ),
             ProfileMenu(
               text: "ออกจากระบบ",
-              icon: "assets/icons/Log out.svg",
+              icon: Icon(Icons.login_outlined),
               press: () {
                 _logOut();
               },

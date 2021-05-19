@@ -68,6 +68,7 @@ import 'package:JapanThaiExpress/LoginFB.dart';
 import 'package:JapanThaiExpress/LoginGoogle.dart';
 
 import 'UserScreens/Messageuser/MessageScreen.dart';
+import 'UserScreens/Profile/components/Agreement.dart';
 
 String token;
 var tokenObj;
@@ -174,6 +175,7 @@ var routes = <String, WidgetBuilder>{
   "/homescreen": (BuildContext context) => HomeScreen(),
   "/exchangedetail": (BuildContext context) => ExchangeDetailScreen(),
   "/buystuff": (BuildContext context) => Buystuff(),
+  
 };
 
 class MyApp extends StatelessWidget {
