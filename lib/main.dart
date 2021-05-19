@@ -20,7 +20,7 @@ import 'package:JapanThaiExpress/AdminScreens/HomeServices/HomeServices.dart';
 import 'package:JapanThaiExpress/AdminScreens/Deposit/DepositDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRCodePreview.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePreorders.dart';
-import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePurchaseScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/PurchaseOrders/TimeLinePurchase.dart';
 import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Messageuser/Messagesend.dart';
@@ -143,7 +143,7 @@ var routes = <String, WidgetBuilder>{
   "/depositdetail": (BuildContext context) => DepositDetailScreen(),
   "/qrcodepreview": (BuildContext context) => QRCodePreview(),
   "/timelineorders": (BuildContext context) => TimeLinePreorders(),
-  "/timelineorderspurchase": (BuildContext context) => TimeLinePurchaseScreen(),
+  "/timelineorderspurchase": (BuildContext context) => TimeLinePurchase(),
   "/deposit": (BuildContext context) => Deposit(),
   "/news": (BuildContext context) => NewsScreen(),
   "/newsdetail": (BuildContext context) => DetailNews(),

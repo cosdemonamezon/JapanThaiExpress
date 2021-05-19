@@ -15,14 +15,14 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PrechaseScreen extends StatefulWidget {
-  PrechaseScreen({Key key}) : super(key: key);
+class PurchaseScreen extends StatefulWidget {
+  PurchaseScreen({Key key}) : super(key: key);
 
   @override
-  _PrechaseScreenState createState() => _PrechaseScreenState();
+  _PurchaseScreenState createState() => _PurchaseScreenState();
 }
 
-class _PrechaseScreenState extends State<PrechaseScreen> {
+class _PurchaseScreenState extends State<PurchaseScreen> {
   SharedPreferences prefs;
   SharedPreferences prefsNoti;
   bool isLoading = false;
@@ -30,7 +30,7 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
   List<dynamic> notidata = [];
   Map<String, dynamic> readnotidata = {};
   Map<String, dynamic> numberNoti = {};
-  List<dynamic> PrechaseScreen = [];
+  List<dynamic> PurchaseScreen = [];
   TextEditingController editingController = TextEditingController();
 
   int totalResults = 0;
@@ -56,8 +56,8 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
-      var url = Uri.parse(
-          pathAPI + 'api/get_order?status=&page=$page&page_size=$pageSize');
+      var url = Uri.parse(pathAPI +
+          'api/app/order_list?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {
@@ -74,7 +74,7 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
         final Map<String, dynamic> depdata = convert.jsonDecode(response.body);
         setState(() {
           totalResults = depdata['data']['total'];
-          PrechaseScreen.addAll(depdata['data']['data']);
+          PurchaseScreen.addAll(depdata['data']['data']);
           isLoading = false;
           // print(depdata['message']);
           // print(totalResults);
@@ -101,7 +101,7 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
     // if failed,use refreshFailed()
     //ทุกครั้งที่รีเฟรชจะเคียร์อาร์เรย์และ set page เป็น 1
     setState(() {
-      PrechaseScreen.clear();
+      PurchaseScreen.clear();
       page = 1;
     });
     _getPrechaseScreen(); //ทุกครั้งที่ทำการรีเฟรช จะดึงข้อมูลใหม่
@@ -201,7 +201,7 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
                             body = Text("release to load more");
                           } else if (mode == LoadStatus.noMore) {
                             //body = Text("No more Data");
-                            body = Text("ไม่พบข้อมูล");
+                            // body = Text("ไม่พบข้อมูล");
                           }
                           return Container(
                             height: 55.0,
@@ -214,7 +214,7 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
                       onLoading: _onLoading,
                       child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount: PrechaseScreen.length,
+                          itemCount: PurchaseScreen.length,
                           padding: EdgeInsets.only(left: 5.0, right: 5.0),
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
@@ -222,8 +222,8 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
                                   const EdgeInsets.symmetric(horizontal: 10),
                               child: GestureDetector(
                                 onTap: () {
-                                  var arg = PrechaseScreen[index]['id'];
-                                  MyNavigator.goToTimelinePreorder(
+                                  var arg = PurchaseScreen[index]['id'];
+                                  MyNavigator.goToTimelinePurchase(
                                       context, arg);
                                 },
                                 child: Card(
@@ -243,16 +243,12 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
                                                       width: 2.0,
                                                       color: primaryColor))),
                                           child: Image.network(
-                                            PrechaseScreen[index]['image'] ==
-                                                    null
-                                                ? 'https://picsum.photos/200/300'
-                                                : PrechaseScreen[index]
-                                                    ['image'],
+                                            'https://picsum.photos/200/300',
                                             width: 70,
                                           ),
                                         ),
                                         title: Text(
-                                          PrechaseScreen[index]['name'],
+                                          PurchaseScreen[index]['code'],
                                           style: TextStyle(
                                               color: kTextButtonColor,
                                               fontWeight: FontWeight.bold),
@@ -267,10 +263,9 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
                                                     children: <Widget>[
                                                   RichText(
                                                     text: TextSpan(
-                                                      text: "ชื่อลูกค้า :" +
-                                                          PrechaseScreen[index]
-                                                                      ['user']
-                                                                  ['fname_th']
+                                                      text: "สินค้า :" +
+                                                          PurchaseScreen[index][
+                                                                  'product_name']
                                                               .toString(),
                                                       style: TextStyle(
                                                           color:
@@ -281,10 +276,22 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
                                                   ),
                                                   RichText(
                                                     text: TextSpan(
-                                                      text: "เบอร์ติดต่อ :" +
-                                                          PrechaseScreen[index]
-                                                                      ['user']
-                                                                  ['tel']
+                                                      text: "ชื่อลูกค้า :" +
+                                                          PurchaseScreen[index]
+                                                                  ['user_id']
+                                                              .toString(),
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
+                                                    ),
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "ราคา :" +
+                                                          PurchaseScreen[index]
+                                                                  ['price']
                                                               .toString(),
                                                       style: TextStyle(
                                                           color:
@@ -296,7 +303,7 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
                                                   RichText(
                                                     text: TextSpan(
                                                       text: "วันที่บันทึก :" +
-                                                          PrechaseScreen[index]
+                                                          PurchaseScreen[index]
                                                                   ['created_at']
                                                               .split("T")[0],
                                                       style: TextStyle(
@@ -320,7 +327,7 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
                                               iconSize: 30,
                                               onPressed: () {
                                                 var arg =
-                                                    PrechaseScreen[index]['id'];
+                                                    PurchaseScreen[index]['id'];
                                                 MyNavigator
                                                     .goToTimelinePreorder(
                                                         context, arg);
