@@ -419,107 +419,125 @@ class _ExchangeScreenState extends State<ExchangeScreen> {
                                       decoration:
                                           BoxDecoration(color: Colors.white),
                                       child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20.0, vertical: 10.0),
-                                        leading: Container(
-                                            padding:
-                                                EdgeInsets.only(right: 14.0),
-                                            decoration: BoxDecoration(
-                                                border: Border(
-                                                    right: BorderSide(
-                                                        width: 2.0,
-                                                        color: primaryColor))),
-                                            child: Icon(
-                                              Icons.money,
-                                            )),
-                                        title: Text(
-                                          'เลขที่ :' +
-                                              ExchangeScreendata[index]['code'],
-                                          style: TextStyle(
-                                              color: kTextButtonColor,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        subtitle: Row(
-                                          children: <Widget>[
-                                            Flexible(
-                                                child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "เรทค่าเงิน :" +
-                                                          ExchangeScreendata[
-                                                              index]['rate'],
-                                                      style: TextStyle(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 20.0, vertical: 10.0),
+                                          leading: Container(
+                                              padding:
+                                                  EdgeInsets.only(right: 14.0),
+                                              decoration: BoxDecoration(
+                                                  border: Border(
+                                                      right: BorderSide(
+                                                          width: 2.0,
                                                           color:
-                                                              kTextButtonColor),
+                                                              primaryColor))),
+                                              child: Icon(
+                                                Icons.money,
+                                              )),
+                                          title: Text(
+                                            'เลขที่ :' +
+                                                ExchangeScreendata[index]
+                                                    ['code'],
+                                            style: TextStyle(
+                                                color: kTextButtonColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          subtitle: Row(
+                                            children: <Widget>[
+                                              Flexible(
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "เรทค่าเงิน :" +
+                                                            ExchangeScreendata[
+                                                                index]['rate'],
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
                                                     ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "Fee :" +
-                                                          ExchangeScreendata[
-                                                              index]['fee'],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "Fee :" +
+                                                            ExchangeScreendata[
+                                                                index]['fee'],
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
                                                     ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "คอมมิชชั่น :" +
-                                                          ExchangeScreendata[
-                                                              index]['com'],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "คอมมิชชั่น :" +
+                                                            ExchangeScreendata[
+                                                                index]['com'],
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
                                                     ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "ยอดรวม :" +
-                                                          ExchangeScreendata[
-                                                              index]['total'],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "ยอดรวม :" +
+                                                            ExchangeScreendata[
+                                                                index]['total'],
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
                                                     ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "วันที่บันทึก :" +
-                                                          ExchangeScreendata[
-                                                                      index]
-                                                                  ['created_at']
-                                                              .split("T")[0],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "วันที่บันทึก :" +
+                                                            ExchangeScreendata[
+                                                                        index][
+                                                                    'created_at']
+                                                                .split("T")[0],
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
                                                     ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                ]))
-                                          ],
-                                        ),
-                                        trailing: MaterialButton(
+                                                  ]))
+                                            ],
+                                          ),
+                                          trailing: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                icon: const Icon(Icons
+                                                    .keyboard_arrow_right_outlined),
+                                                color: Colors.orange[900],
+                                                iconSize: 30,
+                                                onPressed: () {
+                                                  var arg = {
+                                                    "id": ExchangeScreendata[
+                                                        index]['id'],
+                                                  };
+                                                  MyNavigator
+                                                      .goToTimelineExchange(
+                                                          context, arg);
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                          /*trailing: MaterialButton(
                                           onPressed: () {
-                                            var arg = {
-                                              "id": ExchangeScreendata[index]
-                                                  ['id'],
-                                            };
-                                            MyNavigator.goToTimelineExchange(
-                                                context, arg);
+                                            
                                           },
                                           color: Color(0xffdd4b39),
                                           child: Text(
@@ -531,8 +549,8 @@ class _ExchangeScreenState extends State<ExchangeScreen> {
                                             ),
                                           ),
                                         ),
-                                        onTap: () {},
-                                      ),
+                                        onTap: () {},*/
+                                          ),
                                     ),
                                   ),
                                 ),

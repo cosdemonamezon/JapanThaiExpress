@@ -38,13 +38,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(3.0),
                 children: [
-                  dashboardItem(
-                      "รายการสั่งซื้อ", Icons.list_alt_outlined, 1, context),
+                  dashboardItem("รายการสั่งซื้อ", Icons.list_alt, 1, context),
                   dashboardItem("คำขอบริการ", Icons.list_alt, 2, context),
-                  dashboardItem("เรทบริการ", Icons.money, 3, context),
-                  dashboardItem("รายการเติมเงิน", Icons.payment, 4, context),
                   dashboardItem(
-                      "ข้อมูลลูกค้า", Icons.supervised_user_circle, 5, context),
+                      "เรทบริการ", Icons.monetization_on_outlined, 3, context),
+                  dashboardItem(
+                      "รายการเติมเงิน", Icons.payments_outlined, 4, context),
+                  dashboardItem("ข้อมูลลูกค้า",
+                      Icons.supervised_user_circle_outlined, 5, context),
                   dashboardItem("QR Scan", Icons.qr_code, 6, context),
                 ],
               ),
