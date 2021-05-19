@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:JapanThaiExpress/AdminScreens/Auction/TimeLineAuctions.dart';
 import 'package:JapanThaiExpress/AdminScreens/Exchange/ExchangeDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Settings/SettingScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/SplashScreen.dart';
@@ -22,6 +23,7 @@ import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePreorders.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/TimeLinePurchaseScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/Messageuser/Messagesend.dart';
 import 'package:JapanThaiExpress/UserScreens/MyOders/OdersScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/News/DetailNews.dart';
 import 'package:JapanThaiExpress/UserScreens/News/NewsScreen.dart';
@@ -47,7 +49,6 @@ import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 import 'package:JapanThaiExpress/AdminScreens/Auction/Auctionadmin.dart';
-import 'package:JapanThaiExpress/AdminScreens/Auction/TimeLineAuction.Dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -171,7 +172,8 @@ var routes = <String, WidgetBuilder>{
   "/auctionadmin": (BuildContext context) => Auctionadmin(),
   "/messageuser": (BuildContext context) => MessageScreen(),
   "/settingadmin": (BuildContext context) => SettingScreen(),
-  "/timelineauction": (BuildContext context) => Timelineauction(),
+  "/timelineauction": (BuildContext context) => TimelineAuctions(),
+  "/messagesend": (BuildContext context) => Messagesend(),
   "/homescreen": (BuildContext context) => HomeScreen(),
   "/exchangedetail": (BuildContext context) => ExchangeDetailScreen(),
   "/buystuff": (BuildContext context) => Buystuff(),

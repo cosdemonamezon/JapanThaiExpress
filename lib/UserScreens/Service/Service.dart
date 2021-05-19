@@ -6,6 +6,7 @@ import 'package:JapanThaiExpress/UserScreens/Service/ReceiveMoney.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,20 +26,86 @@ class _ServiceState extends State<Service> {
   String tokendata = "";
   SharedPreferences prefs;
   List<String> imgPath = [];
-  List<String> pathimg = [
-    "assets/o1.jpg",
-    "assets/o2.jpg",
-    "assets/o3.jpg",
-    "assets/o4.jpg",
-    "assets/o5.jpg",
-    "assets/o6.jpg",
-    "assets/o7.jpg",
-  ];
+  Map<String, dynamic> dashboard = {};
 
   @override
   void initState() {
     super.initState();
     _getBanners();
+    _getDashboard();
+  }
+
+  _getDashboard() async {
+    try {
+      prefs = await SharedPreferences.getInstance();
+      var tokenString = prefs.getString('token');
+      var token = convert.jsonDecode(tokenString);
+      var url = Uri.parse(pathAPI + 'api/app/dashboard');
+      var response = await http.get(
+        url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> dashboarddata =
+            convert.jsonDecode(response.body);
+        if (dashboarddata['code'] == 200) {
+          setState(() {
+            dashboard = dashboarddata['data'];
+            isLoading = false;
+          });
+          //print(dashboard);
+          // Flushbar(
+          //   //title: '${feedback['message']}',
+          //   flushbarPosition: FlushbarPosition.TOP,
+          //   flushbarStyle: FlushbarStyle.FLOATING,
+          //   message: '${dashboarddata['message']}',
+          //   backgroundColor: Colors.greenAccent,
+          //   icon: Icon(
+          //     Icons.error,
+          //     size: 28.0,
+          //     color: Colors.white,
+          //   ),
+          //   duration: Duration(seconds: 3),
+          //   leftBarIndicatorColor: Colors.blue[300],
+          // )..show(context);
+        } else {
+          Flushbar(
+            title: '${dashboarddata['message']}',
+            message: 'รหัสข้อผิดพลาด : ${dashboarddata['code']}',
+            backgroundColor: Colors.redAccent,
+            icon: Icon(
+              Icons.error,
+              size: 28.0,
+              color: Colors.white,
+            ),
+            duration: Duration(seconds: 3),
+            leftBarIndicatorColor: Colors.blue[300],
+          )..show(context);
+        }
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   _getBanners() async {
@@ -64,7 +131,7 @@ class _ServiceState extends State<Service> {
           //   imgPath = banner[i]['path'];
           // }
         });
-        print(banner);
+        //print(banner);
       } else {}
     } else {}
   }
@@ -110,7 +177,7 @@ class _ServiceState extends State<Service> {
                   itemBuilder: (context, index, realIdx) {
                     if (banner.length != 0) {
                       return Container(
-                        height: height*0.55,
+                        height: height * 0.55,
                         child: Center(
                           child: Image.network(
                             banner[index]['path'],
@@ -129,14 +196,142 @@ class _ServiceState extends State<Service> {
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(3.0),
                 children: [
-                  dashboardItem(
-                      "รับฝากส่ง", Icons.local_shipping_outlined, 1, context),
-                  dashboardItem(
-                      "รับฝากซื้อ", Icons.shopping_cart_outlined, 2, context),
-                  dashboardItem("ประมูลสินค้า", Icons.monetization_on_outlined,
-                      3, context),
-                  dashboardItem(
-                      "รับโอนเงิน", Icons.local_atm_outlined, 4, context),
+                  Stack(
+                    children: [
+                      dashboardItem("รับฝากส่ง", Icons.local_shipping_outlined,
+                          1, context),
+                      Positioned(
+                        right: 70,
+                        left: 100,
+                        top: 0,
+                        bottom: 95,
+                        child: dashboard['depository'] != 0
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.red,
+                                child: Center(
+                                    child: dashboard['depository'] != null
+                                        ?Text(dashboard['depository'].toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))
+                                            :Text("0",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))),
+                              )
+                            : SizedBox(
+                                height: 2,
+                              ),
+                      ),
+                    ],
+                  ),
+                  Stack(
+                    children: [
+                      dashboardItem("รับฝากซื้อ", Icons.shopping_cart_outlined,
+                          2, context),
+                      Positioned(
+                        right: 70,
+                        left: 100,
+                        top: 0,
+                        bottom: 95,
+                        child: dashboard['preorder'] != 0
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.red,
+                                child: Center(
+                                    child: dashboard['preorder'] != null
+                                        ?Text(dashboard['preorder'].toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))
+                                            :Text("0",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))),
+                              )
+                            : SizedBox(
+                                height: 2,
+                              ),
+                      ),
+                    ],
+                  ),
+                  Stack(
+                    children: [
+                      dashboardItem("ประมูลสินค้า",
+                          Icons.monetization_on_outlined, 3, context),
+                      Positioned(
+                        right: 70,
+                        left: 100,
+                        top: 0,
+                        bottom: 95,
+                        child: dashboard['auction'] != 0
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.red,
+                                child: Center(
+                                    child: dashboard['auction'] != null
+                                    ?Text(dashboard['auction'].toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))
+                                        :Text("0",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))),
+                              )
+                            : SizedBox(
+                                height: 2,
+                              ),
+                      ),
+                    ],
+                  ),
+                  Stack(
+                    children: [
+                      dashboardItem(
+                          "รับโอนเงิน", Icons.local_atm_outlined, 4, context),
+                      Positioned(
+                        right: 70,
+                        left: 100,
+                        top: 0,
+                        bottom: 95,
+                        child: dashboard['exchange'] != 0
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.red,
+                                child: Center(
+                                    child: dashboard['exchange'] != null
+                                        ?Text(dashboard['exchange'].toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))
+                                            :Text("0",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))),
+                              )
+                            : SizedBox(
+                                height: 2,
+                              ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

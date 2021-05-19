@@ -1,11 +1,19 @@
+import 'dart:io' as Io;
+import 'dart:convert';
+import 'package:JapanThaiExpress/UserScreens/Service/DetailStep.dart';
+import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
+import 'package:JapanThaiExpress/alert.dart';
+import 'package:JapanThaiExpress/constants.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
-import 'package:JapanThaiExpress/constants.dart';
-import 'package:JapanThaiExpress/utils/japanexpress.dart';
-import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PrechaseScreen extends StatefulWidget {
   PrechaseScreen({Key key}) : super(key: key);
@@ -22,76 +30,111 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
   List<dynamic> notidata = [];
   Map<String, dynamic> readnotidata = {};
   Map<String, dynamic> numberNoti = {};
-
+  List<dynamic> PrechaseScreen = [];
   TextEditingController editingController = TextEditingController();
+
+  int totalResults = 0;
+  int page = 1;
+  int pageSize = 10;
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _getList();
+    _getPrechaseScreen();
   }
 
   _readNotiMember() {}
 
-  _getList() async {
-    prefs = await SharedPreferences.getInstance();
-    var tokenString = prefs.getString('token');
-    var token = convert.jsonDecode(tokenString);
-
-    setState(() {
-      isLoading = true;
-    });
-    var url = Uri.parse(pathAPI + 'api/preorders');
-    var response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token['data']['token']
-      },
-    );
-    if (response.statusCode == 200) {
-      //print(response.statusCode);
-      final Map<String, dynamic> notinumber = convert.jsonDecode(response.body);
-      //print(notinumber);
-      if (notinumber['code'] == 200) {
+  _getPrechaseScreen() async {
+    try {
+      setState(() {
+        page == 1 ? isLoading = true : isLoading = false;
+      });
+      prefs = await SharedPreferences.getInstance();
+      var tokenString = prefs.getString('token');
+      var token = convert.jsonDecode(tokenString);
+      var url = Uri.parse(
+          pathAPI + 'api/get_order?status=&page=$page&page_size=$pageSize');
+      var response = await http.get(
+        url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        // body: ({
+        //   'status': '',
+        //   'page': page.toString(),
+        //   'page_size': pageSize.toString(),
+        // })
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> depdata = convert.jsonDecode(response.body);
         setState(() {
-          notidata = notinumber['data']['data'];
-          setState(() {
-            isLoading = false;
-          });
+          totalResults = depdata['data']['total'];
+          PrechaseScreen.addAll(depdata['data']['data']);
+          isLoading = false;
+          // print(depdata['message']);
+          // print(totalResults);
+          // print("test");
+          // print(PreoderScreendata.length);
+          // print(PreoderScreendata[1]['description']);
         });
-
-        //print(notidata.length);
       } else {
-        String title = "ข้อผิดพลาดภายในเซิร์ฟเวอร์";
-        showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (context) => dialogDenied(
-            title,
-            picDenied,
-            context,
-          ),
-        );
+        setState(() {
+          isLoading = false;
+        });
+        print('error from backend ${response.statusCode}');
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void _onRefresh() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    //ทุกครั้งที่รีเฟรชจะเคียร์อาร์เรย์และ set page เป็น 1
+    setState(() {
+      PrechaseScreen.clear();
+      page = 1;
+    });
+    _getPrechaseScreen(); //ทุกครั้งที่ทำการรีเฟรช จะดึงข้อมูลใหม่
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    //items.add((items.length+1).toString());
+    if (page < (totalResults / pageSize).ceil()) {
+      if (mounted) {
+        print("mounted");
+        setState(() {
+          page = ++page;
+        });
+        _getPrechaseScreen();
+        _refreshController.loadComplete();
+      } else {
+        print("unmounted");
+        _refreshController.loadComplete();
       }
     } else {
-      final Map<String, dynamic> notinumber = convert.jsonDecode(response.body);
-
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (context) => dialogDenied(
-          notinumber['massage'],
-          picDenied,
-          context,
-        ),
-      );
+      _refreshController.loadNoData();
+      _refreshController.resetNoData();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -130,121 +173,187 @@ class _PrechaseScreenState extends State<PrechaseScreen> {
         ),
         body: TabBarView(
           children: [
-            SingleChildScrollView(
-              // width: double.infinity,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: TextField(
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      controller: editingController,
-                      decoration: InputDecoration(
-                          labelText: "Search",
-                          hintText: "Search",
-                          prefixIcon: Icon(Icons.search),
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15.0)))),
-                    ),
-                  ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: notidata.length,
-                      padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Card(
-                              color: notidata[index]["noti_log_read"] == 0
-                                  ? Colors.blue[50]
-                                  : Colors.white,
-                              elevation: 4.0,
-                              child: Container(
-                                decoration: BoxDecoration(color: Colors.white),
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 20.0, vertical: 10.0),
-                                  leading: Container(
-                                    padding: EdgeInsets.only(right: 14.0),
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            right: BorderSide(
-                                                width: 2.0,
-                                                color: primaryColor))),
-                                    child:
-                                        Image.network(notidata[index]['image']),
-                                  ),
-                                  title: Text(
-                                    notidata[index]['name'],
-                                    style: TextStyle(
-                                        color: kTextButtonColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: Row(
-                                    children: <Widget>[
-                                      Flexible(
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                            RichText(
-                                              text: TextSpan(
-                                                text: "จำนวน :" +
-                                                    notidata[index]['qty'],
-                                                style: TextStyle(
-                                                    color: kTextButtonColor),
-                                              ),
-                                              maxLines: 3,
-                                              softWrap: true,
-                                            ),
-                                            RichText(
-                                              text: TextSpan(
-                                                text: "วันที่บันทึก :" +
-                                                    notidata[index]
-                                                            ['created_at']
-                                                        .split("T")[0],
-                                                style: TextStyle(
-                                                    color: kTextButtonColor),
-                                              ),
-                                              maxLines: 3,
-                                              softWrap: true,
-                                            ),
-                                          ]))
-                                    ],
-                                  ),
-                                  trailing: Column(
+            Container(
+              height: height,
+              color: Colors.grey[300],
+              child: isLoading == true
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : SmartRefresher(
+                      enablePullDown: true,
+                      enablePullUp: true,
+                      header: ClassicHeader(
+                        refreshStyle: RefreshStyle.Follow,
+                        refreshingText: 'กำลังโหลด.....',
+                        completeText: 'โหลดข้อมูลสำเร็จ',
+                      ),
+                      footer: CustomFooter(
+                        builder: (BuildContext context, LoadStatus mode) {
+                          Widget body;
+                          if (mode == LoadStatus.idle) {
+                            //body =  Text("ไม่พบรายการ");
+                          } else if (mode == LoadStatus.loading) {
+                            body = CircularProgressIndicator();
+                          } else if (mode == LoadStatus.failed) {
+                            body = Text("Load Failed!Click retry!");
+                          } else if (mode == LoadStatus.canLoading) {
+                            body = Text("release to load more");
+                          } else if (mode == LoadStatus.noMore) {
+                            //body = Text("No more Data");
+                            body = Text("ไม่พบข้อมูล");
+                          }
+                          return Container(
+                            height: 55.0,
+                            child: Center(child: body),
+                          );
+                        },
+                      ),
+                      controller: _refreshController,
+                      onRefresh: _onRefresh,
+                      onLoading: _onLoading,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: PrechaseScreen.length,
+                          padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: GestureDetector(
+                                onTap: () {
+                                  var arg = PrechaseScreen[index]['id'];
+                                  MyNavigator.goToTimelinePreorder(
+                                      context, arg);
+                                },
+                                child: Card(
+                                  color: Colors.white,
+                                  elevation: 4.0,
+                                  child: Container(
+                                    decoration:
+                                        BoxDecoration(color: Colors.white),
+                                    child: ListTile(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 20.0, vertical: 10.0),
+                                        leading: Container(
+                                          padding: EdgeInsets.only(right: 14.0),
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  right: BorderSide(
+                                                      width: 2.0,
+                                                      color: primaryColor))),
+                                          child: Image.network(
+                                            PrechaseScreen[index]['image'] ==
+                                                    null
+                                                ? 'https://picsum.photos/200/300'
+                                                : PrechaseScreen[index]
+                                                    ['image'],
+                                            width: 70,
+                                          ),
+                                        ),
+                                        title: Text(
+                                          PrechaseScreen[index]['name'],
+                                          style: TextStyle(
+                                              color: kTextButtonColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        subtitle: Row(
+                                          children: <Widget>[
+                                            Flexible(
+                                                child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "ชื่อลูกค้า :" +
+                                                          PrechaseScreen[index]
+                                                                      ['user']
+                                                                  ['fname_th']
+                                                              .toString(),
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
+                                                    ),
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "เบอร์ติดต่อ :" +
+                                                          PrechaseScreen[index]
+                                                                      ['user']
+                                                                  ['tel']
+                                                              .toString(),
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
+                                                    ),
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "วันที่บันทึก :" +
+                                                          PrechaseScreen[index]
+                                                                  ['created_at']
+                                                              .split("T")[0],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor),
+                                                    ),
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                  ),
+                                                ]))
+                                          ],
+                                        ),
+                                        trailing: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: [
-                                          
-                                          IconButton(
-                                            icon: const Icon(Icons
+                                            IconButton(
+                                              icon: const Icon(Icons
                                                   .keyboard_arrow_right_outlined),
-                                          color: Color(0xffdd4b39),
-                                          onPressed: () {
-                                            MyNavigator.goToTimelinepurchaseOrders(
-                                          context);
-                                            
-                                            
-                                          },
-                                         ), 
-                                        ],),
-                                  
-                                  onTap: () {},
+                                              color: Colors.orange[900],
+                                              iconSize: 30,
+                                              onPressed: () {
+                                                var arg =
+                                                    PrechaseScreen[index]['id'];
+                                                MyNavigator
+                                                    .goToTimelinePreorder(
+                                                        context, arg);
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                        // trailing: MaterialButton(
+                                        //   onPressed: () {
+                                        //      var arg = {"id": PreoderScreendata[index]['id']};
+                                        //     MyNavigator.goToTimelinePreorder(
+                                        //         context,
+                                        //         PreoderScreendata[index]['id']);
+                                        //   },
+                                        //   color: Color(0xffdd4b39),
+                                        //   child: Text(
+                                        //     "ดูเพิ่ม",
+                                        //     style: TextStyle(
+                                        //       fontWeight: FontWeight.bold,
+                                        //       color: Colors.white,
+                                        //       fontSize: 12,
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      }),
-                ],
-              ),
+                            );
+                          }),
+                    ),
             ),
+            //tab 2
             Icon(Icons.movie),
           ],
         ),

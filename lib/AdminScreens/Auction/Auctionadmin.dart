@@ -142,7 +142,7 @@ class _AuctionadminState extends State<Auctionadmin> {
       //isLoading = true;
     });
 
-    var url = Uri.parse(pathAPI + 'api/get_auction');
+    var url = Uri.parse(pathAPI + 'api/get_detail_auction');
     var response = await http.get(
       url,
       headers: {

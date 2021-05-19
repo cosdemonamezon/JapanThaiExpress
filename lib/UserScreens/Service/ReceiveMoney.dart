@@ -25,7 +25,6 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
   String fee = "";
   String com = "";
   String sum = "";
-  //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcyNTk5NSwiZXhwIjoxNjE1ODEyMzk1fQ.-x9FnNRM-KmnA8pd2cWJhk_ebIwYFtCwwUX31MeJ3TI";
   //final _formKey = GlobalKey<FormState>();
   final _formKey = GlobalKey<FormBuilderState>();
   TextEditingController _rate;
@@ -119,6 +118,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           // print(exchangedata.length);
           // print(exchangedata[1]['description']);
         });
+        print(exchangedata);
       } else {
         setState(() {
           isLoading = false;
@@ -879,6 +879,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           MyNavigator.goToReceiveDetail(context, arg);
         },
         child: ListTile(
+          
           title: Row(
             children: [
               Container(
