@@ -98,6 +98,7 @@ class _OdersScreenState extends State<OdersScreen> {
           order.addAll(orderdata['data']['data']);
           isLoading = false;
         });
+        print(order);
       } else {
         setState(() {
           isLoading = false;
@@ -132,6 +133,7 @@ class _OdersScreenState extends State<OdersScreen> {
       setState(() {
         isLoading = false;
       });
+      print(e);
     }
   }
 
@@ -199,6 +201,7 @@ class _OdersScreenState extends State<OdersScreen> {
                       order[index]['qty'],
                       order[index]['price'],
                       order[index]['total'],
+                      order[index]['id'],
                     );
                   }),
             )),
@@ -212,123 +215,129 @@ class _OdersScreenState extends State<OdersScreen> {
     String subtitle1,
     String subtitle2,
     String subtitle3,
+    int id,
   ) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Card(
-      child: ListTile(
-        title: Row(
-          children: [
-            Container(
-              width: width * 0.20,
-              //color: Colors.blue,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "รหัสสินค้า:",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 13,
+      child: GestureDetector(
+        onTap: () {
+          MyNavigator.goToTimelinePreorderMember(context, id);
+        },
+        child: ListTile(
+          title: Row(
+            children: [
+              Container(
+                width: width * 0.20,
+                //color: Colors.blue,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "รหัสสินค้า:",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "ชื่อสินค้า:",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 13,
+                    Text(
+                      "ชื่อสินค้า:",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "จำนวน:",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 13,
+                    Text(
+                      "จำนวน:",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "ราคาสินค้า:",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 13,
+                    Text(
+                      "ราคาสินค้า:",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "ยอดรวม:",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 13,
+                    Text(
+                      "ยอดรวม:",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              width: width * 0.65,
-              //color: Colors.red,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 15,
+              Container(
+                width: width * 0.65,
+                //color: Colors.red,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 15,
+                      ),
                     ),
-                  ),
-                  subtitle.length <= 30
-                      ? Text(
-                          subtitle,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                            fontSize: 14,
+                    subtitle.length <= 30
+                        ? Text(
+                            subtitle,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
+                          )
+                        : Text(
+                            subtitle.substring(0, 30) + "...",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
                           ),
-                        )
-                      : Text(
-                          subtitle.substring(0, 30) + "...",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                  Text(
-                    subtitle1 + " ชิ้น",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                      fontSize: 13,
+                    Text(
+                      subtitle1 + " ชิ้น",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                  Text(
-                    subtitle2 + " บาท",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                      fontSize: 13,
+                    Text(
+                      subtitle2 + " บาท",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                  Text(
-                    subtitle3 + " บาท",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                      fontSize: 13,
+                    Text(
+                      subtitle3 + " บาท",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
