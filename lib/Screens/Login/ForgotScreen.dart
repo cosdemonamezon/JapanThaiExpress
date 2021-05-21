@@ -1,6 +1,8 @@
 import 'package:JapanThaiExpress/Screens/Login/LoginPin.dart';
+import 'package:JapanThaiExpress/Screens/Login/LoginScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/RegisterScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class ForgotScreen extends StatefulWidget {
   ForgotScreen({Key key}) : super(key: key);
@@ -10,12 +12,13 @@ class ForgotScreen extends StatefulWidget {
 }
 
 class _ForgotScreenState extends State<ForgotScreen> {
+  final _formKey = GlobalKey<FormBuilderState>();
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login page"),
+        title: Text("ลืมรหัสผ่าน"),
       ),
       body: Container(
         height: height,
@@ -28,6 +31,7 @@ class _ForgotScreenState extends State<ForgotScreen> {
               children: [
                 SizedBox(height: height * .10),
                 Hero(
+                  
                   tag: "hero",
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -40,32 +44,42 @@ class _ForgotScreenState extends State<ForgotScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 120),
+                SizedBox(height: 50),
+              FormBuilder(key: _formKey, child: 
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Email",
+                        "อีเมล์",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15),
                       ),
                       SizedBox(height: 10),
-                      TextFormField(
+                       FormBuilderTextField(
+                        name: 'email',
                         decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.email),
+                                labelText: 'อีเมล',
                             //border: InputBorder.none,
                             border: OutlineInputBorder(),
                             fillColor: Color(0xfff3f3f4),
                             filled: true),
+                            keyboardType: TextInputType.emailAddress, 
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context,
+                                  errorText: 'กรุณากรอกอีเมล'),
+                              FormBuilderValidators.email(context,
+                                  errorText: 'กรุณากรอกอีเมลให้ถูกต้อง'),
+                            ])
                       ),
-                    ],
-                  ),
-                ),
+                     SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
+                    if (_formKey.currentState.saveAndValidate()){
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPin()));
+                        MaterialPageRoute(builder: (context) => LoginScreen()));}
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -86,15 +100,19 @@ class _ForgotScreenState extends State<ForgotScreen> {
                           colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
                     ),
                     child: Text(
-                      "Confirm email",
+                      "ยืนยัน",
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   ),
+                ),],
+                  ),
                 ),
-                _divider(),
+               
+              ),
+               // _divider(),
                 //_facebookButton(),
                 // SizedBox(height: height * .045),
-                _createAccountLabel(),
+                //_createAccountLabel(),
               ],
             ),
           ),
