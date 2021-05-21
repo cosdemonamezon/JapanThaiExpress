@@ -298,8 +298,8 @@ class _MyaccountState extends State<Myaccount> {
                         child: Stack(
                       children: [
                         Container(
-                          width: width * 0.50,
-                          height: height * 0.25,
+                          width: 150,
+                          height: 150,
                           //color: Colors.blue,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,

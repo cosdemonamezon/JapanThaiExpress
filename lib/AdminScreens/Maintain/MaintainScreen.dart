@@ -45,7 +45,7 @@ class _MaintainScreenState extends State<MaintainScreen> {
                     SizedBox(
                       height: 5,
                     ),
-                    Text("Exchange Rate"),
+                    Text("อัตราแลกเปลี่ยน (บาท)"),
                     SizedBox(
                       height: 10,
                     ),
@@ -61,7 +61,7 @@ class _MaintainScreenState extends State<MaintainScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Fee"),
+                    Text("ค่าบริการ (เยน)"),
                     SizedBox(
                       height: 10,
                     ),
@@ -77,7 +77,7 @@ class _MaintainScreenState extends State<MaintainScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Exchange Fee"),
+                    Text("ค่าบริการแลกเปลี่ยน (บาท)"),
                     SizedBox(
                       height: 10,
                     ),
@@ -93,7 +93,7 @@ class _MaintainScreenState extends State<MaintainScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Exchange Com"),
+                    Text("ค่าคอมมิชชั่น (%)"),
                     SizedBox(
                       height: 10,
                     ),
