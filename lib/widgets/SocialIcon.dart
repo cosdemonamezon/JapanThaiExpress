@@ -8,7 +8,7 @@ class SocialIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Padding(
-      padding: EdgeInsets.only(left: 14.0),
+      padding: EdgeInsets.only(left: 5,right: 5),
       child: Container(
         width: 45.0,
         height: 45.0,

@@ -5,7 +5,7 @@ import 'package:JapanThaiExpress/AdminScreens/HomeServices/HomeServices.dart';
 import 'package:JapanThaiExpress/AdminScreens/Maintain/MaintainScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/PreOders/PreoderScreen.dart';
-import 'package:JapanThaiExpress/AdminScreens/PurchaseOrders/PrechaseScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/PurchaseOrders/PurchaseScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
 import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRView.dart';
 import 'package:JapanThaiExpress/constants.dart';
@@ -240,7 +240,7 @@ Card dashboardItem(String title, IconData icon, int page, context) {
         onTap: () {
           if (page == 1) {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PrechaseScreen()));
+                MaterialPageRoute(builder: (context) => PurchaseScreen()));
           } else if (page == 2) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => HomeServices()));
