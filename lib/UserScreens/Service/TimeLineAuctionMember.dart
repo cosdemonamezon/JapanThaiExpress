@@ -1248,6 +1248,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                           onTap: () {
                             if (dataTimeline.length > 0 &&
                                 dataTimeline['data']['step'] == "overdue") {
+                                  print(dataTimeline.length);
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
