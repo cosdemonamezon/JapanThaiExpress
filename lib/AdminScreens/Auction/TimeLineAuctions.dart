@@ -42,6 +42,7 @@ class _TimelineAuctionsState extends State<TimelineAuctions> {
   List<String> familyMemberName = [];
   List<String> familyMemberLabel = [];
   List<String> familyMemberField = [];
+  List<String> familyMemberType = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -63,6 +64,7 @@ class _TimelineAuctionsState extends State<TimelineAuctions> {
     familyMemberName = [];
     familyMemberLabel = [];
     familyMemberField = [];
+    familyMemberType = [];
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -111,6 +113,7 @@ class _TimelineAuctionsState extends State<TimelineAuctions> {
             // var textEditingController = TextEditingController();
             familyMemberName.add(familyMember["name"]);
             familyMemberField.add(familyMember["name"]);
+            familyMemberType.add(familyMember['type']);
           });
           print(familyMemberName);
         }
@@ -152,7 +155,7 @@ class _TimelineAuctionsState extends State<TimelineAuctions> {
   }
 
   dialogTimeline(String title, String img, context, List label, List name,
-      int id, String step, List field) {
+      int id, String step, List field, List type) {
     String stepUp;
     if (step == 'new') {
       stepUp = 'wait';
@@ -184,7 +187,9 @@ class _TimelineAuctionsState extends State<TimelineAuctions> {
                     children: [
                       FormBuilderTextField(
                         name: name[i],
-                        keyboardType: TextInputType.text,
+                        keyboardType: type[i].toString() == "text"
+                            ? TextInputType.text
+                            : TextInputType.number,
                         decoration: InputDecoration(
                             hintText: label[i].toString(),
                             //border: InputBorder.none,
@@ -735,7 +740,8 @@ class _TimelineAuctionsState extends State<TimelineAuctions> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'new',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -850,7 +856,8 @@ class _TimelineAuctionsState extends State<TimelineAuctions> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'wait',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -961,7 +968,8 @@ class _TimelineAuctionsState extends State<TimelineAuctions> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'order',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1065,7 +1073,8 @@ class _TimelineAuctionsState extends State<TimelineAuctions> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'buy',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1167,7 +1176,8 @@ class _TimelineAuctionsState extends State<TimelineAuctions> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'shipping',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1352,7 +1362,8 @@ class _TimelineAuctionsState extends State<TimelineAuctions> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'overdue',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },

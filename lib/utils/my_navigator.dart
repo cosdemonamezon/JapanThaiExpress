@@ -163,7 +163,7 @@ class MyNavigator {
         // ExtractArgumentScreen reads the arguments from these
         // settings.
         settings: RouteSettings(
-          arguments: {"id": id},
+          arguments: {"id": id.toString()},
         ),
       ),
     );

@@ -43,6 +43,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
   List<String> familyMemberName = [];
   List<String> familyMemberLabel = [];
   List<String> familyMemberField = [];
+  List<String> familyMemberType = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -61,6 +62,10 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
   }
 
   _gettimeline(String id) async {
+    familyMemberName = [];
+    familyMemberLabel = [];
+    familyMemberField = [];
+    familyMemberType = [];
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -114,6 +119,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
               // var textEditingController = TextEditingController();
               familyMemberName.add(familyMember["name"]);
               familyMemberField.add(familyMember["name"]);
+              familyMemberType.add(familyMember['type']);
             });
             print(familyMemberName);
           }
@@ -156,7 +162,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
   }
 
   dialogTimeline(String title, String img, context, List label, List name,
-      int id, String step, List field) {
+      int id, String step, List field, List type) {
     String stepUp;
     if (step == 'new') {
       stepUp = 'order';
@@ -190,7 +196,9 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                     children: [
                       FormBuilderTextField(
                         name: name[i],
-                        keyboardType: TextInputType.text,
+                        keyboardType: type[i].toString() == "text"
+                            ? TextInputType.text
+                            : TextInputType.number,
                         decoration: InputDecoration(
                             hintText: label[i].toString(),
                             //border: InputBorder.none,
@@ -760,7 +768,8 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'new',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1011,7 +1020,8 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'buy',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1127,7 +1137,8 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'shipping',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1349,7 +1360,8 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'overdue',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1454,7 +1466,8 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'store_thai',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1643,7 +1656,8 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'overdue',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },

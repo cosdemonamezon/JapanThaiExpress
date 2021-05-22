@@ -393,8 +393,8 @@ class _MessageScreenState extends State<MessageScreen> {
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
                                   onTap: () {
-                                    MyNavigator.goToTimelineauction(context,
-                                        MessageScreendata[index]['id']);
+                                    var arg = MessageScreendata[index]['id'];
+                                    MyNavigator.goToMessageRoom(context, arg);
                                   },
                                   child: Card(
                                     color: Colors.white,
