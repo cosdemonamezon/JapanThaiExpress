@@ -1247,7 +1247,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "overdue") {
+                                dataTimeline['data']['step'] == "store_thai") {
                                   print(dataTimeline.length);
                               String title = "";
                               showDialog(
@@ -1262,7 +1262,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                     dataTimeline['data']['id'],
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
-                                        : 'overdue',
+                                        : 'store_thai',
                                     familyMemberField),
                               );
                             }

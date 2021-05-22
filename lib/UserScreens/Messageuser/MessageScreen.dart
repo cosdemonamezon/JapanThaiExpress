@@ -53,7 +53,6 @@ class _MessageScreenState extends State<MessageScreen> {
       RefreshController(initialRefresh: false);
 
   get index => null;
- 
 
   @override
   void initState() {
@@ -101,6 +100,7 @@ class _MessageScreenState extends State<MessageScreen> {
   }
 
   _getMessageScreenory() async {
+    MessageScreendata = [];
     try {
       setState(() {
         page == 1 ? isLoading = true : isLoading = false;
@@ -308,6 +308,52 @@ class _MessageScreenState extends State<MessageScreen> {
     }
   }
 
+  _addTopic(Map<String, dynamic> values) async {
+    
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    print(values);
+    setState(() {
+      isLoading = true;
+    });
+
+    var url = Uri.parse(pathAPI + 'api/topic');
+    var response = await http.post(url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        body: ({
+          'title': values['title'],
+          'description': values['description'],
+        }));
+
+    if (response.statusCode == 201) {
+      final Map<String, dynamic> topicdata = convert.jsonDecode(response.body);
+
+      setState(() {
+        isLoading = false;
+      });
+      _getMessageScreenory();
+      Navigator.pop(context);
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
+  }
+
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -491,6 +537,13 @@ class _MessageScreenState extends State<MessageScreen> {
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             //MyNavigator.goTomessagesend(context);
+            showDialog(
+              barrierDismissible: true,
+              context: context,
+              builder: (context) => addTopic(
+                context,
+              ),
+            );
           },
           label: Text('ข้อความใหม่'),
           icon: Icon(Icons.add),
@@ -517,7 +570,7 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 
-  addDialog(context) {
+  addTopic(context) {
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Constants.padding),
@@ -545,9 +598,8 @@ class _MessageScreenState extends State<MessageScreen> {
             child: FormBuilder(
               key: _formKey1,
               initialValue: {
-                'name': '',
+                'title': '',
                 'description': '',
-                'tel': '',
               },
               child: Column(
                 children: [
@@ -557,20 +609,20 @@ class _MessageScreenState extends State<MessageScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Name",
+                          "หัวข้อ",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                         SizedBox(height: 10),
                         FormBuilderTextField(
-                          name: 'name',
+                          name: 'title',
                           decoration: InputDecoration(
                               //border: InputBorder.none,
                               border: OutlineInputBorder(),
                               fillColor: Color(0xfff3f3f4),
                               filled: true),
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
+                            FormBuilderValidators.required(context, errorText: 'กรุณาใส่หัวข้อ Topic'),
                             // FormBuilderValidators.numeric(context),
                             // FormBuilderValidators.max(context, 70),
                           ]),
@@ -584,21 +636,21 @@ class _MessageScreenState extends State<MessageScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Description",
+                          "รายละเอียด",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                         SizedBox(height: 10),
                         FormBuilderTextField(
                           name: 'description',
-                          maxLines: 2,
+                          maxLines: 3,
                           decoration: InputDecoration(
                               //border: InputBorder.none,
                               border: OutlineInputBorder(),
                               fillColor: Color(0xfff3f3f4),
                               filled: true),
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
+                            FormBuilderValidators.required(context, errorText: 'กรุณาใส่รายละเอียด'),
                             // FormBuilderValidators.numeric(context),
                             // FormBuilderValidators.max(context, 70),
                           ]),
@@ -607,35 +659,7 @@ class _MessageScreenState extends State<MessageScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Tel",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        ),
-                        SizedBox(height: 10),
-                        FormBuilderTextField(
-                          keyboardType: TextInputType.number,
-                          name: 'tel',
-                          decoration: InputDecoration(
-                              //border: InputBorder.none,
-                              border: OutlineInputBorder(),
-                              fillColor: Color(0xfff3f3f4),
-                              filled: true),
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
-                            // FormBuilderValidators.numeric(context),
-                            // FormBuilderValidators.max(context, 70),
-                          ]),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
+                    margin: EdgeInsets.symmetric(vertical: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -643,7 +667,11 @@ class _MessageScreenState extends State<MessageScreen> {
                         GestureDetector(
                           onTap: () {
                             if (_formKey1.currentState.validate()) {
+                              setState(() {
+                                isLoading = true;
+                              });
                               _formKey1.currentState.save();
+                              _addTopic(_formKey1.currentState.value);
                             } else {}
                             // _formKey.currentState.save();
                             // print(_formKey.currentState.value);
@@ -672,11 +700,13 @@ class _MessageScreenState extends State<MessageScreen> {
                                     Color(0xffdd4b39)
                                   ]),
                             ),
-                            child: Text(
-                              "ยืนยัน",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                            ),
+                            child: isLoading == true
+                                ? Center(child: CircularProgressIndicator())
+                                : Text(
+                                    "ยืนยัน",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ),
                           ),
                         ),
                         SizedBox(height: 15),

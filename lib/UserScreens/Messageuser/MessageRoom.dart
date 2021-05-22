@@ -200,7 +200,7 @@ class _MessageRoomUserState extends State<MessageRoomUser> {
     return new Scaffold(
         appBar: new AppBar(
           title: const Text(
-            'ห้องสนทนานะ',
+            'ห้องสนทนา',
             textAlign: TextAlign.center,
           ),
         ),
