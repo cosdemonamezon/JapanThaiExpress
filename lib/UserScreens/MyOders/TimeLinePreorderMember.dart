@@ -1,17 +1,16 @@
-
+import 'package:JapanThaiExpress/AdminScreens/PreOders/PreoderScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
-import 'package:JapanThaiExpress/UserScreens/Service/Auction.dart';
+import 'package:JapanThaiExpress/UserScreens/MyOders/OdersScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
+// import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:JapanThaiExpress/constants.dart';
-import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../utils/my_navigator.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,14 +20,14 @@ const order_shipped = "assets/images/order_shipped.svg";
 const order_onTheWay = "assets/images/on_the_way.svg";
 const order_delivered = "assets/images/delivered.svg";
 
-class TimelineAuctionMember extends StatefulWidget {
+class TimeLinePreorderMember extends StatefulWidget {
   // TimeLineDepository({Key key, Object argument}) : super(key: key);
 
   @override
-  _TimelineAuctionMemberState createState() => _TimelineAuctionMemberState();
+  _TimeLinePreorderMemberState createState() => _TimeLinePreorderMemberState();
 }
 
-class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
+class _TimeLinePreorderMemberState extends State<TimeLinePreorderMember> {
   SharedPreferences prefs;
   SharedPreferences prefsNoti;
   bool isLoading = false;
@@ -59,9 +58,6 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
   }
 
   _gettimeline(String id) async {
-    familyMemberName = [];
-    familyMemberLabel = [];
-    familyMemberField = [];
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -70,14 +66,14 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
       isLoading = true;
     });
     // var url = pathAPI + 'api/preorder/' + id;
-    var url = Uri.parse(pathAPI + 'api/get_detail_auction');
+    var url = Uri.parse(pathAPI + 'api/preorder');
     var response = await http.post(url,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token['data']['token']
         },
         body: convert.jsonEncode({
-          'auction_id': id,
+          'preorder_id': id,
         }));
     if (response.statusCode == 200) {
       //print(response.statusCode);
@@ -87,31 +83,37 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
       int index = 0;
       if (Data["data"]["step"] == 'new') {
         index = 0;
-      } else if (Data["data"]["step"] == 'wait') {
-        index = 1;
       } else if (Data["data"]["step"] == 'order') {
+        index = 1;
+      } else if (Data["data"]["step"] == 'payment') {
         index = 2;
       } else if (Data["data"]["step"] == 'buy') {
         index = 3;
-      } else if (Data["data"]["step"] == 'shipping') {
+      } else if (Data["data"]["step"] == 'shipping' ||
+          Data["data"]["step"] == 'store_japan') {
         index = 4;
-      } else if (Data["data"]["step"] == 'store_thai') {
+      } else if (Data["data"]["step"] == 'transport') {
         index = 5;
-      } else if (Data["data"]["step"] == 'overdue') {
+      } else if (Data["data"]["step"] == 'store_thai') {
         index = 6;
-      } else if (Data["data"]["step"] == 'delivery') {
+      } else if (Data["data"]["step"] == 'overdue') {
         index = 7;
+      } else if (Data["data"]["step"] == 'delivery') {
+        index = 8;
       }
       var familyMembers = Data["data"]["list"][index]["field"];
+      var showField = Data["data"]["list"][index]["show"];
       for (var familyMember in familyMembers) {
         if (familyMember["name"] != 'status') {
-          setState(() {
-            familyMemberLabel.add(familyMember["label"]);
-            // var textEditingController = TextEditingController();
-            familyMemberName.add(familyMember["name"]);
-            familyMemberField.add(familyMember["name"]);
-          });
-          print(familyMemberName);
+          if (showField == true) {
+            setState(() {
+              familyMemberLabel.add(familyMember["label"]);
+              // var textEditingController = TextEditingController();
+              familyMemberName.add(familyMember["name"]);
+              familyMemberField.add(familyMember["name"]);
+            });
+            print(familyMemberName);
+          }
         }
       }
       if (data['code'] == 200) {
@@ -154,14 +156,16 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
       int id, String step, List field) {
     String stepUp;
     if (step == 'new') {
-      stepUp = 'wait';
-    } else if (step == 'wait') {
       stepUp = 'order';
     } else if (step == 'order') {
+      stepUp = 'track';
+    } else if (step == 'payment') {
       stepUp = 'buy';
     } else if (step == 'buy') {
       stepUp = 'shipping';
     } else if (step == 'shipping') {
+      stepUp = 'transport';
+    } else if (step == 'transport') {
       stepUp = 'store_thai';
     } else if (step == 'store_thai') {
       stepUp = 'overdue';
@@ -280,7 +284,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
-    var url = Uri.parse(pathAPI + 'api/app/auction/' + id.toString());
+    var url = Uri.parse(pathAPI + 'api/appove_preorder_admin/' + id.toString());
     var response = await http.put(url,
         headers: {
           'Content-Type': 'application/json',
@@ -328,8 +332,8 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Auction()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => OdersScreen()));
             }),
       ),
       body: isLoading == true
@@ -367,7 +371,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
               ),
               controller: _refreshController,
               onRefresh: _onRefresh,
-              // onLoading: _onRefresh,
+              onLoading: _onRefresh,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -446,10 +450,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      dataTimeline['data']['qty'] == null
-                                          ? ''
-                                          : dataTimeline['data']['qty'] +
-                                              " รายการ",
+                                      dataTimeline['data']['qty'] + " รายการ",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 15,
@@ -474,6 +475,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                       dataTimeline.length > 0
                                           ? "ชื่อลูกค้า :" +
                                               dataTimeline['data']['ship_name']
+                                                  .toString()
                                           : " - ",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -482,9 +484,6 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                     ),
                                   ),
                                 ],
-                              ),
-                              SizedBox(
-                                width: 20,
                               ),
                             ],
                           ),
@@ -504,7 +503,8 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                       },
                                       child: Text(
                                         "โทร :" +
-                                            dataTimeline['data']['ship_tel'],
+                                            dataTimeline['data']['ship_tel']
+                                                .toString(),
                                         style: TextStyle(
                                             fontWeight: FontWeight.w400,
                                             fontSize: 15,
@@ -550,6 +550,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                             ),
                           ),
                         ),
+
                         Expanded(
                           child: Center(
                             child: GestureDetector(
@@ -585,11 +586,16 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                       bottomLineStyle: LineStyle(
                           color: dataTimeline.length > 0
                               ? dataTimeline['data']['step'] == "new" ||
-                                      dataTimeline['data']['step'] == "wait" ||
                                       dataTimeline['data']['step'] == "order" ||
+                                      dataTimeline['data']['step'] ==
+                                          "payment" ||
                                       dataTimeline['data']['step'] == "buy" ||
                                       dataTimeline['data']['step'] ==
                                           "shipping" ||
+                                      dataTimeline['data']['step'] ==
+                                          "store_japan" ||
+                                      dataTimeline['data']['step'] ==
+                                          "transport" ||
                                       dataTimeline['data']['step'] ==
                                           "store_thai" ||
                                       dataTimeline['data']['step'] ==
@@ -604,11 +610,15 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                         width: 20,
                         color: dataTimeline.length > 0
                             ? dataTimeline['data']['step'] == "new" ||
-                                    dataTimeline['data']['step'] == "wait" ||
                                     dataTimeline['data']['step'] == "order" ||
+                                    dataTimeline['data']['step'] == "payment" ||
                                     dataTimeline['data']['step'] == "buy" ||
                                     dataTimeline['data']['step'] ==
                                         "shipping" ||
+                                    dataTimeline['data']['step'] ==
+                                        "store_japan" ||
+                                    dataTimeline['data']['step'] ==
+                                        "transport" ||
                                     dataTimeline['data']['step'] ==
                                         "store_thai" ||
                                     dataTimeline['data']['step'] == "overdue" ||
@@ -630,13 +640,17 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                   color: dataTimeline.length > 0
                                       ? dataTimeline['data']['step'] == "new" ||
                                               dataTimeline['data']['step'] ==
-                                                  "wait" ||
-                                              dataTimeline['data']['step'] ==
                                                   "order" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "payment" ||
                                               dataTimeline['data']['step'] ==
                                                   "buy" ||
                                               dataTimeline['data']['step'] ==
                                                   "shipping" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "store_japan" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "transport" ||
                                               dataTimeline['data']['step'] ==
                                                   "store_thai" ||
                                               dataTimeline['data']['step'] ==
@@ -684,11 +698,16 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                       topLineStyle: LineStyle(color: Colors.red),
                       bottomLineStyle: LineStyle(
                           color: dataTimeline.length > 0
-                              ? dataTimeline['data']['step'] == "wait" ||
-                                      dataTimeline['data']['step'] == "order" ||
+                              ? dataTimeline['data']['step'] == "order" ||
+                                      dataTimeline['data']['step'] ==
+                                          "payment" ||
                                       dataTimeline['data']['step'] == "buy" ||
                                       dataTimeline['data']['step'] ==
                                           "shipping" ||
+                                      dataTimeline['data']['step'] ==
+                                          "store_japan" ||
+                                      dataTimeline['data']['step'] ==
+                                          "transport" ||
                                       dataTimeline['data']['step'] ==
                                           "store_thai" ||
                                       dataTimeline['data']['step'] ==
@@ -702,11 +721,15 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                       indicatorStyle: IndicatorStyle(
                         width: 20,
                         color: dataTimeline.length > 0
-                            ? dataTimeline['data']['step'] == "wait" ||
-                                    dataTimeline['data']['step'] == "order" ||
+                            ? dataTimeline['data']['step'] == "order" ||
+                                    dataTimeline['data']['step'] == "payment" ||
                                     dataTimeline['data']['step'] == "buy" ||
                                     dataTimeline['data']['step'] ==
                                         "shipping" ||
+                                    dataTimeline['data']['step'] ==
+                                        "store_japan" ||
+                                    dataTimeline['data']['step'] ==
+                                        "transport" ||
                                     dataTimeline['data']['step'] ==
                                         "store_thai" ||
                                     dataTimeline['data']['step'] == "overdue" ||
@@ -747,13 +770,17 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                   Icons.directions_boat,
                                   color: dataTimeline.length > 0
                                       ? dataTimeline['data']['step'] ==
-                                                  "wait" ||
-                                              dataTimeline['data']['step'] ==
                                                   "order" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "payment" ||
                                               dataTimeline['data']['step'] ==
                                                   "buy" ||
                                               dataTimeline['data']['step'] ==
                                                   "shipping" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "store_japan" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "transport" ||
                                               dataTimeline['data']['step'] ==
                                                   "store_thai" ||
                                               dataTimeline['data']['step'] ==
@@ -801,10 +828,14 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                       topLineStyle: LineStyle(color: Colors.red),
                       bottomLineStyle: LineStyle(
                           color: dataTimeline.length > 0
-                              ? dataTimeline['data']['step'] == "order" ||
+                              ? dataTimeline['data']['step'] == "payment" ||
                                       dataTimeline['data']['step'] == "buy" ||
                                       dataTimeline['data']['step'] ==
                                           "shipping" ||
+                                      dataTimeline['data']['step'] ==
+                                          "store_japan" ||
+                                      dataTimeline['data']['step'] ==
+                                          "transport" ||
                                       dataTimeline['data']['step'] ==
                                           "store_thai" ||
                                       dataTimeline['data']['step'] ==
@@ -819,9 +850,14 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                         width: 20,
                         color: dataTimeline.length > 0
                             ? dataTimeline['data']['step'] == "order" ||
+                                    dataTimeline['data']['step'] == "payment" ||
                                     dataTimeline['data']['step'] == "buy" ||
                                     dataTimeline['data']['step'] ==
                                         "shipping" ||
+                                    dataTimeline['data']['step'] ==
+                                        "store_japan" ||
+                                    dataTimeline['data']['step'] ==
+                                        "transport" ||
                                     dataTimeline['data']['step'] ==
                                         "store_thai" ||
                                     dataTimeline['data']['step'] == "overdue" ||
@@ -832,28 +868,30 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                         indicatorY: 0.2,
                         padding: EdgeInsets.all(8),
                       ),
-                      rightChild: Container(
+                      leftChild: Container(
                         child: GestureDetector(
                           onTap: () {
-                            // if (dataTimeline.length > 0 &&
-                            //     dataTimeline['data']['step'] == "wait") {
-                            //   String title = "";
-                            //   showDialog(
-                            //     barrierDismissible: false,
-                            //     context: context,
-                            //     builder: (context) => dialogTimeline(
-                            //         title,
-                            //         picDenied,
-                            //         context,
-                            //         familyMemberLabel,
-                            //         familyMemberName,
-                            //         dataTimeline['data']['id'],
-                            //         dataTimeline.length > 0
-                            //             ? dataTimeline['data']['step']
-                            //             : 'wait',
-                            //         familyMemberField),
-                            //   );
-                            // }
+                            if (dataTimeline.length > 0 &&
+                                dataTimeline['data']['step'] == "order" &&
+                                dataTimeline['data']['list'][1]['show'] ==
+                                    true) {
+                              String title = "";
+                              showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) => dialogTimeline(
+                                    title,
+                                    picDenied,
+                                    context,
+                                    familyMemberLabel,
+                                    familyMemberName,
+                                    dataTimeline['data']['id'],
+                                    dataTimeline.length > 0
+                                        ? dataTimeline['data']['step']
+                                        : 'payment',
+                                    familyMemberField),
+                              );
+                            }
                           },
                           child: Column(
                             children: [
@@ -862,11 +900,15 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                   Icons.directions_boat,
                                   color: dataTimeline.length > 0
                                       ? dataTimeline['data']['step'] ==
-                                                  "order" ||
+                                                  "payment" ||
                                               dataTimeline['data']['step'] ==
                                                   "buy" ||
                                               dataTimeline['data']['step'] ==
                                                   "shipping" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "store_japan" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "transport" ||
                                               dataTimeline['data']['step'] ==
                                                   "store_thai" ||
                                               dataTimeline['data']['step'] ==
@@ -879,14 +921,13 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                   size: 45,
                                 ),
                                 dataTimeline.length > 0
-                                    ? dataTimeline['data']['step'] == "wait"
+                                    ? dataTimeline['data']['step'] == "order"
                                         ? Positioned(
                                             // draw a red marble
                                             top: 10.0,
                                             right: 10.0,
-                                            child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                            child: Icon(Icons.touch_app,
+                                                size: 25.0, color: Colors.yellowAccent),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -899,7 +940,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                 height: 5,
                               ),
                               Text(
-                                "อยู่ระหว่างการประมูล",
+                                "ชำระเงิน",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
@@ -918,6 +959,10 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                       dataTimeline['data']['step'] ==
                                           "shipping" ||
                                       dataTimeline['data']['step'] ==
+                                          "store_japan" ||
+                                      dataTimeline['data']['step'] ==
+                                          "transport" ||
+                                      dataTimeline['data']['step'] ==
                                           "store_thai" ||
                                       dataTimeline['data']['step'] ==
                                           "overdue" ||
@@ -930,9 +975,12 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                       indicatorStyle: IndicatorStyle(
                         width: 20,
                         color: dataTimeline.length > 0
-                            ? dataTimeline['data']['step'] == "buy" ||
+                            ? dataTimeline['data']['step'] == "shipping" ||
+                                    dataTimeline['data']['step'] == "buy" ||
                                     dataTimeline['data']['step'] ==
-                                        "shipping" ||
+                                        "store_japan" ||
+                                    dataTimeline['data']['step'] ==
+                                        "transport" ||
                                     dataTimeline['data']['step'] ==
                                         "store_thai" ||
                                     dataTimeline['data']['step'] == "overdue" ||
@@ -947,7 +995,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                         child: GestureDetector(
                           onTap: () {
                             // if (dataTimeline.length > 0 &&
-                            //     dataTimeline['data']['step'] == "order") {
+                            //     dataTimeline['data']['step'] == "payment") {
                             //   String title = "";
                             //   showDialog(
                             //     barrierDismissible: false,
@@ -961,7 +1009,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                             //         dataTimeline['data']['id'],
                             //         dataTimeline.length > 0
                             //             ? dataTimeline['data']['step']
-                            //             : 'order',
+                            //             : 'buy',
                             //         familyMemberField),
                             //   );
                             // }
@@ -976,6 +1024,10 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                               dataTimeline['data']['step'] ==
                                                   "shipping" ||
                                               dataTimeline['data']['step'] ==
+                                                  "store_japan" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "transport" ||
+                                              dataTimeline['data']['step'] ==
                                                   "store_thai" ||
                                               dataTimeline['data']['step'] ==
                                                   "overdue" ||
@@ -987,7 +1039,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                   size: 45,
                                 ),
                                 dataTimeline.length > 0
-                                    ? dataTimeline['data']['step'] == "order"
+                                    ? dataTimeline['data']['step'] == "payment"
                                         ? Positioned(
                                             // draw a red marble
                                             top: 10.0,
@@ -1007,7 +1059,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                 height: 5,
                               ),
                               Text(
-                                "เสร็จสิ้นการประมูล",
+                                "สั่งซื้อสินค้า",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
@@ -1024,6 +1076,10 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                           color: dataTimeline.length > 0
                               ? dataTimeline['data']['step'] == "shipping" ||
                                       dataTimeline['data']['step'] ==
+                                          "store_japan" ||
+                                      dataTimeline['data']['step'] ==
+                                          "transport" ||
+                                      dataTimeline['data']['step'] ==
                                           "store_thai" ||
                                       dataTimeline['data']['step'] ==
                                           "overdue" ||
@@ -1037,6 +1093,10 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                         width: 20,
                         color: dataTimeline.length > 0
                             ? dataTimeline['data']['step'] == "shipping" ||
+                                    dataTimeline['data']['step'] ==
+                                        "store_japan" ||
+                                    dataTimeline['data']['step'] ==
+                                        "transport" ||
                                     dataTimeline['data']['step'] ==
                                         "store_thai" ||
                                     dataTimeline['data']['step'] == "overdue" ||
@@ -1065,7 +1125,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                             //         dataTimeline['data']['id'],
                             //         dataTimeline.length > 0
                             //             ? dataTimeline['data']['step']
-                            //             : 'buy',
+                            //             : 'shipping',
                             //         familyMemberField),
                             //   );
                             // }
@@ -1081,6 +1141,10 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                         ? dataTimeline['data']['step'] ==
                                                     "shipping" ||
                                                 dataTimeline['data']['step'] ==
+                                                    "store_japan" ||
+                                                dataTimeline['data']['step'] ==
+                                                    "transport" ||
+                                                dataTimeline['data']['step'] ==
                                                     "store_thai" ||
                                                 dataTimeline['data']['step'] ==
                                                     "overdue" ||
@@ -1094,6 +1158,223 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                 ),
                                 dataTimeline.length > 0
                                     ? dataTimeline['data']['step'] == "buy"
+                                        ? Positioned(
+                                            // draw a red marble
+                                            top: 10.0,
+                                            right: 10.0,
+                                            child: Icon(Icons.no_encryption,
+                                                size: 25.0,
+                                                color: Colors.red),
+                                          )
+                                        : SizedBox(
+                                            height: 0,
+                                          )
+                                    : SizedBox(
+                                        height: 0,
+                                      ),
+                              ]),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "จัดส่งสินค้า",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    // TimelineTile(
+                    //   topLineStyle: LineStyle(color: Colors.red),
+                    //   bottomLineStyle: LineStyle(
+                    //       color: dataTimeline.length > 0
+                    //           ? dataTimeline['data']['step'] == "store_japan" ||
+                    //                   dataTimeline['data']['step'] ==
+                    //                       "transport" ||
+                    //                   dataTimeline['data']['step'] ==
+                    //                       "store_thai" ||
+                    //                   dataTimeline['data']['step'] == "overdue" ||
+                    //                   dataTimeline['data']['step'] == "delivery"
+                    //               ? Colors.red
+                    //               : Colors.black54
+                    //           : Colors.black54),
+                    //   alignment: TimelineAlign.center,
+                    //   isFirst: true,
+                    //   indicatorStyle: IndicatorStyle(
+                    //     width: 20,
+                    //     color: dataTimeline.length > 0
+                    //         ? dataTimeline['data']['step'] == "store_japan" ||
+                    //                 dataTimeline['data']['step'] == "transport" ||
+                    //                 dataTimeline['data']['step'] ==
+                    //                     "store_thai" ||
+                    //                 dataTimeline['data']['step'] == "overdue" ||
+                    //                 dataTimeline['data']['step'] == "delivery"
+                    //             ? Colors.red
+                    //             : Colors.black54
+                    //         : Colors.black54,
+                    //     indicatorY: 0.2,
+                    //     padding: EdgeInsets.all(8),
+                    //   ),
+                    //   leftChild: Container(
+                    //     child: GestureDetector(
+                    //       onTap: () {
+                    //         if (dataTimeline.length > 0 &&
+                    //             dataTimeline['data']['step'] == "store_thai" &&
+                    //             dataTimeline['data']['list'][4]['show'] == true) {
+                    //           String title = "";
+                    //           showDialog(
+                    //             barrierDismissible: false,
+                    //             context: context,
+                    //             builder: (context) => dialogTimeline(
+                    //                 title,
+                    //                 picDenied,
+                    //                 context,
+                    //                 familyMemberLabel,
+                    //                 familyMemberName,
+                    //                 dataTimeline['data']['id'],
+                    //                 dataTimeline.length > 0
+                    //                     ? dataTimeline['data']['step']
+                    //                     : 'store_thai',
+                    //                 familyMemberField),
+                    //           );
+                    //         }
+                    //       },
+                    //       child: Column(
+                    //         children: [
+                    //           Stack(children: <Widget>[
+                    //             Icon(
+                    //               Icons.directions_boat,
+                    //               color: dataTimeline.length > 0
+                    //                   ? dataTimeline['data']['step'] ==
+                    //                               "store_japan" ||
+                    //                           dataTimeline['data']['step'] ==
+                    //                               "transport" ||
+                    //                           dataTimeline['data']['step'] ==
+                    //                               "store_thai" ||
+                    //                           dataTimeline['data']['step'] ==
+                    //                               "overdue" ||
+                    //                           dataTimeline['data']['step'] ==
+                    //                               "delivery"
+                    //                       ? primaryColor
+                    //                       : Colors.black54
+                    //                   : Colors.black54,
+                    //               size: 45,
+                    //             ),
+                    //             dataTimeline.length > 0
+                    //                 ? dataTimeline['data']['step'] == "shipping"
+                    //                     ? Positioned(
+                    //                         // draw a red marble
+                    //                         top: 10.0,
+                    //                         right: 10.0,
+                    //                         child: Icon(Icons.touch_app,
+                    //                             size: 25.0,
+                    //                             color: Colors.yellowAccent),
+                    //                       )
+                    //                     : SizedBox(
+                    //                         height: 0,
+                    //                       )
+                    //                 : SizedBox(
+                    //                     height: 0,
+                    //                   ),
+                    //           ]),
+                    //           SizedBox(
+                    //             height: 5,
+                    //           ),
+                    //           Text(
+                    //             "เข้าคลังญี่ปุ่น",
+                    //             style: TextStyle(
+                    //                 fontWeight: FontWeight.bold,
+                    //                 fontSize: 15,
+                    //                 color: Colors.black),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    TimelineTile(
+                      topLineStyle: LineStyle(color: Colors.red),
+                      bottomLineStyle: LineStyle(
+                          color: dataTimeline.length > 0
+                              ? dataTimeline['data']['step'] == "store_japan" ||
+                                      dataTimeline['data']['step'] ==
+                                          "transport" ||
+                                      dataTimeline['data']['step'] ==
+                                          "store_thai" ||
+                                      dataTimeline['data']['step'] ==
+                                          "overdue" ||
+                                      dataTimeline['data']['step'] == "delivery"
+                                  ? Colors.red
+                                  : Colors.black54
+                              : Colors.black54),
+                      alignment: TimelineAlign.center,
+                      isFirst: true,
+                      indicatorStyle: IndicatorStyle(
+                        width: 20,
+                        color: dataTimeline.length > 0
+                            ? dataTimeline['data']['step'] == "store_japan" ||
+                                    dataTimeline['data']['step'] ==
+                                        "transport" ||
+                                    dataTimeline['data']['step'] ==
+                                        "store_thai" ||
+                                    dataTimeline['data']['step'] == "overdue" ||
+                                    dataTimeline['data']['step'] == "delivery"
+                                ? Colors.red
+                                : Colors.black54
+                            : Colors.black54,
+                        indicatorY: 0.2,
+                        padding: EdgeInsets.all(8),
+                      ),
+                      rightChild: Container(
+                        child: GestureDetector(
+                          onTap: () {
+                            // if (dataTimeline.length > 0 &&
+                            //     dataTimeline['data']['step'] == "shipping") {
+                            //   String title = "";
+                            //   showDialog(
+                            //     barrierDismissible: false,
+                            //     context: context,
+                            //     builder: (context) => dialogTimeline(
+                            //         title,
+                            //         picDenied,
+                            //         context,
+                            //         familyMemberLabel,
+                            //         familyMemberName,
+                            //         dataTimeline['data']['id'],
+                            //         dataTimeline.length > 0
+                            //             ? dataTimeline['data']['step']
+                            //             : 'overdue',
+                            //         familyMemberField),
+                            //   );
+                            // }
+                          },
+                          child: Column(
+                            children: [
+                              Stack(children: <Widget>[
+                                Icon(
+                                  Icons.directions_boat,
+                                  color: dataTimeline.length > 0
+                                      ? dataTimeline['data']['step'] ==
+                                                  "store_japan" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "transport" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "store_thai" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "overdue" ||
+                                              dataTimeline['data']['step'] ==
+                                                  "delivery"
+                                          ? primaryColor
+                                          : Colors.black54
+                                      : Colors.black54,
+                                  size: 45,
+                                ),
+                                dataTimeline.length > 0
+                                    ? dataTimeline['data']['step'] == "shipping"
                                         ? Positioned(
                                             // draw a red marble
                                             top: 10.0,
@@ -1140,7 +1421,11 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                       indicatorStyle: IndicatorStyle(
                         width: 20,
                         color: dataTimeline.length > 0
-                            ? dataTimeline['data']['step'] == "store_thai" ||
+                            ? dataTimeline['data']['step'] == "store_japan" ||
+                                    dataTimeline['data']['step'] ==
+                                        "transport" ||
+                                    dataTimeline['data']['step'] ==
+                                        "store_thai" ||
                                     dataTimeline['data']['step'] == "overdue" ||
                                     dataTimeline['data']['step'] == "delivery"
                                 ? Colors.red
@@ -1153,7 +1438,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                         child: GestureDetector(
                           onTap: () {
                             // if (dataTimeline.length > 0 &&
-                            //     dataTimeline['data']['step'] == "shipping") {
+                            //     (dataTimeline['data']['step'] == "transport")) {
                             //   String title = "";
                             //   showDialog(
                             //     barrierDismissible: false,
@@ -1167,7 +1452,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                             //         dataTimeline['data']['id'],
                             //         dataTimeline.length > 0
                             //             ? dataTimeline['data']['step']
-                            //             : 'shipping',
+                            //             : 'store_thai',
                             //         familyMemberField),
                             //   );
                             // }
@@ -1190,7 +1475,8 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                   size: 45,
                                 ),
                                 dataTimeline.length > 0
-                                    ? dataTimeline['data']['step'] == "shipping"
+                                    ? dataTimeline['data']['step'] ==
+                                            "transport"
                                         ? Positioned(
                                             // draw a red marble
                                             top: 10.0,
@@ -1235,7 +1521,8 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                       indicatorStyle: IndicatorStyle(
                         width: 20,
                         color: dataTimeline.length > 0
-                            ? dataTimeline['data']['step'] == "overdue" ||
+                            ? dataTimeline['data']['step'] == "store_thai" ||
+                                    dataTimeline['data']['step'] == "overdue" ||
                                     dataTimeline['data']['step'] == "delivery"
                                 ? Colors.red
                                 : Colors.black54
@@ -1247,8 +1534,9 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "overdue") {
-                                  print(dataTimeline.length);
+                                dataTimeline['data']['step'] == "overdue" &&
+                                dataTimeline['data']['list'][6]['show'] ==
+                                    true) {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -1303,7 +1591,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                 height: 5,
                               ),
                               Text(
-                                "รอชำระค่าจัดส่ง",
+                                "ชำระค่าส่ง",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
@@ -1338,25 +1626,25 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                       rightChild: Container(
                         child: GestureDetector(
                           onTap: () {
-                            // if (dataTimeline.length > 0 &&
-                            //     dataTimeline['data']['step'] == "overdue") {
-                            //   String title = "";
-                            //   showDialog(
-                            //     barrierDismissible: false,
-                            //     context: context,
-                            //     builder: (context) => dialogTimeline(
-                            //         title,
-                            //         picDenied,
-                            //         context,
-                            //         familyMemberLabel,
-                            //         familyMemberName,
-                            //         dataTimeline['data']['id'],
-                            //         dataTimeline.length > 0
-                            //             ? dataTimeline['data']['step']
-                            //             : 'overdue',
-                            //         familyMemberField),
-                            //   );
-                            // }
+                            if (dataTimeline.length > 0 &&
+                                dataTimeline['data']['step'] == "overdue") {
+                              String title = "";
+                              showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) => dialogTimeline(
+                                    title,
+                                    picDenied,
+                                    context,
+                                    familyMemberLabel,
+                                    familyMemberName,
+                                    dataTimeline['data']['id'],
+                                    dataTimeline.length > 0
+                                        ? dataTimeline['data']['step']
+                                        : 'overdue',
+                                    familyMemberField),
+                              );
+                            }
                           },
                           child: Column(
                             children: [
@@ -1392,7 +1680,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                 height: 5,
                               ),
                               Text(
-                                "จัดส่งเสร็จสิ้น",
+                                "จัดส่งสินค้า",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
