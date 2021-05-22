@@ -2,6 +2,7 @@ import 'package:JapanThaiExpress/AdminScreens/Auction/TimeLineAuctions.dart';
 import 'package:JapanThaiExpress/AdminScreens/Depository/TimeLineDepository.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageRoom.dart';
 import 'package:JapanThaiExpress/AdminScreens/PurchaseOrders/TimeLinePurchase.dart';
+import 'package:JapanThaiExpress/UserScreens/Messageuser/MessageRoom.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/TimeLineDeposit.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/TimeLineMemberPreorders.dart';
 import 'package:flutter/material.dart';
@@ -176,6 +177,22 @@ class MyNavigator {
       context,
       MaterialPageRoute(
         builder: (context) => MessageRoom(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {"id": id.toString()},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
+  }
+
+  static void goToMessageRoomUser(BuildContext context, int id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MessageRoomUser(),
         // Pass the arguments as part of the RouteSettings. The
         // ExtractArgumentScreen reads the arguments from these
         // settings.
