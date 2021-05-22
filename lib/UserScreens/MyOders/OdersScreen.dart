@@ -219,6 +219,7 @@ class _OdersScreenState extends State<OdersScreen> {
   ) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    print(id);
     return Card(
       child: GestureDetector(
         onTap: () {
