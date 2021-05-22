@@ -1,5 +1,6 @@
 import 'dart:io' as Io;
 import 'dart:convert';
+import 'package:JapanThaiExpress/AdminScreens/Message/MessageScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/DetailStep.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
@@ -140,6 +141,23 @@ class _MessageRoomState extends State<MessageRoom> {
     }
   }
 
+  void _onRefresh() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+
+    _gettimeline(id); //ทุกครั้งที่ทำการรีเฟรช จะดึงข้อมูลใหม่
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    //items.add((items.length+1).toString());
+    _gettimeline(id);
+    _refreshController.loadComplete();
+  }
+
   @override
   Widget build(BuildContext context) {
     DateTime time = DateTime.now();
@@ -151,6 +169,12 @@ class _MessageRoomState extends State<MessageRoom> {
             'ห้องสนทนา',
             textAlign: TextAlign.center,
           ),
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MessageScreen()));
+              }),
         ),
         body: new Container(
             width: double.infinity,
@@ -161,12 +185,49 @@ class _MessageRoomState extends State<MessageRoom> {
                 children: <Widget>[
                   //Chat list
                   new Flexible(
-                    child: new ListView.builder(
-                      padding: new EdgeInsets.all(8.0),
-                      reverse: true,
-                      itemBuilder: (_, int index) => _messages[index],
-                      itemCount: _messages.length,
-                    ),
+                    child: isLoading == true
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : SmartRefresher(
+                            enablePullDown: true,
+                            enablePullUp: true,
+                            header: ClassicHeader(
+                              refreshStyle: RefreshStyle.Follow,
+                              refreshingText: 'กำลังโหลด.....',
+                              completeText: 'โหลดข้อมูลสำเร็จ',
+                            ),
+                            footer: CustomFooter(
+                              builder: (BuildContext context, LoadStatus mode) {
+                                Widget body;
+                                if (mode == LoadStatus.idle) {
+                                  //body =  Text("ไม่พบรายการ");
+                                } else if (mode == LoadStatus.loading) {
+                                  body = CircularProgressIndicator();
+                                } else if (mode == LoadStatus.failed) {
+                                  body = Text("Load Failed!Click retry!");
+                                } else if (mode == LoadStatus.canLoading) {
+                                  body = Text("release to load more");
+                                } else if (mode == LoadStatus.noMore) {
+                                  //body = Text("No more Data");
+                                  body = Text("ไม่พบข้อมูล");
+                                }
+                                return Container(
+                                  height: 55.0,
+                                  child: Center(child: body),
+                                );
+                              },
+                            ),
+                            controller: _refreshController,
+                            onRefresh: _onRefresh,
+                            onLoading: _onLoading,
+                            child: ListView.builder(
+                              padding: new EdgeInsets.all(8.0),
+                              reverse: true,
+                              itemBuilder: (_, int index) => _messages[index],
+                              itemCount: _messages.length,
+                            ),
+                          ),
                   ),
                   new Divider(height: 1.0),
                   new Container(
@@ -181,24 +242,27 @@ class _MessageRoomState extends State<MessageRoom> {
                               children: <Widget>[
                                 //left send button
 
-                                new Container(
-                                  width: 48.0,
-                                  height: 48.0,
-                                  child: new IconButton(
-                                      icon: Image.asset(
-                                          "assets/images/send_in.png"),
-                                      onPressed: () => _sendMsg(
-                                          _textController.text,
-                                          'left',
-                                          formattedDate)),
-                                ),
+                                // new Container(
+                                //   width: 48.0,
+                                //   height: 48.0,
+                                //   child: new IconButton(
+                                //       icon: Image.asset(
+                                //           "assets/images/send_in.png"),
+                                //       onPressed: () => _sendMsg(
+                                //           _textController.text,
+                                //           'left',
+                                //           formattedDate)),
+                                // ),
 
                                 //Enter Text message here
                                 new Flexible(
-                                  child: new TextField(
-                                    controller: _textController,
-                                    decoration: new InputDecoration.collapsed(
-                                        hintText: "Enter message"),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: new TextField(
+                                      controller: _textController,
+                                      decoration: new InputDecoration.collapsed(
+                                          hintText: "Enter message"),
+                                    ),
                                   ),
                                 ),
 
@@ -212,10 +276,11 @@ class _MessageRoomState extends State<MessageRoom> {
                                   child: new IconButton(
                                       icon: Image.asset(
                                           "assets/images/send_out.png"),
-                                      onPressed: () => _sendMsg(
-                                          _textController.text,
-                                          'right',
-                                          formattedDate)),
+                                      onPressed: () {
+                                        // _sendMsg(_textController.text, 'right',
+                                        //     formattedDate);
+                                        _chatMember(_textController.text, id);
+                                      }),
                                 ),
                               ],
                             ),
@@ -244,6 +309,39 @@ class _MessageRoomState extends State<MessageRoom> {
         _messages.insert(0, message);
       });
     }
+  }
+
+  _chatMember(String msg, String id) async {
+    // print(id);
+    // print(_textController.text);
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+
+    setState(() {
+      isLoading = true;
+    });
+
+    var url = Uri.parse(pathAPI + 'api/chat');
+    var response = await http.post(
+      url,
+      headers: {
+        //'Content-Type': 'application/json',
+        'Authorization': token['data']['token']
+      },
+      body: {
+        'topic_id': id,
+        'text': msg,
+      },
+    );
+    if (response.statusCode == 201) {
+      final Map<String, dynamic> chatdata = convert.jsonDecode(response.body);
+      _textController.clear();
+      setState(() {
+        isLoading = false;
+      });
+      _gettimeline(id);
+    } else {}
   }
 
   @override
