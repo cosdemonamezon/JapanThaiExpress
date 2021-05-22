@@ -418,7 +418,7 @@ class _MessageScreenState extends State<MessageScreen> {
                             body = Text("release to load more");
                           } else if (mode == LoadStatus.noMore) {
                             //body = Text("No more Data");
-                            body = Text("ไม่พบข้อมูล");
+                            //body = Text("ไม่พบข้อมูล");
                           }
                           return Container(
                             height: 55.0,
