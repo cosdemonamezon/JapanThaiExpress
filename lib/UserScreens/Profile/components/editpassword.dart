@@ -81,6 +81,9 @@ class _EditpasswordState extends State<Editpassword> {
           leftBarIndicatorColor: Colors.blue[300],
           duration: Duration(seconds: 3),
         )..show(context);
+        setState(() {
+          isLoading = false;
+        });
       }
     } else {
       print("error");
@@ -98,6 +101,9 @@ class _EditpasswordState extends State<Editpassword> {
         duration: Duration(seconds: 3),
         leftBarIndicatorColor: Colors.blue[300],
       )..show(context);
+      setState(() {
+          isLoading = false;
+        });
     }
   }
 

@@ -149,12 +149,19 @@ class _HomeServicesState extends State<HomeServices> {
                               radius: 20,
                               backgroundColor: Colors.red,
                               child: Center(
-                                  child: Text(dashboard['preorder'].toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                        color: Colors.white,
-                                      ))),
+                                  child: dashboard['preorder'] != null
+                                        ?Text(dashboard['preorder'].toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))
+                                            :Text("0",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))),
                             )
                           : SizedBox(
                               height: 2,
@@ -169,18 +176,24 @@ class _HomeServicesState extends State<HomeServices> {
                       left: 100,
                       top: 0,
                       bottom: 95,
-                      child: dashboard['preorder'] != 0
+                      child: dashboard['depository'] != 0
                           ? CircleAvatar(
                               radius: 20,
                               backgroundColor: Colors.red,
                               child: Center(
-                                  child:
-                                      Text(dashboard['depository'].toString(),
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                          ))),
+                                  child:dashboard['depository'] != null
+                                        ?Text(dashboard['depository'].toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))
+                                            :Text("0",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))),
                             )
                           : SizedBox(
                               height: 2,
@@ -200,12 +213,19 @@ class _HomeServicesState extends State<HomeServices> {
                               radius: 20,
                               backgroundColor: Colors.red,
                               child: Center(
-                                  child: Text(dashboard['exchange'].toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                        color: Colors.white,
-                                      ))),
+                                  child: dashboard['exchange'] != null
+                                        ?Text(dashboard['exchange'].toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))
+                                            :Text("0",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))),
                             )
                           : SizedBox(
                               height: 2,
@@ -225,12 +245,19 @@ class _HomeServicesState extends State<HomeServices> {
                               radius: 20,
                               backgroundColor: Colors.red,
                               child: Center(
-                                  child: Text(dashboard['auction'].toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                        color: Colors.white,
-                                      ))),
+                                  child: dashboard['auction'] != null
+                                    ?Text(dashboard['auction'].toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))
+                                        :Text("0",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))),                              
                             )
                           : SizedBox(
                               height: 2,

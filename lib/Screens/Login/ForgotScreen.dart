@@ -1,8 +1,13 @@
 import 'package:JapanThaiExpress/Screens/Login/LoginPin.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginScreen.dart';
 import 'package:JapanThaiExpress/Screens/Register/RegisterScreen.dart';
+import 'package:JapanThaiExpress/constants.dart';
+import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class ForgotScreen extends StatefulWidget {
   ForgotScreen({Key key}) : super(key: key);
@@ -13,6 +18,83 @@ class ForgotScreen extends StatefulWidget {
 
 class _ForgotScreenState extends State<ForgotScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
+  bool isLoading = false;
+
+  _forgotPassword(Map<String, dynamic> values) async {
+    print(values);
+    var url = Uri.parse(pathAPI + 'api/forgot_password');
+    var response = await http.post(url,
+        headers: {
+          //'Content-Type': 'application/json',
+          //'Authorization': token['data']['token']
+        },
+        body: ({
+          'old_password': values['email'],
+        }));
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> editdata = convert.jsonDecode(response.body);
+      if (editdata['code'] == 200) {
+        print(editdata['message']);
+        String feedback = editdata['message'];
+        Flushbar(
+          //title: 'ดำเนินการสำเร็จ',
+          message: feedback,
+          backgroundColor: Colors.greenAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          leftBarIndicatorColor: Colors.blue[300],
+          duration: Duration(seconds: 5),
+        )..show(context);
+
+        setState(() {
+          isLoading = false;
+        });
+        Future.delayed(Duration(seconds: 3), () {
+          MyNavigator.goToLogin(context);
+        });
+      } else {
+        String feedback = editdata['message'];
+        Flushbar(
+          //title: 'ดำเนินการสำเร็จ',
+          message: feedback,
+          backgroundColor: Colors.greenAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          leftBarIndicatorColor: Colors.blue[300],
+          duration: Duration(seconds: 3),
+        )..show(context);
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } else {
+      print("error");
+      //var feedback = convert.jsonDecode(response.body);
+      //print("${feedback['message']}");
+      Flushbar(
+        title: 'ข้อผิดพลาดจากระบบ',
+        message: 'รหัสข้อผิดพลาด : 500',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -31,7 +113,6 @@ class _ForgotScreenState extends State<ForgotScreen> {
               children: [
                 SizedBox(height: height * .10),
                 Hero(
-                  
                   tag: "hero",
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -45,71 +126,97 @@ class _ForgotScreenState extends State<ForgotScreen> {
                   ),
                 ),
                 SizedBox(height: 50),
-              FormBuilder(key: _formKey, child: 
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "อีเมล์",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      SizedBox(height: 10),
-                       FormBuilderTextField(
-                        name: 'email',
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.email),
+                FormBuilder(
+                  key: _formKey,
+                  initialValue: {
+                    'email': '',
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "อีเมล์",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                            name: 'email',
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.email),
                                 labelText: 'อีเมล',
-                            //border: InputBorder.none,
-                            border: OutlineInputBorder(),
-                            fillColor: Color(0xfff3f3f4),
-                            filled: true),
-                            keyboardType: TextInputType.emailAddress, 
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true),
+                            keyboardType: TextInputType.emailAddress,
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context,
                                   errorText: 'กรุณากรอกอีเมล'),
                               FormBuilderValidators.email(context,
                                   errorText: 'กรุณากรอกอีเมลให้ถูกต้อง'),
-                            ])
-                      ),
-                     SizedBox(height: 10),
-                GestureDetector(
-                  onTap: () {
-                    if (_formKey.currentState.saveAndValidate()){
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()));}
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                            color: Colors.grey.shade200,
-                            offset: Offset(2, 4),
-                            blurRadius: 5,
-                            spreadRadius: 2)
+                            ])),
+                        SizedBox(height: 10),
+                        GestureDetector(
+                          onTap: () {
+                            if (_formKey.currentState.saveAndValidate()) {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              _forgotPassword(_formKey.currentState.value);
+                              // Navigator.push(context,
+                              //     MaterialPageRoute(builder: (context) => LoginScreen()));
+                              // showDialog(
+                              //   barrierDismissible: true,
+                              //   context: context,
+                              //   builder: (context) => alertForgot(
+                              //     "ระบบได้ส่งรหัส ไปที่ อีเมลที่ท่านได้กรอกไว้แล้ว",
+                              //     picWanning,
+                              //     context,
+                              //   ),
+                              // );
+                            } else {}
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                    color: Colors.grey.shade200,
+                                    offset: Offset(2, 4),
+                                    blurRadius: 5,
+                                    spreadRadius: 2)
+                              ],
+                              gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Color(0xffdd4b39),
+                                    Color(0xffdd4b39)
+                                  ]),
+                            ),
+                            child: isLoading == true
+                                ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Text(
+                                    "ยืนยัน",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ),
+                          ),
+                        ),
                       ],
-                      gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
                     ),
-                    child: Text(
-                      "ยืนยัน",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ),
-                ),],
                   ),
                 ),
-               
-              ),
-               // _divider(),
+                // _divider(),
                 //_facebookButton(),
                 // SizedBox(height: height * .045),
                 //_createAccountLabel(),
@@ -231,6 +338,88 @@ class _ForgotScreenState extends State<ForgotScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  alertForgot(String title, String img, context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Constants.padding),
+      ),
+      elevation: 4,
+      backgroundColor: Colors.transparent,
+      child: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.only(
+                left: Constants.padding,
+                top: Constants.avatarRadius + Constants.padding,
+                right: Constants.padding,
+                bottom: Constants.padding),
+            margin: EdgeInsets.only(top: Constants.avatarRadius),
+            decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: kFontPrimaryColor,
+                borderRadius: BorderRadius.circular(Constants.padding),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black,
+                      offset: Offset(0, 10),
+                      blurRadius: 10),
+                ]),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Center(
+                  child: Image.asset(
+                    img,
+                    fit: BoxFit.cover,
+                    height: 60,
+                    width: 60,
+                    //color: kButtonColor,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      color: kInputSearchColor),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                SizedBox(
+                  height: 33,
+                ),
+                Container(
+                  width: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: kPrimaryColor,
+                  ),
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "ตกลง",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: kTextButtonColor),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

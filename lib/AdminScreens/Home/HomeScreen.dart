@@ -138,12 +138,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               radius: 20,
                               backgroundColor: Colors.red,
                               child: Center(
-                                  child: Text(dashboard['order'].toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                        color: Colors.white,
-                                      ))),
+                                  child: dashboard['order'] != null
+                                    ?Text(dashboard['order'].toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))
+                                        :Text("0",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))),
                             )
                           : SizedBox(
                               height: 2,
@@ -163,7 +170,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 radius: 20,
                                 backgroundColor: Colors.red,
                                 child: Center(
-                                    child: Text(dashboard['service'].toString(),
+                                    child: dashboard['service'] != null
+                                    ?Text(dashboard['service'].toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))
+                                        :Text("0",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15,
@@ -191,12 +205,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               radius: 20,
                               backgroundColor: Colors.red,
                               child: Center(
-                                  child: Text(dashboard['wallet'].toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                        color: Colors.white,
-                                      ))),
+                                  child: dashboard['wallet'] != null
+                                    ?Text(dashboard['wallet'].toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))
+                                        :Text("0",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ))),
                             )
                           : SizedBox(
                               height: 2,
