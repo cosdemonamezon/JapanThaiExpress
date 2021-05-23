@@ -258,12 +258,26 @@ class _NavigationState extends State<Navigation> {
                       radius: 12,
                       backgroundColor: Colors.red,
                       child: Center(
-                        child: Text("0",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.white,
-                            )),
+                        child: homedata['total_msg'] != null && noti.length == 2
+                          ? Text(homedata['total_msg'].toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: Colors.white,
+                              ))
+                          : homedata['total_msg'] != null && noti.length == 3
+                              ? Text(homedata['total_msg'].toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                    color: Colors.white,
+                                  ))
+                              : Text("0",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                  )),
                       ),
                     ),
                   ),
