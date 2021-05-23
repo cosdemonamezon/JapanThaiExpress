@@ -189,7 +189,23 @@ class _MessageRoomUserState extends State<MessageRoomUser> {
         isLoading = false;
       });
       _gettimeline(id);
-    } else {}
+    } else {
+      Flushbar(
+        title: 'ส่งข้อความไม่สำเร็จ เกิดข้อผิดพลาดจากระบบ',
+        message: 'รหัสข้อผิดพลาด : 500',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -214,47 +230,47 @@ class _MessageRoomUserState extends State<MessageRoomUser> {
                   //Chat list
                   new Flexible(
                     child: isLoading == true
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : SmartRefresher(
-                        enablePullDown: true,
-                        enablePullUp: true,
-                        header: ClassicHeader(
-                          refreshStyle: RefreshStyle.Follow,
-                          refreshingText: 'กำลังโหลด.....',
-                          completeText: 'โหลดข้อมูลสำเร็จ',
-                        ),
-                        footer: CustomFooter(
-                          builder: (BuildContext context, LoadStatus mode) {
-                            Widget body;
-                            if (mode == LoadStatus.idle) {
-                              //body =  Text("ไม่พบรายการ");
-                            } else if (mode == LoadStatus.loading) {
-                              body = CircularProgressIndicator();
-                            } else if (mode == LoadStatus.failed) {
-                              body = Text("Load Failed!Click retry!");
-                            } else if (mode == LoadStatus.canLoading) {
-                              body = Text("release to load more");
-                            } else if (mode == LoadStatus.noMore) {
-                              //body = Text("No more Data");
-                              body = Text("ไม่พบข้อมูล");
-                            }
-                            return Container(
-                              height: 55.0,
-                              child: Center(child: body),
-                            );
-                          },
-                        ),
-                        controller: _refreshController,
-                        onRefresh: _onRefresh,
-                        onLoading: _onLoading,
-                        child: ListView.builder(
-                      padding: new EdgeInsets.all(8.0),
-                      reverse: true,
-                      itemBuilder: (_, int index) => _messages[index],
-                      itemCount: _messages.length,
-                    )),
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : SmartRefresher(
+                            enablePullDown: true,
+                            enablePullUp: true,
+                            header: ClassicHeader(
+                              refreshStyle: RefreshStyle.Follow,
+                              refreshingText: 'กำลังโหลด.....',
+                              completeText: 'โหลดข้อมูลสำเร็จ',
+                            ),
+                            footer: CustomFooter(
+                              builder: (BuildContext context, LoadStatus mode) {
+                                Widget body;
+                                if (mode == LoadStatus.idle) {
+                                  //body =  Text("ไม่พบรายการ");
+                                } else if (mode == LoadStatus.loading) {
+                                  body = CircularProgressIndicator();
+                                } else if (mode == LoadStatus.failed) {
+                                  body = Text("Load Failed!Click retry!");
+                                } else if (mode == LoadStatus.canLoading) {
+                                  body = Text("release to load more");
+                                } else if (mode == LoadStatus.noMore) {
+                                  //body = Text("No more Data");
+                                  body = Text("ไม่พบข้อมูล");
+                                }
+                                return Container(
+                                  height: 55.0,
+                                  child: Center(child: body),
+                                );
+                              },
+                            ),
+                            controller: _refreshController,
+                            onRefresh: _onRefresh,
+                            onLoading: _onLoading,
+                            child: ListView.builder(
+                              padding: new EdgeInsets.all(8.0),
+                              reverse: true,
+                              itemBuilder: (_, int index) => _messages[index],
+                              itemCount: _messages.length,
+                            )),
                   ),
                   new Divider(height: 1.0),
                   new Container(
