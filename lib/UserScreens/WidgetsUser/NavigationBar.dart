@@ -179,32 +179,38 @@ class _NavigationBarState extends State<NavigationBar> {
                   //left: 0,
                   top: 0,
                   //bottom: 0,
-                  child: CircleAvatar(
-                    radius: 12,
-                    backgroundColor: Colors.red,
-                    child: Center(
-                      child: homedata['total_noti'] != null && noti.length == 2
-                          ? Text(homedata['total_noti'].toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                                color: Colors.white,
-                              ))
-                          : homedata['total_noti'] != null && noti.length == 3
-                              ? Text(homedata['total_noti'].toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11,
-                                    color: Colors.white,
-                                  ))
-                              : Text("0",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: Colors.white,
-                                  )),
-                    ),
-                  ),
+                  child: homedata['total_noti'] != 0
+                      ? CircleAvatar(
+                          radius: 12,
+                          backgroundColor: Colors.red,
+                          child: Center(
+                            child: homedata['total_noti'] != null &&
+                                    noti.length == 2
+                                ? Text(homedata['total_noti'].toString(),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                    ))
+                                : homedata['total_noti'] != null &&
+                                        noti.length == 3
+                                    ? Text(homedata['total_noti'].toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11,
+                                          color: Colors.white,
+                                        ))
+                                    : Text("0",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        )),
+                          ),
+                        )
+                      : SizedBox(
+                          height: 2,
+                        ),
                 ),
               ]),
               ////
@@ -241,32 +247,38 @@ class _NavigationBarState extends State<NavigationBar> {
                     //left: 0,
                     top: 0,
                     //bottom: 0,
-                    child: CircleAvatar(
-                      radius: 12,
-                      backgroundColor: Colors.red,
-                      child: Center(
-                        child: homedata['total_msg'] != null && noti.length == 2
-                          ? Text(homedata['total_msg'].toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                                color: Colors.white,
-                              ))
-                          : homedata['total_msg'] != null && noti.length == 3
-                              ? Text(homedata['total_msg'].toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11,
-                                    color: Colors.white,
-                                  ))
-                              : Text("0",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: Colors.white,
-                                  )),
-                      ),
-                    ),
+                    child: homedata['total_msg'] != 0
+                        ? CircleAvatar(
+                            radius: 12,
+                            backgroundColor: Colors.red,
+                            child: Center(
+                              child: homedata['total_msg'] != null &&
+                                      noti.length == 2
+                                  ? Text(homedata['total_msg'].toString(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                      ))
+                                  : homedata['total_msg'] != null &&
+                                          noti.length == 3
+                                      ? Text(homedata['total_msg'].toString(),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 11,
+                                            color: Colors.white,
+                                          ))
+                                      : Text("0",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          )),
+                            ),
+                          )
+                        : SizedBox(
+                            height: 2,
+                          ),
                   ),
                 ],
               ),

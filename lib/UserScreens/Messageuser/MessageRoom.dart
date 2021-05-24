@@ -88,6 +88,8 @@ class _MessageRoomUserState extends State<MessageRoomUser> {
     messageText = [];
     messagePosition = [];
     messageTime = [];
+    _messages.clear();
+    
 
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
