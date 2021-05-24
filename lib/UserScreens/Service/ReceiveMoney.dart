@@ -126,7 +126,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
         var feedback = convert.jsonDecode(response.body);
         Flushbar(
           title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          message: 'ท่านยังไม่มีการสร้างรายการใหม่',
           backgroundColor: Colors.redAccent,
           icon: Icon(
             Icons.error,
@@ -423,27 +423,31 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                       controller: _refreshController,
                       onRefresh: _onRefresh,
                       onLoading: _onLoading,
-                      child: ListView.builder(
-                          itemCount: exchangedata.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return buildCard(
-                              exchangedata[index]['id'].toString(),
-                              exchangedata[index]['code'].toString(),
-                              exchangedata[index]['bank'].toString(),
-                              exchangedata[index]['total'].toString(),
-                              exchangedata[index]['description'] == null
-                                  ? 'ไม่มีข้อมูล'
-                                  : exchangedata[index]['description'].toString(),
-                              exchangedata[index]['created_at'].toString(),
-                              exchangedata[index]['status'].toString(),
-                              exchangedata[index]['fee'].toString(),
-                              exchangedata[index]['account_name'].toString(),
-                              exchangedata[index]['account_no'].toString(),
-                              exchangedata[index]['slip'] == null
-                                  ? 'ไม่มีข้อมูล'
-                                  : exchangedata[index]['slip'].toString(),
-                            );
-                          }),
+                      child: exchangedata.length > 0
+                          ? ListView.builder(
+                              itemCount: exchangedata.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return buildCard(
+                                  exchangedata[index]['id'].toString(),
+                                  exchangedata[index]['code'].toString(),
+                                  exchangedata[index]['bank'].toString(),
+                                  exchangedata[index]['total'].toString(),
+                                  exchangedata[index]['description'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : exchangedata[index]['description']
+                                          .toString(),
+                                  exchangedata[index]['created_at'].toString(),
+                                  exchangedata[index]['status'].toString(),
+                                  exchangedata[index]['fee'].toString(),
+                                  exchangedata[index]['account_name']
+                                      .toString(),
+                                  exchangedata[index]['account_no'].toString(),
+                                  exchangedata[index]['slip'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : exchangedata[index]['slip'].toString(),
+                                );
+                              })
+                          : Center(child: Text('ไม่พบรายการ')),
                     ),
             ),
             //tap2
@@ -588,8 +592,8 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                                 // print(b);
                                 // print(c);
                                 setState(() {
-                                  _sum =
-                                      TextEditingController(text: d.toStringAsFixed(2));
+                                  _sum = TextEditingController(
+                                      text: d.toStringAsFixed(2));
                                   sum = d.toString();
                                 });
                                 // print(sum);
@@ -879,7 +883,6 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           MyNavigator.goToReceiveDetail(context, arg);
         },
         child: ListTile(
-          
           title: Row(
             children: [
               Container(

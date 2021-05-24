@@ -1,6 +1,7 @@
 import 'package:JapanThaiExpress/AdminScreens/Auction/TimeLineAuctions.dart';
 import 'package:JapanThaiExpress/AdminScreens/Depository/TimeLineDepository.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageRoom.dart';
+import 'package:JapanThaiExpress/AdminScreens/Customer/CustomerDetail.dart';
 import 'package:JapanThaiExpress/AdminScreens/PurchaseOrders/TimeLinePurchase.dart';
 import 'package:JapanThaiExpress/UserScreens/Messageuser/MessageRoom.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/TimeLineDeposit.dart';
@@ -354,6 +355,32 @@ class MyNavigator {
         // settings.
         settings: RouteSettings(
           arguments: {"id": id.toString()},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
+  }
+
+  static void goToCustomerDetail(
+      BuildContext context, List customers, int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CustomerDetail(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {
+            "id": customers[index]['id'].toString(),
+            "profile": customers[index]['profile'].toString(),
+            "fname_th": customers[index]['fname_th'].toString(),
+            "lname_th": customers[index]['lname_th'].toString(),
+            "fname_en": customers[index]['fname_en'].toString(),
+            "lname_en": customers[index]['lname_en'].toString(),
+            "email": customers[index]['email'].toString(),
+            "phone": customers[index]['tel'].toString()
+          },
         ),
       ),
     );

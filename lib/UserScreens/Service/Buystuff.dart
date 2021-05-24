@@ -171,7 +171,7 @@ class _BuystuffState extends State<Buystuff> {
           // print(totalResults);
           // print("test");
           // print(listdata.length);
-           print(listdata[0]['status']);
+          print(listdata[0]['status']);
         });
       } else {
         setState(() {
@@ -182,7 +182,7 @@ class _BuystuffState extends State<Buystuff> {
         print("${order['message']}");
         Flushbar(
           title: '${order['message']}',
-          message: 'รหัสข้อผิดพลาด : ${order['code']}',
+          message: 'ท่านยังไม่มีการสร้างรายการใหม่',
           backgroundColor: Colors.redAccent,
           icon: Icon(
             Icons.error,
@@ -368,29 +368,31 @@ class _BuystuffState extends State<Buystuff> {
                       controller: _refreshController,
                       onRefresh: _onRefresh,
                       onLoading: _onLoading,
-                      child: ListView.builder(
-                          itemCount: listdata.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return buildCard(
-                              listdata[index]['name'],
-                              listdata[index]['code'] == null
-                                  ? 'ไม่มีข้อมูล'
-                                  : listdata[index]['code'],
-                              listdata[index]['description'] == null
-                                  ? 'ไม่มีข้อมูล'
-                                  : listdata[index]['description'],
-                              listdata[index]['price'] == null
-                                  ? 'ไม่มีข้อมูล'
-                                  : listdata[index]['price'],
-                              listdata[index]['track_jp'] == null
-                                  ? 'ไม่มีข้อมูล'
-                                  : listdata[index]['track_jp'],
-                              listdata[index]['image'] == null
-                                  ? "https://picsum.photos/200/300"
-                                  : listdata[index]['image'],
-                              listdata[index]['id'],
-                            );
-                          }),
+                      child: listdata.length > 0
+                          ? ListView.builder(
+                              itemCount: listdata.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return buildCard(
+                                  listdata[index]['name'],
+                                  listdata[index]['code'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : listdata[index]['code'],
+                                  listdata[index]['description'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : listdata[index]['description'],
+                                  listdata[index]['price'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : listdata[index]['price'],
+                                  listdata[index]['track_jp'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : listdata[index]['track_jp'],
+                                  listdata[index]['image'] == null
+                                      ? "https://picsum.photos/200/300"
+                                      : listdata[index]['image'],
+                                  listdata[index]['id'],
+                                );
+                              })
+                          : Center(child: Text('ไม่พบรายการ')),
                     ),
               //tab 2
               Container(
@@ -520,7 +522,7 @@ class _BuystuffState extends State<Buystuff> {
                             ],
                           ),
                         ),
-                        
+
                         SizedBox(height: height * .04),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 5),
@@ -1276,7 +1278,6 @@ class _BuystuffState extends State<Buystuff> {
     }
   }
 
-
   Card buildCard(String title, String title2, String title3, String title4,
       String title5, String image, int id) {
     return Card(
@@ -1328,7 +1329,6 @@ class _BuystuffState extends State<Buystuff> {
                   fontSize: 14,
                 ),
               ),
-              
             ],
           ),
           trailing: Column(

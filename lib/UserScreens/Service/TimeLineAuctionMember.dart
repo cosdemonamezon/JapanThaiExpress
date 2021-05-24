@@ -1,4 +1,3 @@
-
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Auction.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
@@ -41,6 +40,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
   List<String> familyMemberName = [];
   List<String> familyMemberLabel = [];
   List<String> familyMemberField = [];
+  List<String> familyMemberType = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -62,6 +62,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
     familyMemberName = [];
     familyMemberLabel = [];
     familyMemberField = [];
+    familyMemberType = [];
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -110,6 +111,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
             // var textEditingController = TextEditingController();
             familyMemberName.add(familyMember["name"]);
             familyMemberField.add(familyMember["name"]);
+            familyMemberType.add(familyMember['type']);
           });
           print(familyMemberName);
         }
@@ -151,7 +153,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
   }
 
   dialogTimeline(String title, String img, context, List label, List name,
-      int id, String step, List field) {
+      int id, String step, List field, List type) {
     String stepUp;
     if (step == 'new') {
       stepUp = 'wait';
@@ -183,7 +185,9 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                     children: [
                       FormBuilderTextField(
                         name: name[i],
-                        keyboardType: TextInputType.text,
+                        keyboardType: type[i].toString() == "text"
+                            ? TextInputType.text
+                            : TextInputType.number,
                         decoration: InputDecoration(
                             hintText: label[i].toString(),
                             //border: InputBorder.none,
@@ -573,7 +577,6 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                             ),
                           ),
                         ),
-                        
                       ],
                     ),
                     SizedBox(
@@ -772,8 +775,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -885,8 +887,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -993,8 +994,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1099,8 +1099,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1196,8 +1195,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1248,7 +1246,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                           onTap: () {
                             if (dataTimeline.length > 0 &&
                                 dataTimeline['data']['step'] == "store_thai") {
-                                  print(dataTimeline.length);
+                              print(dataTimeline.length);
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -1263,6 +1261,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'store_thai',
+                                    familyMemberField,
                                     familyMemberField),
                               );
                             }
@@ -1290,7 +1289,8 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.touch_app,
-                                                size: 25.0, color: Colors.yellowAccent),
+                                                size: 25.0,
+                                                color: Colors.yellowAccent),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1378,8 +1378,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,

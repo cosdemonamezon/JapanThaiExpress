@@ -38,6 +38,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
   List<String> familyMemberName = [];
   List<String> familyMemberLabel = [];
   List<String> familyMemberField = [];
+  List<String> familyMemberType = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -56,6 +57,10 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
   }
 
   _gettimeline(String id) async {
+    familyMemberName = [];
+    familyMemberLabel = [];
+    familyMemberField = [];
+    familyMemberType = [];
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -102,6 +107,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
             // var textEditingController = TextEditingController();
             familyMemberName.add(familyMember["name"]);
             familyMemberField.add(familyMember["name"]);
+            familyMemberType.add(familyMember['type']);
           });
           print(familyMemberName);
         }
@@ -143,7 +149,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
   }
 
   dialogTimeline(String title, String img, context, List label, List name,
-      int id, String step, List field) {
+      int id, String step, List field, List type) {
     String stepUp;
     if (step == 'new') {
       stepUp = 'order';
@@ -173,7 +179,9 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                     children: [
                       FormBuilderTextField(
                         name: name[i],
-                        keyboardType: TextInputType.text,
+                        keyboardType: type[i].toString() == "text"
+                            ? TextInputType.text
+                            : TextInputType.number,
                         decoration: InputDecoration(
                             hintText: label[i].toString(),
                             //border: InputBorder.none,
@@ -815,6 +823,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'track',
+                                    familyMemberField,
                                     familyMemberField),
                               );
                             }
@@ -1115,6 +1124,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'store_thai',
+                                    familyMemberField,
                                     familyMemberField),
                               );
                             }

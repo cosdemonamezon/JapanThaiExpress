@@ -106,7 +106,8 @@ class _DepositState extends State<Deposit> {
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
-      var url = Uri.parse(pathAPI +'api/app/depositorys?status=&page=$page&page_size=$pageSize');
+      var url = Uri.parse(pathAPI +
+          'api/app/depositorys?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {
@@ -153,7 +154,7 @@ class _DepositState extends State<Deposit> {
         var feedback = convert.jsonDecode(response.body);
         Flushbar(
           title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          message: 'ท่านยังไม่มีการสร้างรายการใหม่',
           backgroundColor: Colors.redAccent,
           icon: Icon(
             Icons.error,
@@ -579,20 +580,22 @@ class _DepositState extends State<Deposit> {
                         controller: _refreshController,
                         onRefresh: _onRefresh,
                         onLoading: _onLoading,
-                        child: ListView.builder(
-                            itemCount: depositdata.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return buildCard(
-                                depositdata[index]['image'],
-                                depositdata[index]['ship_tel'],
-                                depositdata[index]['ship_name'],
-                                depositdata[index]['ship_address'],
-                                depositdata[index]['description'] == null
-                                    ? 'ไม่มีข้อมูล'
-                                    : depositdata[index]['description'],
-                                depositdata[index]['id'],
-                              );
-                            }),
+                        child: depositdata.length > 0
+                            ? ListView.builder(
+                                itemCount: depositdata.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return buildCard(
+                                    depositdata[index]['image'],
+                                    depositdata[index]['ship_tel'],
+                                    depositdata[index]['ship_name'],
+                                    depositdata[index]['ship_address'],
+                                    depositdata[index]['description'] == null
+                                        ? 'ไม่มีข้อมูล'
+                                        : depositdata[index]['description'],
+                                    depositdata[index]['id'],
+                                  );
+                                })
+                            : Center(child: Text('ไม่พบรายการ')),
                       ),
               ),
               //tab 2

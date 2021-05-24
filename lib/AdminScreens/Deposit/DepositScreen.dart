@@ -407,122 +407,405 @@ class _DepositScreenState extends State<DepositScreen> {
                             itemCount: DepositScreendata.length,
                             padding: EdgeInsets.only(left: 5.0, right: 5.0),
                             itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    var arg = {
-                                      "account_name": DepositScreendata[index]
-                                              ['account_name']
-                                          .toString(),
-                                      "amount": DepositScreendata[index]
-                                              ['amount']
-                                          .toString(),
-                                      "slip": DepositScreendata[index]["slip"]
-                                          .toString(),
-                                    };
-                                    MyNavigator.goToDepositDetail(context, arg);
-                                  },
-                                  child: Card(
-                                    color: Colors.white,
-                                    elevation: 4.0,
-                                    child: Container(
-                                      decoration:
-                                          BoxDecoration(color: Colors.white),
-                                      child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20.0, vertical: 10.0),
-                                        leading: Container(
-                                          padding: EdgeInsets.only(right: 14.0),
-                                          decoration: BoxDecoration(
-                                              border: Border(
-                                                  right: BorderSide(
-                                                      width: 2.0,
-                                                      color: primaryColor))),
-                                          child: Icon(Icons.payment),
-                                        ),
-                                        title: Text(
-                                          "ยอดเงิน : " +
-                                              DepositScreendata[index]
-                                                  ['amount'],
-                                          style: TextStyle(
-                                              color: kTextButtonColor,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        subtitle: Row(
-                                          children: <Widget>[
-                                            Flexible(
-                                                child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "ประเภทเติมเงิน :" +
-                                                          DepositScreendata[
-                                                                  index]
-                                                              ['payment_type'],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
-                                                    ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
+                              return DepositScreendata[index]['status'] ==
+                                      "รอดำเนินการ"
+                                  ? Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          var arg = {
+                                            "id": DepositScreendata[index]['id']
+                                                .toString(),
+                                            "amount": DepositScreendata[index]
+                                                    ['amount']
+                                                .toString(),
+                                            "payment_type":
+                                                DepositScreendata[index]
+                                                        ['payment_type']
+                                                    .toString(),
+                                            "status": DepositScreendata[index]
+                                                    ['status']
+                                                .toString(),
+                                            "created_at":
+                                                DepositScreendata[index]
+                                                        ['created_at']
+                                                    .toString(),
+                                            "slip": DepositScreendata[index]
+                                                    ["slip"]
+                                                .toString(),
+                                          };
+                                          MyNavigator.goToDepositDetail(
+                                              context, arg);
+                                        },
+                                        child: Card(
+                                          color: Colors.white,
+                                          elevation: 4.0,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.white),
+                                            child: ListTile(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      horizontal: 20.0,
+                                                      vertical: 10.0),
+                                              leading: Container(
+                                                padding: EdgeInsets.only(
+                                                    right: 14.0),
+                                                decoration: BoxDecoration(
+                                                    border: Border(
+                                                        right: BorderSide(
+                                                            width: 2.0,
+                                                            color:
+                                                                primaryColor))),
+                                                child: Icon(Icons.payment),
+                                              ),
+                                              title: Text(
+                                                "ยอดเงิน : " +
+                                                    DepositScreendata[index]
+                                                        ['amount'],
+                                                style: TextStyle(
+                                                    color: kTextButtonColor,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              subtitle: Row(
+                                                children: <Widget>[
+                                                  Flexible(
+                                                      child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            text: "ประเภทเติมเงิน :" +
+                                                                DepositScreendata[
+                                                                        index][
+                                                                    'payment_type'],
+                                                            style: TextStyle(
+                                                                color:
+                                                                    kTextButtonColor),
+                                                          ),
+                                                          maxLines: 3,
+                                                          softWrap: true,
+                                                        ),
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            text: "สถานะ :" +
+                                                                DepositScreendata[
+                                                                        index]
+                                                                    ['status'],
+                                                            style: TextStyle(
+                                                                color: DepositScreendata[index]
+                                                                            [
+                                                                            'status'] ==
+                                                                        "ดำเนินการสำเร็จ"
+                                                                    ? Colors
+                                                                        .green
+                                                                    : DepositScreendata[index]['status'] ==
+                                                                            "รอดำเนินการ"
+                                                                        ? Colors.orange[
+                                                                            400]
+                                                                        : Colors
+                                                                            .red),
+                                                          ),
+                                                          maxLines: 3,
+                                                          softWrap: true,
+                                                        ),
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            text: "วันที่บันทึก :" +
+                                                                DepositScreendata[
+                                                                            index]
+                                                                        [
+                                                                        'created_at']
+                                                                    .split(
+                                                                        "T")[0],
+                                                            style: TextStyle(
+                                                                color:
+                                                                    kTextButtonColor),
+                                                          ),
+                                                          maxLines: 3,
+                                                          softWrap: true,
+                                                        ),
+                                                      ]))
+                                                ],
+                                              ),
+                                              trailing: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  IconButton(
+                                                    icon: const Icon(Icons
+                                                        .keyboard_arrow_right_outlined),
+                                                    color: Color(0xffdd4b39),
+                                                    onPressed: () {},
                                                   ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "สถานะ :" +
-                                                          DepositScreendata[
-                                                              index]['status'],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
-                                                    ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "วันที่บันทึก :" +
-                                                          DepositScreendata[
-                                                                      index]
-                                                                  ['created_at']
-                                                              .split("T")[0],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
-                                                    ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                ]))
-                                          ],
-                                        ),
-                                        trailing: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            IconButton(
-                                              icon: const Icon(Icons
-                                                  .keyboard_arrow_right_outlined),
-                                              color: Color(0xffdd4b39),
-                                              onPressed: () {},
+                                                ],
+                                              ),
+                                              onTap: () {
+                                                var arg = {
+                                                  "id": DepositScreendata[index]
+                                                          ['id']
+                                                      .toString(),
+                                                  "amount":
+                                                      DepositScreendata[index]
+                                                              ['amount']
+                                                          .toString(),
+                                                  "payment_type":
+                                                      DepositScreendata[index]
+                                                              ['payment_type']
+                                                          .toString(),
+                                                  "status":
+                                                      DepositScreendata[index]
+                                                              ['status']
+                                                          .toString(),
+                                                  "created_at":
+                                                      DepositScreendata[index]
+                                                              ['created_at']
+                                                          .toString(),
+                                                  "slip":
+                                                      DepositScreendata[index]
+                                                              ["slip"]
+                                                          .toString(),
+                                                };
+                                                MyNavigator.goToDepositDetail(
+                                                    context, arg);
+                                              },
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                        onTap: () {},
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              );
+                                    )
+                                  : SizedBox(
+                                      height: 0,
+                                    );
                             }),
                       ),
               ),
               //tab 2
-              Icon(Icons.movie),
+              Container(
+                height: height,
+                color: Colors.grey[300],
+                child: isLoading == true
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : SmartRefresher(
+                        enablePullDown: true,
+                        enablePullUp: true,
+                        header: ClassicHeader(
+                          refreshStyle: RefreshStyle.Follow,
+                          refreshingText: 'กำลังโหลด.....',
+                          completeText: 'โหลดข้อมูลสำเร็จ',
+                        ),
+                        footer: CustomFooter(
+                          builder: (BuildContext context, LoadStatus mode) {
+                            Widget body;
+                            if (mode == LoadStatus.idle) {
+                              //body =  Text("ไม่พบรายการ");
+                            } else if (mode == LoadStatus.loading) {
+                              body = CircularProgressIndicator();
+                            } else if (mode == LoadStatus.failed) {
+                              body = Text("Load Failed!Click retry!");
+                            } else if (mode == LoadStatus.canLoading) {
+                              body = Text("release to load more");
+                            } else if (mode == LoadStatus.noMore) {
+                              //body = Text("No more Data");
+                              body = Text("ไม่พบข้อมูล");
+                            }
+                            return Container(
+                              height: 55.0,
+                              child: Center(child: body),
+                            );
+                          },
+                        ),
+                        controller: _refreshController,
+                        onRefresh: _onRefresh,
+                        onLoading: _onLoading,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: DepositScreendata.length,
+                            padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                            itemBuilder: (BuildContext context, int index) {
+                              return DepositScreendata[index]['status'] !=
+                                      "รอดำเนินการ"
+                                  ? Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          var arg = {
+                                            "id": DepositScreendata[index]['id']
+                                                .toString(),
+                                            "amount": DepositScreendata[index]
+                                                    ['amount']
+                                                .toString(),
+                                            "payment_type":
+                                                DepositScreendata[index]
+                                                        ['payment_type']
+                                                    .toString(),
+                                            "status": DepositScreendata[index]
+                                                    ['status']
+                                                .toString(),
+                                            "created_at":
+                                                DepositScreendata[index]
+                                                        ['created_at']
+                                                    .toString(),
+                                            "slip": DepositScreendata[index]
+                                                    ["slip"]
+                                                .toString(),
+                                          };
+                                          MyNavigator.goToDepositDetail(
+                                              context, arg);
+                                        },
+                                        child: Card(
+                                          color: Colors.white,
+                                          elevation: 4.0,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.white),
+                                            child: ListTile(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      horizontal: 20.0,
+                                                      vertical: 10.0),
+                                              leading: Container(
+                                                padding: EdgeInsets.only(
+                                                    right: 14.0),
+                                                decoration: BoxDecoration(
+                                                    border: Border(
+                                                        right: BorderSide(
+                                                            width: 2.0,
+                                                            color:
+                                                                primaryColor))),
+                                                child: Icon(Icons.payment),
+                                              ),
+                                              title: Text(
+                                                "ยอดเงิน : " +
+                                                    DepositScreendata[index]
+                                                        ['amount'],
+                                                style: TextStyle(
+                                                    color: kTextButtonColor,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              subtitle: Row(
+                                                children: <Widget>[
+                                                  Flexible(
+                                                      child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            text: "ประเภทเติมเงิน :" +
+                                                                DepositScreendata[
+                                                                        index][
+                                                                    'payment_type'],
+                                                            style: TextStyle(
+                                                                color:
+                                                                    kTextButtonColor),
+                                                          ),
+                                                          maxLines: 3,
+                                                          softWrap: true,
+                                                        ),
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            text: "สถานะ :" +
+                                                                DepositScreendata[
+                                                                        index]
+                                                                    ['status'],
+                                                            style: TextStyle(
+                                                                color: DepositScreendata[index]
+                                                                            [
+                                                                            'status'] ==
+                                                                        "ดำเนินการสำเร็จ"
+                                                                    ? Colors
+                                                                        .green
+                                                                    : DepositScreendata[index]['status'] ==
+                                                                            "รอดำเนินการ"
+                                                                        ? Colors.orange[
+                                                                            400]
+                                                                        : Colors
+                                                                            .red),
+                                                          ),
+                                                          maxLines: 3,
+                                                          softWrap: true,
+                                                        ),
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            text: "วันที่บันทึก :" +
+                                                                DepositScreendata[
+                                                                            index]
+                                                                        [
+                                                                        'created_at']
+                                                                    .split(
+                                                                        "T")[0],
+                                                            style: TextStyle(
+                                                                color:
+                                                                    kTextButtonColor),
+                                                          ),
+                                                          maxLines: 3,
+                                                          softWrap: true,
+                                                        ),
+                                                      ]))
+                                                ],
+                                              ),
+                                              trailing: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  IconButton(
+                                                    icon: const Icon(Icons
+                                                        .keyboard_arrow_right_outlined),
+                                                    color: Color(0xffdd4b39),
+                                                    onPressed: () {},
+                                                  ),
+                                                ],
+                                              ),
+                                              onTap: () {
+                                                var arg = {
+                                                  "id": DepositScreendata[index]
+                                                          ['id']
+                                                      .toString(),
+                                                  "amount":
+                                                      DepositScreendata[index]
+                                                              ['amount']
+                                                          .toString(),
+                                                  "payment_type":
+                                                      DepositScreendata[index]
+                                                              ['payment_type']
+                                                          .toString(),
+                                                  "status":
+                                                      DepositScreendata[index]
+                                                              ['status']
+                                                          .toString(),
+                                                  "created_at":
+                                                      DepositScreendata[index]
+                                                              ['created_at']
+                                                          .toString(),
+                                                  "slip":
+                                                      DepositScreendata[index]
+                                                              ["slip"]
+                                                          .toString(),
+                                                };
+                                                MyNavigator.goToDepositDetail(
+                                                    context, arg);
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height: 0,
+                                    );
+                            }),
+                      ),
+              ),
             ],
           ),
           bottomNavigationBar: Navigation(),

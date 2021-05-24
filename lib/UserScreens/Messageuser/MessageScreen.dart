@@ -13,7 +13,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/my_navigator.dart';
-import '../../utils/my_navigator.dart';
 
 class MessageScreen extends StatefulWidget {
   MessageScreen({Key key}) : super(key: key);
@@ -309,7 +308,6 @@ class _MessageScreenState extends State<MessageScreen> {
   }
 
   _addTopic(Map<String, dynamic> values) async {
-    
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -482,9 +480,18 @@ class _MessageScreenState extends State<MessageScreen> {
                                                   children: <Widget>[
                                                 RichText(
                                                   text: TextSpan(
-                                                    text: "เบอร์ติดต่อ :" +
-                                                        MessageScreendata[index]
-                                                            ['user']['tel'],
+                                                    text: MessageScreendata[
+                                                                        index]
+                                                                    ['user']
+                                                                ['tel'] !=
+                                                            null
+                                                        ? "เบอร์ติดต่อ :" +
+                                                            MessageScreendata[
+                                                                            index]
+                                                                        ['user']
+                                                                    ['tel']
+                                                                .toString()
+                                                        : "เบอร์ติดต่อ :" + "-",
                                                     style: TextStyle(
                                                         color:
                                                             kTextButtonColor),
@@ -622,7 +629,8 @@ class _MessageScreenState extends State<MessageScreen> {
                               fillColor: Color(0xfff3f3f4),
                               filled: true),
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context, errorText: 'กรุณาใส่หัวข้อ Topic'),
+                            FormBuilderValidators.required(context,
+                                errorText: 'กรุณาใส่หัวข้อ Topic'),
                             // FormBuilderValidators.numeric(context),
                             // FormBuilderValidators.max(context, 70),
                           ]),
@@ -650,7 +658,8 @@ class _MessageScreenState extends State<MessageScreen> {
                               fillColor: Color(0xfff3f3f4),
                               filled: true),
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context, errorText: 'กรุณาใส่รายละเอียด'),
+                            FormBuilderValidators.required(context,
+                                errorText: 'กรุณาใส่รายละเอียด'),
                             // FormBuilderValidators.numeric(context),
                             // FormBuilderValidators.max(context, 70),
                           ]),

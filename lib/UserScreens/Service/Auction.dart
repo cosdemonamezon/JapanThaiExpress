@@ -397,7 +397,7 @@ class _AuctionState extends State<Auction> {
         var feedback = convert.jsonDecode(response.body);
         Flushbar(
           title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          message: 'ท่านยังไม่มีการสร้างรายการใหม่',
           backgroundColor: Colors.redAccent,
           icon: Icon(
             Icons.error,
@@ -564,34 +564,36 @@ class _AuctionState extends State<Auction> {
                       controller: _refreshController,
                       onRefresh: _onRefresh,
                       onLoading: _onLoading,
-                      child: ListView.builder(
-                          itemCount: auctiondata.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return buildCard(
-                              auctiondata[index]['image'],
-                              auctiondata[index]['name'],
-                              auctiondata[index]['code'] == null
-                                  ? 'ไม่มีข้อมูล'
-                                  : auctiondata[index]['code'],
-                              auctiondata[index]['budget'] == null
-                                  ? 'ไม่มีข้อมูล'
-                                  : auctiondata[index]['budget'],
-                              auctiondata[index]['track_jp'] == null
-                                  ? 'ไม่มีข้อมูล'
-                                  : auctiondata[index]['track_jp'],
-                              auctiondata[index]['id'],
-                            );
-                          }
-                          // buildCard(
-                          //   "Hi everyone in this flutter article I am working with flutter button UI Design. Flutter button with image",
-                          //   "assets/o8.jpg",
-                          // ),
-                          // buildCard(
-                          //   "Buttons are the Flutter widgets, which is a part of the material design library. Flutter provides several types of buttons that have different shapes",
-                          //   "assets/o7.jpg",
-                          // ),
+                      child: auctiondata.length > 0
+                          ? ListView.builder(
+                              itemCount: auctiondata.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return buildCard(
+                                  auctiondata[index]['image'],
+                                  auctiondata[index]['name'],
+                                  auctiondata[index]['code'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : auctiondata[index]['code'],
+                                  auctiondata[index]['budget'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : auctiondata[index]['budget'],
+                                  auctiondata[index]['track_jp'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : auctiondata[index]['track_jp'],
+                                  auctiondata[index]['id'],
+                                );
+                              }
+                              // buildCard(
+                              //   "Hi everyone in this flutter article I am working with flutter button UI Design. Flutter button with image",
+                              //   "assets/o8.jpg",
+                              // ),
+                              // buildCard(
+                              //   "Buttons are the Flutter widgets, which is a part of the material design library. Flutter provides several types of buttons that have different shapes",
+                              //   "assets/o7.jpg",
+                              // ),
 
-                          ),
+                              )
+                          : Center(child: Text('ไม่พบรายการ')),
                     ),
             ),
 

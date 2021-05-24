@@ -42,15 +42,19 @@ class _WalletScreenState extends State<WalletScreen> {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
+    _getWallet();
+    _transaction();
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
+    _getWallet();
+    _transaction();
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    items.add((items.length + 1).toString());
-    if (mounted) setState(() {});
+    // items.add((items.length + 1).toString());
+    // if (mounted) setState(() {});
     _refreshController.loadComplete();
   }
 
@@ -122,6 +126,7 @@ class _WalletScreenState extends State<WalletScreen> {
         },
       );
       if (response.statusCode == 200) {
+        walletdata = [];
         final Map<String, dynamic> depdata = convert.jsonDecode(response.body);
         setState(() {
           totalResults = depdata['data']['total'];

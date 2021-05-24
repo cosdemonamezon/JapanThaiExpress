@@ -111,7 +111,7 @@ class _MessageRoomUserState extends State<MessageRoomUser> {
       final Map<String, dynamic> data = convert.jsonDecode(response.body);
       // print(notinumber);
       var Data = convert.jsonDecode(response.body);
-
+      _messages.clear();
       var familyMembers = Data["data"]["data"];
       for (var familyMember in familyMembers) {
         Message message = new Message(
@@ -119,6 +119,7 @@ class _MessageRoomUserState extends State<MessageRoomUser> {
           direction: familyMember['position'],
           dateTime: familyMember['send_at'],
         );
+
         setState(() {
           _messages.insert(0, message);
         });

@@ -176,7 +176,6 @@ var routes = <String, WidgetBuilder>{
   "/homescreen": (BuildContext context) => HomeScreen(),
   "/exchangedetail": (BuildContext context) => ExchangeDetailScreen(),
   "/buystuff": (BuildContext context) => Buystuff(),
-  
 };
 
 class MyApp extends StatelessWidget {
@@ -190,7 +189,7 @@ class MyApp extends StatelessWidget {
     ]);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'JapanThaiExpress',
+        title: 'JapanThai Express',
         theme: ThemeData(
           fontFamily: 'Prompt',
           //primarySwatch: Colors.grey,

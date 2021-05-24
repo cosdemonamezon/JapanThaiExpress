@@ -27,7 +27,8 @@ class TimeLineMemberPreorders extends StatefulWidget {
   // TimeLineDepository({Key key, Object argument}) : super(key: key);
 
   @override
-  _TimeLineMemberPreordersState createState() => _TimeLineMemberPreordersState();
+  _TimeLineMemberPreordersState createState() =>
+      _TimeLineMemberPreordersState();
 }
 
 class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
@@ -43,6 +44,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
   List<String> familyMemberName = [];
   List<String> familyMemberLabel = [];
   List<String> familyMemberField = [];
+  List<String> familyMemberType = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -61,6 +63,10 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
   }
 
   _gettimeline(String id) async {
+    familyMemberName = [];
+    familyMemberLabel = [];
+    familyMemberField = [];
+    familyMemberType = [];
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -114,6 +120,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
               // var textEditingController = TextEditingController();
               familyMemberName.add(familyMember["name"]);
               familyMemberField.add(familyMember["name"]);
+              familyMemberType.add(familyMember['type']);
             });
             print(familyMemberName);
           }
@@ -156,7 +163,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
   }
 
   dialogTimeline(String title, String img, context, List label, List name,
-      int id, String step, List field) {
+      int id, String step, List field, List type) {
     String stepUp;
     if (step == 'new') {
       stepUp = 'order';
@@ -190,7 +197,9 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                     children: [
                       FormBuilderTextField(
                         name: name[i],
-                        keyboardType: TextInputType.text,
+                        keyboardType: type[i].toString() == "text"
+                            ? TextInputType.text
+                            : TextInputType.number,
                         decoration: InputDecoration(
                             hintText: label[i].toString(),
                             //border: InputBorder.none,
@@ -335,8 +344,8 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Buystuff()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Buystuff()));
             }),
       ),
       body: isLoading == true
@@ -492,26 +501,25 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                               SizedBox(
                                 width: 20,
                               ),
-                              
                             ],
                           ),
                           Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "โทร :" +
-                                          dataTimeline['data']['ship_tel']
-                                              .toString(),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 15,
-                                          color: kFontPrimaryColor),
-                                    ),
-                                  ),
-                                ],
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "โทร :" +
+                                      dataTimeline['data']['ship_tel']
+                                          .toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 15,
+                                      color: kFontPrimaryColor),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -547,7 +555,6 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                             ),
                           ),
                         ),
-
                         Expanded(
                           child: Center(
                             child: GestureDetector(
@@ -571,7 +578,6 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                             ),
                           ),
                         ),
-                        
                       ],
                     ),
                     SizedBox(
@@ -796,8 +802,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -869,7 +874,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "order" ) {
+                                dataTimeline['data']['step'] == "order") {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -884,6 +889,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'payment',
+                                    familyMemberType,
                                     familyMemberField),
                               );
                             }
@@ -922,7 +928,8 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.touch_app,
-                                                size: 25.0, color: Colors.yellowAccent),
+                                                size: 25.0,
+                                                color: Colors.yellowAccent),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1040,8 +1047,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1158,8 +1164,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1375,8 +1380,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1477,8 +1481,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1529,7 +1532,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "store_thai" ) {
+                                dataTimeline['data']['step'] == "store_thai") {
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -1544,7 +1547,8 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'overdue',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1571,7 +1575,8 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.touch_app,
-                                                size: 25.0, color: Colors.yellow),
+                                                size: 25.0,
+                                                color: Colors.yellow),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1635,7 +1640,8 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'overdue',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1659,8 +1665,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,

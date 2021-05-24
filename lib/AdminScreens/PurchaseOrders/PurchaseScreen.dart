@@ -234,9 +234,9 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                         BoxDecoration(color: Colors.white),
                                     child: ListTile(
                                         contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20.0, vertical: 10.0),
+                                            horizontal: 10.0, vertical: 10.0),
                                         leading: Container(
-                                          padding: EdgeInsets.only(right: 14.0),
+                                          padding: EdgeInsets.only(right: 4.0),
                                           decoration: BoxDecoration(
                                               border: Border(
                                                   right: BorderSide(
@@ -276,9 +276,9 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                                   ),
                                                   RichText(
                                                     text: TextSpan(
-                                                      text: "ชื่อลูกค้า :" +
+                                                      text: "ลูกค้า : " +
                                                           PurchaseScreen[index]
-                                                                  ['user_id']
+                                                                  ['fullname']
                                                               .toString(),
                                                       style: TextStyle(
                                                           color:
