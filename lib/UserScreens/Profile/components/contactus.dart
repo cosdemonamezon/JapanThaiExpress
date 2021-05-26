@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactUs extends StatefulWidget {
   ContactUs({Key key}) : super(key: key);
@@ -120,6 +121,7 @@ class _ContactUsState extends State<ContactUs> {
                             child: helpCard(
                               help[index]['title'],
                               help[index]['icon'],
+                              help[index]['link'],
                             ),
                           );
                         }),
@@ -132,7 +134,7 @@ class _ContactUsState extends State<ContactUs> {
   }
 
 
-  Container helpCard(String title, String subtitle) {
+  Container helpCard(String title, String subtitle, String _url) {
     return Container(
       //height: 100,
       decoration: BoxDecoration(
@@ -146,7 +148,7 @@ class _ContactUsState extends State<ContactUs> {
       ),
       child: GestureDetector(
         onTap: () {
-         
+          _launchURL(_url);
         },
         child: ListTile(
           leading: Image.network(subtitle),
@@ -158,4 +160,6 @@ class _ContactUsState extends State<ContactUs> {
       ),
     );
   }
+  void _launchURL(String _url) async =>
+    await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
 }

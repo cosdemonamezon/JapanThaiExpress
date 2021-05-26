@@ -100,7 +100,6 @@ class _LoginScreenState extends State<LoginScreen> {
         break;
     }
   }
-
   Future<void> _handleGetContact(GoogleSignInAccount user) async {
     setState(() {
       _contactText = "Loading contact info...";
