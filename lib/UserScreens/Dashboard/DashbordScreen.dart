@@ -55,23 +55,11 @@ class _DashbordScreenState extends State<DashbordScreen> {
             dashboard = dashboarddata['data'];
             isLoading = false;
           });
-          print(dashboard);
-          // Flushbar(
-          //   //title: '${feedback['message']}',
-          //   flushbarPosition: FlushbarPosition.TOP,
-          //   flushbarStyle: FlushbarStyle.FLOATING,
-          //   message: '${dashboarddata['message']}',
-          //   backgroundColor: Colors.greenAccent,
-          //   icon: Icon(
-          //     Icons.error,
-          //     size: 28.0,
-          //     color: Colors.white,
-          //   ),
-          //   duration: Duration(seconds: 3),
-          //   leftBarIndicatorColor: Colors.blue[300],
-          // )..show(context);
 
-          if (token['data']['tel'] == null) {
+          var telString = prefs.getString('tel');
+
+          if (token['data']['tel'] == null ||
+              token['data']['tel'] == "" && telString == null) {
             showDialog(
               barrierDismissible: false,
               context: context,
@@ -143,7 +131,7 @@ class _DashbordScreenState extends State<DashbordScreen> {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> topicdata = convert.jsonDecode(response.body);
-
+      await prefs.setString('tel', values['phone']);
       setState(() {
         isLoading = false;
       });

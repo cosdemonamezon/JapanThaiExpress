@@ -177,17 +177,19 @@ class _PromotionScreenState extends State<PromotionScreen> {
                 controller: _refreshController,
                 onRefresh: _onRefresh,
                 onLoading: _onLoading,
-                child: ListView.builder(
-                    itemCount: promotion.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return buildCard(
-                        //promotion[index]['name'],
-                        promotion[index]['code'],
-                        promotion[index]['discount'],
-                        promotion[index]['type'],
-                        //promotion[index]['description']==null?'ไม่มีข้อมูล' :promotion[index]['description'],
-                      );
-                    }),
+                child: promotion.length > 0
+                    ? ListView.builder(
+                        itemCount: promotion.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return buildCard(
+                            //promotion[index]['name'],
+                            promotion[index]['code'],
+                            promotion[index]['discount'],
+                            promotion[index]['type'],
+                            //promotion[index]['description']==null?'ไม่มีข้อมูล' :promotion[index]['description'],
+                          );
+                        })
+                    : Center(child: Text('ไม่พบข้อมูล')),
               ),
       ),
       bottomNavigationBar: NavigationBar(),

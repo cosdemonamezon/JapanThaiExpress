@@ -18,6 +18,7 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   bool isLoading = false;
+  bool isLoadingSave = false;
   int id;
 
   final _formKey = GlobalKey<FormBuilderState>();
@@ -39,6 +40,11 @@ class _SettingScreenState extends State<SettingScreen> {
   TextEditingController jt_branch;
   TextEditingController jt_number;
   TextEditingController jt_promptpay;
+
+  String fee = '';
+  String exchange_rate = '';
+  String exhange_fee = '';
+  String exhange_com = '';
 
   @override
   void initState() {
@@ -63,9 +69,7 @@ class _SettingScreenState extends State<SettingScreen> {
         },
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> depdata = convert.jsonDecode(response.body);
         var Data = convert.jsonDecode(response.body);
-        var familyMembers = Data["data"];
 
         setState(() {
           address_thai =
@@ -78,6 +82,11 @@ class _SettingScreenState extends State<SettingScreen> {
           jt_branch = TextEditingController(text: Data['data']['jt_branch']);
           jt_promptpay =
               TextEditingController(text: Data['data']['jt_promptpay']);
+
+          fee = Data['data']['fee'].toString();
+          exchange_rate = Data['data']['exchange_rate'].toString();
+          exhange_fee = Data['data']['exhange_fee'].toString();
+          exhange_com = Data['data']['exhange_com'].toString();
           isLoading = false;
         });
       } else {
@@ -93,29 +102,53 @@ class _SettingScreenState extends State<SettingScreen> {
     }
   }
 
-  // _setSetting() async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
+  _setSetting() async {
+    setState(() {
+      isLoadingSave = true;
+    });
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
 
-  //   var url = Uri.parse(pathAPI + 'api/login_pin_mobile');
-  //   var response = await http.post(url,
-  //       headers: {'Content-Type': 'application/json'},
-  //       // body: convert.jsonEncode({
-  //       //   'pin': number,
-  //       //   'device': identifier,
-  //       // }));
-  //   if (response.statusCode == 200) {
-  //     final Map<String, dynamic> body = convert.jsonDecode(response.body);
-  //     if (body['code'] == 200) {
-  //       return false;
-  //     } else {
-  //       var feedback = convert.jsonDecode(response.body);
-  //     }
-  //   } else {
-  //     var feedback = convert.jsonDecode(response.body);
-  //   }
-  // }
+    var url = Uri.parse(pathAPI + 'api/setting_app');
+    var response = await http.put(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        body: convert.jsonEncode({
+          'address_thai': address_thai.text,
+          'address_japan': address_japan.text,
+          'jt_account': jt_account.text,
+          'jt_number': jt_number.text,
+          'jt_bank': jt_bank.text,
+          'jt_branch': jt_branch.text,
+          'jt_promptpay': jt_promptpay.text,
+          'exchange_rate': exchange_rate,
+          'fee': fee,
+          'exhange_fee': exhange_fee,
+          'exhange_com': exhange_com,
+        }));
+    if (response.statusCode == 200) {
+      setState(() {
+        isLoadingSave = false;
+      });
+      final Map<String, dynamic> body = convert.jsonDecode(response.body);
+      if (body['code'] == 200) {
+        return false;
+      } else {
+        setState(() {
+          isLoadingSave = false;
+        });
+        // var feedback = convert.jsonDecode(response.body);
+      }
+    } else {
+      setState(() {
+        isLoadingSave = false;
+      });
+      // var feedback = convert.jsonDecode(response.body);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -258,37 +291,41 @@ class _SettingScreenState extends State<SettingScreen> {
                           SizedBox(
                             height: 20,
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.symmetric(vertical: 15),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                    color: Colors.grey.shade200,
-                                    offset: Offset(2, 4),
-                                    blurRadius: 5,
-                                    spreadRadius: 2)
-                              ],
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Color(0xffdd4b39),
-                                    Color(0xffdd4b39)
-                                  ]),
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                print('1234');
-                              },
-                              child: Text(
-                                "บันทึก",
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
+                          GestureDetector(
+                            onTap: () {
+                              _setSetting();
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: EdgeInsets.symmetric(vertical: 15),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                      color: Colors.grey.shade200,
+                                      offset: Offset(2, 4),
+                                      blurRadius: 5,
+                                      spreadRadius: 2)
+                                ],
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xffdd4b39),
+                                      Color(0xffdd4b39)
+                                    ]),
                               ),
+                              child: isLoadingSave == true
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Text(
+                                      "บันทึก",
+                                      style: TextStyle(
+                                          fontSize: 20, color: Colors.white),
+                                    ),
                             ),
                           ),
                         ],

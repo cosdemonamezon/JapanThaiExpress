@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:JapanThaiExpress/AdminScreens/Auction/TimeLineAuctions.dart';
 import 'package:JapanThaiExpress/AdminScreens/Exchange/ExchangeDetailScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/Notification/NotiDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Settings/SettingScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/SplashScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginPin.dart';
@@ -69,6 +70,7 @@ import 'package:JapanThaiExpress/LoginFB.dart';
 import 'package:JapanThaiExpress/LoginGoogle.dart';
 
 import 'UserScreens/Messageuser/MessageScreen.dart';
+import 'UserScreens/WidgetsUser/NotiDetailUserScreen.dart';
 
 String token;
 var tokenObj;
@@ -176,6 +178,8 @@ var routes = <String, WidgetBuilder>{
   "/homescreen": (BuildContext context) => HomeScreen(),
   "/exchangedetail": (BuildContext context) => ExchangeDetailScreen(),
   "/buystuff": (BuildContext context) => Buystuff(),
+  "/notidetail": (BuildContext context) => NotiDetailScreen(),
+  "/notidetailuser": (BuildContext context) => NotiDetailUserScreen(),
 };
 
 class MyApp extends StatelessWidget {
