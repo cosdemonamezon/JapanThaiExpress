@@ -190,20 +190,22 @@ class _OdersScreenState extends State<OdersScreen> {
               controller: _refreshController,
               onRefresh: _onRefresh,
               onLoading: _onLoading,
-              child: ListView.builder(
-                  itemCount: order.length,
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                  itemBuilder: (BuildContext context, int index) {
-                    return buildCard(
-                      order[index]['code'],
-                      order[index]['product_name'],
-                      order[index]['qty'],
-                      order[index]['price'],
-                      order[index]['total'],
-                      order[index]['id'],
-                    );
-                  }),
+              child: order.length > 0
+                  ? ListView.builder(
+                      itemCount: order.length,
+                      shrinkWrap: true,
+                      padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                      itemBuilder: (BuildContext context, int index) {
+                        return buildCard(
+                          order[index]['code'],
+                          order[index]['product_name'],
+                          order[index]['qty'],
+                          order[index]['price'],
+                          order[index]['total'],
+                          order[index]['id'],
+                        );
+                      })
+                  : Center(child: Text('ไม่พบข้อมูล')),
             )),
       bottomNavigationBar: NavigationBar(),
     );

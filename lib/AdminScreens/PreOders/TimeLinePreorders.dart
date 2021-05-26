@@ -106,9 +106,9 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
       }
       var familyMembers = Data["data"]["list"][index]["field"];
       var showField = Data["data"]["list"][index]["show"];
-      for (var familyMember in familyMembers) {
-        if (familyMember["name"] != 'status') {
-          if (showField == true) {
+      if (showField == true) {
+        for (var familyMember in familyMembers) {
+          if (familyMember["name"].toString() != 'status') {
             setState(() {
               familyMemberLabel.add(familyMember["label"]);
               // var textEditingController = TextEditingController();

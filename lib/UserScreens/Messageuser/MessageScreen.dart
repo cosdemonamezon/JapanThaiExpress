@@ -427,113 +427,121 @@ class _MessageScreenState extends State<MessageScreen> {
                       controller: _refreshController,
                       onRefresh: _onRefresh,
                       onLoading: _onLoading,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: MessageScreendata.length,
-                          padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: GestureDetector(
-                                onTap: () {
-                                  var arg = MessageScreendata[index]['id'];
-                                  MyNavigator.goToMessageRoomUser(context, arg);
-                                },
-                                child: Card(
-                                  color: Colors.white,
-                                  elevation: 4.0,
-                                  child: Container(
-                                    decoration:
-                                        BoxDecoration(color: Colors.white),
-                                    child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 20.0, vertical: 10.0),
-                                      leading: Container(
-                                        padding: EdgeInsets.only(right: 14.0),
-                                        decoration: BoxDecoration(
-                                            border: Border(
-                                                right: BorderSide(
-                                                    width: 2.0,
-                                                    color: primaryColor))),
-                                        child: IconButton(
-                                          icon: const Icon(Icons.message),
-                                          color: Colors.orange[900],
-                                          iconSize: 30,
-                                          onPressed: () {},
-                                        ),
-                                      ),
-                                      title: Text(
-                                        MessageScreendata[index]['title'],
-                                        style: TextStyle(
-                                            color: kTextButtonColor,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Flexible(
-                                              child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                RichText(
-                                                  text: TextSpan(
-                                                    text: MessageScreendata[
-                                                                        index]
-                                                                    ['user']
-                                                                ['tel'] !=
-                                                            null
-                                                        ? "เบอร์ติดต่อ :" +
-                                                            MessageScreendata[
+                      child: MessageScreendata.length > 0
+                          ? ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: MessageScreendata.length,
+                              padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      var arg = MessageScreendata[index]['id'];
+                                      MyNavigator.goToMessageRoomUser(
+                                          context, arg);
+                                    },
+                                    child: Card(
+                                      color: Colors.white,
+                                      elevation: 4.0,
+                                      child: Container(
+                                        decoration:
+                                            BoxDecoration(color: Colors.white),
+                                        child: ListTile(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 20.0, vertical: 10.0),
+                                          leading: Container(
+                                            padding:
+                                                EdgeInsets.only(right: 14.0),
+                                            decoration: BoxDecoration(
+                                                border: Border(
+                                                    right: BorderSide(
+                                                        width: 2.0,
+                                                        color: primaryColor))),
+                                            child: IconButton(
+                                              icon: const Icon(Icons.message),
+                                              color: Colors.orange[900],
+                                              iconSize: 30,
+                                              onPressed: () {},
+                                            ),
+                                          ),
+                                          title: Text(
+                                            MessageScreendata[index]['title'],
+                                            style: TextStyle(
+                                                color: kTextButtonColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          subtitle: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Flexible(
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: MessageScreendata[
                                                                             index]
                                                                         ['user']
-                                                                    ['tel']
-                                                                .toString()
-                                                        : "เบอร์ติดต่อ :" + "-",
-                                                    style: TextStyle(
-                                                        color:
-                                                            kTextButtonColor),
-                                                  ),
-                                                  maxLines: 3,
-                                                  softWrap: true,
-                                                ),
-                                                RichText(
-                                                  text: TextSpan(
-                                                    text: "วันที่บันทึก :" +
-                                                        MessageScreendata[index]
-                                                                ['send_at']
-                                                            .split("T")[0],
-                                                    style: TextStyle(
-                                                        color:
-                                                            kTextButtonColor),
-                                                  ),
-                                                  maxLines: 3,
-                                                  softWrap: true,
-                                                ),
-                                              ]))
-                                        ],
-                                      ),
-                                      trailing: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          IconButton(
-                                            icon: const Icon(Icons
-                                                .keyboard_arrow_right_outlined),
-                                            color: Colors.orange[900],
-                                            iconSize: 30,
-                                            onPressed: () {},
+                                                                    ['tel'] !=
+                                                                null
+                                                            ? "เบอร์ติดต่อ :" +
+                                                                MessageScreendata[
+                                                                                index]
+                                                                            [
+                                                                            'user']
+                                                                        ['tel']
+                                                                    .toString()
+                                                            : "เบอร์ติดต่อ :" +
+                                                                "-",
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
+                                                    ),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "วันที่บันทึก :" +
+                                                            MessageScreendata[
+                                                                        index]
+                                                                    ['send_at']
+                                                                .split("T")[0],
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
+                                                    ),
+                                                  ]))
+                                            ],
                                           ),
-                                        ],
+                                          trailing: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                icon: const Icon(Icons
+                                                    .keyboard_arrow_right_outlined),
+                                                color: Colors.orange[900],
+                                                iconSize: 30,
+                                                onPressed: () {},
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            );
-                          }),
+                                );
+                              })
+                          : Center(child: Text('ไม่พบข้อมูล')),
                     ),
             ),
 

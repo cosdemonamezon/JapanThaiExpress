@@ -15,6 +15,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:JapanThaiExpress/AdminScreens/Auction/Auctionadmin.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Auctionadmin extends StatefulWidget {
   Auctionadmin({Key key}) : super(key: key);
@@ -326,124 +327,416 @@ class _AuctionadminState extends State<Auctionadmin> {
                         controller: _refreshController,
                         onRefresh: _onRefresh,
                         onLoading: _onLoading,
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: Auctionadmindata.length,
-                            padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    MyNavigator.goToTimelineauction(
-                                        context, Auctionadmindata[index]['id']);
-                                  },
-                                  child: Card(
-                                    color: Colors.white,
-                                    elevation: 4.0,
-                                    child: Container(
-                                      decoration:
-                                          BoxDecoration(color: Colors.white),
-                                      child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20.0, vertical: 10.0),
-                                        leading: Container(
-                                          padding: EdgeInsets.only(right: 14.0),
-                                          decoration: BoxDecoration(
-                                              border: Border(
-                                                  right: BorderSide(
-                                                      width: 2.0,
-                                                      color: primaryColor))),
-                                          child: Image.network(
-                                              Auctionadmindata[index]
-                                                          ['image'] ==
-                                                      null
-                                                  ? 'https://picsum.photos/200/300'
-                                                  : Auctionadmindata[index]
-                                                      ['image'],
-                                              width: 70),
-                                        ),
-                                        title: Text(
-                                          Auctionadmindata[index]['name'],
-                                          style: TextStyle(
-                                              color: kTextButtonColor,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        subtitle: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: <Widget>[
-                                            Flexible(
-                                                child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "ชื่อลูกค้า :" +
-                                                          Auctionadmindata[
-                                                              index]['code'],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
-                                                    ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "เบอร์ติดต่อ :" +
-                                                          Auctionadmindata[
-                                                              index]['code'],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
-                                                    ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "วันที่บันทึก :" +
-                                                          Auctionadmindata[
+                        child: Auctionadmindata.length > 0
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: Auctionadmindata.length,
+                                padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Auctionadmindata[index]['step'] !=
+                                          'delivery'
+                                      ? Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          child: Card(
+                                            color: Colors.white,
+                                            elevation: 4.0,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white),
+                                              child: ListTile(
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 10.0,
+                                                        vertical: 10.0),
+                                                leading: Container(
+                                                  padding: EdgeInsets.only(
+                                                      right: 4.0),
+                                                  decoration: BoxDecoration(
+                                                      border: Border(
+                                                          right: BorderSide(
+                                                              width: 2.0,
+                                                              color:
+                                                                  primaryColor))),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Auctionadmindata[index]
+                                                                  ['image'] !=
+                                                              null
+                                                          ? launch(
+                                                              Auctionadmindata[
                                                                       index]
-                                                                  ['created_at']
-                                                              .split("T")[0],
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextButtonColor),
-                                                    ),
-                                                    maxLines: 3,
-                                                    softWrap: true,
+                                                                  ['image'])
+                                                          : SizedBox(
+                                                              height: 0,
+                                                            );
+                                                    },
+                                                    child: Image.network(
+                                                        Auctionadmindata[index]
+                                                                    ['image'] ==
+                                                                null
+                                                            ? 'https://picsum.photos/200/300'
+                                                            : Auctionadmindata[
+                                                                index]['image'],
+                                                        width: 70),
                                                   ),
-                                                ]))
-                                          ],
-                                        ),
-                                        trailing: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            IconButton(
-                                              icon: const Icon(Icons
-                                                  .keyboard_arrow_right_outlined),
-                                              color: Colors.orange[900],
-                                              iconSize: 30,
-                                              onPressed: () {},
+                                                ),
+                                                title: GestureDetector(
+                                                  onTap: () {
+                                                    MyNavigator
+                                                        .goToTimelineauction(
+                                                            context,
+                                                            Auctionadmindata[
+                                                                index]['id']);
+                                                  },
+                                                  child: Text(
+                                                    Auctionadmindata[index]
+                                                        ['code'],
+                                                    style: TextStyle(
+                                                        color: kTextButtonColor,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                                subtitle: GestureDetector(
+                                                  onTap: () {
+                                                    MyNavigator
+                                                        .goToTimelineauction(
+                                                            context,
+                                                            Auctionadmindata[
+                                                                index]['id']);
+                                                  },
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Flexible(
+                                                          child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: <
+                                                                  Widget>[
+                                                            RichText(
+                                                              text: TextSpan(
+                                                                text: "สินค้า :" +
+                                                                    Auctionadmindata[
+                                                                            index]
+                                                                        [
+                                                                        'name'],
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        kTextButtonColor),
+                                                              ),
+                                                              maxLines: 3,
+                                                              softWrap: true,
+                                                            ),
+                                                            RichText(
+                                                              text: TextSpan(
+                                                                text: "ชื่อลูกค้า :" +
+                                                                    Auctionadmindata[
+                                                                            index]
+                                                                        [
+                                                                        'code'],
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        kTextButtonColor),
+                                                              ),
+                                                              maxLines: 3,
+                                                              softWrap: true,
+                                                            ),
+                                                            RichText(
+                                                              text: TextSpan(
+                                                                text: "เบอร์ติดต่อ :" +
+                                                                    Auctionadmindata[
+                                                                            index]
+                                                                        [
+                                                                        'code'],
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        kTextButtonColor),
+                                                              ),
+                                                              maxLines: 3,
+                                                              softWrap: true,
+                                                            ),
+                                                            RichText(
+                                                              text: TextSpan(
+                                                                text: "วันที่บันทึก :" +
+                                                                    Auctionadmindata[index]
+                                                                            [
+                                                                            'created_at']
+                                                                        .split(
+                                                                            "T")[0],
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        kTextButtonColor),
+                                                              ),
+                                                              maxLines: 3,
+                                                              softWrap: true,
+                                                            ),
+                                                          ]))
+                                                    ],
+                                                  ),
+                                                ),
+                                                trailing: GestureDetector(
+                                                  onTap: () {
+                                                    MyNavigator
+                                                        .goToTimelineauction(
+                                                            context,
+                                                            Auctionadmindata[
+                                                                index]['id']);
+                                                  },
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      IconButton(
+                                                        icon: const Icon(Icons
+                                                            .keyboard_arrow_right_outlined),
+                                                        color:
+                                                            Colors.orange[900],
+                                                        iconSize: 30,
+                                                        onPressed: () {},
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
+                                          ),
+                                        )
+                                      : SizedBox(
+                                          height: 0,
+                                        );
+                                })
+                            : Center(child: Text('ไม่พบข้อมูล')),
                       ),
               ),
               //tab 2
-              Icon(Icons.movie),
+              Container(
+                height: height,
+                color: Colors.grey[300],
+                child: isLoading == true
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : SmartRefresher(
+                        enablePullDown: true,
+                        enablePullUp: true,
+                        header: ClassicHeader(
+                          refreshStyle: RefreshStyle.Follow,
+                          refreshingText: 'กำลังโหลด.....',
+                          completeText: 'โหลดข้อมูลสำเร็จ',
+                        ),
+                        footer: CustomFooter(
+                          builder: (BuildContext context, LoadStatus mode) {
+                            Widget body;
+                            if (mode == LoadStatus.idle) {
+                              //body =  Text("ไม่พบรายการ");
+                            } else if (mode == LoadStatus.loading) {
+                              body = CircularProgressIndicator();
+                            } else if (mode == LoadStatus.failed) {
+                              body = Text("Load Failed!Click retry!");
+                            } else if (mode == LoadStatus.canLoading) {
+                              body = Text("release to load more");
+                            } else if (mode == LoadStatus.noMore) {
+                              //body = Text("No more Data");
+                              body = Text("ไม่พบข้อมูล");
+                            }
+                            return Container(
+                              height: 55.0,
+                              child: Center(child: body),
+                            );
+                          },
+                        ),
+                        controller: _refreshController,
+                        onRefresh: _onRefresh,
+                        onLoading: _onLoading,
+                        child: Auctionadmindata.length > 0
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: Auctionadmindata.length,
+                                padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Auctionadmindata[index]['step'] ==
+                                          'delivery'
+                                      ? Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          child: Card(
+                                            color: Colors.white,
+                                            elevation: 4.0,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white),
+                                              child: ListTile(
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 10.0,
+                                                        vertical: 10.0),
+                                                leading: Container(
+                                                  padding: EdgeInsets.only(
+                                                      right: 4.0),
+                                                  decoration: BoxDecoration(
+                                                      border: Border(
+                                                          right: BorderSide(
+                                                              width: 2.0,
+                                                              color:
+                                                                  primaryColor))),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Auctionadmindata[index]
+                                                                  ['image'] !=
+                                                              null
+                                                          ? launch(
+                                                              Auctionadmindata[
+                                                                      index]
+                                                                  ['image'])
+                                                          : SizedBox(
+                                                              height: 0,
+                                                            );
+                                                    },
+                                                    child: Image.network(
+                                                        Auctionadmindata[index]
+                                                                    ['image'] ==
+                                                                null
+                                                            ? 'https://picsum.photos/200/300'
+                                                            : Auctionadmindata[
+                                                                index]['image'],
+                                                        width: 70),
+                                                  ),
+                                                ),
+                                                title: GestureDetector(
+                                                  onTap: () {
+                                                    MyNavigator
+                                                        .goToTimelineauction(
+                                                            context,
+                                                            Auctionadmindata[
+                                                                index]['id']);
+                                                  },
+                                                  child: Text(
+                                                    Auctionadmindata[index]
+                                                        ['code'],
+                                                    style: TextStyle(
+                                                        color: kTextButtonColor,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                                subtitle: GestureDetector(
+                                                  onTap: () {
+                                                    MyNavigator
+                                                        .goToTimelineauction(
+                                                            context,
+                                                            Auctionadmindata[
+                                                                index]['id']);
+                                                  },
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Flexible(
+                                                          child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: <
+                                                                  Widget>[
+                                                            RichText(
+                                                              text: TextSpan(
+                                                                text: "สินค้า :" +
+                                                                    Auctionadmindata[
+                                                                            index]
+                                                                        [
+                                                                        'name'],
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        kTextButtonColor),
+                                                              ),
+                                                              maxLines: 3,
+                                                              softWrap: true,
+                                                            ),
+                                                            RichText(
+                                                              text: TextSpan(
+                                                                text: "ชื่อลูกค้า :" +
+                                                                    Auctionadmindata[
+                                                                            index]
+                                                                        [
+                                                                        'code'],
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        kTextButtonColor),
+                                                              ),
+                                                              maxLines: 3,
+                                                              softWrap: true,
+                                                            ),
+                                                            RichText(
+                                                              text: TextSpan(
+                                                                text: "เบอร์ติดต่อ :" +
+                                                                    Auctionadmindata[
+                                                                            index]
+                                                                        [
+                                                                        'code'],
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        kTextButtonColor),
+                                                              ),
+                                                              maxLines: 3,
+                                                              softWrap: true,
+                                                            ),
+                                                            RichText(
+                                                              text: TextSpan(
+                                                                text: "วันที่บันทึก :" +
+                                                                    Auctionadmindata[index]
+                                                                            [
+                                                                            'created_at']
+                                                                        .split(
+                                                                            "T")[0],
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        kTextButtonColor),
+                                                              ),
+                                                              maxLines: 3,
+                                                              softWrap: true,
+                                                            ),
+                                                          ]))
+                                                    ],
+                                                  ),
+                                                ),
+                                                trailing: GestureDetector(
+                                                  onTap: () {
+                                                    MyNavigator
+                                                        .goToTimelineauction(
+                                                            context,
+                                                            Auctionadmindata[
+                                                                index]['id']);
+                                                  },
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      IconButton(
+                                                        icon: const Icon(Icons
+                                                            .keyboard_arrow_right_outlined),
+                                                        color:
+                                                            Colors.orange[900],
+                                                        iconSize: 30,
+                                                        onPressed: () {},
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(
+                                          height: 0,
+                                        );
+                                })
+                            : Center(child: Text('ไม่พบข้อมูล')),
+                      ),
+              ),
             ],
           ),
           bottomNavigationBar: Navigation(),

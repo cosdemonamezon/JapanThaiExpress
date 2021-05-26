@@ -184,16 +184,14 @@ class _NavigationBarState extends State<NavigationBar> {
                           radius: 12,
                           backgroundColor: Colors.red,
                           child: Center(
-                            child: homedata['total_noti'] != null &&
-                                    noti.length == 2
+                            child: homedata['total_noti'] != null
                                 ? Text(homedata['total_noti'].toString(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15,
                                       color: Colors.white,
                                     ))
-                                : homedata['total_noti'] != null &&
-                                        noti.length == 3
+                                : homedata['total_noti'] != null
                                     ? Text(homedata['total_noti'].toString(),
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -252,16 +250,14 @@ class _NavigationBarState extends State<NavigationBar> {
                             radius: 12,
                             backgroundColor: Colors.red,
                             child: Center(
-                              child: homedata['total_msg'] != null &&
-                                      noti.length == 2
+                              child: homedata['total_msg'] != null
                                   ? Text(homedata['total_msg'].toString(),
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15,
                                         color: Colors.white,
                                       ))
-                                  : homedata['total_msg'] != null &&
-                                          noti.length == 3
+                                  : homedata['total_msg'] != null
                                       ? Text(homedata['total_msg'].toString(),
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,

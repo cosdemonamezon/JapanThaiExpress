@@ -49,6 +49,14 @@ class MyNavigator {
     Navigator.pushNamed(context, '/depositdetail', arguments: arg);
   }
 
+  static void goToNotiDetail(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/notidetail', arguments: arg);
+  }
+
+  static void goToNotiDetailUser(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/notidetailuser', arguments: arg);
+  }
+
   static void goToExchangeDetail(BuildContext context, arg) {
     Navigator.pushNamed(context, '/exchangedetail', arguments: arg);
   }
