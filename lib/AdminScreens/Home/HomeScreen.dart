@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.all(3.0),
                 children: [
                   Stack(children: [
-                    dashboardItem("รายการสั่งซื้อ", Icons.list_alt, 1, context),
+                    dashboardItem("รายการสั่งซื้อ", Icons.view_list_rounded, 1, context),
                     Positioned(
                       right: 70,
                       left: 100,
@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ]),
                   Stack(
                     children: [
-                      dashboardItem("คำขอบริการ", Icons.list_alt, 2, context),
+                      dashboardItem("คำขอบริการ", Icons.view_list_rounded, 2, context),
                       Positioned(
                         right: 70,
                         left: 100,
@@ -191,10 +191,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   dashboardItem(
-                      "เรทบริการ", Icons.monetization_on_outlined, 3, context),
+                      "เรทบริการ", Icons.monetization_on_rounded, 3, context),
                   Stack(children: [
                     dashboardItem(
-                        "รายการเติมเงิน", Icons.payments_outlined, 4, context),
+                        "รายการเติมเงิน", Icons.payments_rounded, 4, context),
                     Positioned(
                       right: 70,
                       left: 100,
@@ -225,8 +225,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ]),
                   dashboardItem("ข้อมูลลูกค้า",
-                      Icons.supervised_user_circle_outlined, 5, context),
-                  dashboardItem("QR Scan", Icons.qr_code, 6, context),
+                      Icons.supervised_user_circle_rounded, 5, context),
+                  dashboardItem("QR Scan", Icons.qr_code_scanner_rounded, 6, context),
                 ],
               ),
             ),

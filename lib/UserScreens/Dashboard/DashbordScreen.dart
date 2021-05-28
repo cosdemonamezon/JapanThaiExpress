@@ -179,7 +179,7 @@ class _DashbordScreenState extends State<DashbordScreen> {
                 children: [
                   Stack(
                     children: [
-                      dashboardItem("รายการซื้อสินค้า", Icons.add_shopping_cart,
+                      dashboardItem("รายการซื้อสินค้า", Icons.local_grocery_store,
                           1, context),
                       Positioned(
                         right: 70,
@@ -214,7 +214,7 @@ class _DashbordScreenState extends State<DashbordScreen> {
                   Stack(
                     children: [
                       dashboardItem("บริการของเรา",
-                          Icons.local_shipping_outlined, 2, context),
+                          Icons.local_shipping_rounded, 2, context),
                       Positioned(
                         right: 70,
                         left: 100,
@@ -245,11 +245,11 @@ class _DashbordScreenState extends State<DashbordScreen> {
                       ),
                     ],
                   ),
-                  dashboardItem("สินค้า", Icons.store_outlined, 3, context),
+                  dashboardItem("สินค้า", Icons.store_mall_directory_rounded, 3, context),
                   Stack(
                     children: [
                       dashboardItem("กระเป๋าสตางค์",
-                          Icons.account_balance_wallet_outlined, 4, context),
+                          Icons.account_balance_wallet_rounded, 4, context),
                       Positioned(
                         right: 70,
                         left: 100,
@@ -280,8 +280,8 @@ class _DashbordScreenState extends State<DashbordScreen> {
                       ),
                     ],
                   ),
-                  dashboardItem("ข่าว", Icons.web_outlined, 5, context),
-                  dashboardItem("โปรโมชั่น", Icons.redeem, 6, context),
+                  dashboardItem("ข่าว", Icons.web_rounded, 5, context),
+                  dashboardItem("โปรโมชั่น", Icons.card_giftcard_rounded, 6, context),
                 ],
               ),
             ),
