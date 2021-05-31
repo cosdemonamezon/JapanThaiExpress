@@ -108,28 +108,28 @@ class _LoginScreenState extends State<LoginScreen> {
     _handleSubmittedSocial(user.displayName, user.displayName, user.email,
         user.id, 'google', user.photoUrl);
 
-    // final http.Response response = await http.get(
-    //   Uri.parse('https://people.googleapis.com/v1/people/me/connections'
-    //       '?requestMask.includeField=person.names'),
-    //   headers: await user.authHeaders,
-    // );
-    // if (response.statusCode != 200) {
-    //   setState(() {
-    //     _contactText = "People API gave a ${response.statusCode} "
-    //         "response. Check logs for details.";
-    //   });
-    //   print('People API ${response.statusCode} response: ${response.body}');
-    //   return;
-    // }
-    // final Map<String, dynamic> data = json.decode(response.body);
-    // final String namedContact = _pickFirstNamedContact(data);
-    // setState(() {
-    //   if (namedContact != null) {
-    //     _contactText = "I see you know $namedContact!";
-    //   } else {
-    //     _contactText = "No contacts to display.";
-    //   }
-    // });
+    final http.Response response = await http.get(
+      Uri.parse('https://people.googleapis.com/v1/people/me/connections'
+          '?requestMask.includeField=person.names'),
+      headers: await user.authHeaders,
+    );
+    if (response.statusCode != 200) {
+      setState(() {
+        _contactText = "People API gave a ${response.statusCode} "
+            "response. Check logs for details.";
+      });
+      print('People API ${response.statusCode} response: ${response.body}');
+      return;
+    }
+    final Map<String, dynamic> data = json.decode(response.body);
+    final String namedContact = _pickFirstNamedContact(data);
+    setState(() {
+      if (namedContact != null) {
+        _contactText = "I see you know $namedContact!";
+      } else {
+        _contactText = "No contacts to display.";
+      }
+    });
   }
 
   String _pickFirstNamedContact(Map<String, dynamic> data) {
@@ -491,7 +491,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                         iconData: CustomIcons.facebook,
                         onPressed: () {
-                          _loginFacebook();
+                           _loginFacebook();
                         },
                       ),
                       SocialIcon(
