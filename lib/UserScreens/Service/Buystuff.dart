@@ -123,19 +123,19 @@ class _BuystuffState extends State<Buystuff> {
         tel = address[0]['tel'];
       });
     } else {
-      var feedback = convert.jsonDecode(response.body);
-      Flushbar(
-        title: '${feedback['message']}',
-        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
-        backgroundColor: Colors.redAccent,
-        icon: Icon(
-          Icons.error,
-          size: 28.0,
-          color: Colors.white,
-        ),
-        duration: Duration(seconds: 3),
-        leftBarIndicatorColor: Colors.blue[300],
-      )..show(context);
+      // var feedback = convert.jsonDecode(response.body);
+      // Flushbar(
+      //   title: '${feedback['message']}',
+      //   message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+      //   backgroundColor: Colors.redAccent,
+      //   icon: Icon(
+      //     Icons.error,
+      //     size: 28.0,
+      //     color: Colors.white,
+      //   ),
+      //   duration: Duration(seconds: 3),
+      //   leftBarIndicatorColor: Colors.blue[300],
+      // )..show(context);
     }
   }
 
@@ -180,18 +180,18 @@ class _BuystuffState extends State<Buystuff> {
         final Map<String, dynamic> order = convert.jsonDecode(response.body);
 
         print("${order['message']}");
-        Flushbar(
-          title: '${order['message']}',
-          message: 'ท่านยังไม่มีการสร้างรายการใหม่',
-          backgroundColor: Colors.redAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          duration: Duration(seconds: 3),
-          leftBarIndicatorColor: Colors.blue[300],
-        )..show(context);
+        // Flushbar(
+        //   title: '${order['message']}',
+        //   message: 'ท่านยังไม่มีการสร้างรายการใหม่',
+        //   backgroundColor: Colors.redAccent,
+        //   icon: Icon(
+        //     Icons.error,
+        //     size: 28.0,
+        //     color: Colors.white,
+        //   ),
+        //   duration: Duration(seconds: 3),
+        //   leftBarIndicatorColor: Colors.blue[300],
+        // )..show(context);
       }
     } catch (e) {
       setState(() {
@@ -320,81 +320,18 @@ class _BuystuffState extends State<Buystuff> {
                     Tab(
                       child: Align(
                         alignment: Alignment.center,
-                        child: Text("รายการ"),
+                        child: Text("ฝากซื้อสินค้า"),
                       ),
                     ),
                     Tab(
                       child: Align(
                         alignment: Alignment.center,
-                        child: Text("ฝากซื้อสินค้า"),
+                        child: Text("รายการ"),
                       ),
                     ),
                   ])),
           body: TabBarView(
             children: [
-              isLoading == true
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : SmartRefresher(
-                      enablePullDown: true,
-                      enablePullUp: true,
-                      header: ClassicHeader(
-                        refreshStyle: RefreshStyle.Follow,
-                        refreshingText: 'กำลังโหลด.....',
-                        completeText: 'โหลดข้อมูลสำเร็จ',
-                      ),
-                      footer: CustomFooter(
-                        builder: (BuildContext context, LoadStatus mode) {
-                          Widget body;
-                          if (mode == LoadStatus.idle) {
-                            //body =  Text("ไม่พบรายการ");
-                          } else if (mode == LoadStatus.loading) {
-                            body = CircularProgressIndicator();
-                          } else if (mode == LoadStatus.failed) {
-                            body = Text("Load Failed!Click retry!");
-                          } else if (mode == LoadStatus.canLoading) {
-                            body = Text("release to load more");
-                          } else if (mode == LoadStatus.noMore) {
-                            //body = Text("No more Data");
-                            body = Text("ไม่พบข้อมูล");
-                          }
-                          return Container(
-                            height: 55.0,
-                            child: Center(child: body),
-                          );
-                        },
-                      ),
-                      controller: _refreshController,
-                      onRefresh: _onRefresh,
-                      onLoading: _onLoading,
-                      child: listdata.length > 0
-                          ? ListView.builder(
-                              itemCount: listdata.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return buildCard(
-                                  listdata[index]['name'],
-                                  listdata[index]['code'] == null
-                                      ? 'ไม่มีข้อมูล'
-                                      : listdata[index]['code'],
-                                  listdata[index]['description'] == null
-                                      ? 'ไม่มีข้อมูล'
-                                      : listdata[index]['description'],
-                                  listdata[index]['price'] == null
-                                      ? 'ไม่มีข้อมูล'
-                                      : listdata[index]['price'],
-                                  listdata[index]['track_jp'] == null
-                                      ? 'ไม่มีข้อมูล'
-                                      : listdata[index]['track_jp'],
-                                  listdata[index]['image'] == null
-                                      ? "https://picsum.photos/200/300"
-                                      : listdata[index]['image'],
-                                  listdata[index]['id'],
-                                );
-                              })
-                          : Center(child: Text('ไม่พบรายการ')),
-                    ),
-              //tab 2
               Container(
                 height: height,
                 padding: EdgeInsets.symmetric(horizontal: 20),
@@ -429,6 +366,7 @@ class _BuystuffState extends State<Buystuff> {
                                 name: 'url',
                                 decoration: InputDecoration(
                                     //border: InputBorder.none,
+                                    hintText: 'กรุณากรอกลิ้งค์',
                                     border: OutlineInputBorder(),
                                     fillColor: Color(0xfff3f3f4),
                                     filled: true),
@@ -457,6 +395,7 @@ class _BuystuffState extends State<Buystuff> {
                                 name: 'name',
                                 decoration: InputDecoration(
                                     //border: InputBorder.none,
+                                    hintText: 'กรุณากรอกชื่อสินค้า',
                                     border: OutlineInputBorder(),
                                     fillColor: Color(0xfff3f3f4),
                                     filled: true),
@@ -486,6 +425,7 @@ class _BuystuffState extends State<Buystuff> {
                                 maxLines: 3,
                                 decoration: InputDecoration(
                                     //border: InputBorder.none,
+                                    hintText: 'กรุณากรอกรายละเอียด',
                                     border: OutlineInputBorder(),
                                     fillColor: Color(0xfff3f3f4),
                                     filled: true),
@@ -509,6 +449,7 @@ class _BuystuffState extends State<Buystuff> {
                                 name: 'qty',
                                 decoration: InputDecoration(
                                     //border: InputBorder.none,
+                                    hintText: 'กรุณากรอกจำนวน',
                                     border: OutlineInputBorder(),
                                     fillColor: Color(0xfff3f3f4),
                                     filled: true),
@@ -827,6 +768,69 @@ class _BuystuffState extends State<Buystuff> {
                   ),
                 ),
               ),
+              isLoading == true
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : SmartRefresher(
+                      enablePullDown: true,
+                      enablePullUp: true,
+                      header: ClassicHeader(
+                        refreshStyle: RefreshStyle.Follow,
+                        refreshingText: 'กำลังโหลด.....',
+                        completeText: 'โหลดข้อมูลสำเร็จ',
+                      ),
+                      footer: CustomFooter(
+                        builder: (BuildContext context, LoadStatus mode) {
+                          Widget body;
+                          if (mode == LoadStatus.idle) {
+                            //body =  Text("ไม่พบรายการ");
+                          } else if (mode == LoadStatus.loading) {
+                            body = CircularProgressIndicator();
+                          } else if (mode == LoadStatus.failed) {
+                            body = Text("Load Failed!Click retry!");
+                          } else if (mode == LoadStatus.canLoading) {
+                            body = Text("release to load more");
+                          } else if (mode == LoadStatus.noMore) {
+                            //body = Text("No more Data");
+                            body = Text("ไม่พบข้อมูล");
+                          }
+                          return Container(
+                            height: 55.0,
+                            child: Center(child: body),
+                          );
+                        },
+                      ),
+                      controller: _refreshController,
+                      onRefresh: _onRefresh,
+                      onLoading: _onLoading,
+                      child: listdata.length > 0
+                          ? ListView.builder(
+                              itemCount: listdata.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return buildCard(
+                                  listdata[index]['name'],
+                                  listdata[index]['code'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : listdata[index]['code'],
+                                  listdata[index]['description'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : listdata[index]['description'],
+                                  listdata[index]['price'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : listdata[index]['price'],
+                                  listdata[index]['track_jp'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : listdata[index]['track_jp'],
+                                  listdata[index]['image'] == null
+                                      ? "https://picsum.photos/200/300"
+                                      : listdata[index]['image'],
+                                  listdata[index]['id'],
+                                );
+                              })
+                          : Center(child: Text('ไม่พบรายการ')),
+                    ),
+              //tab 2
             ],
           ),
           bottomNavigationBar: NavigationBar(),
@@ -835,56 +839,68 @@ class _BuystuffState extends State<Buystuff> {
 
   Card addressCard(String title, String title1, String subtitle) {
     return Card(
-      color: Colors.orange[50],
-      child: ListTile(
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            title == null
-                ? Text("...")
-                : Text(
-                    title,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: kTextButtonColor),
-                  ),
-            title1 == null
-                ? Text("...")
-                : Text(
-                    title1,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        color: kTextButtonColor),
-                  ),
-          ],
-        ),
-        subtitle: subtitle == null
-            ? Text("...")
-            : Text(
-                subtitle,
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    color: kTextButtonColor),
-              ),
-        trailing: IconButton(
+      color: Color(0xfff5a393),
+      child: GestureDetector(
+        onTap: () {
+          showDialog(
+            //barrierDismissible: false,
+            context: context,
+            builder: (context) => selectdialog(
+              context,
+            ),
+          );
+        },
+        child: ListTile(
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              title == null
+                  ? Text("...")
+                  : Text(
+                      title,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          color: kTextButtonColor),
+                    ),
+              title1 == null
+                  ? Text("...")
+                  : Text(
+                      title1,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                          color: kTextButtonColor),
+                    ),
+            ],
+          ),
+          subtitle: subtitle == null
+              ? Text("...")
+              : Text(
+                  subtitle,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                      color: kTextButtonColor),
+                ),
+          trailing: IconButton(
             icon: Icon(
               Icons.edit,
               size: 25,
             ),
-            onPressed: () {
-              showDialog(
-                //barrierDismissible: false,
-                context: context,
-                builder: (context) => selectdialog(
-                  context,
-                ),
-              );
-              //selectdialog();
-            }),
+            // onPressed: () {
+            //   showDialog(
+            //     //barrierDismissible: false,
+            //     context: context,
+            //     builder: (context) => selectdialog(
+            //       context,
+            //     ),
+            //   );
+            //   //selectdialog();
+            // }
+          ),
+        ),
       ),
     );
   }
@@ -911,72 +927,73 @@ class _BuystuffState extends State<Buystuff> {
               BoxShadow(
                   color: Colors.black, offset: Offset(0, 2), blurRadius: 2),
             ]),
-        child: Container(
-          height: 390,
-          child: Column(
-            children: [
-              Text("เลือกที่อยู่",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 18,
-                  )),
-              Container(
-                height: 300,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          physics: const ClampingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: address.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return selectCard(
-                              address[index]['name'],
-                              address[index]['address'],
-                              address[index]['tel'],
-                              index,
-                            );
-                          }),
-                    ],
+        child: GestureDetector(
+          onTap: () {
+            showDialog(
+              //barrierDismissible: false,
+              context: context,
+              builder: (context) => addDialog(
+                context,
+              ),
+            );
+          },
+          child: Container(
+            height: 390,
+            child: Column(
+              children: [
+                Text("เลือกที่อยู่",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 18,
+                    )),
+                Container(
+                  height: 300,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            physics: const ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: address.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return selectCard(
+                                address[index]['name'],
+                                address[index]['address'],
+                                address[index]['tel'],
+                                index,
+                              );
+                            }),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      //barrierDismissible: false,
-                      context: context,
-                      builder: (context) => addDialog(
-                        context,
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 45,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                            color: Colors.grey.shade200,
-                            offset: Offset(2, 4),
-                            blurRadius: 5,
-                            spreadRadius: 2)
-                      ],
-                      gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
-                    ),
-                    child: Text("เพิ่มที่อยู่",
-                        style: TextStyle(fontSize: 20, color: Colors.white)),
-                  )),
-            ],
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 45,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Colors.grey.shade200,
+                          offset: Offset(2, 4),
+                          blurRadius: 5,
+                          spreadRadius: 2)
+                    ],
+                    gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
+                  ),
+                  child: Text("เพิ่มที่อยู่",
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
+                ),
+              ],
+            ),
           ),
         ),
       ),

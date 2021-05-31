@@ -79,8 +79,6 @@ String routePath = '/';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  // token = prefs.getString('token');
-  // tokenObj = convert.jsonDecode(token);
 
   SystemChrome.setEnabledSystemUIOverlays(
       [SystemUiOverlay.bottom, SystemUiOverlay.top]);
@@ -107,25 +105,10 @@ void main() async {
     // will be called whenever a notification is received
   });
 
-  // OneSignal.shared
-  //     .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-  //   // will be called whenever a notification is opened/button pressed.
-  //   navigatorKey.currentState
-  //       .pushNamed(result.notification.payload.additionalData['/home']);
-  // });
-
   var status = await OneSignal.shared.getPermissionSubscriptionState();
   String playerId = status.subscriptionStatus.userId;
   print(playerId);
-  // await OneSignal.shared.postNotification(OSCreateNotification(
-  //   playerIds: [playerId],
-  //   content: "this is a test from OneSignal's Flutter SDK",
-  //   heading: "Test Notification",
-  //   buttons: [
-  //     OSActionButton(text: "test1", id: "id1"),
 
-  //   ]
-  // ));
   runApp(MyApp());
 }
 

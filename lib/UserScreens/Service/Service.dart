@@ -199,8 +199,13 @@ class _ServiceState extends State<Service> {
                 children: [
                   Stack(
                     children: [
+<<<<<<< HEAD
+                      dashboardItem(
+                          "ฝากส่ง", Icons.local_shipping_outlined, 1, context),
+=======
                       dashboardItem("รับฝากส่ง", Icons.local_shipping_rounded,
                           1, context),
+>>>>>>> 475d14946676e6e5faba9d3cd8faaa4ae6ec6ab0
                       Positioned(
                         right: 70,
                         left: 100,
@@ -212,13 +217,14 @@ class _ServiceState extends State<Service> {
                                 backgroundColor: Colors.red,
                                 child: Center(
                                     child: dashboard['depository'] != null
-                                        ?Text(dashboard['depository'].toString(),
+                                        ? Text(
+                                            dashboard['depository'].toString(),
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,
                                               color: Colors.white,
                                             ))
-                                            :Text("0",
+                                        : Text("0",
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,
@@ -233,8 +239,13 @@ class _ServiceState extends State<Service> {
                   ),
                   Stack(
                     children: [
+<<<<<<< HEAD
+                      dashboardItem(
+                          "ฝากซื้อ", Icons.shopping_cart_outlined, 2, context),
+=======
                       dashboardItem("รับฝากซื้อ", Icons.shopping_cart_rounded,
                           2, context),
+>>>>>>> 475d14946676e6e5faba9d3cd8faaa4ae6ec6ab0
                       Positioned(
                         right: 70,
                         left: 100,
@@ -246,13 +257,13 @@ class _ServiceState extends State<Service> {
                                 backgroundColor: Colors.red,
                                 child: Center(
                                     child: dashboard['preorder'] != null
-                                        ?Text(dashboard['preorder'].toString(),
+                                        ? Text(dashboard['preorder'].toString(),
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,
                                               color: Colors.white,
                                             ))
-                                            :Text("0",
+                                        : Text("0",
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,
@@ -280,18 +291,18 @@ class _ServiceState extends State<Service> {
                                 backgroundColor: Colors.red,
                                 child: Center(
                                     child: dashboard['auction'] != null
-                                    ?Text(dashboard['auction'].toString(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                          color: Colors.white,
-                                        ))
-                                        :Text("0",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                          color: Colors.white,
-                                        ))),
+                                        ? Text(dashboard['auction'].toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))
+                                        : Text("0",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ))),
                               )
                             : SizedBox(
                                 height: 2,
@@ -302,7 +313,11 @@ class _ServiceState extends State<Service> {
                   Stack(
                     children: [
                       dashboardItem(
+<<<<<<< HEAD
+                          "โอนเงิน", Icons.local_atm_outlined, 4, context),
+=======
                           "รับโอนเงิน", Icons.payments_sharp, 4, context),
+>>>>>>> 475d14946676e6e5faba9d3cd8faaa4ae6ec6ab0
                       Positioned(
                         right: 70,
                         left: 100,
@@ -314,13 +329,13 @@ class _ServiceState extends State<Service> {
                                 backgroundColor: Colors.red,
                                 child: Center(
                                     child: dashboard['exchange'] != null
-                                        ?Text(dashboard['exchange'].toString(),
+                                        ? Text(dashboard['exchange'].toString(),
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,
                                               color: Colors.white,
                                             ))
-                                            :Text("0",
+                                        : Text("0",
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,
