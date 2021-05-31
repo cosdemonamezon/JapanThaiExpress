@@ -372,85 +372,18 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                   Tab(
                     child: Align(
                       alignment: Alignment.center,
-                      child: Text("รายการ"),
+                      child: Text("รับโอนเงิน"),
                     ),
                   ),
                   Tab(
                     child: Align(
                       alignment: Alignment.center,
-                      child: Text("รับโอนเงิน"),
+                      child: Text("รายการ"),
                     ),
                   ),
                 ])),
         body: TabBarView(
           children: [
-            Container(
-              height: height,
-              color: Colors.white,
-              child: isLoading == true
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : SmartRefresher(
-                      enablePullDown: true,
-                      enablePullUp: true,
-                      header: ClassicHeader(
-                        refreshStyle: RefreshStyle.Follow,
-                        refreshingText: 'กำลังโหลด.....',
-                        completeText: 'โหลดข้อมูลสำเร็จ',
-                      ),
-                      footer: CustomFooter(
-                        builder: (BuildContext context, LoadStatus mode) {
-                          Widget body;
-                          if (mode == LoadStatus.idle) {
-                            //body =  Text("ไม่พบรายการ");
-                          } else if (mode == LoadStatus.loading) {
-                            body = CircularProgressIndicator();
-                          } else if (mode == LoadStatus.failed) {
-                            body = Text("Load Failed!Click retry!");
-                          } else if (mode == LoadStatus.canLoading) {
-                            body = Text("release to load more");
-                          } else if (mode == LoadStatus.noMore) {
-                            //body = Text("No more Data");
-                            body = Text("ไม่พบข้อมูล");
-                          }
-                          return Container(
-                            height: 55.0,
-                            child: Center(child: body),
-                          );
-                        },
-                      ),
-                      controller: _refreshController,
-                      onRefresh: _onRefresh,
-                      onLoading: _onLoading,
-                      child: exchangedata.length > 0
-                          ? ListView.builder(
-                              itemCount: exchangedata.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return buildCard(
-                                  exchangedata[index]['id'].toString(),
-                                  exchangedata[index]['code'].toString(),
-                                  exchangedata[index]['bank'].toString(),
-                                  exchangedata[index]['total'].toString(),
-                                  exchangedata[index]['description'] == null
-                                      ? 'ไม่มีข้อมูล'
-                                      : exchangedata[index]['description']
-                                          .toString(),
-                                  exchangedata[index]['created_at'].toString(),
-                                  exchangedata[index]['status'].toString(),
-                                  exchangedata[index]['fee'].toString(),
-                                  exchangedata[index]['account_name']
-                                      .toString(),
-                                  exchangedata[index]['account_no'].toString(),
-                                  exchangedata[index]['slip'] == null
-                                      ? 'ไม่มีข้อมูล'
-                                      : exchangedata[index]['slip'].toString(),
-                                );
-                              })
-                          : Center(child: Text('ไม่พบรายการ')),
-                    ),
-            ),
-            //tap2
             Container(
               height: height,
               padding: EdgeInsets.symmetric(horizontal: 20),
@@ -486,6 +419,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                               name: 'bank',
                               decoration: InputDecoration(
                                   //border: InputBorder.none,
+                                  hintText: 'กรุณากรอกชื่อธนาคาร',
                                   border: OutlineInputBorder(),
                                   fillColor: Color(0xfff3f3f4),
                                   filled: true),
@@ -512,6 +446,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                               name: 'account_name',
                               decoration: InputDecoration(
                                   //border: InputBorder.none,
+                                  hintText: 'กรุณากรอกชื่อบัญชี',
                                   border: OutlineInputBorder(),
                                   fillColor: Color(0xfff3f3f4),
                                   filled: true),
@@ -539,6 +474,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                               name: 'account_no',
                               decoration: InputDecoration(
                                   //border: InputBorder.none,
+                                  hintText: 'กรุณากรอกเลขบัญชี',
                                   border: OutlineInputBorder(),
                                   fillColor: Color(0xfff3f3f4),
                                   filled: true),
@@ -572,6 +508,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                                     size: 30,
                                   ),
                                   //border: InputBorder.none,
+                                  hintText: 'กรุณากรอกจำนวนเงิน',
                                   border: OutlineInputBorder(),
                                   fillColor: Color(0xfff3f3f4),
                                   filled: true),
@@ -686,7 +623,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "คอมมิทชั่น",
+                                  "คอมมิสชั่น",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15),
@@ -761,6 +698,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                               maxLines: 4,
                               decoration: InputDecoration(
                                   //border: InputBorder.none,
+                                  hintText: 'กรุณากรอกรายละเอียด',
                                   border: OutlineInputBorder(),
                                   fillColor: Color(0xfff3f3f4),
                                   filled: true),
@@ -843,6 +781,74 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
                 ),
               ),
             ),
+
+            Container(
+              height: height,
+              color: Colors.white,
+              child: isLoading == true
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : SmartRefresher(
+                      enablePullDown: true,
+                      enablePullUp: true,
+                      header: ClassicHeader(
+                        refreshStyle: RefreshStyle.Follow,
+                        refreshingText: 'กำลังโหลด.....',
+                        completeText: 'โหลดข้อมูลสำเร็จ',
+                      ),
+                      footer: CustomFooter(
+                        builder: (BuildContext context, LoadStatus mode) {
+                          Widget body;
+                          if (mode == LoadStatus.idle) {
+                            //body =  Text("ไม่พบรายการ");
+                          } else if (mode == LoadStatus.loading) {
+                            body = CircularProgressIndicator();
+                          } else if (mode == LoadStatus.failed) {
+                            body = Text("Load Failed!Click retry!");
+                          } else if (mode == LoadStatus.canLoading) {
+                            body = Text("release to load more");
+                          } else if (mode == LoadStatus.noMore) {
+                            //body = Text("No more Data");
+                            body = Text("ไม่พบข้อมูล");
+                          }
+                          return Container(
+                            height: 55.0,
+                            child: Center(child: body),
+                          );
+                        },
+                      ),
+                      controller: _refreshController,
+                      onRefresh: _onRefresh,
+                      onLoading: _onLoading,
+                      child: exchangedata.length > 0
+                          ? ListView.builder(
+                              itemCount: exchangedata.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return buildCard(
+                                  exchangedata[index]['id'].toString(),
+                                  exchangedata[index]['code'].toString(),
+                                  exchangedata[index]['bank'].toString(),
+                                  exchangedata[index]['total'].toString(),
+                                  exchangedata[index]['description'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : exchangedata[index]['description']
+                                          .toString(),
+                                  exchangedata[index]['created_at'].toString(),
+                                  exchangedata[index]['status'].toString(),
+                                  exchangedata[index]['fee'].toString(),
+                                  exchangedata[index]['account_name']
+                                      .toString(),
+                                  exchangedata[index]['account_no'].toString(),
+                                  exchangedata[index]['slip'] == null
+                                      ? 'ไม่มีข้อมูล'
+                                      : exchangedata[index]['slip'].toString(),
+                                );
+                              })
+                          : Center(child: Text('ไม่พบรายการ')),
+                    ),
+            ),
+            //tap2
           ],
         ),
         bottomNavigationBar: NavigationBar(),

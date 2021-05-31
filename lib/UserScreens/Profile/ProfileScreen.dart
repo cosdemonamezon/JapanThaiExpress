@@ -85,18 +85,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     } else {
       var feedback = convert.jsonDecode(response.body);
-        Flushbar(
-          title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
-          backgroundColor: Colors.redAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          duration: Duration(seconds: 3),
-          leftBarIndicatorColor: Colors.blue[300],
-        )..show(context);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
     }
   }
 
@@ -119,18 +119,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     } else {
       var feedback = convert.jsonDecode(response.body);
-        Flushbar(
-          title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
-          backgroundColor: Colors.redAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          duration: Duration(seconds: 3),
-          leftBarIndicatorColor: Colors.blue[300],
-        )..show(context);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
     }
   }
 
@@ -184,14 +184,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     MaterialPageRoute(builder: (context) => Editpassword()));
               },
             ),
-            ProfileMenu(
-              text: "นโยบายความเป็นส่วนตัว",
-              icon: Icon(Icons.visibility_outlined),
-              press: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PrivacyPolicy()));
-              },
-            ),
+            // ProfileMenu(
+            //   text: "นโยบายความเป็นส่วนตัว",
+            //   icon: Icon(Icons.visibility_outlined),
+            //   press: () {
+            //     Navigator.push(context,
+            //         MaterialPageRoute(builder: (context) => PrivacyPolicy()));
+            //   },
+            // ),
             ProfileMenu(
               text: "ช่องทางการติดต่อ",
               icon: Icon(Icons.phone_in_talk_outlined),

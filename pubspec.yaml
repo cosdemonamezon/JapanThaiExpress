@@ -60,6 +60,7 @@ dependencies:
   url_launcher: ^6.0.3
   fluttertoast: ^8.0.6
   another_flushbar: ^1.10.20
+  flutter_markdown: ^0.4.1
 
 dependency_overrides:
   intl: 0.17.0-nullsafety.2
