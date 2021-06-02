@@ -1,3 +1,4 @@
+
 import 'dart:ui';
 
 import 'package:JapanThaiExpress/constants.dart';
@@ -125,13 +126,13 @@ class _ContactUsState extends State<ContactUs> {
                     //         );
                     //       }),
                     // ),
-                    Center(
+                    /*Center(
                         child: Text(
                       'กดคลิกเพื่อ เลือกช่องทางติดต่อ',
                       style: TextStyle(
                         fontStyle: FontStyle.italic,
                       ),
-                    )),
+                    )),*/
                     SizedBox(
                       height: 10,
                     ),
@@ -196,8 +197,12 @@ class _ContactUsState extends State<ContactUs> {
             children: [
               SizedBox(height: 20.0),
               Center(
+               
                 child: Image.network(
+                  
                   subtitle,
+                  
+                  color: Color(0xFFd73925),
                   width: 80,
                 ),
               ),

@@ -200,9 +200,7 @@ class _ServiceState extends State<Service> {
                   Stack(
                     children: [
                       dashboardItem(
-                          "ฝากส่ง", Icons.local_shipping_outlined, 1, context),
-                      dashboardItem("รับฝากส่ง", Icons.local_shipping_rounded,
-                          1, context),
+                          "ฝากส่ง", Icons.local_shipping_rounded, 1, context),
                       Positioned(
                         right: 70,
                         left: 100,
@@ -237,9 +235,7 @@ class _ServiceState extends State<Service> {
                   Stack(
                     children: [
                       dashboardItem(
-                          "ฝากซื้อ", Icons.shopping_cart_outlined, 2, context),
-                      dashboardItem("รับฝากซื้อ", Icons.shopping_cart_rounded,
-                          2, context),
+                          "ฝากซื้อ", Icons.shopping_cart_rounded, 2, context),
                       Positioned(
                         right: 70,
                         left: 100,
@@ -307,7 +303,7 @@ class _ServiceState extends State<Service> {
                   Stack(
                     children: [
                       dashboardItem(
-                          "รับโอนเงิน", Icons.payments_sharp, 4, context),
+                          "โอนเงิน", Icons.local_atm_rounded, 4, context),
                       Positioned(
                         right: 70,
                         left: 100,
