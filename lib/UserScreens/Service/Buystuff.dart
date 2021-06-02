@@ -1078,9 +1078,9 @@ class _BuystuffState extends State<Buystuff> {
             child: FormBuilder(
               key: _formKey1,
               initialValue: {
-                'name': '',
-                'description': '',
-                'tel': '',
+                'ชื่อ': '',
+                'ที่อยู่': '',
+                'เบอร์โทรศัพท์': '',
               },
               child: Column(
                 children: [
@@ -1090,7 +1090,7 @@ class _BuystuffState extends State<Buystuff> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Name",
+                          "ชื่อ",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
@@ -1117,7 +1117,7 @@ class _BuystuffState extends State<Buystuff> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Description",
+                          "ที่อยู่",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
@@ -1145,7 +1145,7 @@ class _BuystuffState extends State<Buystuff> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Tel",
+                          "เบอร์โทรศัพท์",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),

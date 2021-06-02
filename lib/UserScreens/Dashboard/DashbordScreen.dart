@@ -58,8 +58,7 @@ class _DashbordScreenState extends State<DashbordScreen> {
 
           var telString = prefs.getString('tel');
 
-          if (token['data']['tel'] == null ||
-              token['data']['tel'] == "" && telString == null) {
+          if ( telString == null) {
             showDialog(
               barrierDismissible: false,
               context: context,
@@ -132,6 +131,7 @@ class _DashbordScreenState extends State<DashbordScreen> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> topicdata = convert.jsonDecode(response.body);
       await prefs.setString('tel', values['phone']);
+      print(prefs.getString('tel'));
       setState(() {
         isLoading = false;
       });
