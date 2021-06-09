@@ -66,14 +66,14 @@ class _TimeLinePreorderMemberState extends State<TimeLinePreorderMember> {
       isLoading = true;
     });
     // var url = pathAPI + 'api/preorder/' + id;
-    var url = Uri.parse(pathAPI + 'api/preorder');
+    var url = Uri.parse(pathAPI + 'api/get_detail_order');
     var response = await http.post(url,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token['data']['token']
         },
         body: convert.jsonEncode({
-          'preorder_id': id,
+          'order_id': id,
         }));
     if (response.statusCode == 200) {
       //print(response.statusCode);
@@ -104,6 +104,7 @@ class _TimeLinePreorderMemberState extends State<TimeLinePreorderMember> {
       var familyMembers = Data["data"]["list"][index]["field"];
       var showField = Data["data"]["list"][index]["show"];
       for (var familyMember in familyMembers) {
+        if(familyMember.toString() != '[]'){
         if (familyMember["name"] != 'status') {
           if (showField == true) {
             setState(() {
@@ -114,6 +115,7 @@ class _TimeLinePreorderMemberState extends State<TimeLinePreorderMember> {
             });
             print(familyMemberName);
           }
+        }
         }
       }
       if (data['code'] == 200) {

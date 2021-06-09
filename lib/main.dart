@@ -25,6 +25,7 @@ import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Messageuser/Messagesend.dart';
 import 'package:JapanThaiExpress/UserScreens/MyOders/OdersScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/MyOders/TimeLinePurchaseMember.dart';
 import 'package:JapanThaiExpress/UserScreens/News/DetailNews.dart';
 import 'package:JapanThaiExpress/UserScreens/News/NewsScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Products/ProductScreen.dart';
@@ -162,6 +163,7 @@ var routes = <String, WidgetBuilder>{
   "/buystuff": (BuildContext context) => Buystuff(),
   "/notidetail": (BuildContext context) => NotiDetailScreen(),
   "/notidetailuser": (BuildContext context) => NotiDetailUserScreen(),
+  "/timelineordermember" : (BuildContext context) => TimeLinePurchaseMember(),
 };
 
 class MyApp extends StatelessWidget {

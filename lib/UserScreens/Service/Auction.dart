@@ -131,7 +131,7 @@ class _AuctionState extends State<Auction> {
         setState(() {
           dropdownValue = dataship['data'];
           _transport = dropdownValue[0]['name'];
-          costth = dropdownValue[0]['price'];
+          costth = dropdownValue[0]['price'].toString();
         });
         print(dropdownValue);
       } else {
