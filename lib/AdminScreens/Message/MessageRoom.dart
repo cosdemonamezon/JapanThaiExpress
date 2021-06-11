@@ -18,7 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/my_navigator.dart';
 
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/Message.dart';
 
@@ -292,12 +292,12 @@ class _MessageRoomState extends State<MessageRoom> {
 
   void _sendMsg(String msg, String messageDirection, String date) {
     if (msg.length == 0) {
-      Fluttertoast.showToast(
-          msg: "Please Enter Message",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          // timeInSecForIos: 1,
-          backgroundColor: Colors.blue);
+      // Fluttertoast.showToast(
+      //     msg: "Please Enter Message",
+      //     toastLength: Toast.LENGTH_SHORT,
+      //     gravity: ToastGravity.BOTTOM,
+      //     // timeInSecForIos: 1,
+      //     backgroundColor: Colors.blue);
     } else {
       _textController.clear();
       Message message = new Message(

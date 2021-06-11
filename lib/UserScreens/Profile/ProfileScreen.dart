@@ -184,14 +184,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     MaterialPageRoute(builder: (context) => Editpassword()));
               },
             ),
-            // ProfileMenu(
-            //   text: "นโยบายความเป็นส่วนตัว",
-            //   icon: Icon(Icons.visibility_outlined),
-            //   press: () {
-            //     Navigator.push(context,
-            //         MaterialPageRoute(builder: (context) => PrivacyPolicy()));
-            //   },
-            // ),
+            ProfileMenu(
+              text: "นโยบายความเป็นส่วนตัว",
+              icon: Icon(Icons.visibility_outlined),
+              press: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PrivacyPolicy()));
+              },
+            ),
             ProfileMenu(
               text: "ช่องทางการติดต่อ",
               icon: Icon(Icons.phone_in_talk_outlined),

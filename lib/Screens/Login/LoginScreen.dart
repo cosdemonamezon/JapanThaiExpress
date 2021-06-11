@@ -22,8 +22,9 @@ import 'package:JapanThaiExpress/widgets/CustomIcons.dart';
 
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import '../../utils/my_navigator.dart';
+
+import 'package:device_apps/device_apps.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   // Optional clientId
@@ -67,7 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
         final FacebookAccessToken accessToken = result.accessToken;
-        _showMessage('''
+        _showMessage(
+            '''
          Logged in!
          
          Token: ${accessToken.token}
@@ -100,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
         break;
     }
   }
+
   Future<void> _handleGetContact(GoogleSignInAccount user) async {
     setState(() {
       _contactText = "Loading contact info...";
@@ -435,11 +438,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: 35),
+
                   GestureDetector(
                     onTap: () {
-                      if (_formKey.currentState.saveAndValidate()) {
-                        _handleSubmitted();
-                      }
+                      DeviceApps.openApp('com.ashatech.perf');
+
+                      // if (_formKey.currentState.saveAndValidate()) {
+                      //   _handleSubmitted();
+                      // }
                       // Navigator.push(context,
                       //     MaterialPageRoute(builder: (context) => LoginPin()));
                     },
@@ -491,7 +497,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                         iconData: CustomIcons.facebook,
                         onPressed: () {
-                           _loginFacebook();
+                          _loginFacebook();
                         },
                       ),
                       SocialIcon(

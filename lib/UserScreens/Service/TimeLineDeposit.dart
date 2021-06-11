@@ -5,7 +5,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -1473,16 +1473,15 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
               GestureDetector(
                 onTap: () {
                   Clipboard.setData(new ClipboardData(text: title));
-                  Fluttertoast.showToast(
-                      msg: "คัดลอกข้อความสำเร็จ !t",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
+                  // Fluttertoast.showToast(
+                  //     msg: "คัดลอกข้อความสำเร็จ !t",
+                  //     toastLength: Toast.LENGTH_SHORT,
+                  //     gravity: ToastGravity.CENTER,
+                  //     timeInSecForIosWeb: 3,
+                  //     backgroundColor: Colors.red,
+                  //     textColor: Colors.white,
+                  //     fontSize: 16.0);
                   Navigator.pop(context);
-                  
                 },
                 child: Container(
                   height: 45,

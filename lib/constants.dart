@@ -26,8 +26,7 @@ const kSecondaryColor = Color(0xFF979797);
 const kBackgroundColor = Color(0xFF979797);
 
 // String pathAPI = "http://103.74.253.96/japanthaiexpress-api/public/";
-String pathAPI =
-    "https://japan.logo-design360.com/japanthaiexpress-api-master/public/";
+String pathAPI = "https://www.japanthaiexpress.com/asha/public/";
 
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
