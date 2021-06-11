@@ -85,7 +85,7 @@ class _WalletScreenState extends State<WalletScreen> {
           convert.jsonDecode(response.body);
       setState(() {
         datawallet = wallettdata['data'];
-        wallet = datawallet['wallet'].toDouble();
+        wallet = double.parse(datawallet['wallet']);
         isLoading = false;
       });
     } else {
