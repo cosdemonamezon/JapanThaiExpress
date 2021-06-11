@@ -101,23 +101,23 @@ class _TimeLinePurchaseMemberState extends State<TimeLinePurchaseMember> {
       var familyMembers = Data["data"]["list"][index]["field"];
       var showField = Data["data"]["list"][index]["show"];
       for (var familyMember in familyMembers) {
-        if(familyMember.toString() != '[]'){
-        if (familyMember["name"] != 'status') {
-          if (showField == true) {
-            setState(() {
-              familyMemberLabel.add(familyMember["label"]);
-              // var textEditingController = TextEditingController();
-              familyMemberName.add(familyMember["name"]);
-              familyMemberField.add(familyMember["name"]);
-              familyMemberType.add(familyMember['type']);
-            });
-            print(familyMemberName);
+        if (familyMember.toString() != '[]') {
+          if (familyMember["name"] != 'status') {
+            if (showField == true) {
+              setState(() {
+                familyMemberLabel.add(familyMember["label"]);
+                // var textEditingController = TextEditingController();
+                familyMemberName.add(familyMember["name"]);
+                familyMemberField.add(familyMember["name"]);
+                familyMemberType.add(familyMember['type']);
+              });
+              print(familyMemberName);
+            }
           }
-        }
         }
       }
       if (data['code'] == 200) {
-          setState(() {
+        setState(() {
           dataTimeline = data;
           setState(() {
             isLoading = false;
@@ -322,7 +322,7 @@ class _TimeLinePurchaseMemberState extends State<TimeLinePurchaseMember> {
         centerTitle: true,
         title: Text("สถานะรายการ"),
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new_outlined),
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => OdersScreen()));
@@ -400,7 +400,8 @@ class _TimeLinePurchaseMemberState extends State<TimeLinePurchaseMember> {
                                     padding: EdgeInsets.only(left: 5),
                                     child: Text(
                                       " เลขที่ :" +
-                                          dataTimeline['data']['code'].toString(),
+                                          dataTimeline['data']['code']
+                                              .toString(),
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14,
@@ -530,7 +531,6 @@ class _TimeLinePurchaseMemberState extends State<TimeLinePurchaseMember> {
                               child: Column(
                                 children: [
                                   Icon(
-                                    
                                     Icons.supervised_user_circle,
                                     color: primaryColor,
                                     size: 45,
@@ -556,7 +556,6 @@ class _TimeLinePurchaseMemberState extends State<TimeLinePurchaseMember> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    
                                     Icons.support_agent,
                                     color: primaryColor,
                                     size: 45,
@@ -850,8 +849,7 @@ class _TimeLinePurchaseMemberState extends State<TimeLinePurchaseMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
