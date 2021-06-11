@@ -225,7 +225,7 @@ class _OdersScreenState extends State<OdersScreen> {
     return Card(
       child: GestureDetector(
         onTap: () {
-          MyNavigator.goToTimelinePreorderMember(context, id);
+          MyNavigator.goToTimeLineOrderMember(context, id);
         },
         child: ListTile(
           title: Row(

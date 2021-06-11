@@ -113,16 +113,17 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
       var familyMembers = Data["data"]["list"][index]["field"];
       var showField = Data["data"]["list"][index]["show"];
       for (var familyMember in familyMembers) {
-        if (familyMember["name"] != 'status') {
-          if (showField == true) {
-            setState(() {
-              familyMemberLabel.add(familyMember["label"]);
-              // var textEditingController = TextEditingController();
-              familyMemberName.add(familyMember["name"]);
-              familyMemberField.add(familyMember["name"]);
-              familyMemberType.add(familyMember['type']);
-            });
-            print(familyMemberName);
+        if (familyMember.toString() != '[]') {
+          if (familyMember["name"] != 'status') {
+            if (showField == true) {
+              setState(() {
+                familyMemberLabel.add(familyMember["label"]);
+                // var textEditingController = TextEditingController();
+                familyMemberName.add(familyMember["name"]);
+                familyMemberField.add(familyMember["name"]);
+                familyMemberType.add(familyMember['type']);
+              });
+            }
           }
         }
       }

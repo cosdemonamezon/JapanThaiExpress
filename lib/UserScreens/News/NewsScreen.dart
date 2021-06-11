@@ -171,7 +171,7 @@ class _NewsScreenState extends State<NewsScreen> {
                     bottomRight: Radius.circular(18),
                   ),
                   image: DecorationImage(
-                    fit: BoxFit.fill,
+                    fit: BoxFit.fitWidth,
                     image: NetworkImage(img),
                   ),
                 ),

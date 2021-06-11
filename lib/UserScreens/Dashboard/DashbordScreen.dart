@@ -56,7 +56,7 @@ class _DashbordScreenState extends State<DashbordScreen> {
             isLoading = false;
           });
 
-          var telString = prefs.getString('tel');
+          var telString = token['data']['tel'];
 
           if ( telString == null) {
             showDialog(

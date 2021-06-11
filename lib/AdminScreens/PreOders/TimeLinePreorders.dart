@@ -108,6 +108,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
       var showField = Data["data"]["list"][index]["show"];
       if (showField == true) {
         for (var familyMember in familyMembers) {
+          if(familyMember.toString() != '[]'){
           if (familyMember["name"].toString() != 'status') {
             setState(() {
               familyMemberLabel.add(familyMember["label"]);
@@ -118,6 +119,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
             });
             print(familyMemberName);
           }
+        }
         }
       }
       if (data['code'] == 200) {

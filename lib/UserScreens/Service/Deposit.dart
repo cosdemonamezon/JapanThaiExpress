@@ -257,7 +257,7 @@ class _DepositState extends State<Deposit> {
         setState(() {
           dropdownShip = dataship['data'];
           _transport = dropdownShip[0]['name'];
-          costth = dropdownShip[0]['price'];
+          costth = dropdownShip[0]['price'].toString();
         });
         //print(dropdownShip);
       } else {

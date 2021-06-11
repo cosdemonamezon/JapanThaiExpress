@@ -236,7 +236,7 @@ class _DetailProductState extends State<DetailProduct> {
                                   width: 100,
                                   child: Image.network(
                                     data['img'],
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.contain,
                                   ),
                                 ),
                               ),

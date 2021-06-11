@@ -189,12 +189,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                   childAspectRatio: 0.75,
                                 ),
                                 itemBuilder: (context, index) => buildItemCard(
-                                  product[index]['name'],
+                                  product[index]['name'].toString(),
                                   product[index]['id'],
-                                  product[index]['image'],
-                                  product[index]['price'],
-                                  product[index]['qty'],
-                                  product[index]['description'],
+                                  product[index]['image'].toString(),
+                                  product[index]['price'].toString(),
+                                  product[index]['qty'].toString(),
+                                  product[index]['description'].toString(),
 
                                   // press: () => Navigator.push(
                                   //   context,
@@ -290,7 +290,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   child: Center(
                     child: Image.network(
                       img,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
