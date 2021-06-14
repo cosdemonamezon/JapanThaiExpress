@@ -443,9 +443,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     onTap: () {
                       DeviceApps.openApp('com.ashatech.perf');
 
-                      // if (_formKey.currentState.saveAndValidate()) {
-                      //   _handleSubmitted();
-                      // }
+                      if (_formKey.currentState.saveAndValidate()) {
+                        _handleSubmitted();
+                      }
                       // Navigator.push(context,
                       //     MaterialPageRoute(builder: (context) => LoginPin()));
                     },

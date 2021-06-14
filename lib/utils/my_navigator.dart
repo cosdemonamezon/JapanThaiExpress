@@ -69,6 +69,9 @@ class MyNavigator {
   static void goTomessagesend(BuildContext context) {
     Navigator.pushNamed(context, '/messagesend');
   }
+  static void goToQRCodedetail(BuildContext context) {
+    Navigator.pushNamed(context, '/qrcodedetail');
+  }
 
   /*static void goToTimeLineOrderMember(BuildContext context, arg) {
     Navigator.pushNamed(context, '/timelineordermember', arguments: arg);

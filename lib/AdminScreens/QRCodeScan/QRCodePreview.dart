@@ -19,7 +19,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Order Detail"),
+        title: Text("รายละเอียด"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -47,7 +47,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("code"),
+                    Text("รหัสสินค้า"),
                     SizedBox(
                       height: 10,
                     ),
@@ -64,7 +64,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                     SizedBox(
                       height: 30,
                     ),
-                    Text("name"),
+                    Text("ชื่อ-นามสกุล"),
                     SizedBox(
                       height: 10,
                     ),
@@ -81,7 +81,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("QTY"),
+                    Text("จำนวน"),
                     SizedBox(
                       height: 10,
                     ),
@@ -98,7 +98,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Rate"),
+                    Text("เรท"),
                     SizedBox(
                       height: 10,
                     ),
@@ -115,7 +115,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Price"),
+                    Text("ราคา"),
                     SizedBox(
                       height: 10,
                     ),
@@ -132,7 +132,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Fee"),
+                    Text("ค่าบริการ"),
                     SizedBox(
                       height: 10,
                     ),
@@ -149,7 +149,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Track JP No."),
+                    Text("เลขพัสดุญี่ปุ่น"),
                     SizedBox(
                       height: 10,
                     ),
@@ -166,7 +166,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Order Type"),
+                    Text("ประเภทบริการ"),
                     SizedBox(
                       height: 10,
                     ),
@@ -183,7 +183,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                     SizedBox(
                       height: 30,
                     ),
-                    Text("Shiping To"),
+                    Text("ที่อยู่จัดส่ง"),
                     SizedBox(
                       height: 10,
                     ),
@@ -207,7 +207,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                     SizedBox(
                       height: 20,
                     ),
-                    Text("Note"),
+                    Text("หมายเหตุ"),
                     SizedBox(
                       height: 10,
                     ),
@@ -242,7 +242,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                             value: checked[i],
                           ),
                           Text(
-                            'Confirm Order',
+                            'ยืนยันรายการ',
                             style: Theme.of(context)
                                 .textTheme
                                 .subtitle1
@@ -279,7 +279,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                           MyNavigator.goToAdmin(context);
                         },
                         child: Text(
-                          "Confirm",
+                          "ยืนยัน",
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ),
@@ -307,10 +307,10 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                       ),
                       child: GestureDetector(
                         onTap: () {
-                          MyNavigator.goToAdmin(context);
+                          MyNavigator.goToQRCodedetail(context);
                         },
                         child: Text(
-                          "Print Sticker",
+                          "พิมพ์สติกเกอร์",
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ),

@@ -2,6 +2,7 @@
 import 'package:JapanThaiExpress/AdminScreens/Auction/TimeLineAuctions.dart';
 import 'package:JapanThaiExpress/AdminScreens/Exchange/ExchangeDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/Notification/NotiDetailScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRCodeDetail.dart';
 import 'package:JapanThaiExpress/AdminScreens/Settings/SettingScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/SplashScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginPin.dart';
@@ -117,7 +118,9 @@ var routes = <String, WidgetBuilder>{
       ? SplashScreen()
       : tokenObj['data']['type'] == 'admin'
           ? HomeScreen()
+         
           : DashbordScreen(),
+        
   "/adminhome": (BuildContext context) => HomeScreen(),
   "/memberhome": (BuildContext context) => DashbordScreen(),
   "/intro": (BuildContext context) => IntroScreen(),
@@ -164,6 +167,7 @@ var routes = <String, WidgetBuilder>{
   "/notidetail": (BuildContext context) => NotiDetailScreen(),
   "/notidetailuser": (BuildContext context) => NotiDetailUserScreen(),
   "/timelineordermember" : (BuildContext context) => TimeLinePurchaseMember(),
+  "/qrcodedetail":(BuildContext context) => QRCodedetail(),
 };
 
 class MyApp extends StatelessWidget {
