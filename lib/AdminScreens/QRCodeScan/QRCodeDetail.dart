@@ -280,22 +280,22 @@ class _QRCodedetailState extends State<QRCodedetail> {
     return result;
   }
 
-  Future<dynamic> ShowCapturedWidget(
-      BuildContext context, Uint8List capturedImage) {
-    return showDialog(
-      useSafeArea: false,
-      context: context,
-      builder: (context) => Scaffold(
-        appBar: AppBar(
-          title: Text("รายละเอียด"),
-        ),
-        body: Container(
-            child: capturedImage != null
-                ? Image.memory(capturedImage)
-                : Container()),
-      ),
-    );
-  }
+  // Future<dynamic> ShowCapturedWidget(
+  //     BuildContext context, Uint8List capturedImage) {
+  //   return showDialog(
+  //     useSafeArea: false,
+  //     context: context,
+  //     builder: (context) => Scaffold(
+  //       appBar: AppBar(
+  //         title: Text("รายละเอียด"),
+  //       ),
+  //       body: Container(
+  //           child: capturedImage != null
+  //               ? Image.memory(capturedImage)
+  //               : Container()),
+  //     ),
+  //   );
+  // }
   // void _takeScreenshot() async{
 
   //   final imageFile = await _screenshotController.capture();
