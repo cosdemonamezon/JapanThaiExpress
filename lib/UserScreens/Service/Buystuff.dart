@@ -889,7 +889,7 @@ class _BuystuffState extends State<Buystuff> {
               Icons.edit,
               size: 25,
             ),
-            // onPressed: () {
+            onPressed: () {
             //   showDialog(
             //     //barrierDismissible: false,
             //     context: context,
@@ -898,7 +898,7 @@ class _BuystuffState extends State<Buystuff> {
             //     ),
             //   );
             //   //selectdialog();
-            // }
+            }
           ),
         ),
       ),
