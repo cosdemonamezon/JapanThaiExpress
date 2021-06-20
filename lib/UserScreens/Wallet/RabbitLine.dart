@@ -115,7 +115,7 @@ class _RabbitLineState extends State<RabbitLine> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Rabbit Line"),
+        title: Text("Rabbit LinePay"),
       ),
       body: Container(
         height: height,

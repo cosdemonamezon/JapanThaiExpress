@@ -198,9 +198,8 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
           // rate = datasetting['exchange_rate'].toString();
           // fee = datasetting['fee'].toString();
           //_rate = TextEditingController(text: datasetting['exchange_rate'].toString());
-          _fee = TextEditingController(text: datasetting['fee'].toString());
-          _com = TextEditingController(
-              text: datasetting['exhange_com'].toString());
+          _fee = TextEditingController(text: datasetting['exhange_fee'].toString());
+          _com = TextEditingController(text: datasetting['exhange_com'].toString());
           //rate = _rate.text;
           fee = _fee.text;
           com = _com.text;
