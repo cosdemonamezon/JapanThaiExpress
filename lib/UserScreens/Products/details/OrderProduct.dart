@@ -1,4 +1,5 @@
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
+import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:another_flushbar/flushbar.dart';
@@ -36,6 +37,7 @@ class _OrderProductState extends State<OrderProduct> {
   String total = "0.00"; //ยอดรวม
   String product_id;
   final _formKey = GlobalKey<FormBuilderState>();
+  final _formKey1 = GlobalKey<FormBuilderState>();
   bool isLoading = false;
 
   var a;
@@ -756,7 +758,7 @@ class _OrderProductState extends State<OrderProduct> {
                     fontSize: 18,
                   )),
               Container(
-                height: 300,
+                height: 270,
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
@@ -777,10 +779,46 @@ class _OrderProductState extends State<OrderProduct> {
                   ),
                 ),
               ),
+               SizedBox(
+                height: 0,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      //barrierDismissible: false,
+                      context: context,
+                      builder: (context) => addDialog(
+                        context,
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: 45,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                            color: Colors.grey.shade200,
+                            offset: Offset(2, 4),
+                            blurRadius: 5,
+                            spreadRadius: 2)
+                      ],
+                      gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
+                    ),
+                    child: Text("เพิ่มที่อยู่",
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                  )),
             ],
           ),
         ),
+        
+        
       ),
+      
     );
   }
 
@@ -996,5 +1034,249 @@ class _OrderProductState extends State<OrderProduct> {
         ],
       ),
     );
+  }
+
+  addDialog(context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Constants.padding),
+      ),
+      elevation: 1,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.only(
+            left: Constants.padding,
+            top: Constants.avatarRadius - Constants.padding,
+            right: Constants.padding,
+            bottom: Constants.padding),
+        margin: EdgeInsets.only(top: Constants.avatarRadius),
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: kFontPrimaryColor,
+            borderRadius: BorderRadius.circular(Constants.padding),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black, offset: Offset(0, 2), blurRadius: 2),
+            ]),
+        child: Container(
+          height: 390,
+          child: SingleChildScrollView(
+            child: FormBuilder(
+              key: _formKey1,
+              initialValue: {
+                'ชื่อ': '',
+                'ที่อยู่': '',
+                'เบอร์โทรศัพท์': '',
+              },
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "ชื่อ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: 'name',
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            // FormBuilderValidators.numeric(context),
+                            // FormBuilderValidators.max(context, 70),
+                          ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "ที่อยู่",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: 'description',
+                          maxLines: 2,
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            // FormBuilderValidators.numeric(context),
+                            // FormBuilderValidators.max(context, 70),
+                          ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "เบอร์โทรศัพท์",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          keyboardType: TextInputType.number,
+                          name: 'tel',
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            // FormBuilderValidators.numeric(context),
+                            // FormBuilderValidators.max(context, 70),
+                          ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            if (_formKey1.currentState.validate()) {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              _formKey1.currentState.save();
+                              _createAddmem(_formKey1.currentState.value);
+                            } else {}
+                            // _formKey.currentState.save();
+                            // print(_formKey.currentState.value);
+                            // _preorderMem(
+                            //     _formKey.currentState.value);
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                    color: Colors.grey.shade200,
+                                    offset: Offset(2, 4),
+                                    blurRadius: 5,
+                                    spreadRadius: 2)
+                              ],
+                              gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Color(0xffdd4b39),
+                                    Color(0xffdd4b39)
+                                  ]),
+                            ),
+                            child: isLoading == true
+                                ? Center(child: CircularProgressIndicator())
+                                : Text(
+                                    "ยืนยัน",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ),
+                          ),
+                        ),
+                        SizedBox(height: 15),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  _createAddmem(Map<String, dynamic> values) async {
+    print(values);
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    var url = Uri.parse(pathAPI + 'api/create_add_mem');
+    var response = await http.post(url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        body: ({
+          'name': values['name'],
+          'address': values['description'],
+          'tel': values['tel'],
+        }));
+    if (response.statusCode == 201) {
+      final Map<String, dynamic> creatdata = convert.jsonDecode(response.body);
+      if (creatdata['code'] == 201) {
+        setState(() {
+          isLoading = false;
+        });
+        String picSuccess = "assets/success.png";
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => alertAddmember(
+            creatdata['message'],
+            picSuccess,
+            context,
+          ),
+        );
+      } else {
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+      }
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
   }
 }
