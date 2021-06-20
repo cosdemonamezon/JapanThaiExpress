@@ -441,7 +441,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   GestureDetector(
                     onTap: () {
-                      DeviceApps.openApp('com.ashatech.perf');
+                      // DeviceApps.openApp('com.ashatech.perf');
 
                       if (_formKey.currentState.saveAndValidate()) {
                         _handleSubmitted();
