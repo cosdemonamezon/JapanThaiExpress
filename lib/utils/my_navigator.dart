@@ -125,7 +125,7 @@ static void goToTimeLineOrderMember(BuildContext context, int id) {
     // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
   }
 
-  static void goToTimelinePurchase(BuildContext context, String id) {
+  static void goToTimelinePurchase(BuildContext context, int id) {
     Navigator.push(
       context,
       MaterialPageRoute(
