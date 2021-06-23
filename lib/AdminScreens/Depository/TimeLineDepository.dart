@@ -188,7 +188,7 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                         name: name[i],
                         keyboardType: type[i].toString() == "text"
                             ? TextInputType.text
-                            : TextInputType.number,
+                            : TextInputType.numberWithOptions(decimal:true),
                         decoration: InputDecoration(
                             hintText: label[i].toString(),
                             //border: InputBorder.none,
@@ -233,7 +233,7 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             setStep(_formKey.currentState.value, name, id,
-                                context, stepUp, 'pending', field);
+                                context, stepUp, 'approved', field);
                           } else {
                             print("no data");
                           }

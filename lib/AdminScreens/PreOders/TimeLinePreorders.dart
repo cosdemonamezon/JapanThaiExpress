@@ -108,18 +108,18 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
       var showField = Data["data"]["list"][index]["show"];
       if (showField == true) {
         for (var familyMember in familyMembers) {
-          if(familyMember.toString() != '[]'){
-          if (familyMember["name"].toString() != 'status') {
-            setState(() {
-              familyMemberLabel.add(familyMember["label"]);
-              // var textEditingController = TextEditingController();
-              familyMemberName.add(familyMember["name"]);
-              familyMemberField.add(familyMember["name"]);
-              familyMemberType.add(familyMember['type']);
-            });
-            print(familyMemberName);
+          if (familyMember.toString() != '[]') {
+            if (familyMember["name"].toString() != 'status') {
+              setState(() {
+                familyMemberLabel.add(familyMember["label"]);
+                // var textEditingController = TextEditingController();
+                familyMemberName.add(familyMember["name"]);
+                familyMemberField.add(familyMember["name"]);
+                familyMemberType.add(familyMember['type']);
+              });
+              print(familyMemberName);
+            }
           }
-        }
         }
       }
       if (data['code'] == 200) {
@@ -181,108 +181,131 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
     // List<int> text = [1, 2, 3, 4];
     final _formKey = GlobalKey<FormBuilderState>();
     return AlertDialog(
-        content: SingleChildScrollView(
+      content: Stack(
+        children: [
+          SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: FormBuilder(
               key: _formKey,
-              child: Column(children: <Widget>[
-                Text("อัพเดทสถานะรายการ"),
-                SizedBox(height: 7),
-                for (var i = 0; i <= label.length - 1; i++)
-                  Column(
-                    children: [
-                      FormBuilderTextField(
-                        name: name[i],
-                        keyboardType: type[i].toString() == "text"
-                            ? TextInputType.text
-                            : TextInputType.number,
-                        decoration: InputDecoration(
-                            hintText: label[i].toString(),
-                            //border: InputBorder.none,
-                            border: OutlineInputBorder(),
-                            fillColor: Color(0xfff3f3f4),
-                            filled: true),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(context,
-                              errorText: 'กรุณากรอกข้อมูล'),
-                          // FormBuilderValidators.numeric(context),
-                          // FormBuilderValidators.max(context, 70),
-                        ]),
-                      ),
-                      // TextFormField(
-                      //   autofocus: true,
-                      //   decoration: InputDecoration(
-                      //       //border: InputBorder.none,
-                      //       hintText: label[i].toString(),
-                      //       border: OutlineInputBorder(
-                      //           borderRadius: BorderRadius.circular(10.0)),
-                      //       fillColor: Color(0xfff3f3f4),
-                      //       filled: true),
-                      // ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                    ],
-                  ),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7),
+              child: Column(
+                children: <Widget>[
+                  Text("อัพเดทสถานะรายการ"),
+                  SizedBox(height: 7),
+                  for (var i = 0; i <= label.length - 1; i++)
+                    Column(
+                      children: [
+                       
+                        FormBuilderTextField(
+                          name: name[i],
+                          keyboardType: type[i].toString() == "text"
+                              ? TextInputType.text
+                              : TextInputType.numberWithOptions(decimal: true),
+                          decoration: InputDecoration(
+                              hintText: label[i].toString(),
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context,
+                                errorText: 'กรุณากรอกข้อมูล'),
+                            // FormBuilderValidators.numeric(context),
+                            // FormBuilderValidators.max(context, 70),
+                          ]),
                         ),
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            _formKey.currentState.save();
-                            setStep(_formKey.currentState.value, name, id,
-                                context, stepUp, 'approved', field);
-                          } else {
-                            print("no data");
-                          }
-                        },
-                        padding: EdgeInsets.all(7),
-                        color: Colors.red,
-                        child: Text('อนุมัติรายการ',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 13)),
-                      ),
+                        // TextFormField(
+                        //   autofocus: true,
+                        //   decoration: InputDecoration(
+                        //       //border: InputBorder.none,
+                        //       hintText: label[i].toString(),
+                        //       border: OutlineInputBorder(
+                        //           borderRadius: BorderRadius.circular(10.0)),
+                        //       fillColor: Color(0xfff3f3f4),
+                        //       filled: true),
+                        // ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                      ],
                     ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        onPressed: () {
-                          if (stepUp != 'order') {
-                            Navigator.pop(context);
-                          } else {
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          onPressed: () {
                             if (_formKey.currentState.validate()) {
                               _formKey.currentState.save();
                               setStep(_formKey.currentState.value, name, id,
-                                  context, stepUp, 'rejected', field);
+                                  context, stepUp, 'approved', field);
                             } else {
                               print("no data");
                             }
-                          }
-                        },
-                        padding: EdgeInsets.all(7),
-                        color: Colors.black54,
-                        child: Text(
-                            stepUp != 'order' ? 'ปิดหน้านี้' : 'ยกเลิกรายการ',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 13)),
+                          },
+                          padding: EdgeInsets.all(7),
+                          color: Colors.red,
+                          child: Text('อนุมัติรายการ',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 13)),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ]),
-            )));
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          onPressed: () {
+                            if (stepUp != 'order') {
+                              Navigator.pop(context);
+                            } else {
+                              if (_formKey.currentState.validate()) {
+                                _formKey.currentState.save();
+                                setStep(_formKey.currentState.value, name, id,
+                                    context, stepUp, 'rejected', field);
+                              } else {
+                                print("no data");
+                              }
+                            }
+                          },
+                          padding: EdgeInsets.all(7),
+                          color: Colors.black54,
+                          child: Text(
+                              stepUp != 'order' ? 'ปิดหน้านี้' : 'ยกเลิกรายการ',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 13)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: -15,
+            left: 200,
+            child: IconButton(
+              icon: Icon(Icons.close_rounded),
+              iconSize: 30,
+              color: Colors.black,
+              onPressed: () {
+                print("object");
+                Navigator.pop(context);
+              },
+              
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   setStep(Map<String, dynamic> values, List name, int id, context,
@@ -765,6 +788,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'new',
+                                      
                                     familyMemberField,
                                     familyMemberType),
                               );
@@ -1017,6 +1041,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'buy',
+                                           
                                     familyMemberField,
                                     familyMemberType),
                               );
@@ -1134,6 +1159,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'shipping',
+                                           
                                     familyMemberField,
                                     familyMemberType),
                               );
@@ -1357,6 +1383,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'overdue',
+                                          
                                     familyMemberField,
                                     familyMemberType),
                               );
@@ -1463,6 +1490,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'store_thai',
+                                         
                                     familyMemberField,
                                     familyMemberType),
                               );
@@ -1653,6 +1681,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'overdue',
+                                         
                                     familyMemberField,
                                     familyMemberType),
                               );
