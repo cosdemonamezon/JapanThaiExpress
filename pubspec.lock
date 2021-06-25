@@ -28,7 +28,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.0"
+    version: "2.6.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -92,15 +92,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-  date_range_picker:
-    dependency: "direct overridden"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "87993aa58bbfff82d0f40d7b14edabfdc6d73eef"
-      url: "https://github.com/LempereurBenjamin/date_range_picker"
-    source: git
-    version: "1.0.6"
   device_apps:
     dependency: "direct main"
     description:
@@ -552,7 +543,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.8.1"
   stack_trace:
     dependency: transitive
     description:
@@ -594,7 +585,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.19"
+    version: "0.3.0"
   timeline_tile:
     dependency: "direct main"
     description:
