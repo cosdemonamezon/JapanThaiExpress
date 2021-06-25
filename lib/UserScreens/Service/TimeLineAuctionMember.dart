@@ -153,7 +153,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
   }
 
   dialogTimeline(String title, String img, context, List label, List name,
-      int id, String step, List field, List type) {
+      int id, String step,String overdue, List field, List type) {
     String stepUp;
     if (step == 'new') {
       stepUp = 'wait';
@@ -178,6 +178,33 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
             child: FormBuilder(
               key: _formKey,
               child: Column(children: <Widget>[
+                Column(
+                        children: [
+                          Center(
+                            child: Text(
+                              "รายละเอียด",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Text("${overdue} บาท")),
+                            ),
+                          ),
+                        ],
+                      ),
+                      
                 Text("อัพเดทสถานะรายการ"),
                 SizedBox(height: 7),
                 for (var i = 0; i <= label.length - 1; i++)
@@ -1261,6 +1288,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'store_thai',
+                                        dataTimeline['data']['overdue'],
                                     familyMemberField,
                                     familyMemberField),
                               );

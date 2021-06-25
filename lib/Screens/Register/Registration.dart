@@ -48,8 +48,10 @@ class _RegistrationState extends State<Registration> {
                 FormBuilder(
                   key: _formKey,
                   initialValue: {
-                    'fname': '',
-                    'lname': '',
+                    'thfname': '',
+                    'thlname': '',
+                    'enfname': '',
+                    'enlname': '',
                     'email': '',
                     'tel': '',
                     'password': '',
@@ -61,13 +63,13 @@ class _RegistrationState extends State<Registration> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "ชื่อ",
+                          "ชื่อภาษาไทย",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                         SizedBox(height: 10),
                         FormBuilderTextField(
-                            name: 'fname',
+                            name: 'thfname',
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person),
                                 labelText: 'ชื่อ(ภาษาไทย)',
@@ -77,17 +79,17 @@ class _RegistrationState extends State<Registration> {
                                 filled: true),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context,
-                                  errorText: 'กรุณากรอกชื่อ'),
+                                  errorText: 'กรุณากรอกชื่อภาษาไทย'),
                             ])),
                         SizedBox(height: 10),
                         Text(
-                          "นามสกุล",
+                          "นามสกุลภาษาไทย",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                         SizedBox(height: 10),
                         FormBuilderTextField(
-                            name: 'lname',
+                            name: 'thlname',
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person),
                                 labelText: 'นามสกุล(ภาษาไทย)',
@@ -97,7 +99,47 @@ class _RegistrationState extends State<Registration> {
                                 filled: true),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context,
-                                  errorText: 'กรุณากรอกนามสกุล'),
+                                  errorText: 'กรุณากรอกนามสกุลภาษาไทย'),
+                            ])),
+                        SizedBox(height: 10),
+                         Text(
+                          "ชื่อภาษาอังกฤษ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                            name: 'enfname',
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.person),
+                                labelText: 'ชื่อ(ภาษาอังกฤษ)',
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context,
+                                  errorText: 'กรุณากรอกชื่อภาษาอังกฤษ'),
+                            ])),
+                        SizedBox(height: 10),
+                        Text(
+                          "นามสกุลภาษาอังกฤษ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                            name: 'enlname',
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.person),
+                                labelText: 'นามสกุล(ภาษาอังกฤษ)',
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context,
+                                  errorText: 'กรุณากรอกนามสกุลภาษาอังกฤษ'),
                             ])),
                         SizedBox(height: 10),
                         Text(
