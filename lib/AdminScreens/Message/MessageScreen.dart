@@ -393,8 +393,8 @@ class _MessageScreenState extends State<MessageScreen> {
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: GestureDetector(
                                   onTap: () {
-                                    MyNavigator.goToTimelineauction(context,
-                                        MessageScreendata[index]['id']);
+                                    var arg = MessageScreendata[index]['id'];
+                                    MyNavigator.goToMessageRoom(context, arg);
                                   },
                                   child: Card(
                                     color: Colors.white,
@@ -404,9 +404,9 @@ class _MessageScreenState extends State<MessageScreen> {
                                           BoxDecoration(color: Colors.white),
                                       child: ListTile(
                                         contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20.0, vertical: 10.0),
+                                            horizontal: 10.0, vertical: 10.0),
                                         leading: Container(
-                                          padding: EdgeInsets.only(right: 14.0),
+                                          padding: EdgeInsets.only(right: 4.0),
                                           decoration: BoxDecoration(
                                               border: Border(
                                                   right: BorderSide(
@@ -469,13 +469,27 @@ class _MessageScreenState extends State<MessageScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: [
-                                            IconButton(
-                                              icon: const Icon(Icons
-                                                  .keyboard_arrow_right_outlined),
-                                              color: Colors.orange[900],
-                                              iconSize: 30,
-                                              onPressed: () {},
-                                            ),
+                                            MessageScreendata[index]['unread'] >
+                                                    0
+                                                ? CircleAvatar(
+                                                    radius: 20,
+                                                    backgroundColor: Colors.red,
+                                                    child: Center(
+                                                        child: Text(
+                                                            MessageScreendata[
+                                                                        index]
+                                                                    ['unread']
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 15,
+                                                              color:
+                                                                  Colors.white,
+                                                            ))),
+                                                  )
+                                                : Text(''),
                                           ],
                                         ),
                                       ),

@@ -1,4 +1,4 @@
-import 'dart:io';
+ import 'dart:io';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/Myaccount.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/Bank.dart';
 import 'package:JapanThaiExpress/UserScreens/Profile/components/body.dart';
@@ -85,18 +85,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     } else {
       var feedback = convert.jsonDecode(response.body);
-        Flushbar(
-          title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
-          backgroundColor: Colors.redAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          duration: Duration(seconds: 3),
-          leftBarIndicatorColor: Colors.blue[300],
-        )..show(context);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
     }
   }
 
@@ -119,18 +119,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     } else {
       var feedback = convert.jsonDecode(response.body);
-        Flushbar(
-          title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
-          backgroundColor: Colors.redAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          duration: Duration(seconds: 3),
-          leftBarIndicatorColor: Colors.blue[300],
-        )..show(context);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
     }
   }
 

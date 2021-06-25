@@ -75,7 +75,7 @@ class WalkthroughState extends State<Walkthrough>
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontWeight: FontWeight.normal,
-                      fontSize: 15.0,
+                      fontSize: 18.0,
                       color: Colors.black)),
             ),
             new Icon(

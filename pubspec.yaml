@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -24,6 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  screenshot: ^1.2.1
+  share: ^2.0.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -40,7 +42,7 @@ dependencies:
   pin_code_fields: ^6.1.0
   #http: ^0.12.2
   http: ^0.13.1
-  flutter_native_splash: ^1.0.3
+  #flutter_native_splash: ^1.0.3
   #flutter_form_builder: ^4.2.0
   flutter_form_builder: ^6.0.0
   #image_picker: ^0.6.7+22
@@ -48,18 +50,20 @@ dependencies:
   #flushbar: ^1.10.4
   qr_code_scanner: ^0.3.5
   timeline_tile: ^0.1.0
-  flutter_facebook_auth: ^3.3.1
+  #flutter_facebook_auth: ^3.3.1
   flutter_facebook_login: ^3.0.0
   google_sign_in: ^4.0.6
   pull_to_refresh: ^1.6.5
   image_gallery_saver: ^1.6.9
   dio: ^4.0.0
   path_provider: ^2.0.0
-  #permission_handler: ^7.0.0
   webview_flutter: ^2.0.4
   url_launcher: ^6.0.3
-  fluttertoast: ^8.0.6
+  fluttertoast: ^8.0.7
   another_flushbar: ^1.10.20
+  flutter_markdown: ^0.4.1
+  device_apps: ^2.1.1
+  permission_handler: ^8.1.1
 
 dependency_overrides:
   intl: 0.17.0-nullsafety.2
@@ -72,6 +76,12 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.8.0"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/launcher_icon.png"  
 
 
 flutter_native_splash:
@@ -96,18 +106,12 @@ flutter:
     - assets/icons/Megaphone.svg
     - assets/icons/coins.svg
     - assets/logo.png
-    - assets/pic-1.png
-    - assets/pic-2.png
-    - assets/pic-3.png
-    - assets/pic-4.png
     - assets/success.png
     - assets/denied.png
     - assets/wanning.png
-    - assets/pp.png
     - assets/promptpay.png
     - assets/logo_gateway_line.png
     - assets/stock.png
-    - assets/alucard.jpg
     - assets/o1.jpg
     - assets/o2.jpg
     - assets/o3.jpg
@@ -116,14 +120,13 @@ flutter:
     - assets/o6.jpg
     - assets/o7.jpg
     - assets/o8.jpg
+    - assets/pp.png
     - assets/mask2103.jpg
     - assets/amicle2103.jpg
     - assets/bhcle2103.jpg
     - assets/amiclep10.jpg
-    - assets/plgp5.jpg
     - assets/mlkp5.jpg
     - assets/kbank.jpg
-    - assets/1.png
     - assets/images/card_bg.png
     - assets/images/nopic.png
     - assets/images/logo.png

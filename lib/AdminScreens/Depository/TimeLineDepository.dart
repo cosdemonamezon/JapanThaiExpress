@@ -42,6 +42,7 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
   List<String> familyMemberName = [];
   List<String> familyMemberLabel = [];
   List<String> familyMemberField = [];
+  List<String> familyMemberType = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -63,6 +64,7 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
     familyMemberName = [];
     familyMemberLabel = [];
     familyMemberField = [];
+    familyMemberType = [];
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -111,6 +113,7 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
               // var textEditingController = TextEditingController();
               familyMemberName.add(familyMember["name"]);
               familyMemberField.add(familyMember["name"]);
+              familyMemberType.add(familyMember['type']);
             });
             print(familyMemberName);
           }
@@ -153,7 +156,7 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
   }
 
   dialogTimeline(String title, String img, context, List label, List name,
-      int id, String step, List field) {
+      int id, String step, List field, List type) {
     String stepUp;
     if (step == 'new') {
       stepUp = 'order';
@@ -183,7 +186,9 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                     children: [
                       FormBuilderTextField(
                         name: name[i],
-                        keyboardType: TextInputType.text,
+                        keyboardType: type[i].toString() == "text"
+                            ? TextInputType.text
+                            : TextInputType.numberWithOptions(decimal:true),
                         decoration: InputDecoration(
                             hintText: label[i].toString(),
                             //border: InputBorder.none,
@@ -228,7 +233,7 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             setStep(_formKey.currentState.value, name, id,
-                                context, stepUp, 'pending', field);
+                                context, stepUp, 'approved', field);
                           } else {
                             print("no data");
                           }
@@ -725,7 +730,8 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'new',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -941,7 +947,8 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'transport',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1040,7 +1047,8 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'transport',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1229,7 +1237,8 @@ class _TimeLineDepositoryState extends State<TimeLineDepository> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'overdue',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },

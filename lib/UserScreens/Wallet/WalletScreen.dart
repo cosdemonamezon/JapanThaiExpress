@@ -1,4 +1,6 @@
 //import 'package:JapanThaiExpress/UserScreens/Wallet/Topup.dart';
+import 'dart:ffi';
+
 import 'package:JapanThaiExpress/UserScreens/Wallet/WalletDetail.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:JapanThaiExpress/constants.dart';
@@ -27,7 +29,7 @@ class _WalletScreenState extends State<WalletScreen> {
   bool colorSwitched = false;
   var logoImage;
   SharedPreferences prefs;
-  String wallet = "....";
+  double wallet = 0.0;
   Map<String, dynamic> datawallet;
   bool isLoading = true;
   int totalResults = 0;
@@ -42,15 +44,19 @@ class _WalletScreenState extends State<WalletScreen> {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
+    _getWallet();
+    _transaction();
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
+    _getWallet();
+    _transaction();
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    items.add((items.length + 1).toString());
-    if (mounted) setState(() {});
+    // items.add((items.length + 1).toString());
+    // if (mounted) setState(() {});
     _refreshController.loadComplete();
   }
 
@@ -79,7 +85,7 @@ class _WalletScreenState extends State<WalletScreen> {
           convert.jsonDecode(response.body);
       setState(() {
         datawallet = wallettdata['data'];
-        wallet = datawallet['wallet'];
+        wallet = double.parse(datawallet['wallet']);
         isLoading = false;
       });
     } else {
@@ -122,6 +128,7 @@ class _WalletScreenState extends State<WalletScreen> {
         },
       );
       if (response.statusCode == 200) {
+        walletdata = [];
         final Map<String, dynamic> depdata = convert.jsonDecode(response.body);
         setState(() {
           totalResults = depdata['data']['total'];
@@ -308,7 +315,9 @@ class _WalletScreenState extends State<WalletScreen> {
                         itemCount: walletdata.length,
                         itemBuilder: (BuildContext context, int index) {
                           return buildCard(
-                            'assets/images/cat-wallet.png',
+                            walletdata[index]['payment_type'] == 'PromptPay'
+                            ? 'assets/promptpay.png'
+                            : 'assets/logo_gateway_line.png',
                             'ช่องทาง: ${walletdata[index]['payment_type']}',
                             'วันที่: ${walletdata[index]['created_at']}',
                             'ยอดเงิน: ${walletdata[index]['amount']}',

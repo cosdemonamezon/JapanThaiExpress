@@ -1,7 +1,8 @@
-import 'dart:developer';
-import 'dart:io';
+//import 'dart:developer';
 import 'package:JapanThaiExpress/AdminScreens/Auction/TimeLineAuctions.dart';
 import 'package:JapanThaiExpress/AdminScreens/Exchange/ExchangeDetailScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/Notification/NotiDetailScreen.dart';
+import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRCodeDetail.dart';
 import 'package:JapanThaiExpress/AdminScreens/Settings/SettingScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/SplashScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginPin.dart';
@@ -25,6 +26,7 @@ import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/UserScreens/Dashboard/DashbordScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Messageuser/Messagesend.dart';
 import 'package:JapanThaiExpress/UserScreens/MyOders/OdersScreen.dart';
+import 'package:JapanThaiExpress/UserScreens/MyOders/TimeLinePurchaseMember.dart';
 import 'package:JapanThaiExpress/UserScreens/News/DetailNews.dart';
 import 'package:JapanThaiExpress/UserScreens/News/NewsScreen.dart';
 import 'package:JapanThaiExpress/UserScreens/Products/ProductScreen.dart';
@@ -69,6 +71,7 @@ import 'package:JapanThaiExpress/LoginFB.dart';
 import 'package:JapanThaiExpress/LoginGoogle.dart';
 
 import 'UserScreens/Messageuser/MessageScreen.dart';
+import 'UserScreens/WidgetsUser/NotiDetailUserScreen.dart';
 
 String token;
 var tokenObj;
@@ -77,8 +80,6 @@ String routePath = '/';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  // token = prefs.getString('token');
-  // tokenObj = convert.jsonDecode(token);
 
   SystemChrome.setEnabledSystemUIOverlays(
       [SystemUiOverlay.bottom, SystemUiOverlay.top]);
@@ -105,25 +106,10 @@ void main() async {
     // will be called whenever a notification is received
   });
 
-  // OneSignal.shared
-  //     .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-  //   // will be called whenever a notification is opened/button pressed.
-  //   navigatorKey.currentState
-  //       .pushNamed(result.notification.payload.additionalData['/home']);
-  // });
-
   var status = await OneSignal.shared.getPermissionSubscriptionState();
   String playerId = status.subscriptionStatus.userId;
   print(playerId);
-  // await OneSignal.shared.postNotification(OSCreateNotification(
-  //   playerIds: [playerId],
-  //   content: "this is a test from OneSignal's Flutter SDK",
-  //   heading: "Test Notification",
-  //   buttons: [
-  //     OSActionButton(text: "test1", id: "id1"),
 
-  //   ]
-  // ));
   runApp(MyApp());
 }
 
@@ -132,7 +118,9 @@ var routes = <String, WidgetBuilder>{
       ? SplashScreen()
       : tokenObj['data']['type'] == 'admin'
           ? HomeScreen()
+         
           : DashbordScreen(),
+        
   "/adminhome": (BuildContext context) => HomeScreen(),
   "/memberhome": (BuildContext context) => DashbordScreen(),
   "/intro": (BuildContext context) => IntroScreen(),
@@ -176,7 +164,10 @@ var routes = <String, WidgetBuilder>{
   "/homescreen": (BuildContext context) => HomeScreen(),
   "/exchangedetail": (BuildContext context) => ExchangeDetailScreen(),
   "/buystuff": (BuildContext context) => Buystuff(),
-  
+  "/notidetail": (BuildContext context) => NotiDetailScreen(),
+  "/notidetailuser": (BuildContext context) => NotiDetailUserScreen(),
+  "/timelineordermember" : (BuildContext context) => TimeLinePurchaseMember(),
+  "/qrcodedetail":(BuildContext context) => QRCodedetail(),
 };
 
 class MyApp extends StatelessWidget {
@@ -190,7 +181,7 @@ class MyApp extends StatelessWidget {
     ]);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'JapanThaiExpress',
+        title: 'JapanThai Express',
         theme: ThemeData(
           fontFamily: 'Prompt',
           //primarySwatch: Colors.grey,

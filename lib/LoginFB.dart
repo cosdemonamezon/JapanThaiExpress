@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+//import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -76,12 +76,13 @@ class _LoginFBState extends State<LoginFB> {
                   Text(_userObj["email"]),
                   TextButton(
                       onPressed: () {
-                        FacebookAuth.instance.logOut().then((value) {
+                        print('iphone');
+                        /*FacebookAuth.instance.logOut().then((value) {
                           setState(() {
                             _isLoggedIn = false;
                             _userObj = {};
                           });
-                        });
+                        });*/
                       },
                       child: Text("Logout"))
                 ],
@@ -89,7 +90,8 @@ class _LoginFBState extends State<LoginFB> {
             : Center(
                 child: ElevatedButton(
                   child: Text("Login with Facebook"),
-                  onPressed: _login,
+                  onPressed:  (){print('iphone');}
+                  //onPressed: _login,
                 ),
               ),
       ),

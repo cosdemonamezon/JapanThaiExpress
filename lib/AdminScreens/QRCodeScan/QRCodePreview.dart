@@ -19,7 +19,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Order Detail"),
+        title: Text("รายละเอียด"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -47,215 +47,340 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("code"),
+                    Text(
+                      "รหัสสินค้า : ${data['code']}",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      //initialValue: '0.29 / 1 Bath',
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText: 'Error message',
-                        hintText: "code",
-                        border: OutlineInputBorder(),
+                    // TextFormField(
+                    //   //initialValue: '0.29 / 1 Bath',
+                    //   decoration: InputDecoration(
+                    //     //labelText: 'Label text',
+                    //     //errorText: 'Error message',
+                    //     hintText: "code",
+                    //     border: OutlineInputBorder(),
+                    //     enabled: false,
+                    //   ),
+                    //   initialValue: data['code'],
+                    // ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "ชื่อผู้สั่ง : ${data['name']}",
+                      style: TextStyle(
+                        fontSize: 18,
                       ),
-                      initialValue: data['code'],
                     ),
                     SizedBox(
-                      height: 30,
+                      height: 10,
                     ),
-                    Text("name"),
+                    // TextFormField(
+                    //   //initialValue: '0.32 / 1 Bath',
+                    //   decoration: InputDecoration(
+                    //     //labelText: 'Label text',
+                    //     //errorText: 'Error message',
+                    //     hintText: "name",
+                    //     border: OutlineInputBorder(),
+                    //     enabled: false,
+                    //   ),
+                    //   initialValue: data['name'],
+                    // ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "จำนวน : ${data['qty']}",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    // TextFormField(
+                    //   //initialValue: '0.32 / 1 Bath',
+                    //   decoration: InputDecoration(
+                    //     //labelText: 'Label text',
+                    //     //errorText:Q'Error message',
+                    //     hintText: "Qty",
+                    //     border: OutlineInputBorder(),
+                    //     enabled: false,
+                    //   ),
+                    //   initialValue: data['qty'],
+                    // ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "อัตราแลกเปลี่ยน : ${data['rate']}",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    // TextFormField(
+                    //   //initialValue: '0.32 / 1 Bath',
+                    //   decoration: InputDecoration(
+                    //     //labelText: 'Label text',
+                    //     //errorText:Q'Error message',
+                    //     hintText: "Rate",
+                    //     border: OutlineInputBorder(),
+                    //     enabled: false,
+                    //   ),
+                    //   initialValue: data['rate'],
+                    // ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "ราคา : ${data['price']}",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    // TextFormField(
+                    //   //initialValue: '0.32 / 1 Bath',
+                    //   decoration: InputDecoration(
+                    //     //labelText: 'Label text',
+                    //     //errorText:Q'Error message',
+                    //     hintText: "Price",
+                    //     border: OutlineInputBorder(),
+                    //     enabled: false,
+                    //   ),
+                    //   initialValue: data['price'],
+                    // ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "ค่าบริการ : ${data['fee']}",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    // TextFormField(
+                    //   //initialValue: '0.32 / 1 Bath',
+                    //   decoration: InputDecoration(
+                    //     //labelText: 'Label text',
+                    //     //errorText:Q'Error message',
+                    //     hintText: "fee",
+                    //     border: OutlineInputBorder(),
+                    //     enabled: false,
+                    //   ),
+                    //   initialValue: data['fee'],
+                    // ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "เลขพัสดุญี่ปุ่น : ${data['track_jp']}",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    // TextFormField(
+                    //   //initialValue: '0.32 / 1 Bath',
+                    //   decoration: InputDecoration(
+                    //     //labelText: 'Label text',
+                    //     //errorText:Q'Error message',
+                    //     hintText: "Track JPNO.",
+                    //     border: OutlineInputBorder(),
+                    //     enabled: false,
+                    //   ),
+                    //   initialValue: data['track_jp'],
+                    // ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "ประเภทบริการ : ${data['type']}",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    // TextFormField(
+                    //   //initialValue: '0.32 / 1 Bath',
+                    //   decoration: InputDecoration(
+                    //     //labelText: 'Label text',
+                    //     //errorText:Q'Error message',
+                    //     hintText: "Type",
+                    //     border: OutlineInputBorder(),
+                    //     enabled: false,
+                    //   ),
+                    //   initialValue: data['type'],
+                    // ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "ที่อยู่จัดส่ง",
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        Divider(
+                          thickness: 2,
+                        ),
+                        Text(
+                          'ชื่อผู้รับ : ${data['ship_name']}',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'เบอร์ : ${data['ship_tel']}',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'ที่อยู่ : ${data['ship_address']}',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                        Divider(
+                          thickness: 2,
+                        )
+                      ],
+                    ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    // TextFormField(
+                    //   //initialValue: '0.32 / 1 Bath',
+                    //   maxLines: 5,
+                    //   decoration: InputDecoration(
+                    //     //labelText: 'Label text',
+                    //     //errorText: 'Error message',
+                    //     hintText: "Address",
+                    //     border: OutlineInputBorder(),
+                    //     enabled: false,
+                    //   ),
+                    //   initialValue: "Ship Name : " +
+                    //       data['ship_name'] +
+                    //       "\nAddress : " +
+                    //       data['ship_address'] +
+                    //       "\nShip Tel : " +
+                    //       data['ship_tel'],
+                    // ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "หมายเหตุ",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
                     TextFormField(
                       //initialValue: '0.32 / 1 Bath',
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText: 'Error message',
-                        hintText: "name",
-                        border: OutlineInputBorder(),
-                      ),
-                      initialValue: data['name'],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("QTY"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      //initialValue: '0.32 / 1 Bath',
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText:Q'Error message',
-                        hintText: "Qty",
-                        border: OutlineInputBorder(),
-                      ),
-                      initialValue: data['qty'],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("Rate"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      //initialValue: '0.32 / 1 Bath',
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText:Q'Error message',
-                        hintText: "Rate",
-                        border: OutlineInputBorder(),
-                      ),
-                      initialValue: data['rate'],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("Price"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      //initialValue: '0.32 / 1 Bath',
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText:Q'Error message',
-                        hintText: "Price",
-                        border: OutlineInputBorder(),
-                      ),
-                      initialValue: data['price'],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("Fee"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      //initialValue: '0.32 / 1 Bath',
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText:Q'Error message',
-                        hintText: "fee",
-                        border: OutlineInputBorder(),
-                      ),
-                      initialValue: data['fee'],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("Track JP No."),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      //initialValue: '0.32 / 1 Bath',
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText:Q'Error message',
-                        hintText: "Track JPNO.",
-                        border: OutlineInputBorder(),
-                      ),
-                      initialValue: data['track_jp'],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("Order Type"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      //initialValue: '0.32 / 1 Bath',
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText:Q'Error message',
-                        hintText: "Type",
-                        border: OutlineInputBorder(),
-                      ),
-                      initialValue: data['type'],
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Text("Shiping To"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      //initialValue: '0.32 / 1 Bath',
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        //labelText: 'Label text',
-                        //errorText: 'Error message',
-                        hintText: "Address",
-                        border: OutlineInputBorder(),
-                      ),
-                      initialValue: "Ship Name :" +
-                          data['ship_name'] +
-                          "\n" +
-                          "Address :" +
-                          data['ship_address'] +
-                          "Ship Tel :" +
-                          data['ship_tel'],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text("Note"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      //initialValue: '0.32 / 1 Bath',
-                      maxLines: 5,
+                      maxLines: 2,
                       decoration: InputDecoration(
                         //labelText: 'Label text',
                         //errorText: 'Error message',
                         hintText: "detail",
                         border: OutlineInputBorder(),
+                        enabled: false,
                       ),
                       initialValue: data['note'],
                     ),
                     SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "ค่าขนส่ง ญ-ญ",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "ค่าขนส่ง ญ-ญ : เยน",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "น้ำหนัก",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "น้ำหนัก : กิโลกรัม",
+                        border: OutlineInputBorder(),
+                      ),
+                      initialValue: data['weight'],
+                    ),
+                    SizedBox(
                       height: 20,
                     ),
-                    for (var i = 0; i < 1; i += 1)
-                      Row(
-                        children: [
-                          Checkbox(
-                            activeColor: Color(0xffdd4b39),
-                            checkColor: Colors.white,
-                            onChanged: i == 4
-                                ? null
-                                : (bool value) {
-                                    setState(() {
-                                      checked[i] = value;
-                                    });
-                                  },
-                            tristate: i == 1,
-                            value: checked[i],
-                          ),
-                          Text(
-                            'Confirm Order',
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle1
-                                .copyWith(
-                                    color:
-                                        i == 4 ? Colors.black38 : Colors.black),
-                          ),
-                        ],
-                        mainAxisAlignment: MainAxisAlignment.start,
-                      ),
-                    SizedBox(
-                      height: 40,
-                    ),
+                    // for (var i = 0; i < 1; i += 1)
+                    //   Row(
+                    //     children: [
+                    //       Checkbox(
+                    //         activeColor: Color(0xffdd4b39),
+                    //         checkColor: Colors.white,
+                    //         onChanged: i == 4
+                    //             ? null
+                    //             : (bool value) {
+                    //                 setState(() {
+                    //                   checked[i] = value;
+                    //                 });
+                    //               },
+                    //         tristate: i == 1,
+                    //         value: checked[i],
+                    //       ),
+                    //       Text(
+                    //         'ยืนยันรายการ',
+                    //         style: Theme.of(context)
+                    //             .textTheme
+                    //             .subtitle1
+                    //             .copyWith(
+                    //                 color:
+                    //                     i == 4 ? Colors.black38 : Colors.black),
+                    //       ),
+                    //     ],
+                    //     mainAxisAlignment: MainAxisAlignment.start,
+                    //   ),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.symmetric(vertical: 15),
@@ -279,7 +404,38 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                           MyNavigator.goToAdmin(context);
                         },
                         child: Text(
-                          "Confirm",
+                          "ยืนยัน",
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                              color: Colors.grey.shade200,
+                              offset: Offset(2, 4),
+                              blurRadius: 5,
+                              spreadRadius: 2)
+                        ],
+                        gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          MyNavigator.goToQRCodedetail(context);
+                        },
+                        child: Text(
+                          "พิมพ์สติกเกอร์",
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ),

@@ -1,11 +1,6 @@
 import 'dart:io' as Io;
 import 'dart:convert';
-import 'package:JapanThaiExpress/UserScreens/Service/DetailStep.dart';
-import 'package:JapanThaiExpress/UserScreens/Messageuser/Messagesend.dart';
-
-import 'package:JapanThaiExpress/UserScreens/Service/Service.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
-import 'package:JapanThaiExpress/alert.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:another_flushbar/flushbar.dart';
@@ -17,7 +12,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../utils/my_navigator.dart';
 import '../../utils/my_navigator.dart';
 
 class MessageScreen extends StatefulWidget {
@@ -58,15 +52,14 @@ class _MessageScreenState extends State<MessageScreen> {
       RefreshController(initialRefresh: false);
 
   get index => null;
-  //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOjYsImlhdCI6MTYxNTcxNTA3NCwiZXhwIjoxNjE1ODAxNDc0fQ.qX0GNbwo7PNY8TD4AXYQwGywdrOVmolOYum9wg1sG84";
 
   @override
   void initState() {
     super.initState();
     _getMessageScreenory();
-    _addressMem();
-    _MessageScreenoryType();
-    _shippingOption();
+    // _addressMem();
+    // _MessageScreenoryType();
+    // _shippingOption();
   }
 
   void _onRefresh() async {
@@ -106,6 +99,7 @@ class _MessageScreenState extends State<MessageScreen> {
   }
 
   _getMessageScreenory() async {
+    MessageScreendata = [];
     try {
       setState(() {
         page == 1 ? isLoading = true : isLoading = false;
@@ -313,6 +307,51 @@ class _MessageScreenState extends State<MessageScreen> {
     }
   }
 
+  _addTopic(Map<String, dynamic> values) async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    print(values);
+    setState(() {
+      isLoading = true;
+    });
+
+    var url = Uri.parse(pathAPI + 'api/topic');
+    var response = await http.post(url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+        },
+        body: ({
+          'title': values['title'],
+          'description': values['description'],
+        }));
+
+    if (response.statusCode == 201) {
+      final Map<String, dynamic> topicdata = convert.jsonDecode(response.body);
+
+      setState(() {
+        isLoading = false;
+      });
+      _getMessageScreenory();
+      Navigator.pop(context);
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
+  }
+
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -333,112 +372,200 @@ class _MessageScreenState extends State<MessageScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-     
-        return DefaultTabController(length: 1, 
-        child: Scaffold(
-          appBar: AppBar(
-            
-              elevation: 0,
-              centerTitle: true,
-              title: Text("กล่องข้อความ"),
-              leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    MyNavigator.goToMember(context);
-                  }),
-              ),
-        
-          body: TabBarView(
-            children: [
-              
-              Container(
-                height: height,
-                color: Colors.white,
-                child: isLoading == true
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : SmartRefresher(
-                        enablePullDown: true,
-                        enablePullUp: true,
-                        header: ClassicHeader(
-                          refreshStyle: RefreshStyle.Follow,
-                          refreshingText: 'กำลังโหลด.....',
-                          completeText: 'โหลดข้อมูลสำเร็จ',
-                        ),
-                        footer: CustomFooter(
-                          builder: (BuildContext context, LoadStatus mode) {
-                            Widget body;
-                            if (mode == LoadStatus.idle) {
-                              //body =  Text("ไม่พบรายการ");
-                            } else if (mode == LoadStatus.loading) {
-                              body = CircularProgressIndicator();
-                            } else if (mode == LoadStatus.failed) {
-                              body = Text("Load Failed!Click retry!");
-                            } else if (mode == LoadStatus.canLoading) {
-                              body = Text("release to load more");
-                            } else if (mode == LoadStatus.noMore) {
-                              //body = Text("No more Data");
-                              body = Text("ไม่พบข้อมูล");
-                            }
-                            return Container(
-                              height: 55.0,
-                              child: Center(child: body),
-                            );
-                          },
-                        ),
-                        controller: _refreshController,
-                        onRefresh: _onRefresh,
-                        onLoading: _onLoading,
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: MessageScreendata.length,
-                            padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    MyNavigator.goToMessageRoom(context,
-                                        MessageScreendata[index]['id']);
-                                  },
-                                  child: messageCard(
-                                      MessageScreendata[index]['title'],
-                                      Icons.message_outlined,
-                                      MessageScreendata[index]['user']
-                                                  ['fname_th']
-                                              .toString() +
-                                          ' ' +
-                                          MessageScreendata[index]['user']
-                                                  ['lname_th']
-                                              .toString(),
-                                      MessageScreendata[index]['send_at']
-                                          .toString()),
-                                ),
-                              );
-                            }),
+
+    return DefaultTabController(
+      length: 1,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: true,
+          title: Text("กล่องข้อความ"),
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                MyNavigator.goToMember(context);
+              }),
+        ),
+        body: TabBarView(
+          children: [
+            Container(
+              height: height,
+              color: Colors.grey[300],
+              child: isLoading == true
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : SmartRefresher(
+                      enablePullDown: true,
+                      enablePullUp: true,
+                      header: ClassicHeader(
+                        refreshStyle: RefreshStyle.Follow,
+                        refreshingText: 'กำลังโหลด.....',
+                        completeText: 'โหลดข้อมูลสำเร็จ',
                       ),
+                      footer: CustomFooter(
+                        builder: (BuildContext context, LoadStatus mode) {
+                          Widget body;
+                          if (mode == LoadStatus.idle) {
+                            //body =  Text("ไม่พบรายการ");
+                          } else if (mode == LoadStatus.loading) {
+                            body = CircularProgressIndicator();
+                          } else if (mode == LoadStatus.failed) {
+                            body = Text("Load Failed!Click retry!");
+                          } else if (mode == LoadStatus.canLoading) {
+                            body = Text("release to load more");
+                          } else if (mode == LoadStatus.noMore) {
+                            //body = Text("No more Data");
+                            //body = Text("ไม่พบข้อมูล");
+                          }
+                          return Container(
+                            height: 55.0,
+                            child: Center(child: body),
+                          );
+                        },
+                      ),
+                      controller: _refreshController,
+                      onRefresh: _onRefresh,
+                      onLoading: _onLoading,
+                      child: MessageScreendata.length > 0
+                          ? ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: MessageScreendata.length,
+                              padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      var arg = MessageScreendata[index]['id'];
+                                      MyNavigator.goToMessageRoomUser(
+                                          context, arg);
+                                    },
+                                    child: Card(
+                                      color: Colors.white,
+                                      elevation: 4.0,
+                                      child: Container(
+                                        decoration:
+                                            BoxDecoration(color: Colors.white),
+                                        child: ListTile(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 20.0, vertical: 10.0),
+                                          leading: Container(
+                                            padding:
+                                                EdgeInsets.only(right: 14.0),
+                                            decoration: BoxDecoration(
+                                                border: Border(
+                                                    right: BorderSide(
+                                                        width: 2.0,
+                                                        color: primaryColor))),
+                                            child: IconButton(
+                                              icon: const Icon(Icons.message),
+                                              color: Colors.orange[900],
+                                              iconSize: 30,
+                                              onPressed: () {},
+                                            ),
+                                          ),
+                                          title: Text(
+                                            MessageScreendata[index]['title'],
+                                            style: TextStyle(
+                                                color: kTextButtonColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          subtitle: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Flexible(
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: MessageScreendata[
+                                                                            index]
+                                                                        ['user']
+                                                                    ['tel'] !=
+                                                                null
+                                                            ? "เบอร์ติดต่อ :" +
+                                                                MessageScreendata[
+                                                                                index]
+                                                                            [
+                                                                            'user']
+                                                                        ['tel']
+                                                                    .toString()
+                                                            : "เบอร์ติดต่อ :" +
+                                                                "-",
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
+                                                    ),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "วันที่บันทึก :" +
+                                                            MessageScreendata[
+                                                                        index]
+                                                                    ['send_at']
+                                                                .split("T")[0],
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextButtonColor),
+                                                      ),
+                                                      maxLines: 3,
+                                                      softWrap: true,
+                                                    ),
+                                                  ]))
+                                            ],
+                                          ),
+                                          trailing: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                icon: const Icon(Icons
+                                                    .keyboard_arrow_right_outlined),
+                                                color: Colors.orange[900],
+                                                iconSize: 30,
+                                                onPressed: () {},
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              })
+                          : Center(child: Text('ไม่พบข้อมูล')),
+                    ),
+            ),
+
+            //tab 2
+          ],
+        ),
+        bottomNavigationBar: NavigationBar(),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            //MyNavigator.goTomessagesend(context);
+            showDialog(
+              barrierDismissible: true,
+              context: context,
+              builder: (context) => addTopic(
+                context,
               ),
-               
-             
-              //tab 2
-              
-            ],
-          ),
-    
-      floatingActionButton: FloatingActionButton.extended(
-      onPressed: () {
-     
-         MyNavigator.goTomessagesend(context);
-      },
-       label: Text('ข้อความใหม่'),
-      icon: Icon(Icons.add),
-      backgroundColor: Color(0xffdd4b39),
-    ),
-          
-        ),);
-        
+            );
+          },
+          label: Text('ข้อความใหม่'),
+          icon: Icon(Icons.add),
+          backgroundColor: Color(0xffdd4b39),
+        ),
+      ),
+    );
   }
 
   Card messageCard(String title, IconData icon, String subtitle, String date) {
@@ -458,7 +585,7 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 
-  addDialog(context) {
+  addTopic(context) {
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Constants.padding),
@@ -486,9 +613,8 @@ class _MessageScreenState extends State<MessageScreen> {
             child: FormBuilder(
               key: _formKey1,
               initialValue: {
-                'name': '',
+                'title': '',
                 'description': '',
-                'tel': '',
               },
               child: Column(
                 children: [
@@ -498,20 +624,21 @@ class _MessageScreenState extends State<MessageScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Name",
+                          "หัวข้อ",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                         SizedBox(height: 10),
                         FormBuilderTextField(
-                          name: 'name',
+                          name: 'title',
                           decoration: InputDecoration(
                               //border: InputBorder.none,
                               border: OutlineInputBorder(),
                               fillColor: Color(0xfff3f3f4),
                               filled: true),
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
+                            FormBuilderValidators.required(context,
+                                errorText: 'กรุณาใส่หัวข้อ Topic'),
                             // FormBuilderValidators.numeric(context),
                             // FormBuilderValidators.max(context, 70),
                           ]),
@@ -525,21 +652,22 @@ class _MessageScreenState extends State<MessageScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Description",
+                          "รายละเอียด",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                         SizedBox(height: 10),
                         FormBuilderTextField(
                           name: 'description',
-                          maxLines: 2,
+                          maxLines: 3,
                           decoration: InputDecoration(
                               //border: InputBorder.none,
                               border: OutlineInputBorder(),
                               fillColor: Color(0xfff3f3f4),
                               filled: true),
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
+                            FormBuilderValidators.required(context,
+                                errorText: 'กรุณาใส่รายละเอียด'),
                             // FormBuilderValidators.numeric(context),
                             // FormBuilderValidators.max(context, 70),
                           ]),
@@ -548,35 +676,7 @@ class _MessageScreenState extends State<MessageScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Tel",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        ),
-                        SizedBox(height: 10),
-                        FormBuilderTextField(
-                          keyboardType: TextInputType.number,
-                          name: 'tel',
-                          decoration: InputDecoration(
-                              //border: InputBorder.none,
-                              border: OutlineInputBorder(),
-                              fillColor: Color(0xfff3f3f4),
-                              filled: true),
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
-                            // FormBuilderValidators.numeric(context),
-                            // FormBuilderValidators.max(context, 70),
-                          ]),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
+                    margin: EdgeInsets.symmetric(vertical: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -584,7 +684,11 @@ class _MessageScreenState extends State<MessageScreen> {
                         GestureDetector(
                           onTap: () {
                             if (_formKey1.currentState.validate()) {
+                              setState(() {
+                                isLoading = true;
+                              });
                               _formKey1.currentState.save();
+                              _addTopic(_formKey1.currentState.value);
                             } else {}
                             // _formKey.currentState.save();
                             // print(_formKey.currentState.value);
@@ -613,11 +717,13 @@ class _MessageScreenState extends State<MessageScreen> {
                                     Color(0xffdd4b39)
                                   ]),
                             ),
-                            child: Text(
-                              "ยืนยัน",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                            ),
+                            child: isLoading == true
+                                ? Center(child: CircularProgressIndicator())
+                                : Text(
+                                    "ยืนยัน",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ),
                           ),
                         ),
                         SizedBox(height: 15),

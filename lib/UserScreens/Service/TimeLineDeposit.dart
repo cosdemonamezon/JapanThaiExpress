@@ -3,7 +3,10 @@ import 'package:JapanThaiExpress/UserScreens/Service/Deposit.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -30,6 +33,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
   SharedPreferences prefsNoti;
   bool isLoading = false;
   Map<String, dynamic> data = {};
+  Map<String, dynamic> jpaddress = {};
   List<dynamic> notidata = [];
   Map<String, dynamic> readnotidata = {};
   Map<String, dynamic> dataTimeline = {};
@@ -38,6 +42,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
   List<String> familyMemberName = [];
   List<String> familyMemberLabel = [];
   List<String> familyMemberField = [];
+  List<String> familyMemberType = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -53,9 +58,46 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
       print(id);
       _gettimeline(id);
     });
+    _getJPaddress();
+  }
+
+  _getJPaddress() async {
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    var url = Uri.parse(pathAPI + 'api/app/jp_address');
+    var response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token['data']['token'],
+    });
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jpdata = convert.jsonDecode(response.body);
+      setState(() {
+        jpaddress = jpdata['data'];
+      });
+      print(jpaddress);
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
   }
 
   _gettimeline(String id) async {
+    familyMemberName = [];
+    familyMemberLabel = [];
+    familyMemberField = [];
+    familyMemberType = [];
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -102,6 +144,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
             // var textEditingController = TextEditingController();
             familyMemberName.add(familyMember["name"]);
             familyMemberField.add(familyMember["name"]);
+            familyMemberType.add(familyMember['type']);
           });
           print(familyMemberName);
         }
@@ -143,7 +186,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
   }
 
   dialogTimeline(String title, String img, context, List label, List name,
-      int id, String step, List field) {
+      int id, String step, String overdue, List field, List type) {
     String stepUp;
     if (step == 'new') {
       stepUp = 'order';
@@ -166,6 +209,37 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
             child: FormBuilder(
               key: _formKey,
               child: Column(children: <Widget>[
+                step == 'order'
+                    ? jpAddressdialog(context, jpaddress['address'])
+                    : 
+                step == 'store_thai' 
+                    ? Column(
+                        children: [
+                          Center(
+                            child: Text(
+                              "รายละเอียด",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Text("${overdue} บาท")),
+                            ),
+                          ),
+                        ],
+                      )
+                    :
                 Text("อัพเดทสถานะรายการ"),
                 SizedBox(height: 7),
                 for (var i = 0; i <= label.length - 1; i++)
@@ -173,7 +247,9 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                     children: [
                       FormBuilderTextField(
                         name: name[i],
-                        keyboardType: TextInputType.text,
+                        keyboardType: type[i].toString() == "text"
+                            ? TextInputType.text
+                            : TextInputType.number,
                         decoration: InputDecoration(
                             hintText: label[i].toString(),
                             //border: InputBorder.none,
@@ -321,6 +397,21 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Deposit()));
             }),
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.room),
+        //     onPressed: () {
+        //       showDialog(
+        //         //barrierDismissible: false,
+        //         context: context,
+        //         builder: (context) => jpAddressdialog(
+        //           context,
+        //           jpaddress['address'],
+        //         ),
+        //       );
+        //     },
+        //   )
+        // ],
       ),
       body: isLoading == true
           ? Center(
@@ -815,7 +906,9 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'track',
-                                    familyMemberField),
+                                    dataTimeline['data']['overdue'],
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1115,6 +1208,8 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'store_thai',
+                                    dataTimeline['data']['overdue'],
+                                    familyMemberField,
                                     familyMemberField),
                               );
                             }
@@ -1361,6 +1456,92 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
             width: 20,
           ),
         ],
+      ),
+    );
+  }
+
+  jpAddressdialog(context, String title) {
+    return Container(
+      padding: EdgeInsets.only(
+          left: Constants.padding,
+          top: Constants.avatarRadius - Constants.padding,
+          right: Constants.padding,
+          bottom: Constants.padding),
+      margin: EdgeInsets.symmetric(vertical: 5),
+      decoration: BoxDecoration(
+        //border: Border.all(),
+        shape: BoxShape.rectangle,
+        color: kFontPrimaryColor,
+        borderRadius: BorderRadius.circular(Constants.padding),
+        //
+      ),
+      child: Container(
+        height: 200,
+        //color: Colors.blue,
+        child: Column(
+          children: [
+            Center(
+              child: Text(
+                "ที่อยู่โกดังญี่ปุ่น",
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5),
+              child: Container(
+                height: 110,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(title),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Clipboard.setData(new ClipboardData(text: title));
+                Fluttertoast.showToast(
+                    msg: "คัดลอกสำเร็จ",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.SNACKBAR,
+                    timeInSecForIosWeb: 1);
+                // Fluttertoast.showToast(
+                //     msg: "คัดลอกข้อความสำเร็จ !t",
+                //     toastLength: Toast.LENGTH_SHORT,
+                //     gravity: ToastGravity.CENTER,
+                //     timeInSecForIosWeb: 3,
+                //     backgroundColor: Colors.red,
+                //     textColor: Colors.white,
+                //     fontSize: 16.0);
+                Navigator.pop(context);
+              },
+              child: Container(
+                height: 45,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: Colors.grey.shade200,
+                        offset: Offset(2, 4),
+                        blurRadius: 5,
+                        spreadRadius: 2)
+                  ],
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
+                ),
+                child: Text("คัดลอก",
+                    style: TextStyle(fontSize: 20, color: Colors.white)),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

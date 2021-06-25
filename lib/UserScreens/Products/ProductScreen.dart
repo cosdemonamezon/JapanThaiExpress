@@ -175,36 +175,38 @@ class _ProductScreenState extends State<ProductScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: kDefaultPaddin),
-                        child: GridView.builder(
-                          itemCount: product.length,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: kDefaultPaddin,
-                            crossAxisSpacing: kDefaultPaddin,
-                            childAspectRatio: 0.75,
-                          ),
-                          itemBuilder: (context, index) => buildItemCard(
-                            product[index]['name'],
-                            product[index]['id'],
-                            product[index]['image'],
-                            product[index]['price'],
-                            product[index]['qty'],
-                            product[index]['description'],
+                        child: product.length > 0
+                            ? GridView.builder(
+                                itemCount: product.length,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                physics: NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: kDefaultPaddin,
+                                  crossAxisSpacing: kDefaultPaddin,
+                                  childAspectRatio: 0.75,
+                                ),
+                                itemBuilder: (context, index) => buildItemCard(
+                                  product[index]['name'].toString(),
+                                  product[index]['id'],
+                                  product[index]['image'].toString(),
+                                  product[index]['price'].toString(),
+                                  product[index]['qty'].toString(),
+                                  product[index]['description'].toString(),
 
-                            // press: () => Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => DetailsScreen(
-                            //       product: product[index],
-                            //     ),
-                            //   ),
-                            // ),
-                          ),
-                        ),
+                                  // press: () => Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => DetailsScreen(
+                                  //       product: product[index],
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                ),
+                              )
+                            : Center(child: Text('ไม่พบข้อมูล')),
                       ),
                     ],
                   ),
@@ -285,9 +287,11 @@ class _ProductScreenState extends State<ProductScreen> {
                     //color: Color(0xFF3D82AE),
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  child: Image.network(
-                    img,
-                    fit: BoxFit.fill,
+                  child: Center(
+                    child: Image.network(
+                      img,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),

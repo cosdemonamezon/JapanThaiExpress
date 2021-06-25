@@ -42,6 +42,7 @@ class _TimeLinePurchaseState extends State<TimeLinePurchase> {
   List<String> familyMemberName = [];
   List<String> familyMemberLabel = [];
   List<String> familyMemberField = [];
+  List<String> familyMemberType = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -63,6 +64,7 @@ class _TimeLinePurchaseState extends State<TimeLinePurchase> {
     familyMemberName = [];
     familyMemberLabel = [];
     familyMemberField = [];
+    familyMemberType = [];
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -105,6 +107,7 @@ class _TimeLinePurchaseState extends State<TimeLinePurchase> {
               // var textEditingController = TextEditingController();
               familyMemberName.add(familyMember["name"]);
               familyMemberField.add(familyMember["name"]);
+              familyMemberType.add(familyMember['type']);
             });
             print(familyMemberName);
           }
@@ -147,7 +150,7 @@ class _TimeLinePurchaseState extends State<TimeLinePurchase> {
   }
 
   dialogTimeline(String title, String img, context, List label, List name,
-      int id, String step, List field) {
+      int id, String step, List field, List type) {
     String stepUp;
     if (step == 'order') {
       stepUp = 'paid';
@@ -171,7 +174,9 @@ class _TimeLinePurchaseState extends State<TimeLinePurchase> {
                     children: [
                       FormBuilderTextField(
                         name: name[i],
-                        keyboardType: TextInputType.text,
+                        keyboardType: type[i].toString() == "text"
+                            ? TextInputType.text
+                            : TextInputType.number,
                         decoration: InputDecoration(
                             hintText: label[i].toString(),
                             //border: InputBorder.none,
@@ -615,7 +620,8 @@ class _TimeLinePurchaseState extends State<TimeLinePurchase> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'order',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -714,7 +720,8 @@ class _TimeLinePurchaseState extends State<TimeLinePurchase> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'order',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -811,7 +818,8 @@ class _TimeLinePurchaseState extends State<TimeLinePurchase> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'paid',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },
@@ -902,7 +910,8 @@ class _TimeLinePurchaseState extends State<TimeLinePurchase> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'packing',
-                                    familyMemberField),
+                                    familyMemberField,
+                                    familyMemberType),
                               );
                             }
                           },

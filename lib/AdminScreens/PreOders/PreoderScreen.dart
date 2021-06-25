@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PreoderScreen extends StatefulWidget {
   PreoderScreen({Key key}) : super(key: key);
@@ -335,155 +336,386 @@ class _PreoderScreenState extends State<PreoderScreen> {
                         controller: _refreshController,
                         onRefresh: _onRefresh,
                         onLoading: _onLoading,
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: PreoderScreendata.length,
-                            padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    var arg = PreoderScreendata[index]['id'];
-                                    MyNavigator.goToTimelinePreorder(
-                                        context, arg);
-                                  },
-                                  child: Card(
-                                    color: Colors.white,
-                                    elevation: 4.0,
-                                    child: Container(
-                                      decoration:
-                                          BoxDecoration(color: Colors.white),
-                                      child: ListTile(
-                                          contentPadding: EdgeInsets.symmetric(
-                                              horizontal: 20.0, vertical: 10.0),
-                                          leading: Container(
-                                            padding:
-                                                EdgeInsets.only(right: 14.0),
-                                            decoration: BoxDecoration(
-                                                border: Border(
-                                                    right: BorderSide(
-                                                        width: 2.0,
-                                                        color: primaryColor))),
-                                            child: Image.network(
-                                              PreoderScreendata[index]
-                                                          ['image'] ==
-                                                      null
-                                                  ? 'https://picsum.photos/200/300'
-                                                  : PreoderScreendata[index]
-                                                      ['image'],
-                                              width: 70,
+                        child: PreoderScreendata.length > 0
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: PreoderScreendata.length,
+                                padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return PreoderScreendata[index]['step'] !=
+                                          'delivery'
+                                      ? Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          child: Card(
+                                            color: Colors.white,
+                                            elevation: 4.0,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white),
+                                              child: ListTile(
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 10.0,
+                                                          vertical: 10.0),
+                                                  leading: Container(
+                                                    padding: EdgeInsets.only(
+                                                        right: 4.0),
+                                                    decoration: BoxDecoration(
+                                                        border: Border(
+                                                            right: BorderSide(
+                                                                width: 2.0,
+                                                                color:
+                                                                    primaryColor))),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        PreoderScreendata[index]
+                                                                    ['image'] !=
+                                                                null
+                                                            ? launch(
+                                                                PreoderScreendata[
+                                                                        index]
+                                                                    ['image'])
+                                                            : SizedBox(
+                                                                height: 0,
+                                                              );
+                                                      },
+                                                      child: Image.network(
+                                                        PreoderScreendata[index]
+                                                                    ['image'] ==
+                                                                null
+                                                            ? 'https://picsum.photos/200/300'
+                                                            : PreoderScreendata[
+                                                                index]['image'],
+                                                        width: 70,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  title: GestureDetector(
+                                                    onTap: () {
+                                                      var arg =
+                                                          PreoderScreendata[
+                                                              index]['id'];
+                                                      MyNavigator
+                                                          .goToTimelinePreorder(
+                                                              context, arg);
+                                                    },
+                                                    child: Text(
+                                                      PreoderScreendata[index]
+                                                          ['name'],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  subtitle: GestureDetector(
+                                                    onTap: () {
+                                                      var arg =
+                                                          PreoderScreendata[
+                                                              index]['id'];
+                                                      MyNavigator
+                                                          .goToTimelinePreorder(
+                                                              context, arg);
+                                                    },
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Flexible(
+                                                            child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: <
+                                                                    Widget>[
+                                                              RichText(
+                                                                text: TextSpan(
+                                                                  text: "ชื่อลูกค้า :" +
+                                                                      PreoderScreendata[index]['user']
+                                                                              [
+                                                                              'fname_th']
+                                                                          .toString(),
+                                                                  style: TextStyle(
+                                                                      color:
+                                                                          kTextButtonColor),
+                                                                ),
+                                                                maxLines: 3,
+                                                                softWrap: true,
+                                                              ),
+                                                              RichText(
+                                                                text: TextSpan(
+                                                                  text: "เบอร์ติดต่อ :" +
+                                                                      PreoderScreendata[index]['user']
+                                                                              [
+                                                                              'tel']
+                                                                          .toString(),
+                                                                  style: TextStyle(
+                                                                      color:
+                                                                          kTextButtonColor),
+                                                                ),
+                                                                maxLines: 3,
+                                                                softWrap: true,
+                                                              ),
+                                                              RichText(
+                                                                text: TextSpan(
+                                                                  text: "วันที่บันทึก :" +
+                                                                      PreoderScreendata[index]
+                                                                              [
+                                                                              'created_at']
+                                                                          .split(
+                                                                              "T")[0],
+                                                                  style: TextStyle(
+                                                                      color:
+                                                                          kTextButtonColor),
+                                                                ),
+                                                                maxLines: 3,
+                                                                softWrap: true,
+                                                              ),
+                                                            ]))
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  trailing: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      IconButton(
+                                                        icon: const Icon(Icons
+                                                            .keyboard_arrow_right_outlined),
+                                                        color:
+                                                            Colors.orange[900],
+                                                        iconSize: 30,
+                                                        onPressed: () {
+                                                          var arg =
+                                                              PreoderScreendata[
+                                                                  index]['id'];
+                                                          MyNavigator
+                                                              .goToTimelinePreorder(
+                                                                  context, arg);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  )),
                                             ),
                                           ),
-                                          title: Text(
-                                            PreoderScreendata[index]['name'],
-                                            style: TextStyle(
-                                                color: kTextButtonColor,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          subtitle: Row(
-                                            children: <Widget>[
-                                              Flexible(
-                                                  child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: <Widget>[
-                                                    RichText(
-                                                      text: TextSpan(
-                                                        text: "ชื่อลูกค้า :" +
-                                                            PreoderScreendata[
-                                                                            index]
-                                                                        ['user']
-                                                                    ['fname_th']
-                                                                .toString(),
-                                                        style: TextStyle(
-                                                            color:
-                                                                kTextButtonColor),
-                                                      ),
-                                                      maxLines: 3,
-                                                      softWrap: true,
-                                                    ),
-                                                    RichText(
-                                                      text: TextSpan(
-                                                        text: "เบอร์ติดต่อ :" +
-                                                            PreoderScreendata[
-                                                                            index]
-                                                                        ['user']
-                                                                    ['tel']
-                                                                .toString(),
-                                                        style: TextStyle(
-                                                            color:
-                                                                kTextButtonColor),
-                                                      ),
-                                                      maxLines: 3,
-                                                      softWrap: true,
-                                                    ),
-                                                    RichText(
-                                                      text: TextSpan(
-                                                        text: "วันที่บันทึก :" +
-                                                            PreoderScreendata[
-                                                                        index][
-                                                                    'created_at']
-                                                                .split("T")[0],
-                                                        style: TextStyle(
-                                                            color:
-                                                                kTextButtonColor),
-                                                      ),
-                                                      maxLines: 3,
-                                                      softWrap: true,
-                                                    ),
-                                                  ]))
-                                            ],
-                                          ),
-                                          trailing: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              IconButton(
-                                                icon: const Icon(Icons
-                                                    .keyboard_arrow_right_outlined),
-                                                color: Colors.orange[900],
-                                                iconSize: 30,
-                                                onPressed: () {
-                                                  var arg =
-                                                      PreoderScreendata[index]
-                                                          ['id'];
-                                                  MyNavigator
-                                                      .goToTimelinePreorder(
-                                                          context, arg);
-                                                },
-                                              ),
-                                            ],
-                                          )
-                                          // trailing: MaterialButton(
-                                          //   onPressed: () {
-                                          //      var arg = {"id": PreoderScreendata[index]['id']};
-                                          //     MyNavigator.goToTimelinePreorder(
-                                          //         context,
-                                          //         PreoderScreendata[index]['id']);
-                                          //   },
-                                          //   color: Color(0xffdd4b39),
-                                          //   child: Text(
-                                          //     "ดูเพิ่ม",
-                                          //     style: TextStyle(
-                                          //       fontWeight: FontWeight.bold,
-                                          //       color: Colors.white,
-                                          //       fontSize: 12,
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
+                                        )
+                                      : SizedBox(
+                                          height: 0,
+                                        );
+                                })
+                            : Center(child: Text('ไม่พบข้อมูล')),
                       ),
               ),
               //tab 2
-              Icon(Icons.movie),
+              Container(
+                height: height,
+                color: Colors.grey[300],
+                child: isLoading == true
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : SmartRefresher(
+                        enablePullDown: true,
+                        enablePullUp: true,
+                        header: ClassicHeader(
+                          refreshStyle: RefreshStyle.Follow,
+                          refreshingText: 'กำลังโหลด.....',
+                          completeText: 'โหลดข้อมูลสำเร็จ',
+                        ),
+                        footer: CustomFooter(
+                          builder: (BuildContext context, LoadStatus mode) {
+                            Widget body;
+                            if (mode == LoadStatus.idle) {
+                              //body =  Text("ไม่พบรายการ");
+                            } else if (mode == LoadStatus.loading) {
+                              body = CircularProgressIndicator();
+                            } else if (mode == LoadStatus.failed) {
+                              body = Text("Load Failed!Click retry!");
+                            } else if (mode == LoadStatus.canLoading) {
+                              body = Text("release to load more");
+                            } else if (mode == LoadStatus.noMore) {
+                              //body = Text("No more Data");
+                              body = Text("ไม่พบข้อมูล");
+                            }
+                            return Container(
+                              height: 55.0,
+                              child: Center(child: body),
+                            );
+                          },
+                        ),
+                        controller: _refreshController,
+                        onRefresh: _onRefresh,
+                        onLoading: _onLoading,
+                        child: PreoderScreendata.length > 0
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: PreoderScreendata.length,
+                                padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return PreoderScreendata[index]['step'] ==
+                                          'delivery'
+                                      ? Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          child: Card(
+                                            color: Colors.white,
+                                            elevation: 4.0,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white),
+                                              child: ListTile(
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 10.0,
+                                                          vertical: 10.0),
+                                                  leading: Container(
+                                                    padding: EdgeInsets.only(
+                                                        right: 4.0),
+                                                    decoration: BoxDecoration(
+                                                        border: Border(
+                                                            right: BorderSide(
+                                                                width: 2.0,
+                                                                color:
+                                                                    primaryColor))),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        PreoderScreendata[index]
+                                                                    ['image'] !=
+                                                                null
+                                                            ? launch(
+                                                                PreoderScreendata[
+                                                                        index]
+                                                                    ['image'])
+                                                            : SizedBox(
+                                                                height: 0,
+                                                              );
+                                                      },
+                                                      child: Image.network(
+                                                        PreoderScreendata[index]
+                                                                    ['image'] ==
+                                                                null
+                                                            ? 'https://picsum.photos/200/300'
+                                                            : PreoderScreendata[
+                                                                index]['image'],
+                                                        width: 70,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  title: GestureDetector(
+                                                    onTap: () {
+                                                      var arg =
+                                                          PreoderScreendata[
+                                                              index]['id'];
+                                                      MyNavigator
+                                                          .goToTimelinePreorder(
+                                                              context, arg);
+                                                    },
+                                                    child: Text(
+                                                      PreoderScreendata[index]
+                                                          ['name'],
+                                                      style: TextStyle(
+                                                          color:
+                                                              kTextButtonColor,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  subtitle: GestureDetector(
+                                                    onTap: () {
+                                                      var arg =
+                                                          PreoderScreendata[
+                                                              index]['id'];
+                                                      MyNavigator
+                                                          .goToTimelinePreorder(
+                                                              context, arg);
+                                                    },
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Flexible(
+                                                            child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: <
+                                                                    Widget>[
+                                                              RichText(
+                                                                text: TextSpan(
+                                                                  text: "ชื่อลูกค้า :" +
+                                                                      PreoderScreendata[index]['user']
+                                                                              [
+                                                                              'fname_th']
+                                                                          .toString(),
+                                                                  style: TextStyle(
+                                                                      color:
+                                                                          kTextButtonColor),
+                                                                ),
+                                                                maxLines: 3,
+                                                                softWrap: true,
+                                                              ),
+                                                              RichText(
+                                                                text: TextSpan(
+                                                                  text: "เบอร์ติดต่อ :" +
+                                                                      PreoderScreendata[index]['user']
+                                                                              [
+                                                                              'tel']
+                                                                          .toString(),
+                                                                  style: TextStyle(
+                                                                      color:
+                                                                          kTextButtonColor),
+                                                                ),
+                                                                maxLines: 3,
+                                                                softWrap: true,
+                                                              ),
+                                                              RichText(
+                                                                text: TextSpan(
+                                                                  text: "วันที่บันทึก :" +
+                                                                      PreoderScreendata[index]
+                                                                              [
+                                                                              'created_at']
+                                                                          .split(
+                                                                              "T")[0],
+                                                                  style: TextStyle(
+                                                                      color:
+                                                                          kTextButtonColor),
+                                                                ),
+                                                                maxLines: 3,
+                                                                softWrap: true,
+                                                              ),
+                                                            ]))
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  trailing: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      IconButton(
+                                                        icon: const Icon(Icons
+                                                            .keyboard_arrow_right_outlined),
+                                                        color:
+                                                            Colors.orange[900],
+                                                        iconSize: 30,
+                                                        onPressed: () {
+                                                          var arg =
+                                                              PreoderScreendata[
+                                                                  index]['id'];
+                                                          MyNavigator
+                                                              .goToTimelinePreorder(
+                                                                  context, arg);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  )),
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(
+                                          height: 0,
+                                        );
+                                })
+                            : Center(child: Text('ไม่พบข้อมูล')),
+                      ),
+              ),
             ],
           ),
           bottomNavigationBar: Navigation(),

@@ -22,8 +22,9 @@ import 'package:JapanThaiExpress/widgets/CustomIcons.dart';
 
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import '../../utils/my_navigator.dart';
+
+import 'package:device_apps/device_apps.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   // Optional clientId
@@ -67,7 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
         final FacebookAccessToken accessToken = result.accessToken;
-        _showMessage('''
+        _showMessage(
+            '''
          Logged in!
          
          Token: ${accessToken.token}
@@ -109,28 +111,28 @@ class _LoginScreenState extends State<LoginScreen> {
     _handleSubmittedSocial(user.displayName, user.displayName, user.email,
         user.id, 'google', user.photoUrl);
 
-    // final http.Response response = await http.get(
-    //   Uri.parse('https://people.googleapis.com/v1/people/me/connections'
-    //       '?requestMask.includeField=person.names'),
-    //   headers: await user.authHeaders,
-    // );
-    // if (response.statusCode != 200) {
-    //   setState(() {
-    //     _contactText = "People API gave a ${response.statusCode} "
-    //         "response. Check logs for details.";
-    //   });
-    //   print('People API ${response.statusCode} response: ${response.body}');
-    //   return;
-    // }
-    // final Map<String, dynamic> data = json.decode(response.body);
-    // final String namedContact = _pickFirstNamedContact(data);
-    // setState(() {
-    //   if (namedContact != null) {
-    //     _contactText = "I see you know $namedContact!";
-    //   } else {
-    //     _contactText = "No contacts to display.";
-    //   }
-    // });
+    final http.Response response = await http.get(
+      Uri.parse('https://people.googleapis.com/v1/people/me/connections'
+          '?requestMask.includeField=person.names'),
+      headers: await user.authHeaders,
+    );
+    if (response.statusCode != 200) {
+      setState(() {
+        _contactText = "People API gave a ${response.statusCode} "
+            "response. Check logs for details.";
+      });
+      print('People API ${response.statusCode} response: ${response.body}');
+      return;
+    }
+    final Map<String, dynamic> data = json.decode(response.body);
+    final String namedContact = _pickFirstNamedContact(data);
+    setState(() {
+      if (namedContact != null) {
+        _contactText = "I see you know $namedContact!";
+      } else {
+        _contactText = "No contacts to display.";
+      }
+    });
   }
 
   String _pickFirstNamedContact(Map<String, dynamic> data) {
@@ -436,8 +438,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: 35),
+
                   GestureDetector(
                     onTap: () {
+                      // DeviceApps.openApp('com.ashatech.perf');
+
                       if (_formKey.currentState.saveAndValidate()) {
                         _handleSubmitted();
                       }

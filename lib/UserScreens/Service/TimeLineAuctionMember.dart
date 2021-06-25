@@ -1,4 +1,3 @@
-
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/Auction.dart';
 import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
@@ -41,6 +40,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
   List<String> familyMemberName = [];
   List<String> familyMemberLabel = [];
   List<String> familyMemberField = [];
+  List<String> familyMemberType = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -62,6 +62,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
     familyMemberName = [];
     familyMemberLabel = [];
     familyMemberField = [];
+    familyMemberType = [];
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -110,6 +111,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
             // var textEditingController = TextEditingController();
             familyMemberName.add(familyMember["name"]);
             familyMemberField.add(familyMember["name"]);
+            familyMemberType.add(familyMember['type']);
           });
           print(familyMemberName);
         }
@@ -151,7 +153,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
   }
 
   dialogTimeline(String title, String img, context, List label, List name,
-      int id, String step, List field) {
+      int id, String step,String overdue, List field, List type) {
     String stepUp;
     if (step == 'new') {
       stepUp = 'wait';
@@ -176,6 +178,33 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
             child: FormBuilder(
               key: _formKey,
               child: Column(children: <Widget>[
+                Column(
+                        children: [
+                          Center(
+                            child: Text(
+                              "รายละเอียด",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Text("${overdue} บาท")),
+                            ),
+                          ),
+                        ],
+                      ),
+                      
                 Text("อัพเดทสถานะรายการ"),
                 SizedBox(height: 7),
                 for (var i = 0; i <= label.length - 1; i++)
@@ -183,7 +212,9 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                     children: [
                       FormBuilderTextField(
                         name: name[i],
-                        keyboardType: TextInputType.text,
+                        keyboardType: type[i].toString() == "text"
+                            ? TextInputType.text
+                            : TextInputType.number,
                         decoration: InputDecoration(
                             hintText: label[i].toString(),
                             //border: InputBorder.none,
@@ -573,7 +604,6 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                             ),
                           ),
                         ),
-                        
                       ],
                     ),
                     SizedBox(
@@ -772,8 +802,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -885,8 +914,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -993,8 +1021,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1099,8 +1126,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1196,8 +1222,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1247,7 +1272,8 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                         child: GestureDetector(
                           onTap: () {
                             if (dataTimeline.length > 0 &&
-                                dataTimeline['data']['step'] == "overdue") {
+                                dataTimeline['data']['step'] == "store_thai") {
+                              print(dataTimeline.length);
                               String title = "";
                               showDialog(
                                 barrierDismissible: false,
@@ -1261,7 +1287,9 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                     dataTimeline['data']['id'],
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
-                                        : 'overdue',
+                                        : 'store_thai',
+                                        dataTimeline['data']['overdue'],
+                                    familyMemberField,
                                     familyMemberField),
                               );
                             }
@@ -1289,7 +1317,8 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.touch_app,
-                                                size: 25.0, color: Colors.yellowAccent),
+                                                size: 25.0,
+                                                color: Colors.yellowAccent),
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -1377,8 +1406,7 @@ class _TimelineAuctionMemberState extends State<TimelineAuctionMember> {
                                             top: 10.0,
                                             right: 10.0,
                                             child: Icon(Icons.no_encryption,
-                                                size: 25.0,
-                                                color: Colors.red),
+                                                size: 25.0, color: Colors.red),
                                           )
                                         : SizedBox(
                                             height: 0,

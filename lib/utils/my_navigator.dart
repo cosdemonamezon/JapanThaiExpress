@@ -1,7 +1,10 @@
 import 'package:JapanThaiExpress/AdminScreens/Auction/TimeLineAuctions.dart';
 import 'package:JapanThaiExpress/AdminScreens/Depository/TimeLineDepository.dart';
 import 'package:JapanThaiExpress/AdminScreens/Message/MessageRoom.dart';
+import 'package:JapanThaiExpress/AdminScreens/Customer/CustomerDetail.dart';
 import 'package:JapanThaiExpress/AdminScreens/PurchaseOrders/TimeLinePurchase.dart';
+import 'package:JapanThaiExpress/UserScreens/Messageuser/MessageRoom.dart';
+import 'package:JapanThaiExpress/UserScreens/MyOders/TimeLinePurchaseMember.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/TimeLineDeposit.dart';
 import 'package:JapanThaiExpress/UserScreens/Service/TimeLineMemberPreorders.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +50,14 @@ class MyNavigator {
     Navigator.pushNamed(context, '/depositdetail', arguments: arg);
   }
 
+  static void goToNotiDetail(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/notidetail', arguments: arg);
+  }
+
+  static void goToNotiDetailUser(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/notidetailuser', arguments: arg);
+  }
+
   static void goToExchangeDetail(BuildContext context, arg) {
     Navigator.pushNamed(context, '/exchangedetail', arguments: arg);
   }
@@ -57,6 +68,29 @@ class MyNavigator {
 
   static void goTomessagesend(BuildContext context) {
     Navigator.pushNamed(context, '/messagesend');
+  }
+  static void goToQRCodedetail(BuildContext context) {
+    Navigator.pushNamed(context, '/qrcodedetail');
+  }
+
+  /*static void goToTimeLineOrderMember(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/timelineordermember', arguments: arg);
+  }*/
+
+static void goToTimeLineOrderMember(BuildContext context, int id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TimeLinePurchaseMember(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {"id": id.toString()},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
   }
 
   static void goToTimelinePreorder(BuildContext context, int id) {
@@ -91,7 +125,7 @@ class MyNavigator {
     // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
   }
 
-  static void goToTimelinePurchase(BuildContext context, String id) {
+  static void goToTimelinePurchase(BuildContext context, int id) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -180,7 +214,23 @@ class MyNavigator {
         // ExtractArgumentScreen reads the arguments from these
         // settings.
         settings: RouteSettings(
-          arguments: {"id": id},
+          arguments: {"id": id.toString()},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
+  }
+
+  static void goToMessageRoomUser(BuildContext context, int id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MessageRoomUser(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {"id": id.toString()},
         ),
       ),
     );
@@ -337,6 +387,32 @@ class MyNavigator {
         // settings.
         settings: RouteSettings(
           arguments: {"id": id.toString()},
+        ),
+      ),
+    );
+    // Navigator.pushNamed(context, '/timelineorders', arguments: arg);
+  }
+
+  static void goToCustomerDetail(
+      BuildContext context, List customers, int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CustomerDetail(),
+        // Pass the arguments as part of the RouteSettings. The
+        // ExtractArgumentScreen reads the arguments from these
+        // settings.
+        settings: RouteSettings(
+          arguments: {
+            "id": customers[index]['id'].toString(),
+            "profile": customers[index]['profile'].toString(),
+            "fname_th": customers[index]['fname_th'].toString(),
+            "lname_th": customers[index]['lname_th'].toString(),
+            "fname_en": customers[index]['fname_en'].toString(),
+            "lname_en": customers[index]['lname_en'].toString(),
+            "email": customers[index]['email'].toString(),
+            "phone": customers[index]['tel'].toString()
+          },
         ),
       ),
     );

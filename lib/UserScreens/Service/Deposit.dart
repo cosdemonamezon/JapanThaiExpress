@@ -106,7 +106,8 @@ class _DepositState extends State<Deposit> {
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
-      var url = Uri.parse(pathAPI +'api/app/depositorys?status=&page=$page&page_size=$pageSize');
+      var url = Uri.parse(pathAPI +
+          'api/app/depositorys?status=&page=$page&page_size=$pageSize');
       var response = await http.get(
         url,
         headers: {
@@ -150,19 +151,19 @@ class _DepositState extends State<Deposit> {
         setState(() {
           isLoading = false;
         });
-        var feedback = convert.jsonDecode(response.body);
-        Flushbar(
-          title: '${feedback['message']}',
-          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
-          backgroundColor: Colors.redAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          duration: Duration(seconds: 3),
-          leftBarIndicatorColor: Colors.blue[300],
-        )..show(context);
+        // var feedback = convert.jsonDecode(response.body);
+        // Flushbar(
+        //   title: '${feedback['message']}',
+        //   message: 'ท่านยังไม่มีการสร้างรายการใหม่',
+        //   backgroundColor: Colors.redAccent,
+        //   icon: Icon(
+        //     Icons.error,
+        //     size: 28.0,
+        //     color: Colors.white,
+        //   ),
+        //   duration: Duration(seconds: 3),
+        //   leftBarIndicatorColor: Colors.blue[300],
+        // )..show(context);
       }
     } catch (e) {
       setState(() {
@@ -256,7 +257,7 @@ class _DepositState extends State<Deposit> {
         setState(() {
           dropdownShip = dataship['data'];
           _transport = dropdownShip[0]['name'];
-          costth = dropdownShip[0]['price'];
+          costth = dropdownShip[0]['price'].toString();
         });
         //print(dropdownShip);
       } else {
@@ -464,7 +465,7 @@ class _DepositState extends State<Deposit> {
       var feedback = convert.jsonDecode(response.body);
       Flushbar(
         title: '${feedback['message']}',
-        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        message: 'ไม่พบข้อมูล',
         backgroundColor: Colors.redAccent,
         icon: Icon(
           Icons.error,
@@ -528,74 +529,18 @@ class _DepositState extends State<Deposit> {
                     Tab(
                       child: Align(
                         alignment: Alignment.center,
-                        child: Text("รายการ"),
+                        child: Text("ฝากส่ง"),
                       ),
                     ),
                     Tab(
                       child: Align(
                         alignment: Alignment.center,
-                        child: Text("ฝากส่ง"),
+                        child: Text("รายการ"),
                       ),
                     ),
                   ])),
           body: TabBarView(
             children: [
-              Container(
-                height: height,
-                color: Colors.white,
-                child: isLoading == true
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : SmartRefresher(
-                        enablePullDown: true,
-                        enablePullUp: true,
-                        header: ClassicHeader(
-                          refreshStyle: RefreshStyle.Follow,
-                          refreshingText: 'กำลังโหลด.....',
-                          completeText: 'โหลดข้อมูลสำเร็จ',
-                        ),
-                        footer: CustomFooter(
-                          builder: (BuildContext context, LoadStatus mode) {
-                            Widget body;
-                            if (mode == LoadStatus.idle) {
-                              //body =  Text("ไม่พบรายการ");
-                            } else if (mode == LoadStatus.loading) {
-                              body = CircularProgressIndicator();
-                            } else if (mode == LoadStatus.failed) {
-                              body = Text("Load Failed!Click retry!");
-                            } else if (mode == LoadStatus.canLoading) {
-                              body = Text("release to load more");
-                            } else if (mode == LoadStatus.noMore) {
-                              //body = Text("No more Data");
-                              body = Text("ไม่พบข้อมูล");
-                            }
-                            return Container(
-                              height: 55.0,
-                              child: Center(child: body),
-                            );
-                          },
-                        ),
-                        controller: _refreshController,
-                        onRefresh: _onRefresh,
-                        onLoading: _onLoading,
-                        child: ListView.builder(
-                            itemCount: depositdata.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return buildCard(
-                                depositdata[index]['image'],
-                                depositdata[index]['ship_tel'],
-                                depositdata[index]['ship_name'],
-                                depositdata[index]['ship_address'],
-                                depositdata[index]['description'] == null
-                                    ? 'ไม่มีข้อมูล'
-                                    : depositdata[index]['description'],
-                                depositdata[index]['id'],
-                              );
-                            }),
-                      ),
-              ),
-              //tab 2
               Container(
                 height: height,
                 padding: EdgeInsets.symmetric(horizontal: 20),
@@ -836,6 +781,64 @@ class _DepositState extends State<Deposit> {
                   ),
                 ),
               ),
+              Container(
+                height: height,
+                color: Colors.white,
+                child: isLoading == true
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : SmartRefresher(
+                        enablePullDown: true,
+                        enablePullUp: true,
+                        header: ClassicHeader(
+                          refreshStyle: RefreshStyle.Follow,
+                          refreshingText: 'กำลังโหลด.....',
+                          completeText: 'โหลดข้อมูลสำเร็จ',
+                        ),
+                        footer: CustomFooter(
+                          builder: (BuildContext context, LoadStatus mode) {
+                            Widget body;
+                            if (mode == LoadStatus.idle) {
+                              //body =  Text("ไม่พบรายการ");
+                            } else if (mode == LoadStatus.loading) {
+                              body = CircularProgressIndicator();
+                            } else if (mode == LoadStatus.failed) {
+                              body = Text("Load Failed!Click retry!");
+                            } else if (mode == LoadStatus.canLoading) {
+                              body = Text("release to load more");
+                            } else if (mode == LoadStatus.noMore) {
+                              //body = Text("No more Data");
+                              body = Text("ไม่พบข้อมูล");
+                            }
+                            return Container(
+                              height: 55.0,
+                              child: Center(child: body),
+                            );
+                          },
+                        ),
+                        controller: _refreshController,
+                        onRefresh: _onRefresh,
+                        onLoading: _onLoading,
+                        child: depositdata.length > 0
+                            ? ListView.builder(
+                                itemCount: depositdata.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return buildCard(
+                                    depositdata[index]['image'],
+                                    depositdata[index]['ship_tel'],
+                                    depositdata[index]['ship_name'],
+                                    depositdata[index]['ship_address'],
+                                    depositdata[index]['description'] == null
+                                        ? 'ไม่มีข้อมูล'
+                                        : depositdata[index]['description'],
+                                    depositdata[index]['id'],
+                                  );
+                                })
+                            : Center(child: Text('ไม่พบรายการ')),
+                      ),
+              ),
+              //tab 2
             ],
           ),
           bottomNavigationBar: NavigationBar(),
@@ -844,7 +847,7 @@ class _DepositState extends State<Deposit> {
 
   Card addressCard(String title, String title1, String subtitle) {
     return Card(
-      color: Colors.orange[50],
+      color: Color(0xfff5a393),
       child: ListTile(
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -1166,9 +1169,9 @@ class _DepositState extends State<Deposit> {
             child: FormBuilder(
               key: _formKey1,
               initialValue: {
-                'name': '',
-                'description': '',
-                'tel': '',
+                'ชื่อ': '',
+                'ที่อยู่': '',
+                'เบอร์โทรศัพท์': '',
               },
               child: Column(
                 children: [
@@ -1178,7 +1181,7 @@ class _DepositState extends State<Deposit> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Name",
+                          "ชื่อ",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
@@ -1205,7 +1208,7 @@ class _DepositState extends State<Deposit> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Description",
+                          "ที่อยู่",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
@@ -1233,7 +1236,7 @@ class _DepositState extends State<Deposit> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Tel",
+                          "เบอร์โทรศัพท์",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),

@@ -111,22 +111,24 @@ class _NewsScreenState extends State<NewsScreen> {
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : ListView.builder(
-                shrinkWrap: true,
-                itemCount: news.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
-                    child: newsCard(
-                        news[index]['photo'] == null
-                            ? 'https://picsum.photos/200/300'
-                            : news[index]['photo'],
-                        news[index]['title'],
-                        news[index]['detail']),
-                  );
-                },
-              ),
+            : news.length > 0
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: news.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 5.0),
+                        child: newsCard(
+                            news[index]['photo'] == null
+                                ? 'https://picsum.photos/200/300'
+                                : news[index]['photo'],
+                            news[index]['title'],
+                            news[index]['detail']),
+                      );
+                    },
+                  )
+                : Center(child: Text('ไม่พบข้อมูล')),
       ),
       bottomNavigationBar: NavigationBar(),
     );
@@ -169,7 +171,7 @@ class _NewsScreenState extends State<NewsScreen> {
                     bottomRight: Radius.circular(18),
                   ),
                   image: DecorationImage(
-                    fit: BoxFit.fill,
+                    fit: BoxFit.fitWidth,
                     image: NetworkImage(img),
                   ),
                 ),

@@ -234,8 +234,7 @@ class _ReceiveDetailState extends State<ReceiveDetail> {
                             color: kInputSearchColor),
                       ),
               ),
-              data['img'] !=
-                      "https://japan.logo-design360.com/japanthaiexpress-api-master/public"
+              data['img'] != "https://japanthaiexpress.com/asha/public"
                   ? Container(
                       height: 500,
                       width: width,

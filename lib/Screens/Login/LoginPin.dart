@@ -128,7 +128,7 @@ class _LoginPinState extends State<LoginPin> {
       body: Container(
         height: height,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
