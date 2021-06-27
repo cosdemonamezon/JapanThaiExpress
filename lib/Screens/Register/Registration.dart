@@ -234,10 +234,12 @@ class _RegistrationState extends State<Registration> {
                           end: Alignment.centerRight,
                           colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
                     ),
-                    child: Text(
-                      "ถัดไป",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
+                    child: isLoading == true
+                        ? Center(child: CircularProgressIndicator())
+                        : Text(
+                            "ถัดไป",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
                   ),
                 ),
                 SizedBox(height: 10),
@@ -250,6 +252,9 @@ class _RegistrationState extends State<Registration> {
   }
 
   _Registration() async {
+    setState(() {
+      isLoading = true;
+    });
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -277,8 +282,14 @@ class _RegistrationState extends State<Registration> {
       }),
     );
     if (response.statusCode == 201) {
+      setState(() {
+        isLoading = false;
+      });
       print(response.body);
     } else {
+      setState(() {
+        isLoading = false;
+      });
       final Map<String, dynamic> addressdata =
           convert.jsonDecode(response.body);
       print(addressdata['message']);
@@ -286,6 +297,9 @@ class _RegistrationState extends State<Registration> {
   }
 
   _sendOtp(String tel) async {
+    setState(() {
+      isLoading = true;
+    });
     var url = Uri.parse(pathAPI + 'api/sendOTP');
     var response = await http.post(
       url,
@@ -295,6 +309,9 @@ class _RegistrationState extends State<Registration> {
       }),
     );
     if (response.statusCode == 200) {
+      setState(() {
+        isLoading = false;
+      });
       final Map<String, dynamic> res = convert.jsonDecode(response.body);
       setState(() {
         otp_ref = res['data']['otp_ref'];
@@ -308,6 +325,10 @@ class _RegistrationState extends State<Registration> {
         'otp_ref': otp_ref,
       };
       MyNavigator.goToOtpScreen(context, arg);
-    } else {}
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 }

@@ -62,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
         MyNavigator.goToLoginByPin(context);
       } else {
-        MyNavigator.goToIntro(context);
+        MyNavigator.goToLogin(context);
       }
     }
 
