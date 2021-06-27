@@ -6,6 +6,7 @@ import 'package:JapanThaiExpress/UserScreens/WidgetsUser/NavigationBar.dart';
 // import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -164,7 +165,7 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
   }
 
   dialogTimeline(String title, String img, context, List label, List name,
-      int id, String step, List field, List type) {
+      int id, String step, String total, String overdue, List field, List type) {
     String stepUp;
     if (step == 'new') {
       stepUp = 'order';
@@ -191,11 +192,72 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
             child: FormBuilder(
               key: _formKey,
               child: Column(children: <Widget>[
+                step == 'order'
+                ? Column(
+                        children: [
+                          Center(
+                            child: Text(
+                              "รายละเอียด",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Text("${total} บาท")),
+                            ),
+                          ),
+                        ],
+                      )
+                    :
+                    SizedBox(),
+                    step == 'store_thai'
+                    ? Column(
+                        children: [
+                          Center(
+                            child: Text(
+                              "รายละเอียด",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Text("${overdue} บาท")),
+                            ),
+                          ),
+                        ],
+                      )
+                      :
+                    SizedBox(),
+                
+
                 Text("อัพเดทสถานะรายการ"),
-                SizedBox(height: 7),
+                
                 for (var i = 0; i <= label.length - 1; i++)
                   Column(
                     children: [
+                      
                       FormBuilderTextField(
                         name: name[i],
                         keyboardType: type[i].toString() == "text"
@@ -316,7 +378,16 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
       // Navigator.pop(context);
       _gettimeline(id.toString());
       // MyNavigator.goToTimelineDepository(context, id);
-    } else {
+    } else if (response.statusCode == 402) {
+      Fluttertoast.showToast(
+                    msg: "ยอดเงินไม่เพียงพอ",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.SNACKBAR,
+                    timeInSecForIosWeb: 1);
+
+    }
+      
+      else {
       setState(() {
         isLoading = true;
       });
@@ -890,6 +961,8 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'payment',
+                                        dataTimeline['data']['total'],
+                                        dataTimeline['data']['overdue'],
                                     familyMemberType,
                                     familyMemberField),
                               );
@@ -1548,6 +1621,8 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'overdue',
+                                        dataTimeline['data']['total'],
+                                         dataTimeline['data']['overdue'],
                                     familyMemberField,
                                     familyMemberType),
                               );
@@ -1641,6 +1716,8 @@ class _TimeLineMemberPreordersState extends State<TimeLineMemberPreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'overdue',
+                                        dataTimeline['data']['total'],
+                                         dataTimeline['data']['overdue'],
                                     familyMemberField,
                                     familyMemberType),
                               );

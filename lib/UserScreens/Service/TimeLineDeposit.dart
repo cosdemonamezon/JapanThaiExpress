@@ -5,6 +5,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
@@ -185,7 +186,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
   }
 
   dialogTimeline(String title, String img, context, List label, List name,
-      int id, String step, List field, List type) {
+      int id, String step, String overdue, List field, List type) {
     String stepUp;
     if (step == 'new') {
       stepUp = 'order';
@@ -208,6 +209,37 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
             child: FormBuilder(
               key: _formKey,
               child: Column(children: <Widget>[
+                step == 'order'
+                    ? jpAddressdialog(context, jpaddress['address'])
+                    : 
+                step == 'store_thai' 
+                    ? Column(
+                        children: [
+                          Center(
+                            child: Text(
+                              "รายละเอียด",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Text("${overdue} บาท")),
+                            ),
+                          ),
+                        ],
+                      )
+                    :
                 Text("อัพเดทสถานะรายการ"),
                 SizedBox(height: 7),
                 for (var i = 0; i <= label.length - 1; i++)
@@ -365,21 +397,21 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Deposit()));
             }),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.room),
-            onPressed: () {
-              showDialog(
-                //barrierDismissible: false,
-                context: context,
-                builder: (context) => jpAddressdialog(
-                  context,
-                  jpaddress['address'],
-                ),
-              );
-            },
-          )
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.room),
+        //     onPressed: () {
+        //       showDialog(
+        //         //barrierDismissible: false,
+        //         context: context,
+        //         builder: (context) => jpAddressdialog(
+        //           context,
+        //           jpaddress['address'],
+        //         ),
+        //       );
+        //     },
+        //   )
+        // ],
       ),
       body: isLoading == true
           ? Center(
@@ -874,8 +906,9 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'track',
+                                    dataTimeline['data']['overdue'],
                                     familyMemberField,
-                                    familyMemberField),
+                                    familyMemberType),
                               );
                             }
                           },
@@ -1175,6 +1208,7 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'store_thai',
+                                    dataTimeline['data']['overdue'],
                                     familyMemberField,
                                     familyMemberField),
                               );
@@ -1427,85 +1461,86 @@ class _TimeLineDepositState extends State<TimeLineDeposit> {
   }
 
   jpAddressdialog(context, String title) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
+    return Container(
+      padding: EdgeInsets.only(
+          left: Constants.padding,
+          top: Constants.avatarRadius - Constants.padding,
+          right: Constants.padding,
+          bottom: Constants.padding),
+      margin: EdgeInsets.symmetric(vertical: 5),
+      decoration: BoxDecoration(
+        //border: Border.all(),
+        shape: BoxShape.rectangle,
+        color: kFontPrimaryColor,
         borderRadius: BorderRadius.circular(Constants.padding),
+        //
       ),
-      elevation: 1,
-      backgroundColor: Colors.transparent,
       child: Container(
-        padding: EdgeInsets.only(
-            left: Constants.padding,
-            top: Constants.avatarRadius - Constants.padding,
-            right: Constants.padding,
-            bottom: Constants.padding),
-        margin: EdgeInsets.only(top: Constants.avatarRadius),
-        decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: kFontPrimaryColor,
-            borderRadius: BorderRadius.circular(Constants.padding),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black, offset: Offset(0, 2), blurRadius: 2),
-            ]),
-        child: Container(
-          height: 390,
-          //color: Colors.blue,
-          child: Column(
-            children: [
-              Center(
-                child: Text(
-                  "ที่อยู่โกดังญี่ปุ่น",
-                  style: TextStyle(fontSize: 18),
-                ),
+        height: 200,
+        //color: Colors.blue,
+        child: Column(
+          children: [
+            Center(
+              child: Text(
+                "ที่อยู่โกดังญี่ปุ่น",
+                style: TextStyle(fontSize: 18),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Container(
-                  height: 260,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5),
+              child: Container(
+                height: 110,
+                decoration: BoxDecoration(
                   color: Colors.grey[300],
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(title),
-                  ),
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(title),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Clipboard.setData(new ClipboardData(text: title));
-                  // Fluttertoast.showToast(
-                  //     msg: "คัดลอกข้อความสำเร็จ !t",
-                  //     toastLength: Toast.LENGTH_SHORT,
-                  //     gravity: ToastGravity.CENTER,
-                  //     timeInSecForIosWeb: 3,
-                  //     backgroundColor: Colors.red,
-                  //     textColor: Colors.white,
-                  //     fontSize: 16.0);
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  height: 45,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                          color: Colors.grey.shade200,
-                          offset: Offset(2, 4),
-                          blurRadius: 5,
-                          spreadRadius: 2)
-                    ],
-                    gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
-                  ),
-                  child: Text("ดำเนินการต่อ",
-                      style: TextStyle(fontSize: 20, color: Colors.white)),
+            ),
+            GestureDetector(
+              onTap: () {
+                Clipboard.setData(new ClipboardData(text: title));
+                Fluttertoast.showToast(
+                    msg: "คัดลอกสำเร็จ",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.SNACKBAR,
+                    timeInSecForIosWeb: 1);
+                // Fluttertoast.showToast(
+                //     msg: "คัดลอกข้อความสำเร็จ !t",
+                //     toastLength: Toast.LENGTH_SHORT,
+                //     gravity: ToastGravity.CENTER,
+                //     timeInSecForIosWeb: 3,
+                //     backgroundColor: Colors.red,
+                //     textColor: Colors.white,
+                //     fontSize: 16.0);
+                Navigator.pop(context);
+              },
+              child: Container(
+                height: 45,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: Colors.grey.shade200,
+                        offset: Offset(2, 4),
+                        blurRadius: 5,
+                        spreadRadius: 2)
+                  ],
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
                 ),
+                child: Text("คัดลอก",
+                    style: TextStyle(fontSize: 20, color: Colors.white)),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -384,7 +384,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                                             PurchaseScreen[
                                                                 index]['id'];
                                                         MyNavigator
-                                                            .goToTimelinePreorder(
+                                                            .goToTimelinePurchase(
                                                                 context, arg);
                                                       },
                                                     ),
@@ -612,7 +612,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                                             PurchaseScreen[
                                                                 index]['id'];
                                                         MyNavigator
-                                                            .goToTimelinePreorder(
+                                                            .goToTimelinePurchase(
                                                                 context, arg);
                                                       },
                                                     ),
@@ -635,7 +635,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     );
   }
 
-  Card buildCard(String title, String image) {
+  Card buildCard(String title, int index, String image) {
     return Card(
       child: ListTile(
           leading: CircleAvatar(
@@ -655,10 +655,10 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
             children: [
               MaterialButton(
                 onPressed: () {
-                  // var arg = {
-                  //   "code": "",
-                  // };
-                  // MyNavigator.goToTimelineOrders(context, arg);
+                 var arg =
+                                                            PurchaseScreen[
+                                                                index]['id'];
+                   MyNavigator.goToTimelinePurchase(context, arg);
                 },
                 color: Color(0xffdd4b39),
                 child: Text(

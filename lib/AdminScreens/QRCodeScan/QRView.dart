@@ -86,6 +86,8 @@ class _QRViewExampleState extends State<QRViewExample> {
       setState(() {
         result = scanData;
       });
+      controller?.dispose();
+
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
@@ -134,25 +136,26 @@ class _QRViewExampleState extends State<QRViewExample> {
             "deleted_at": mac['data']["deleted_at"].toString(),
             "service_name": mac['data']["service_name"].toString(),
           };
-          Navigator.pushNamed(context, '/qrcodepreview', arguments: arg);
+          // Navigator.pushNamed(context, '/qrcodepreview', arguments: arg);
+          controller?.dispose();
+          Navigator.pushReplacementNamed(context, '/qrcodepreview',
+              arguments: arg);
         }
       } else if (response.statusCode == 404) {
         Flushbar(
-            title: 'ไม่พบข้อมูล',
-            message: 'ไม่พบหมายเลขพัสดุ',
-            backgroundColor: Colors.redAccent,
-            icon: Icon(
-              Icons.error,
-              size: 28.0,
-              color: Colors.white,
-            ),
-            duration: Duration(seconds: 3),
-            leftBarIndicatorColor: Colors.blue[300],
-          )..show(context);
+          title: 'ไม่พบข้อมูล',
+          message: 'ไม่พบหมายเลขพัสดุ',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
         // MyNavigator.goToMain(context);
-      } else if (response.statusCode == 500) {
-
-      }
+      } else if (response.statusCode == 500) {}
     });
   }
 

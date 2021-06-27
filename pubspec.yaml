@@ -27,8 +27,6 @@ dependencies:
   screenshot: ^1.2.1
   share: ^2.0.4
 
-  
-  
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
@@ -59,31 +57,35 @@ dependencies:
   image_gallery_saver: ^1.6.9
   dio: ^4.0.0
   path_provider: ^2.0.0
-  #permission_handler: ^7.0.0
   webview_flutter: ^2.0.4
   url_launcher: ^6.0.3
-  # fluttertoast: ^8.0.6
+  fluttertoast: ^8.0.7
   another_flushbar: ^1.10.20
   flutter_markdown: ^0.4.1
   device_apps: ^2.1.1
+  permission_handler: ^8.1.1
 
 dependency_overrides:
   intl: 0.17.0-nullsafety.2
   image: ^2.1.12
   xml: ^4.2.0
-  date_range_picker:
-    git:
-      url: https://github.com/LempereurBenjamin/date_range_picker
+  # date_range_picker:
+  #   git:
+  #     url: https://github.com/LempereurBenjamin/date_range_picker
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
+
   flutter_launcher_icons: "^0.8.0"
 
 flutter_icons:
-  android: "launcher_icon"
+  image_path: "assets/icons/launcher-icon.png"
+  android: true
   ios: true
-  image_path: "assets/icons/launcher_icon.png"  
+    
 
 
 flutter_native_splash:
