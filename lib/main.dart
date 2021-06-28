@@ -4,10 +4,12 @@ import 'package:JapanThaiExpress/AdminScreens/Exchange/ExchangeDetailScreen.dart
 import 'package:JapanThaiExpress/AdminScreens/Notification/NotiDetailScreen.dart';
 import 'package:JapanThaiExpress/AdminScreens/QRCodeScan/QRCodeDetail.dart';
 import 'package:JapanThaiExpress/AdminScreens/Settings/SettingScreen.dart';
+import 'package:JapanThaiExpress/Screens/Login/OtpScreenforgot.dart';
 import 'package:JapanThaiExpress/Screens/Login/SplashScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginPin.dart';
 import 'package:JapanThaiExpress/Screens/Login/LoginScreen.dart';
 import 'package:JapanThaiExpress/Screens/Login/SetPinScreen.dart';
+import 'package:JapanThaiExpress/Screens/Login/forgotpassword.dart';
 import 'package:JapanThaiExpress/Screens/Login/intro_screen.dart';
 import 'package:JapanThaiExpress/Screens/Login/home_screen.dart';
 import 'package:JapanThaiExpress/Screens/Register/OtpScreen.dart';
@@ -168,6 +170,8 @@ var routes = <String, WidgetBuilder>{
   "/notidetailuser": (BuildContext context) => NotiDetailUserScreen(),
   "/timelineordermember" : (BuildContext context) => TimeLinePurchaseMember(),
   "/qrcodedetail":(BuildContext context) => QRCodedetail(),
+  "/otpscreenforgot": (BuildContext context) => OtpScreenforgot(),
+  "/forgotpassword": (BuildContext context) => Forgotpassword(),
 };
 
 class MyApp extends StatelessWidget {
