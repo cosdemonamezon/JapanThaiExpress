@@ -161,20 +161,26 @@ class _ServiceState extends State<Service> {
           children: [
             Container(
               //height: height*0.2,
-              //color: Colors.amber,
+              // color: Colors.amber,
               width: double.infinity,
               child: CarouselSlider.builder(
                   itemCount: banner.length,
                   options: CarouselOptions(
+                    // height: 400,
+                    aspectRatio: 2.5,
+                    viewportFraction: 1,
+                    initialPage: 0,
+                    enableInfiniteScroll: true,
+                    reverse: false,
                     autoPlay: true,
-                    aspectRatio: 2.1,
-                    viewportFraction: 0.85,
+                    autoPlayInterval: Duration(seconds: 30),
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastOutSlowIn,
                     enlargeCenterPage: true,
-                    initialPage: 9,
+                    // onPageChanged: callbackFunction,
                     scrollDirection: Axis.horizontal,
-                    autoPlayInterval: Duration(seconds: 5),
-                    autoPlayAnimationDuration: Duration(milliseconds: 3000),
                   ),
+                  // ignore: missing_return
                   itemBuilder: (context, index, realIdx) {
                     if (banner.length != 0) {
                       return Container(
@@ -182,7 +188,8 @@ class _ServiceState extends State<Service> {
                         child: Center(
                           child: Image.network(
                             banner[index]['path'],
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
+                            width: 1000.0,
                           ),
                         ),
                       );

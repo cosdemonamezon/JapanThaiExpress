@@ -23,6 +23,7 @@ class OtpScreen extends StatefulWidget {
 class _OtpScreenState extends State<OtpScreen> {
   SharedPreferences prefs;
   Map<String, dynamic> _data;
+  bool isLoading = false;
   FocusNode pin2FocusNode;
   FocusNode pin3FocusNode;
   FocusNode pin4FocusNode;
@@ -70,7 +71,8 @@ class _OtpScreenState extends State<OtpScreen> {
           ),
           Center(
             child: Text(
-              "ยืนยัน OTP",
+              "ยืนยัน OTP Ref. " + _data['otp_ref'],
+              style: TextStyle(color: kPrimaryColor),
             ),
           ),
           Center(child: Text("รหัสยืนยันได้ส่งไปที่เบอร์โทร " + data['tel'])),
@@ -137,33 +139,35 @@ class _OtpScreenState extends State<OtpScreen> {
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30),
-            child: GestureDetector(
-              onTap: () {
-                _checkOtp(data['tel'], data['otp_ref'], currentText);
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(vertical: 15),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: Colors.grey.shade200,
-                        offset: Offset(2, 4),
-                        blurRadius: 5,
-                        spreadRadius: 2)
-                  ],
-                  gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
-                ),
-                child: Text(
-                  "ยืนยัน",
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(vertical: 15),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: Colors.grey.shade200,
+                      offset: Offset(2, 4),
+                      blurRadius: 5,
+                      spreadRadius: 2)
+                ],
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [Color(0xffdd4b39), Color(0xffdd4b39)]),
               ),
+              child: isLoading == true
+                  ? Center(child: CircularProgressIndicator())
+                  : GestureDetector(
+                      onTap: () {
+                        _checkOtp(data['tel'], data['otp_ref'], currentText);
+                      },
+                      child: Text(
+                        "ยืนยัน",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ),
             ),
           ),
         ],
@@ -176,19 +180,43 @@ class _OtpScreenState extends State<OtpScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text("รหัสผ่านจะหมดอายุใน "),
-        TweenAnimationBuilder(
-          tween: Tween(begin: 60.0, end: 0.0),
-          duration: Duration(seconds: 60),
-          builder: (_, value, child) => Text(
-            "00:${value.toInt()}",
-            style: TextStyle(color: kPrimaryColor),
-          ),
-        ),
+        TweenAnimationBuilder<Duration>(
+            duration: Duration(minutes: 10),
+            tween: Tween(begin: Duration(minutes: 10), end: Duration.zero),
+            onEnd: () {
+              MyNavigator.goToLogin(context);
+            },
+            builder: (BuildContext context, Duration value, Widget child) {
+              final minutes = value.inMinutes;
+              final seconds = value.inSeconds % 60;
+              return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Text('$minutes:$seconds',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: kPrimaryColor,
+                        fontWeight: FontWeight.bold,
+                      )));
+            }),
+        // TweenAnimationBuilder(
+        //   onEnd: () {
+        //     MyNavigator.goToLogin(context);
+        //   },
+        //   tween: Tween(begin: 600.0, end: 0.0),
+        //   duration: Duration(seconds: 600),
+        //   builder: (_, value, child) => Text(
+        //     "00:${value.toInt()}",
+        //     style: TextStyle(color: kPrimaryColor),
+        //   ),
+        // ),
       ],
     );
   }
 
   _checkOtp(String tel, String ref, String code) async {
+    setState(() {
+      isLoading = true;
+    });
     var url = Uri.parse(pathAPI + 'api/checkOTP');
     var response = await http.post(
       url,
@@ -200,33 +228,50 @@ class _OtpScreenState extends State<OtpScreen> {
       }),
     );
     if (response.statusCode == 200) {
+      setState(() {
+        isLoading = false;
+      });
       final Map<String, dynamic> res = convert.jsonDecode(response.body);
       print(res);
       _register(_data);
     } else {
+      setState(() {
+        isLoading = false;
+      });
       final Map<String, dynamic> res = convert.jsonDecode(response.body);
       print(res);
     }
   }
 
   _register(Map<dynamic, dynamic> data) async {
+    setState(() {
+      isLoading = true;
+    });
     var url = Uri.parse(pathAPI + 'api/register');
     var response = await http.post(
       url,
       headers: {},
       body: ({
-        'fname_th': data['fname_th'],
-        'lname_th': data['lname_th'],
-        'email': data['email'],
-        'tel': data['tel'],
-        'password': data['password'],
+        'fname_th': data['fname_th'].toString(),
+        'lname_th': data['lname_th'].toString(),
+        'fname_en': data['fname_en'].toString(),
+        'lname_en': data['lname_en'].toString(),
+        'email': data['email'].toString(),
+        'tel': data['tel'].toString(),
+        'password': data['password'].toString(),
       }),
     );
     if (response.statusCode == 201) {
+      setState(() {
+        isLoading = false;
+      });
       final Map<String, dynamic> res = convert.jsonDecode(response.body);
       await prefs.setString('token', response.body);
       MyNavigator.goToSetPin(context);
     } else {
+      setState(() {
+        isLoading = false;
+      });
       final Map<String, dynamic> res = convert.jsonDecode(response.body);
       print(res);
     }
