@@ -259,7 +259,7 @@ class _AuctionadminState extends State<Auctionadmin> {
               centerTitle: true,
               title: Text("รายการประมูล"),
               leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: Icon(Icons.arrow_back_ios_new_rounded),
                   onPressed: () {
                     MyNavigator.goToHomeServices(context);
                   }),

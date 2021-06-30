@@ -121,7 +121,7 @@ class _HomeServicesState extends State<HomeServices> {
         title: Text("คำขอบริการ"),
         elevation: 0,
         leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back_ios_new_rounded),
             onPressed: () {
               MyNavigator.goToHomeScreen(context);
             }),
@@ -137,7 +137,7 @@ class _HomeServicesState extends State<HomeServices> {
                 padding: EdgeInsets.all(3.0),
                 children: [
                   Stack(children: [
-                    dashboardItem("รายการฝากซื้อ", Icons.shopping_cart_outlined,
+                    dashboardItem("รายการฝากซื้อ", Icons.shopping_cart_rounded,
                         1, context),
                     Positioned(
                       right: 70,
@@ -169,7 +169,7 @@ class _HomeServicesState extends State<HomeServices> {
                     ),
                   ]),
                   Stack(children: [
-                    dashboardItem("รายการฝากส่ง", Icons.local_shipping_outlined,
+                    dashboardItem("รายการฝากส่ง", Icons.local_shipping_rounded,
                         2, context),
                     Positioned(
                       right: 70,
@@ -202,7 +202,7 @@ class _HomeServicesState extends State<HomeServices> {
                   ]),
                   Stack(children: [
                     dashboardItem(
-                        "รายการฝากโอน", Icons.local_atm_outlined, 3, context),
+                        "รายการฝากโอน", Icons.local_atm_rounded, 3, context),
                     Positioned(
                       right: 70,
                       left: 100,
@@ -234,7 +234,7 @@ class _HomeServicesState extends State<HomeServices> {
                   ]),
                   Stack(children: [
                     dashboardItem("รายการประมูล",
-                        Icons.monetization_on_outlined, 4, context),
+                        Icons.monetization_on_rounded, 4, context),
                     Positioned(
                       right: 70,
                       left: 100,

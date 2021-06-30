@@ -56,7 +56,7 @@ class _QRCodedetailState extends State<QRCodedetail> {
         centerTitle: true,
         title: Text("รายละเอียด"),
         leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back_ios_new_rounded),
             onPressed: () {
               Navigator.pop(context);
             }),

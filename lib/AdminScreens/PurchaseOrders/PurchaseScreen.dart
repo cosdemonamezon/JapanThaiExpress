@@ -144,7 +144,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           centerTitle: true,
           title: Text("รายการสินค้า"),
           leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(Icons.arrow_back_ios_new_rounded),
               onPressed: () {
                 MyNavigator.goToAdmin(context);
               }),

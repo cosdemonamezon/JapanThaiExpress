@@ -105,7 +105,7 @@ class _NavigationBarState extends State<NavigationBar> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      height: 80,
+      height: 60,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Color(0xffdd4b39),
@@ -134,13 +134,13 @@ class _NavigationBarState extends State<NavigationBar> {
                           MyNavigator.goBackUserHome(context);
                         }),
                   ),
-                  Text(
-                    "หน้าหลัก",
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
+                  // Text(
+                  //   "หน้าหลัก",
+                  //   style: TextStyle(
+                  //       fontSize: 12,
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Colors.white),
+                  // ),
                 ],
               ),
               Stack(children: [
@@ -164,13 +164,13 @@ class _NavigationBarState extends State<NavigationBar> {
                                           NotificationScreen()));
                             }),
                       ),
-                      Text(
-                        "แจ้งเตือน",
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
+                      // Text(
+                      //   "แจ้งเตือน",
+                      //   style: TextStyle(
+                      //       fontSize: 12,
+                      //       fontWeight: FontWeight.bold,
+                      //       color: Colors.white),
+                      // ),
                     ],
                   ),
                 ),
@@ -230,13 +230,13 @@ class _NavigationBarState extends State<NavigationBar> {
                                 MyNavigator.goTomessageuser(context);
                               }),
                         ),
-                        Text(
-                          "ข้อความ",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
+                        // Text(
+                        //   "ข้อความ",
+                        //   style: TextStyle(
+                        //       fontSize: 12,
+                        //       fontWeight: FontWeight.bold,
+                        //       color: Colors.white),
+                        // ),
                       ],
                     ),
                   ),
@@ -298,13 +298,13 @@ class _NavigationBarState extends State<NavigationBar> {
                             //MyNavigator.goToProfileScreen(context);
                           }),
                     ),
-                    Text(
-                      "ตั้งค่า",
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
+                    // Text(
+                    //   "ตั้งค่า",
+                    //   style: TextStyle(
+                    //       fontSize: 12,
+                    //       fontWeight: FontWeight.bold,
+                    //       color: Colors.white),
+                    // ),
                   ],
                 ),
               ),

@@ -304,7 +304,7 @@ class _DepositoryScreenState extends State<DepositoryScreen> {
               centerTitle: true,
               title: Text("รายการฝากส่ง"),
               leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: Icon(Icons.arrow_back_ios_new_rounded),
                   onPressed: () {
                     MyNavigator.goToHomeServices(context);
                   }),

@@ -46,7 +46,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> editdata = convert.jsonDecode(response.body);
       if (editdata['code'] == 200) {
-        print(editdata['message']);
+        print(editdata['message']); 
         String feedback = editdata['message'];
         Flushbar(
           //title: 'ดำเนินการสำเร็จ',
