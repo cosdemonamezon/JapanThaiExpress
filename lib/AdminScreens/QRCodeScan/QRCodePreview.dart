@@ -1,6 +1,11 @@
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
+import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class QRCodePreview extends StatefulWidget {
   QRCodePreview({Key key}) : super(key: key);
@@ -11,6 +16,7 @@ class QRCodePreview extends StatefulWidget {
 
 class _QRCodePreviewState extends State<QRCodePreview> {
   List<bool> checked = [true, true, false, false, true];
+  SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
@@ -432,7 +438,7 @@ class _QRCodePreviewState extends State<QRCodePreview> {
                       ),
                       child: GestureDetector(
                         onTap: () {
-                          MyNavigator.goToQRCodedetail(context);
+                          _getDetail();
                         },
                         child: Text(
                           "พิมพ์สติกเกอร์",
@@ -449,5 +455,60 @@ class _QRCodePreviewState extends State<QRCodePreview> {
       ),
       bottomNavigationBar: Navigation(),
     );
+  }
+
+  _getDetail() async {
+    prefs = await SharedPreferences.getInstance();
+
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    var url = Uri.parse(pathAPI + 'api/web/print_sticker/DE21060006');
+    var response = await http.get(url, headers: {
+      //'Content-Type': 'application/json',
+      'Authorization': token['data']['token']
+    });
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = convert.jsonDecode(response.body);
+      if (data['code'] == 200) {
+        var arg = {
+          'ship_name': data['data']['ship_name'],
+          'ship_address': data['data']['ship_address'],
+          'ship_tel': data['data']['ship_tel'],
+        };
+        MyNavigator.goToQRCodedetail(context, arg);
+      } else {
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+        setState(() {
+          // isLoading = false;
+        });
+      }
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
   }
 }
