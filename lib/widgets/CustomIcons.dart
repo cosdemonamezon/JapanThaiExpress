@@ -6,4 +6,5 @@ class CustomIcons {
   static const IconData googlePlus =
       IconData(0xe902, fontFamily: "CustomIcons");
   static const IconData linkedin = IconData(0xe903, fontFamily: "CustomIcons");
+  static const IconData apple = IconData(0xe904, fontFamily: "CustomIcons");
 }
