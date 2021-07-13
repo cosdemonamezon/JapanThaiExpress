@@ -531,6 +531,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   // SizedBox(height: height * .045),
                   _createAccountLabel(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'V.1.0.5',
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600),
+                  ),
                 ],
               ),
             ),
@@ -636,8 +646,8 @@ class _LoginScreenState extends State<LoginScreen> {
             Text(
               'สมัครสมาชิก',
               style: TextStyle(
-                  color: Color(0xfff79c4f),
-                  fontSize: 15,
+                  color: Color(0xffdd4b39),
+                  fontSize: 19,
                   fontWeight: FontWeight.w600),
             ),
           ],
