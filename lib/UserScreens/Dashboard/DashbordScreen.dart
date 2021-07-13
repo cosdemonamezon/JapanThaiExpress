@@ -28,6 +28,12 @@ class _DashbordScreenState extends State<DashbordScreen> {
   Map<String, dynamic> dashboard = {};
   bool isLoading = false;
   final _formKey1 = GlobalKey<FormBuilderState>();
+
+  String tel = "";
+  String fname = "";
+  String lname = "";
+  String email = "";
+
   @override
   void initState() {
     super.initState();
@@ -39,6 +45,14 @@ class _DashbordScreenState extends State<DashbordScreen> {
       prefs = await SharedPreferences.getInstance();
       var tokenString = prefs.getString('token');
       var token = convert.jsonDecode(tokenString);
+
+      setState(() {
+        tel = token['data']['tel'];
+        fname = token['data']['fname_th'];
+        lname = token['data']['lname_th'];
+        email = token['data']['email'];
+      });
+
       var url = Uri.parse(pathAPI + 'api/app/dashboard');
       var response = await http.get(
         url,
@@ -58,7 +72,7 @@ class _DashbordScreenState extends State<DashbordScreen> {
 
           var telString = token['data']['tel'];
 
-          if ( telString == null) {
+          if (telString == null) {
             showDialog(
               barrierDismissible: false,
               context: context,
@@ -126,6 +140,9 @@ class _DashbordScreenState extends State<DashbordScreen> {
         },
         body: ({
           'tel': values['phone'],
+          'fname_th': values['fname'],
+          'lname_th': values['lname'],
+          'email': values['email'],
         }));
 
     if (response.statusCode == 200) {
@@ -179,8 +196,8 @@ class _DashbordScreenState extends State<DashbordScreen> {
                 children: [
                   Stack(
                     children: [
-                      dashboardItem("รายการซื้อสินค้า", Icons.local_grocery_store,
-                          1, context),
+                      dashboardItem("รายการซื้อสินค้า",
+                          Icons.local_grocery_store, 1, context),
                       Positioned(
                         right: 70,
                         left: 100,
@@ -245,7 +262,8 @@ class _DashbordScreenState extends State<DashbordScreen> {
                       ),
                     ],
                   ),
-                  dashboardItem("สินค้า", Icons.store_mall_directory_rounded, 3, context),
+                  dashboardItem(
+                      "สินค้า", Icons.store_mall_directory_rounded, 3, context),
                   Stack(
                     children: [
                       dashboardItem("กระเป๋าสตางค์",
@@ -281,7 +299,8 @@ class _DashbordScreenState extends State<DashbordScreen> {
                     ],
                   ),
                   dashboardItem("ข่าว", Icons.web_rounded, 5, context),
-                  dashboardItem("โปรโมชั่น", Icons.card_giftcard_rounded, 6, context),
+                  dashboardItem(
+                      "โปรโมชั่น", Icons.card_giftcard_rounded, 6, context),
                 ],
               ),
             ),
@@ -318,10 +337,6 @@ class _DashbordScreenState extends State<DashbordScreen> {
           child: SingleChildScrollView(
             child: FormBuilder(
               key: _formKey1,
-              initialValue: {
-                'title': '',
-                'description': '',
-              },
               child: Column(
                 children: [
                   Container(
@@ -329,6 +344,60 @@ class _DashbordScreenState extends State<DashbordScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Center(
+                          child: Text(
+                            "โปรดแก้ไขข้อมูลส่วนตัว",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                        ),
+                        Divider(
+                          height: 10,
+                        ),
+                        Text(
+                          "ชื่อ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: 'fname',
+                          initialValue: this.fname,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              hintText: 'กรุณากรอกชื่อ',
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context,
+                                errorText: 'กรุณากรอกชื่อเป็นตัวอักษร'),
+                          ]),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "นามสกุล",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: 'lname',
+                          initialValue: this.lname,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              hintText: 'กรุณากรอกนามสกุล',
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context,
+                                errorText: 'กรุณากรอกนามสกุล'),
+                          ]),
+                        ),
+                        SizedBox(height: 10),
                         Text(
                           "เบอร์โทร",
                           style: TextStyle(
@@ -337,6 +406,7 @@ class _DashbordScreenState extends State<DashbordScreen> {
                         SizedBox(height: 10),
                         FormBuilderTextField(
                           name: 'phone',
+                          initialValue: this.tel,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                               //border: InputBorder.none,
@@ -351,6 +421,28 @@ class _DashbordScreenState extends State<DashbordScreen> {
                             FormBuilderValidators.maxLength(context, 10,
                                 errorText:
                                     "กรุณากรอกเบอร์โทรไม่น้อยกว่า 10 ตัวอักษร")
+                          ]),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "อีเมล์",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: 'email',
+                          initialValue: this.email,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              hintText: 'กรุณากรอกอีเมล์',
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context,
+                                errorText: 'กรุณากรอกอีเมล์'),
                           ]),
                         ),
                       ],

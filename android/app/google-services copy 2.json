@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "603045150991-gs1es1fsrvu0sp64j9ji2nof048rv2m9.apps.googleusercontent.com",
+          "client_id": "543243329789-25pl9141bc9ima49ej8mhfpqlhc1l8ud.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ashatech.JapanThaiExpress",
@@ -22,7 +22,7 @@
           }
         },
         {
-          "client_id": "603045150991-gs1es1fsrvu0sp64j9ji2nof048rv2m9.apps.googleusercontent.com",
+          "client_id": "543243329789-cclvcf934a4ru0ppj9efd0njg6df6jp6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ashatech.JapanThaiExpress",
@@ -30,7 +30,7 @@
           }
         },
         {
-          "client_id": "603045150991-gs1es1fsrvu0sp64j9ji2nof048rv2m9.apps.googleusercontent.com",
+          "client_id": "543243329789-fkg8b94mmvc1dj768bdqfvqfrp3j4s4t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ashatech.JapanThaiExpress",
@@ -38,7 +38,7 @@
           }
         },
         {
-          "client_id": "603045150991-gs1es1fsrvu0sp64j9ji2nof048rv2m9.apps.googleusercontent.com",
+          "client_id": "543243329789-lkra2otes6eju1u10qkbn27152j9uhm6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ashatech.JapanThaiExpress",
@@ -46,7 +46,7 @@
           }
         },
         {
-          "client_id": "603045150991-gs1es1fsrvu0sp64j9ji2nof048rv2m9.apps.googleusercontent.com",
+          "client_id": "543243329789-st5j7dtml6e9a4dri1ua7u6b060a7cr7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -59,7 +59,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "603045150991-gs1es1fsrvu0sp64j9ji2nof048rv2m9.apps.googleusercontent.com",
+              "client_id": "543243329789-st5j7dtml6e9a4dri1ua7u6b060a7cr7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

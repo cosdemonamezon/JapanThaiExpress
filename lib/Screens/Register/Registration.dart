@@ -20,12 +20,27 @@ class Registration extends StatefulWidget {
 class _RegistrationState extends State<Registration> {
   final _formKey = GlobalKey<FormBuilderState>();
   SharedPreferences prefs;
-  String email;
+  String email1;
   String tel;
   String password;
   String confirmpassword;
   String otp_ref;
   bool isLoading = false;
+  bool isLoading2 = false;
+
+  // String set_email = "";
+  // String set_fname_th = "";
+  // String set_lname_th = "";
+  // String set_fname_en = "";
+  // String set_lname_en = "";
+  // String set_phone = "";
+
+  TextEditingController set_email = TextEditingController();
+  TextEditingController set_fname_th = TextEditingController();
+  TextEditingController set_lname_th = TextEditingController();
+  TextEditingController set_fname_en = TextEditingController();
+  TextEditingController set_lname_en = TextEditingController();
+  TextEditingController set_phone = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +63,13 @@ class _RegistrationState extends State<Registration> {
                 FormBuilder(
                   key: _formKey,
                   initialValue: {
-                    'thfname': '',
-                    'thlname': '',
-                    'enfname': '',
-                    'enlname': '',
-                    'email': '',
-                    'tel': '',
+                    // 'thfname': '',
+                    // 'thlname': '',
+                    // 'enfname': '',
+                    // 'enlname': '',
+                    // 'email': '',
+                    // 'email2': '',
+                    // 'tel': '',
                     'password': '',
                     'confirmpassword': '',
                   },
@@ -62,6 +78,44 @@ class _RegistrationState extends State<Registration> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: 10),
+                        Text(
+                          "ชิงค์ข้อมูลเก่าด้วยอีเมล",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                            name: 'email2',
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    _SyncEmail(_formKey
+                                        .currentState.fields['email2'].value);
+                                  },
+                                  icon: isLoading2 == true
+                                      ? Center(
+                                          child: CircularProgressIndicator())
+                                      : Icon(Icons.search),
+                                ),
+                                prefixIcon: Icon(Icons.email),
+                                labelText: 'อีเมล',
+                                //border: InputBorder.none,
+                                border: OutlineInputBorder(),
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context,
+                                  errorText: 'กรุณากรอกอีเมล'),
+                              FormBuilderValidators.email(context,
+                                  errorText: 'กรุณากรอกอีเมลให้ถูกต้อง'),
+                            ])),
+                        SizedBox(height: 10),
+                        Divider(
+                          height: 10,
+                        ),
+                        SizedBox(height: 10),
                         Text(
                           "ชื่อภาษาไทย",
                           style: TextStyle(
@@ -70,6 +124,7 @@ class _RegistrationState extends State<Registration> {
                         SizedBox(height: 10),
                         FormBuilderTextField(
                             name: 'thfname',
+                            controller: set_fname_th,
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person),
                                 labelText: 'ชื่อ(ภาษาไทย)',
@@ -90,6 +145,7 @@ class _RegistrationState extends State<Registration> {
                         SizedBox(height: 10),
                         FormBuilderTextField(
                             name: 'thlname',
+                            controller: set_lname_th,
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person),
                                 labelText: 'นามสกุล(ภาษาไทย)',
@@ -102,7 +158,7 @@ class _RegistrationState extends State<Registration> {
                                   errorText: 'กรุณากรอกนามสกุลภาษาไทย'),
                             ])),
                         SizedBox(height: 10),
-                         Text(
+                        Text(
                           "ชื่อภาษาอังกฤษ",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
@@ -110,6 +166,7 @@ class _RegistrationState extends State<Registration> {
                         SizedBox(height: 10),
                         FormBuilderTextField(
                             name: 'enfname',
+                            controller: set_fname_en,
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person),
                                 labelText: 'ชื่อ(ภาษาอังกฤษ)',
@@ -130,6 +187,7 @@ class _RegistrationState extends State<Registration> {
                         SizedBox(height: 10),
                         FormBuilderTextField(
                             name: 'enlname',
+                            controller: set_lname_en,
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person),
                                 labelText: 'นามสกุล(ภาษาอังกฤษ)',
@@ -150,6 +208,8 @@ class _RegistrationState extends State<Registration> {
                         SizedBox(height: 10),
                         FormBuilderTextField(
                             name: 'email',
+                            controller: set_email,
+                            // initialValue: this.set_email,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.email),
@@ -173,6 +233,7 @@ class _RegistrationState extends State<Registration> {
                         SizedBox(height: 10),
                         FormBuilderTextField(
                             name: 'tel',
+                            controller: set_phone,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.phone),
@@ -293,6 +354,48 @@ class _RegistrationState extends State<Registration> {
     );
   }
 
+  _SyncEmail(String email) async {
+    setState(() {
+      isLoading2 = true;
+    });
+    prefs = await SharedPreferences.getInstance();
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+
+    var url = Uri.parse(pathAPI + 'api/get_old_member');
+    var response = await http.post(
+      url,
+      headers: {
+        //'Content-Type': 'application/json',
+        // 'Authorization': token['data']['token'],
+      },
+      body: ({
+        'email': email,
+      }),
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> set_data = convert.jsonDecode(response.body);
+
+      set_email.text = set_data['data']['email'].toString();
+      set_fname_th.text = set_data['data']['firstname'].toString();
+      set_lname_th.text = set_data['data']['lastname'].toString();
+      set_fname_en.text = set_data['data']['firstname'].toString();
+      set_lname_en.text = set_data['data']['lastname'].toString();
+      set_phone.text = set_data['data']['tel'].toString();
+
+      setState(() {
+        isLoading2 = false;
+      });
+    } else {
+      setState(() {
+        isLoading2 = false;
+      });
+      final Map<String, dynamic> addressdata =
+          convert.jsonDecode(response.body);
+      print(addressdata['message']);
+    }
+  }
+
   _Registration() async {
     setState(() {
       isLoading = true;
@@ -361,8 +464,8 @@ class _RegistrationState extends State<Registration> {
       var arg = {
         'tel': _formKey.currentState.fields['tel'].value,
         'password': _formKey.currentState.fields['password'].value,
-        'fname_th': _formKey.currentState.fields['fname'].value,
-        'lname_th': _formKey.currentState.fields['lname'].value,
+        'fname_th': _formKey.currentState.fields['thfname'].value,
+        'lname_th': _formKey.currentState.fields['thlname'].value,
         'email': _formKey.currentState.fields['email'].value,
         'otp_ref': otp_ref,
       };

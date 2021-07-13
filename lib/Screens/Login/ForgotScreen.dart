@@ -21,6 +21,9 @@ class _ForgotScreenState extends State<ForgotScreen> {
   bool isLoading = false;
 
   _forgotPassword(Map<String, dynamic> values) async {
+    setState(() {
+      isLoading = true;
+    });
     print(values);
     var url = Uri.parse(pathAPI + 'api/forgot_password');
     var response = await http.post(url,

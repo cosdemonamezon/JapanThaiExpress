@@ -148,7 +148,11 @@ class _LoginPinState extends State<LoginPin> {
                     ),
                   ),
                 ),
-                SizedBox(height: 50),
+                SizedBox(height: 20),
+                Text(
+                  'กรุณาใส่ PIN เพื่อปลดล็อค',
+                  style: TextStyle(fontSize: 20),
+                ),
                 Numberpad(
                   length: length,
                   onChange: onChange,
