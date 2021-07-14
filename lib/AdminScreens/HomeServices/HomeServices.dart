@@ -121,7 +121,7 @@ class _HomeServicesState extends State<HomeServices> {
         title: Text("คำขอบริการ"),
         elevation: 0,
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new_rounded),
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
               MyNavigator.goToHomeScreen(context);
             }),
@@ -150,18 +150,18 @@ class _HomeServicesState extends State<HomeServices> {
                               backgroundColor: Colors.red,
                               child: Center(
                                   child: dashboard['preorder'] != null
-                                        ?Text(dashboard['preorder'].toString(),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ))
-                                            :Text("0",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ))),
+                                      ? Text(dashboard['preorder'].toString(),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ))
+                                      : Text("0",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ))),
                             )
                           : SizedBox(
                               height: 2,
@@ -181,19 +181,19 @@ class _HomeServicesState extends State<HomeServices> {
                               radius: 20,
                               backgroundColor: Colors.red,
                               child: Center(
-                                  child:dashboard['depository'] != null
-                                        ?Text(dashboard['depository'].toString(),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ))
-                                            :Text("0",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ))),
+                                  child: dashboard['depository'] != null
+                                      ? Text(dashboard['depository'].toString(),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ))
+                                      : Text("0",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ))),
                             )
                           : SizedBox(
                               height: 2,
@@ -214,18 +214,18 @@ class _HomeServicesState extends State<HomeServices> {
                               backgroundColor: Colors.red,
                               child: Center(
                                   child: dashboard['exchange'] != null
-                                        ?Text(dashboard['exchange'].toString(),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ))
-                                            :Text("0",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ))),
+                                      ? Text(dashboard['exchange'].toString(),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ))
+                                      : Text("0",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ))),
                             )
                           : SizedBox(
                               height: 2,
@@ -233,8 +233,8 @@ class _HomeServicesState extends State<HomeServices> {
                     ),
                   ]),
                   Stack(children: [
-                    dashboardItem("รายการประมูล",
-                        Icons.monetization_on_rounded, 4, context),
+                    dashboardItem("รายการประมูล", Icons.monetization_on_rounded,
+                        4, context),
                     Positioned(
                       right: 70,
                       left: 100,
@@ -246,18 +246,18 @@ class _HomeServicesState extends State<HomeServices> {
                               backgroundColor: Colors.red,
                               child: Center(
                                   child: dashboard['auction'] != null
-                                    ?Text(dashboard['auction'].toString(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                          color: Colors.white,
-                                        ))
-                                        :Text("0",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                          color: Colors.white,
-                                        ))),                              
+                                      ? Text(dashboard['auction'].toString(),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ))
+                                      : Text("0",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ))),
                             )
                           : SizedBox(
                               height: 2,

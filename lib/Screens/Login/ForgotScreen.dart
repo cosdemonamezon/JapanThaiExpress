@@ -22,6 +22,9 @@ class _ForgotScreenState extends State<ForgotScreen> {
   String otp_ref = '';
 
   _forgotPassword(Map<String, dynamic> values) async {
+    setState(() {
+      isLoading = true;
+    });
     print(values);
     var url = Uri.parse(pathAPI + 'api/sendOTPForgot');
     var response = await http.post(url,

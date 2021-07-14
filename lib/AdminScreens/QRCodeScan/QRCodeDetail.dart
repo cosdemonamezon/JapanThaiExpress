@@ -29,9 +29,7 @@ class _QRCodedetailState extends State<QRCodedetail> {
   String sendername = 'บริษัท เจที ขนส่ง จำกัด',
       sendertel = '080-549-4449',
       senderaddress = '119/8 หมู่ 4 ต.ตะพง อ.เมือง จ.ระยอง 21000';
-  String recipname = '...',
-      reciptel = '...',
-      recipaddress = '...';
+  String recipname = '...', reciptel = '...', recipaddress = '...';
 
   @override
   void initState() {
@@ -56,12 +54,11 @@ class _QRCodedetailState extends State<QRCodedetail> {
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
     var url = Uri.parse(pathAPI + 'api/web/print_sticker/DE21060006');
-    var response = await http.get(url,
-        headers: {
-          //'Content-Type': 'application/json',
-          'Authorization': token['data']['token']
+    var response = await http.get(url, headers: {
+      //'Content-Type': 'application/json',
+      'Authorization': token['data']['token']
     });
-        
+
     if (response.statusCode == 200) {
       final Map<String, dynamic> creatdata = convert.jsonDecode(response.body);
       if (creatdata['code'] == 200) {
@@ -113,7 +110,7 @@ class _QRCodedetailState extends State<QRCodedetail> {
     Map data = ModalRoute.of(context).settings.arguments;
     setState(() {
       recipname = data['ship_name'];
-      recipaddress= data['ship_address'];
+      recipaddress = data['ship_address'];
       reciptel = data['ship_tel'];
     });
     return Scaffold(
@@ -122,7 +119,7 @@ class _QRCodedetailState extends State<QRCodedetail> {
         centerTitle: true,
         title: Text("รายละเอียด"),
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new_rounded),
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context);
             }),

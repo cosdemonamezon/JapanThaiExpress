@@ -144,7 +144,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           centerTitle: true,
           title: Text("รายการสินค้า"),
           leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios_new_rounded),
+              icon: Icon(Icons.arrow_back),
               onPressed: () {
                 MyNavigator.goToAdmin(context);
               }),
@@ -655,10 +655,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
             children: [
               MaterialButton(
                 onPressed: () {
-                 var arg =
-                                                            PurchaseScreen[
-                                                                index]['id'];
-                   MyNavigator.goToTimelinePurchase(context, arg);
+                  var arg = PurchaseScreen[index]['id'];
+                  MyNavigator.goToTimelinePurchase(context, arg);
                 },
                 color: Color(0xffdd4b39),
                 child: Text(

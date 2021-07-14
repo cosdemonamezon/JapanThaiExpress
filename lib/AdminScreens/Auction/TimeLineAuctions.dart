@@ -332,7 +332,7 @@ class _TimelineAuctionsState extends State<TimelineAuctions> {
         centerTitle: true,
         title: Text("สถานะรายการ"),
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new_rounded),
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
               MyNavigator.goToAuctionadmin(context);
             }),

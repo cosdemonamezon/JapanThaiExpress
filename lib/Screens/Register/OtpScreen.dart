@@ -4,6 +4,7 @@ import 'package:JapanThaiExpress/Screens/Register/SetPin.dart';
 import 'package:JapanThaiExpress/constants.dart';
 import 'package:JapanThaiExpress/size_config.dart';
 import 'package:JapanThaiExpress/utils/my_navigator.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -235,6 +236,19 @@ class _OtpScreenState extends State<OtpScreen> {
       print(res);
       _register(_data);
     } else {
+      var feedback = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'เกิดข้อผิดพลาดจากระบบ : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
       setState(() {
         isLoading = false;
       });
@@ -272,6 +286,20 @@ class _OtpScreenState extends State<OtpScreen> {
       setState(() {
         isLoading = false;
       });
+
+      var feedback = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'เกิดข้อผิดพลาดจากระบบ : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
       final Map<String, dynamic> res = convert.jsonDecode(response.body);
       print(res);
     }
