@@ -193,6 +193,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
             ProfileMenu(
+              text: "ศูนย์ช่วยเหลือ",
+              icon: Icon(Icons.help_outline),
+              press: () {
+                MyNavigator.goToHelp(context);
+              },
+            ),
+            ProfileMenu(
               text: "ช่องทางการติดต่อ",
               icon: Icon(Icons.phone_in_talk_outlined),
               press: () {
@@ -221,13 +228,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //   icon: "assets/icons/Settings.svg",
             //   press: () {},
             // ),
-            ProfileMenu(
-              text: "ศูนย์ช่วยเหลือ",
-              icon: Icon(Icons.help_outline),
-              press: () {
-                MyNavigator.goToHelp(context);
-              },
-            ),
+            
             ProfileMenu(
               text: "ออกจากระบบ",
               icon: Icon(Icons.login_outlined),

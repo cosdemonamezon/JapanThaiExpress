@@ -154,7 +154,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     return null;
   }
-  
 
   Future<void> _loginGoogle() async {
     try {
@@ -505,25 +504,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SocialIcon(
                         colors: [
-                          Color(0xFFff4f38),
                           Color(0xFFff355d),
+                          Color(0xFFff4f38),
                         ],
                         iconData: CustomIcons.googlePlus,
                         onPressed: () {
                           _loginGoogle();
                         },
                       ),
-                     IconButton(
-                        onPressed: (){
-                          
-                        },
+                      SocialIcon(
+                        colors: [
+                          Color(0xFF404040),
+                          Color(0xFFb3b3b3),
+                        ],
+                        iconData: FontAwesomeIcons.apple,
+                        onPressed: () {},
+                      ),
 
-                      icon: FaIcon(FontAwesomeIcons.apple),
-                      
-
-                      
-                      )
-                     
                       // SocialIcon(
                       //   colors: [
                       //     Color(0xFF17ead9),

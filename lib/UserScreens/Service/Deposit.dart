@@ -1170,7 +1170,12 @@ class _DepositState extends State<Deposit> {
               key: _formKey1,
               initialValue: {
                 'ชื่อ': '',
-                'ที่อยู่': '',
+                'นามสกุล':'',
+                'บ้านเลขที่': '',
+                'ตำบล/แขวง': '',
+                'อำเภอ/เขต': '',
+                'จังหวัด': '',
+                'รหัสไปรษณีย์': '',
                 'เบอร์โทรศัพท์': '',
               },
               child: Column(
@@ -1185,9 +1190,9 @@ class _DepositState extends State<Deposit> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
-                        SizedBox(height: 10),
+                         SizedBox(height: 10),
                         FormBuilderTextField(
-                          name: 'name',
+                          name: 'fname',
                           decoration: InputDecoration(
                               //border: InputBorder.none,
                               border: OutlineInputBorder(),
@@ -1208,14 +1213,148 @@ class _DepositState extends State<Deposit> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "ที่อยู่",
+                        "นามสกุล",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                         SizedBox(height: 10),
                         FormBuilderTextField(
-                          name: 'description',
-                          maxLines: 2,
+                          name: 'lname',
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            // FormBuilderValidators.numeric(context),
+                            // FormBuilderValidators.max(context, 70),
+                          ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "บ้านเลขที่",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: 'number',
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            // FormBuilderValidators.numeric(context),
+                            // FormBuilderValidators.max(context, 70),
+                          ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "ตำบล/แขวง",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: 'sub_district',
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            // FormBuilderValidators.numeric(context),
+                            // FormBuilderValidators.max(context, 70),
+                          ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "อำเภอ/เขต",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: 'district',
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            // FormBuilderValidators.numeric(context),
+                            // FormBuilderValidators.max(context, 70),
+                          ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "จังหวัด",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: 'provice',
+                          decoration: InputDecoration(
+                              //border: InputBorder.none,
+                              border: OutlineInputBorder(),
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            // FormBuilderValidators.numeric(context),
+                            // FormBuilderValidators.max(context, 70),
+                          ]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "รหัสไปรษณีย์",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: 'postcode',
                           decoration: InputDecoration(
                               //border: InputBorder.none,
                               border: OutlineInputBorder(),
