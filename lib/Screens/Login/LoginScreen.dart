@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:device_info/device_info.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:convert' as convert;
 import 'dart:convert' show json;
 import 'package:http/http.dart' as http;
@@ -511,16 +512,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           _loginGoogle();
                         },
                       ),
-                      SocialIcon(
-                        colors: [
-                          Color(0xFFff4f38),
-                          Color(0xFFff355d),
-                        ],
-                        iconData: CustomIcons.apple,
-                        onPressed: () {
+                     IconButton(
+                        onPressed: (){
                           
                         },
-                      ),
+
+                      icon: FaIcon(FontAwesomeIcons.apple),
+                      
+
+                      
+                      )
                      
                       // SocialIcon(
                       //   colors: [
