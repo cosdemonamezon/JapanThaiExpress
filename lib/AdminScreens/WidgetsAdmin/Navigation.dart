@@ -112,7 +112,7 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: 60,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Color(0xffdd4b39),
@@ -140,13 +140,13 @@ class _NavigationState extends State<Navigation> {
                                   builder: (context) => HomeScreen()));
                         }),
                   ),
-                  Text(
-                    "หน้าหลัก",
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
+                  // Text(
+                  //   "หน้าหลัก",
+                  //   style: TextStyle(
+                  //       fontSize: 12,
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Colors.white),
+                  // ),
                 ],
               ),
               Stack(
@@ -171,13 +171,13 @@ class _NavigationState extends State<Navigation> {
                                             NotificationScreen()));
                               }),
                         ),
-                        Text(
-                          "แจ้งเตือน",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
+                        // Text(
+                        //   "แจ้งเตือน",
+                        //   style: TextStyle(
+                        //       fontSize: 12,
+                        //       fontWeight: FontWeight.bold,
+                        //       color: Colors.white),
+                        // ),
                       ],
                     ),
                   ),
@@ -244,13 +244,13 @@ class _NavigationState extends State<Navigation> {
                                         builder: (context) => MessageScreen()));
                               }),
                         ),
-                        Text(
-                          "ข้อความ",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
+                        // Text(
+                        //   "ข้อความ",
+                        //   style: TextStyle(
+                        //       fontSize: 12,
+                        //       fontWeight: FontWeight.bold,
+                        //       color: Colors.white),
+                        // ),
                       ],
                     ),
                   ),
@@ -315,13 +315,13 @@ class _NavigationState extends State<Navigation> {
                                     builder: (context) => ProfileAdmin()));
                           }),
                     ),
-                    Text(
-                      "ตั้งค่า",
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
+                    // Text(
+                    //   "ตั้งค่า",
+                    //   style: TextStyle(
+                    //       fontSize: 12,
+                    //       fontWeight: FontWeight.bold,
+                    //       color: Colors.white),
+                    // ),
                   ],
                 ),
               ),

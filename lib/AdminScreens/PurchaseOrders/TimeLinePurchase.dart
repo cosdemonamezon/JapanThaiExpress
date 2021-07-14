@@ -319,7 +319,7 @@ class _TimeLinePurchaseState extends State<TimeLinePurchase> {
         centerTitle: true,
         title: Text("สถานะรายการ"),
         leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back_ios_new_rounded),
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => PurchaseScreen()));

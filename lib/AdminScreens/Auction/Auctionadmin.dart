@@ -59,6 +59,8 @@ class _AuctionadminState extends State<Auctionadmin> {
   void initState() {
     super.initState();
     _getauctionadmin();
+    _auctionadmin();
+    
     // _addressMem();
     // _DepositoryScreenoryType();
     // _shippingOption();
@@ -135,7 +137,7 @@ class _AuctionadminState extends State<Auctionadmin> {
     }
   }
 
-  _DepositoryScreenoryType() async {
+  _auctionadmin() async {
     prefs = await SharedPreferences.getInstance();
     var tokenString = prefs.getString('token');
     var token = convert.jsonDecode(tokenString);
@@ -167,70 +169,6 @@ class _AuctionadminState extends State<Auctionadmin> {
       } else {}
     } else {}
   }
-
-  _Auctionadmin(Map<String, dynamic> values) async {
-    prefs = await SharedPreferences.getInstance();
-    var tokenString = prefs.getString('token');
-    var token = convert.jsonDecode(tokenString);
-    print(values);
-    print(_transport);
-    print(costth);
-    print(id);
-    print(img64);
-    setState(() {
-      isLoading = true;
-    });
-    var url = Uri.parse(pathAPI + 'api/create_DepositoryScreenory'); //
-    var response = await http.post(url,
-        headers: {
-          //'Content-Type': 'application/json',
-          'Authorization': token['data']['token']
-        },
-        body: ({
-          'add_id': id.toString(),
-          'image': "data:image/png;base64," + img64,
-          'description': values['option'],
-          'cost_th': costth,
-        }));
-    if (response.statusCode == 201) {
-      final Map<String, dynamic> Auctionadmindata =
-          convert.jsonDecode(response.body);
-      print(Auctionadmindata);
-      if (Auctionadmindata['code'] == 201) {
-        print(Auctionadmindata['message']);
-        //MyNavigator.goToDepositoryScreen(context);
-        // Navigator.push(
-        //   context, MaterialPageRoute(builder: (context) => DepositoryScreen()));
-        // String picSuccess = "assets/success.png";
-        // showDialog(
-        //   barrierDismissible: false,
-        //   context: context,
-        //   builder: (context) => alertDepositoryScreen(
-        //     DepositoryScreendata['message'],
-        //     picSuccess,
-        //     context,
-        //   ),
-        // );
-      } else {}
-    } else {
-      print("error");
-      var feedback = convert.jsonDecode(response.body);
-      print("${feedback['message']}");
-      Flushbar(
-        title: '${feedback['message']}',
-        message: 'เกิดข้อผิดพลาดจากระบบ : ${feedback['code']}',
-        backgroundColor: Colors.redAccent,
-        icon: Icon(
-          Icons.error,
-          size: 28.0,
-          color: Colors.white,
-        ),
-        duration: Duration(seconds: 3),
-        leftBarIndicatorColor: Colors.blue[300],
-      )..show(context);
-    }
-  }
-
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -259,7 +197,7 @@ class _AuctionadminState extends State<Auctionadmin> {
               centerTitle: true,
               title: Text("รายการประมูล"),
               leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: Icon(Icons.arrow_back_ios_new_rounded),
                   onPressed: () {
                     MyNavigator.goToHomeServices(context);
                   }),

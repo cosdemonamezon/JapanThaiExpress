@@ -19,63 +19,32 @@ class ForgotScreen extends StatefulWidget {
 class _ForgotScreenState extends State<ForgotScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool isLoading = false;
+  String otp_ref = '';
 
   _forgotPassword(Map<String, dynamic> values) async {
     setState(() {
       isLoading = true;
     });
     print(values);
-    var url = Uri.parse(pathAPI + 'api/forgot_password');
+    var url = Uri.parse(pathAPI + 'api/sendOTPForgot');
     var response = await http.post(url,
         headers: {
           //'Content-Type': 'application/json',
           //'Authorization': token['data']['token']
         },
         body: ({
-          'old_password': values['email'],
+          'tel': values['tel'],
         }));
     if (response.statusCode == 200) {
-      final Map<String, dynamic> editdata = convert.jsonDecode(response.body);
-      if (editdata['code'] == 200) {
-        print(editdata['message']);
-        String feedback = editdata['message'];
-        Flushbar(
-          //title: 'ดำเนินการสำเร็จ',
-          message: feedback,
-          backgroundColor: Colors.greenAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          leftBarIndicatorColor: Colors.blue[300],
-          duration: Duration(seconds: 5),
-        )..show(context);
-
+      final Map<String, dynamic> res = convert.jsonDecode(response.body);
         setState(() {
-          isLoading = false;
-        });
-        Future.delayed(Duration(seconds: 3), () {
-          MyNavigator.goToLogin(context);
-        });
-      } else {
-        String feedback = editdata['message'];
-        Flushbar(
-          //title: 'ดำเนินการสำเร็จ',
-          message: feedback,
-          backgroundColor: Colors.greenAccent,
-          icon: Icon(
-            Icons.error,
-            size: 28.0,
-            color: Colors.white,
-          ),
-          leftBarIndicatorColor: Colors.blue[300],
-          duration: Duration(seconds: 3),
-        )..show(context);
-        setState(() {
-          isLoading = false;
-        });
-      }
+        otp_ref = res['data']['otp_ref'];
+      });
+      var arg = {
+        'tel': _formKey.currentState.fields['tel'].value,
+        'otp_ref': otp_ref,
+      };
+      MyNavigator.goToOtpforgotScreen(context, arg);
     } else {
       print("error");
       //var feedback = convert.jsonDecode(response.body);
@@ -132,7 +101,7 @@ class _ForgotScreenState extends State<ForgotScreen> {
                 FormBuilder(
                   key: _formKey,
                   initialValue: {
-                    'email': '',
+                    'tel': '',
                   },
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
@@ -140,26 +109,25 @@ class _ForgotScreenState extends State<ForgotScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "อีเมล์",
+                          "เบอร์โทรศัพท์",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                         SizedBox(height: 10),
                         FormBuilderTextField(
-                            name: 'email',
+                            name: 'tel',
                             decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.email),
-                                labelText: 'อีเมล',
+                                prefixIcon: Icon(Icons.phone),
+                                labelText: 'เบอร์โทรศัพท์',
                                 //border: InputBorder.none,
                                 border: OutlineInputBorder(),
                                 fillColor: Color(0xfff3f3f4),
                                 filled: true),
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.phone,
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context,
-                                  errorText: 'กรุณากรอกอีเมล'),
-                              FormBuilderValidators.email(context,
-                                  errorText: 'กรุณากรอกอีเมลให้ถูกต้อง'),
+                                  errorText: 'กรุณากรอกเบอร์โทรศัพท์'),
+                              
                             ])),
                         SizedBox(height: 10),
                         GestureDetector(
@@ -169,6 +137,7 @@ class _ForgotScreenState extends State<ForgotScreen> {
                                 isLoading = true;
                               });
                               _forgotPassword(_formKey.currentState.value);
+
                               // Navigator.push(context,
                               //     MaterialPageRoute(builder: (context) => LoginScreen()));
                               // showDialog(

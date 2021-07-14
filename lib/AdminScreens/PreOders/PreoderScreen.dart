@@ -268,7 +268,7 @@ class _PreoderScreenState extends State<PreoderScreen> {
               centerTitle: true,
               title: Text("รายการฝากซื้อ"),
               leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: Icon(Icons.arrow_back_ios_new_rounded),
                   onPressed: () {
                     MyNavigator.goToHomeServices(context);
                   }),

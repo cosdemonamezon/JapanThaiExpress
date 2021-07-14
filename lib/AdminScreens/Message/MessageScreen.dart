@@ -337,7 +337,7 @@ class _MessageScreenState extends State<MessageScreen> {
             centerTitle: true,
             title: Text("กล่องข้อความ"),
             leading: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: Icon(Icons.arrow_back_ios_new_rounded),
                 onPressed: () {
                   MyNavigator.goToUser(context);
                 }),

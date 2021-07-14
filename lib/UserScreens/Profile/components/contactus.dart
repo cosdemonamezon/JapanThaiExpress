@@ -195,7 +195,7 @@ class _ContactUsState extends State<ContactUs> {
             mainAxisSize: MainAxisSize.max,
             verticalDirection: VerticalDirection.down,
             children: [
-              SizedBox(height: 20.0),
+              SizedBox(height: 10.0),
               Center(
                
                 child: Image.network(
@@ -206,7 +206,7 @@ class _ContactUsState extends State<ContactUs> {
                   width: 80,
                 ),
               ),
-              SizedBox(height: 20.0),
+              SizedBox(height: 5.0),
               Center(
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),

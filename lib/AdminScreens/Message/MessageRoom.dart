@@ -170,7 +170,7 @@ class _MessageRoomState extends State<MessageRoom> {
             textAlign: TextAlign.center,
           ),
           leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(Icons.arrow_back_ios_new_rounded),
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => MessageScreen()));

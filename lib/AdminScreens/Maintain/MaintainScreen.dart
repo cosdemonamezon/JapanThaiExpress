@@ -126,7 +126,7 @@ class _MaintainScreenState extends State<MaintainScreen> {
         centerTitle: true,
         title: Text("เรทบริการ"),
         leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back_ios_new_rounded),
             onPressed: () {
               MyNavigator.goToAdmin(context);
             }),

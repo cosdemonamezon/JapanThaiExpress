@@ -69,8 +69,8 @@ class MyNavigator {
   static void goTomessagesend(BuildContext context) {
     Navigator.pushNamed(context, '/messagesend');
   }
-  static void goToQRCodedetail(BuildContext context) {
-    Navigator.pushNamed(context, '/qrcodedetail');
+  static void goToQRCodedetail(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/qrcodedetail', arguments: arg);
   }
 
   /*static void goToTimeLineOrderMember(BuildContext context, arg) {
@@ -369,6 +369,13 @@ static void goToTimeLineOrderMember(BuildContext context, int id) {
     Navigator.pushNamed(context, '/otpscreen', arguments: arg);
   }
 
+  static void goToOtpforgotScreen(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/otpscreenforgot', arguments: arg);
+  }
+
+static void goToforgotpassword(BuildContext context, arg) {
+    Navigator.pushNamed(context, '/forgotpassword', arguments: arg);
+  }
   static void goToSettingAdmin(BuildContext context) {
     Navigator.pushNamed(context, '/settingadmin');
   }

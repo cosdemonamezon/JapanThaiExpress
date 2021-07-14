@@ -2,13 +2,16 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:JapanThaiExpress/AdminScreens/WidgetsAdmin/Navigation.dart';
+import 'package:JapanThaiExpress/constants.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:JapanThaiExpress/utils/my_navigator.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share/share.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class QRCodedetail extends StatefulWidget {
   QRCodedetail({Key key}) : super(key: key);
@@ -18,16 +21,17 @@ class QRCodedetail extends StatefulWidget {
 }
 
 class _QRCodedetailState extends State<QRCodedetail> {
+  SharedPreferences prefs;
+  bool isLoading = false;
   final _screenshotController = ScreenshotController();
   static const MethodChannel _channel =
       const MethodChannel('image_gallery_saver');
   String sendername = 'บริษัท เจที ขนส่ง จำกัด',
       sendertel = '080-549-4449',
       senderaddress = '119/8 หมู่ 4 ต.ตะพง อ.เมือง จ.ระยอง 21000';
-  String recipname = 'บริษัท อาชาเทค คอเปอเรชั่น จำกัด',
-      reciptel = '095-940-5526',
-      recipaddress =
-          '64/99 the connect 34 ถนนกาญจนาภิเษก แขวงดอกไม้ เขตประเวศ กรุงเทพมหานคร 10250';
+  String recipname = '...',
+      reciptel = '...',
+      recipaddress = '...';
 
   @override
   void initState() {
@@ -42,21 +46,83 @@ class _QRCodedetailState extends State<QRCodedetail> {
     ].request();
 
     final info = statuses[Permission.storage].toString();
-    print(info);
+    // print(info);
     // _toastInfo(info);
+  }
+
+  _getDetail() async {
+    prefs = await SharedPreferences.getInstance();
+
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString);
+    var url = Uri.parse(pathAPI + 'api/web/print_sticker/DE21060006');
+    var response = await http.get(url,
+        headers: {
+          //'Content-Type': 'application/json',
+          'Authorization': token['data']['token']
+    });
+        
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> creatdata = convert.jsonDecode(response.body);
+      if (creatdata['code'] == 200) {
+        setState(() {
+          recipname = creatdata['data']['ship_name'];
+          reciptel = creatdata['data']['ship_address'];
+          recipaddress = creatdata['data']['ship_tel'];
+          isLoading = false;
+        });
+      } else {
+        var feedback = convert.jsonDecode(response.body);
+        Flushbar(
+          title: '${feedback['message']}',
+          message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+          backgroundColor: Colors.redAccent,
+          icon: Icon(
+            Icons.error,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } else {
+      var feedback = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'รหัสข้อผิดพลาด : ${feedback['code']}',
+        backgroundColor: Colors.redAccent,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    Map data = ModalRoute.of(context).settings.arguments;
+    setState(() {
+      recipname = data['ship_name'];
+      recipaddress= data['ship_address'];
+      reciptel = data['ship_tel'];
+    });
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
         title: Text("รายละเอียด"),
         leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back_ios_new_rounded),
             onPressed: () {
               Navigator.pop(context);
             }),

@@ -334,7 +334,7 @@ class _DepositScreenState extends State<DepositScreen> {
               centerTitle: true,
               title: Text("รายการเติมเงิน"),
               leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: Icon(Icons.arrow_back_ios_new_rounded),
                   onPressed: () {
                     Navigator.pop(context, true);
                   }),

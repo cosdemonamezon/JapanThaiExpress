@@ -419,8 +419,10 @@ class _RegistrationState extends State<Registration> {
         'Authorization': token['data']['token'],
       },
       body: ({
-        'fname_th': _formKey.currentState.fields['name'].value,
-        'lname_th': _formKey.currentState.fields['lname'].value,
+        'fname_th': _formKey.currentState.fields['thfname'].value,
+        'lname_th': _formKey.currentState.fields['thflname'].value,
+        'fname_en': _formKey.currentState.fields['enfname'].value,
+        'lname_en': _formKey.currentState.fields['enlname'].value,
         'email': _formKey.currentState.fields['email'].value,
         'tel': _formKey.currentState.fields['tel'].value,
         'password': _formKey.currentState.fields['password'].value,
@@ -466,6 +468,8 @@ class _RegistrationState extends State<Registration> {
         'password': _formKey.currentState.fields['password'].value,
         'fname_th': _formKey.currentState.fields['thfname'].value,
         'lname_th': _formKey.currentState.fields['thlname'].value,
+        'fname_en': _formKey.currentState.fields['enfname'].value,
+        'lname_en': _formKey.currentState.fields['enlname'].value,
         'email': _formKey.currentState.fields['email'].value,
         'otp_ref': otp_ref,
       };

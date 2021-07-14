@@ -47,6 +47,9 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [onesignal_app_id: "a272f0a4-295a-4f8f-8f2d-604d56718117",
+                              // Project number pulled from dashboard, local value is ignored.
+                              onesignal_google_project_number: "REMOTE"]
         
     }
 
