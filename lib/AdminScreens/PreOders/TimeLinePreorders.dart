@@ -194,7 +194,6 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                   for (var i = 0; i <= label.length - 1; i++)
                     Column(
                       children: [
-                       
                         FormBuilderTextField(
                           name: name[i],
                           keyboardType: type[i].toString() == "text"
@@ -300,7 +299,6 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                 print("object");
                 Navigator.pop(context);
               },
-              
             ),
           ),
         ],
@@ -361,7 +359,7 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
         centerTitle: true,
         title: Text("สถานะรายการ"),
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new_rounded),
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => PreoderScreen()));
@@ -788,7 +786,6 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'new',
-                                      
                                     familyMemberField,
                                     familyMemberType),
                               );
@@ -1041,7 +1038,6 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'buy',
-                                           
                                     familyMemberField,
                                     familyMemberType),
                               );
@@ -1159,7 +1155,6 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'shipping',
-                                           
                                     familyMemberField,
                                     familyMemberType),
                               );
@@ -1383,7 +1378,6 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'overdue',
-                                          
                                     familyMemberField,
                                     familyMemberType),
                               );
@@ -1490,7 +1484,6 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'store_thai',
-                                         
                                     familyMemberField,
                                     familyMemberType),
                               );
@@ -1681,7 +1674,6 @@ class _TimeLinePreordersState extends State<TimeLinePreorders> {
                                     dataTimeline.length > 0
                                         ? dataTimeline['data']['step']
                                         : 'overdue',
-                                         
                                     familyMemberField,
                                     familyMemberType),
                               );

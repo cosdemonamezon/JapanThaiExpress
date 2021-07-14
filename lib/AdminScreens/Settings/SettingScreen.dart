@@ -157,7 +157,7 @@ class _SettingScreenState extends State<SettingScreen> {
         centerTitle: true,
         title: Text("ตั้งค่าข้อมูล"),
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new_rounded),
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
               // MyNavigator.goToAdmin(context);
               Navigator.pop(context);

@@ -60,7 +60,7 @@ class _AuctionadminState extends State<Auctionadmin> {
     super.initState();
     _getauctionadmin();
     _auctionadmin();
-    
+
     // _addressMem();
     // _DepositoryScreenoryType();
     // _shippingOption();
@@ -169,6 +169,7 @@ class _AuctionadminState extends State<Auctionadmin> {
       } else {}
     } else {}
   }
+
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -197,7 +198,7 @@ class _AuctionadminState extends State<Auctionadmin> {
               centerTitle: true,
               title: Text("รายการประมูล"),
               leading: IconButton(
-                  icon: Icon(Icons.arrow_back_ios_new_rounded),
+                  icon: Icon(Icons.arrow_back),
                   onPressed: () {
                     MyNavigator.goToHomeServices(context);
                   }),

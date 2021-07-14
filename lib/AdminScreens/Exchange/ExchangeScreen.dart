@@ -138,7 +138,7 @@ class _ExchangeScreenState extends State<ExchangeScreen> {
               centerTitle: true,
               title: Text("รายการฝากโอน"),
               leading: IconButton(
-                  icon: Icon(Icons.arrow_back_ios_new_rounded),
+                  icon: Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.pop(context, true);
                   }),
